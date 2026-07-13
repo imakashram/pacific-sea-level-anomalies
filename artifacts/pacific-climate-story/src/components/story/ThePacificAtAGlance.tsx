@@ -58,7 +58,7 @@ function downloadCSV(rows: any[]) {
   URL.revokeObjectURL(url);
 }
 
-export function ChapterRankings() {
+export function ThePacificAtAGlance() {
   const { data, isLoading } = useGetRankings();
   const { data: timeSeriesData } = useGetSeaLevelByCountry();
   const { data: riskData } = useGetRiskScores();
