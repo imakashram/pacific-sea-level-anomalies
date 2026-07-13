@@ -40,7 +40,7 @@ const KEY_EVENTS = [
   { year: 2023, label: "The present reality", detail: "Five nations above 0.1m. All 21 trending upward. The 30-year story is an escalation." },
 ];
 
-export function Chapter6Takeaways() {
+export function ChapterWhatThisMeans() {
   const { data: accelData } = useGetAcceleration();
   const { data: decadeData } = useGetDecadeAnalysis();
   const { data: overview } = useGetClimateOverview();
@@ -75,19 +75,19 @@ export function Chapter6Takeaways() {
         >
           <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">What This Means</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Thirty years of satellite-era data. Twenty-one nations. One unavoidable conclusion: the Pacific is rising, accelerating, and there is no safe harbor.
+            Thirty years of observations. Twenty-one Pacific territories. A persistent rise in sea level anomalies.
           </p>
         </motion.div>
 
         {/* Animated counter grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-16">
           {[
-            { value: acceleratingCount, of: totalCount, label: "Nations Accelerating", color: "text-primary", desc: "are not just rising but rising faster", decimals: 0, prefix: "", suffix: "" },
-            { value: shift * 100, of: null, label: "cm Baseline Shift", color: "text-foreground", desc: "average rise from Decade 1 to Decade 3", decimals: 1, prefix: "+", suffix: "cm" },
-            { value: crossedZero, of: null, label: "Nations Above Zero", color: "text-[#34d399]", desc: "have crossed into persistent positive anomaly", decimals: 0, prefix: "", suffix: "" },
-            { value: crossedTenth, of: null, label: "Nations at +0.1m", color: "text-[#f97316]", desc: "have breached the 10cm threshold", decimals: 0, prefix: "", suffix: "" },
-            { value: maxRiseVal * 100, of: null, label: "cm Peak Nation Rise", color: "text-[#ef4444]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: "cm" },
-            { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "mm/yr Fastest Rise", color: "text-[#a78bfa]", desc: `${highestSlope?.country ?? "…"} — fastest upward trend`, decimals: 2, prefix: "+", suffix: "mm/yr" },
+            { value: acceleratingCount, of: totalCount, label: "Nations Accelerating", color: "text-[#f43f5e]", desc: "are not just rising but rising faster", decimals: 0, prefix: "", suffix: "" },
+            { value: shift * 100, of: null, label: "Baseline Shift", color: "text-[#f97316]", desc: "average rise from Decade 1 to Decade 3", decimals: 1, prefix: "+", suffix: "cm" },
+            { value: crossedZero, of: null, label: "Nations Above Zero", color: "text-[#eab308]", desc: "have crossed into persistent positive anomaly", decimals: 0, prefix: "", suffix: "" },
+            { value: crossedTenth, of: null, label: "Nations at +0.1m", color: "text-[#ef4444]", desc: "have breached the 10cm threshold", decimals: 0, prefix: "", suffix: "" },
+            { value: maxRiseVal * 100, of: null, label: "Peak Nation Rise", color: "text-[#ef4444]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: "cm" },
+            { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "Fastest Rise", color: "text-[#a855f7]", desc: `${highestSlope?.country ?? "…"} - fastest upward trend`, decimals: 2, prefix: "+", suffix: "mm/yr" },
           ].map(({ value, of, label, color, desc, decimals, prefix, suffix }, i) => (
             <motion.div
               key={label}

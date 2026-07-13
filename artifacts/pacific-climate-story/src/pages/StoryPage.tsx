@@ -16,7 +16,7 @@ import { ChapterForecast } from "@/components/story/ChapterForecast";
 import { ChapterRiskDashboard } from "@/components/story/ChapterRiskDashboard";
 import { ChapterCountryExplorer } from "@/components/story/ChapterCountryExplorer";
 import { ChapterRankings } from "@/components/story/ChapterRankings";
-import { Chapter6Takeaways } from "@/components/story/Chapter6Takeaways";
+import { ChapterWhatThisMeans } from "@/components/story/ChapterWhatThisMeans";
 import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
 import { ChapterThresholdCrossings } from "@/components/story/ChapterThresholdCrossings";
 import { ChapterBaselineBreach } from "@/components/story/ChapterBaselineBreach";
@@ -77,7 +77,7 @@ export default function StoryPage() {
         <ChapterBaselineBreach />
         <ChapterCountryExplorer />
         <ChapterRankings />
-        <Chapter6Takeaways />
+        <ChapterWhatThisMeans />
       </main>
     </div>
   );
