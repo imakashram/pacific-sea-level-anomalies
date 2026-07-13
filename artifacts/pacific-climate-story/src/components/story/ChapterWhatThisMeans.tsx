@@ -30,15 +30,7 @@ function AnimatedCount({ target, decimals = 0, prefix = "", suffix = "" }: { tar
   );
 }
 
-const KEY_EVENTS = [
-  { year: 1993, label: "Measurement begins", detail: "SPC begins systematic sea level monitoring across 21 Pacific territories." },
-  { year: 1998, label: "El Niño suppression", detail: "A major El Niño event suppresses Pacific sea levels — a temporary respite that ends quickly." },
-  { year: 2003, label: "Decade 2 begins rising", detail: "The second decade opens with clearly elevated baseline sea levels vs the 1993 period." },
-  { year: 2011, label: "La Niña spike", detail: "La Niña drives sea levels sharply upward, previewing the new normal for later decades." },
-  { year: 2013, label: "Acceleration confirmed", detail: "Decade 3 opens with levels already significantly above D1 baselines. The trend is undeniable." },
-  { year: 2019, label: "New records set", detail: "Multiple nations record their highest-ever sea level anomalies in the 2019–2022 window." },
-  { year: 2023, label: "The present reality", detail: "Five nations above 0.1m. All 21 trending upward. The 30-year story is an escalation." },
-];
+
 
 export function ChapterWhatThisMeans() {
   const { data: accelData } = useGetAcceleration();
@@ -107,64 +99,7 @@ export function ChapterWhatThisMeans() {
           ))}
         </div>
 
-        {/* Key events timeline */}
-        <motion.div
-          className="mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <h3 className="text-2xl font-serif font-bold mb-8 text-center">Thirty Years in Seven Moments</h3>
-          <div className="relative">
-            <div className="absolute left-[72px] top-0 bottom-0 w-px bg-border/40" />
-            <div className="space-y-6">
-              {KEY_EVENTS.map((event, i) => (
-                <motion.div
-                  key={event.year}
-                  className="flex items-start gap-6 relative"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                >
-                  <div className="w-[72px] shrink-0 text-right">
-                    <span className="text-sm font-mono font-bold text-primary">{event.year}</span>
-                  </div>
-                  <div className="w-3 h-3 rounded-full bg-primary mt-0.5 shrink-0 relative z-10 ring-4 ring-background" />
-                  <div className="flex-1 pb-2">
-                    <div className="text-sm font-bold text-foreground mb-0.5">{event.label}</div>
-                    <div className="text-xs text-muted-foreground leading-relaxed">{event.detail}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
 
-        {/* Data integrity callout */}
-        <motion.div
-          className="p-6 bg-card/30 border border-border/40 rounded-2xl mb-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-        >
-          <div>
-            <div className="text-2xl font-serif font-bold text-foreground mb-1">
-              <AnimatedCount target={totalObs} decimals={0} />
-            </div>
-            <div className="text-xs text-muted-foreground uppercase tracking-wide">Total Observations</div>
-          </div>
-          <div>
-            <div className="text-2xl font-serif font-bold text-foreground mb-1">21</div>
-            <div className="text-xs text-muted-foreground uppercase tracking-wide">Pacific Territories</div>
-          </div>
-          <div>
-            <div className="text-2xl font-serif font-bold text-foreground mb-1">1993 – 2023</div>
-            <div className="text-xs text-muted-foreground uppercase tracking-wide">30-Year Record</div>
-          </div>
-        </motion.div>
 
         <motion.div
           className="pt-12 border-t border-border/30 text-center"
