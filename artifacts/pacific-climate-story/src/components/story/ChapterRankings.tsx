@@ -63,6 +63,7 @@ export function ChapterRankings() {
   const { data: timeSeriesData } = useGetSeaLevelByCountry();
   const { data: riskData } = useGetRiskScores();
   const [search, setSearch] = useState("");
+  const [showInfo, setShowInfo] = useState(false);
   const [sortField, setSortField] = useState<SortField>('cumulativeRise');
   const [sortDir, setSortDirection] = useState<SortDirection>('desc');
 
@@ -137,6 +138,15 @@ export function ChapterRankings() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               Export CSV
+            </button>
+            <button
+              onClick={() => setShowInfo(true)}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-card/50 border border-border/50 text-muted-foreground hover:text-foreground hover:bg-card hover:border-border transition-all duration-300"
+              title="Data Methodology"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </button>
           </div>
         </motion.div>
@@ -243,6 +253,41 @@ export function ChapterRankings() {
           </motion.div>
         )}
       </div>
+
+      {showInfo && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={() => setShowInfo(false)}>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-card w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-2xl border border-border shadow-2xl p-6 md:p-8 custom-scrollbar"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-serif font-bold text-foreground">Data Methodology</h3>
+              <button onClick={() => setShowInfo(false)} className="text-muted-foreground hover:text-foreground p-2 rounded-full hover:bg-muted transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            
+            <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+              <p><strong className="text-foreground">Trend:</strong> A visual sparkline showing the time series of sea level anomalies for the territory.</p>
+              <p><strong className="text-foreground">Territory:</strong> The nation or region.</p>
+              <p><strong className="text-foreground">Risk:</strong> Categorical risk level (Critical, High, Medium, Low) based on a weighted composite score: cumulative rise (40%), speed (30%), volatility (15%), and acceleration (15%).</p>
+              <p><strong className="text-foreground">Avg Anomaly:</strong> Calculated by summing all observed sea level anomalies for the territory and dividing by the total number of observations.</p>
+              <p><strong className="text-foreground">Volatility:</strong> Calculated as the standard deviation of all annual anomalies, measuring the average distance of each year's anomaly from the overall mean.</p>
+              <p><strong className="text-foreground">Cumul. Rise:</strong> Calculated by subtracting the anomaly value of the very first recorded year from the anomaly value of the most recent year.</p>
+              <p><strong className="text-foreground">Speed:</strong> Calculated using an ordinary least squares linear regression across all data points to find the trendline slope, which is then converted into millimeters per year.</p>
+              <p><strong className="text-foreground">Peak:</strong> Determined by finding the single highest sea level anomaly value recorded for the territory across all available years.</p>
+              <p><strong className="text-foreground">D1→D3:</strong> Calculated by taking the average anomaly of the most recent decade (2013-2023) and subtracting the average anomaly of the first recorded decade (1993-2002). A positive value indicates an acceleration in sea level rise.</p>
+            </div>
+            <div className="mt-8 flex justify-end">
+              <button onClick={() => setShowInfo(false)} className="px-6 py-2 bg-primary text-primary-foreground rounded-full font-medium hover:opacity-90 transition-opacity">
+                Close
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </StorySection>
   );
 }
