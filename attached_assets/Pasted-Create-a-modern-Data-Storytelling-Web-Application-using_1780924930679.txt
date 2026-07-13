@@ -1,0 +1,79 @@
+Create a modern **Data Storytelling Web Application** using the provided dataset. The focus should be on presenting insights as a compelling narrative rather than a traditional dashboard.
+
+### Objective
+
+Transform the dataset into an engaging data-driven story that guides users through key findings, trends, patterns, and recommendations using interactive D3.js visualizations.
+
+### Story Structure
+
+#### Introduction
+
+* Present the context and purpose of the dataset.
+* Briefly explain what the audience will discover.
+* Create a visually appealing opening section with key headline metrics.
+
+#### Chapter 1: Understanding the Data
+
+* Introduce the dataset composition.
+* Explain major dimensions and measures.
+* Highlight important summary statistics.
+
+#### Chapter 2: The Main Story
+
+* Automatically identify the most important trends and patterns.
+* Show growth, decline, seasonality, and performance shifts.
+* Use D3.js visualizations with smooth animations and storytelling transitions.
+
+#### Chapter 3: Surprising Discoveries
+
+* Highlight anomalies, outliers, and unexpected patterns.
+* Explain why these findings matter.
+* Use visual emphasis and narrative callouts.
+
+#### Chapter 4: Deep Dive Analysis
+
+* Compare categories, segments, regions, or entities.
+* Show relationships and correlations.
+* Provide contextual explanations for each insight.
+
+#### Chapter 5: Key Takeaways
+
+* Summarize the most important findings.
+* Present actionable recommendations.
+* Highlight opportunities, risks, and future considerations.
+
+### Visualization Requirements
+
+Use D3.js to create interactive and animated:
+
+* Line Charts
+* Bar Charts
+* Bubble Charts
+* Scatter Plots
+* Heatmaps
+* Treemaps
+* Sankey Diagrams (if applicable)
+* Network Visualizations (if relationships exist)
+* Story-driven scrolling visualizations (Scrollytelling)
+
+### Storytelling Features
+
+* Narrative sections that explain every visualization.
+* Animated transitions between chapters.
+* Scroll-based storytelling experience.
+* AI-generated insight summaries.
+* Dynamic annotations pointing to important events and trends.
+* Highlight significant findings as users progress through the story.
+
+### Design Requirements
+
+* Premium editorial-style layout similar to data journalism articles.
+* Inspired by modern storytelling experiences from leading publications.
+* Responsive design.
+* Elegant typography and whitespace.
+* Smooth animations using D3.js and Framer Motion.
+* Focus on readability and engagement rather than dashboard widgets.
+
+### Expected Output
+
+Generate a complete data storytelling experience where users read and explore the story sequentially, uncovering insights through interactive visualizations and narrative explanations, making the data feel like a compelling story rather than a business dashboard.

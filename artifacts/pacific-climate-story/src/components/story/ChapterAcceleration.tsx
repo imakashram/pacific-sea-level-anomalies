@@ -1,0 +1,171 @@
+import { useGetAcceleration } from "@workspace/api-client-react";
+import { StorySection } from "./StorySection";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { motion } from "framer-motion";
+import { useMemo } from "react";
+
+function SlopeChart({ data }: { data: { country: string; code: string; slopeFirstHalf: number; slopeSecondHalf: number; accelerating: boolean }[] }) {
+  const top14 = data.slice(0, 14);
+  const allSlopes = top14.flatMap((d) => [d.slopeFirstHalf * 1000, d.slopeSecondHalf * 1000]);
+  const minSlope = Math.min(...allSlopes);
+  const maxSlope = Math.max(...allSlopes);
+  const range = maxSlope - minSlope || 1;
+
+  const W = 540;
+  const H = 420;
+  const leftX = 120;
+  const rightX = W - 80;
+  const topPad = 40;
+  const botPad = 20;
+  const plotH = H - topPad - botPad;
+
+  const slopeToY = (s: number) => topPad + plotH - ((s - minSlope) / range) * plotH;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" style={{ maxHeight: 440 }}>
+      {/* Column headers */}
+      <text x={leftX} y={22} textAnchor="middle" fontSize={11} fill="hsl(var(--muted-foreground))" fontWeight="600">1993–2007</text>
+      <text x={rightX} y={22} textAnchor="middle" fontSize={11} fill="hsl(var(--muted-foreground))" fontWeight="600">2008–2023</text>
+      {/* Y grid lines */}
+      {[0, 25, 50, 75, 100].map((pct) => {
+        const y = topPad + (pct / 100) * plotH;
+        const val = maxSlope - (pct / 100) * range;
+        return (
+          <g key={pct}>
+            <line x1={leftX - 20} y1={y} x2={rightX + 20} y2={y} stroke="hsl(var(--border))" strokeWidth={0.5} strokeDasharray="3 3" />
+            <text x={leftX - 24} y={y + 4} textAnchor="end" fontSize={9} fill="hsl(var(--muted-foreground))">{val.toFixed(1)}</text>
+          </g>
+        );
+      })}
+      <text x={leftX - 60} y={topPad + plotH / 2} fontSize={10} fill="hsl(var(--muted-foreground))" transform={`rotate(-90 ${leftX - 60} ${topPad + plotH / 2})`} textAnchor="middle">mm/yr</text>
+
+      {top14.map((d, i) => {
+        const y1 = slopeToY(d.slopeFirstHalf * 1000);
+        const y2 = slopeToY(d.slopeSecondHalf * 1000);
+        const accel = d.slopeSecondHalf > d.slopeFirstHalf;
+        const lineColor = accel ? "hsl(var(--primary))" : "hsl(var(--destructive))";
+        const alpha = 0.35 + (i / top14.length) * 0.65;
+        return (
+          <g key={d.code}>
+            {/* Connecting line */}
+            <line x1={leftX} y1={y1} x2={rightX} y2={y2} stroke={lineColor} strokeWidth={1.5} strokeOpacity={0.7} />
+            {/* Left dot */}
+            <circle cx={leftX} cy={y1} r={5} fill="hsl(var(--muted-foreground))" strokeWidth={0} opacity={0.8} />
+            {/* Right dot */}
+            <circle cx={rightX} cy={y2} r={5} fill={lineColor} strokeWidth={0} opacity={0.9} />
+            {/* Country label on left */}
+            <text x={leftX - 8} y={y1 + 4} textAnchor="end" fontSize={10} fill="hsl(var(--muted-foreground))" opacity={0.9}>{d.code}</text>
+            {/* Arrow direction indicator on right */}
+            <text x={rightX + 8} y={y2 + 4} textAnchor="start" fontSize={9} fill={lineColor} opacity={0.85}>
+              {accel ? "↑" : "↓"}{Math.abs((d.slopeSecondHalf - d.slopeFirstHalf) * 1000).toFixed(1)}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+export function ChapterAcceleration() {
+  const { data, isLoading } = useGetAcceleration();
+
+  const sortedByFull = data?.slice().sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod) || [];
+  const sortedByAccel = data?.slice().sort((a, b) => (b.slopeSecondHalf - b.slopeFirstHalf) - (a.slopeSecondHalf - a.slopeFirstHalf)) || [];
+
+  const acceleratingCount = data?.filter((d) => d.accelerating).length ?? 0;
+  const avgDelta = data ? data.reduce((s, d) => s + (d.slopeSecondHalf - d.slopeFirstHalf), 0) / data.length * 1000 : 0;
+
+  return (
+    <StorySection id="chapter-acceleration">
+      <div className="max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Speed of Change</h2>
+          <p className="text-xl text-muted-foreground leading-relaxed mb-8">
+            The tragedy of the ocean's rise is not just how much water has gathered, but how fast it is rushing in. 
+            By comparing the first 15 years to the last 15 years, we see the true acceleration — most nations are rising faster now than ever before.
+          </p>
+          <div className="flex gap-8 mb-10">
+            <div className="border-l-2 border-primary pl-4">
+              <div className="text-3xl font-serif font-bold text-primary">{acceleratingCount} / {data?.length ?? 21}</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wide mt-1">Nations accelerating</div>
+            </div>
+            <div className="border-l-2 border-muted-foreground/40 pl-4">
+              <div className="text-3xl font-serif font-bold text-foreground">+{avgDelta.toFixed(2)} mm/yr</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wide mt-1">Average speed increase</div>
+            </div>
+          </div>
+        </motion.div>
+
+        {isLoading || !data ? (
+          <div className="h-[400px] bg-card/20 animate-pulse rounded-xl" />
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            {/* Main: full period slope bar chart */}
+            <div className="h-[560px] w-full bg-card/10 p-4 rounded-xl border border-border/30 mb-10">
+              <h3 className="text-center font-serif text-sm text-muted-foreground mb-3 uppercase tracking-wide">Full 30-Year Pace (mm/yr) — All Nations</h3>
+              <ResponsiveContainer width="100%" height="92%">
+                <BarChart data={sortedByFull} layout="vertical" margin={{ top: 5, right: 50, left: 110, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="hsl(var(--border))" />
+                  <XAxis type="number" stroke="hsl(var(--muted-foreground))" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} tickFormatter={(v) => `${(v * 1000).toFixed(1)}`} />
+                  <YAxis dataKey="country" type="category" stroke="hsl(var(--muted-foreground))" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} width={110} />
+                  <Tooltip
+                    cursor={{ fill: "hsl(var(--muted)/0.2)" }}
+                    contentStyle={{ backgroundColor: "hsl(var(--background)/0.95)", borderColor: "hsl(var(--border)/0.5)", borderRadius: "0.5rem" }}
+                    formatter={(value: number, name: string, props: any) => [
+                      `${(value * 1000).toFixed(2)} mm/yr`,
+                      props.payload.accelerating ? "Accelerating ↑" : "Stable / Slowing"
+                    ]}
+                  />
+                  <Bar dataKey="slopeFullPeriod" radius={[0, 4, 4, 0]}>
+                    {sortedByFull.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.accelerating ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))"} opacity={entry.accelerating ? 1 : 0.5} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Slope chart: first half vs second half */}
+            <div className="bg-card/20 p-6 rounded-xl border border-border/30 mb-8">
+              <h3 className="text-lg font-serif font-bold text-foreground mb-1">Slope Chart: Before vs. After 2008</h3>
+              <p className="text-sm text-muted-foreground mb-6">
+                Each line connects a nation's 1993–2007 rise rate (left) to its 2008–2023 rise rate (right).
+                <span className="text-primary ml-2">Cyan = accelerating.</span>
+                <span className="text-destructive ml-2">Red = slowing.</span>
+              </p>
+              <SlopeChart data={sortedByAccel} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-5 bg-card/40 border border-primary/20 rounded-xl border-l-4 border-l-primary">
+                <h4 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Most Accelerating</h4>
+                <p className="text-2xl font-serif font-bold text-primary mb-1">{sortedByAccel[0]?.country}</p>
+                <p className="text-sm text-foreground">
+                  Pace jumped from {(sortedByAccel[0]?.slopeFirstHalf * 1000).toFixed(2)} to {(sortedByAccel[0]?.slopeSecondHalf * 1000).toFixed(2)} mm/yr
+                  — a {((sortedByAccel[0]?.slopeSecondHalf - sortedByAccel[0]?.slopeFirstHalf) * 1000).toFixed(2)} mm/yr increase.
+                </p>
+              </div>
+              <div className="p-5 bg-card/40 border border-muted-foreground/20 rounded-xl border-l-4 border-l-muted-foreground">
+                <h4 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Most Stable Pace</h4>
+                <p className="text-2xl font-serif font-bold text-foreground mb-1">{sortedByAccel[sortedByAccel.length - 1]?.country}</p>
+                <p className="text-sm text-foreground">
+                  Pace shifted from {(sortedByAccel[sortedByAccel.length - 1]?.slopeFirstHalf * 1000).toFixed(2)} to {(sortedByAccel[sortedByAccel.length - 1]?.slopeSecondHalf * 1000).toFixed(2)} mm/yr.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </StorySection>
+  );
+}
