@@ -96,21 +96,25 @@ export function ChapterRankings() {
   };
 
   return (
-    <StorySection id="chapter-rankings" className="pb-32">
-      <div className="max-w-6xl mx-auto">
+    <StorySection 
+      id="chapter-rankings" 
+      className="pb-32"
+      innerClassName="max-w-[95vw] mx-auto w-full px-4 lg:px-8"
+    >
+      <div className="w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="mb-8"
+          className="mb-8 text-center flex flex-col items-center"
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">The Full Picture</h2>
-          <p className="text-xl text-muted-foreground mb-6">
-            Every territory. Every metric. The complete analytical record.
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">The Pacific at a Glance</h2>
+          <p className="text-xl text-muted-foreground mb-6 max-w-3xl">
+            Explore the complete Pacific record.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
             <input
               type="text"
               placeholder="Search nations..."
@@ -127,11 +131,6 @@ export function ChapterRankings() {
               </svg>
               Export CSV
             </button>
-            {data && (
-              <span className="text-xs text-muted-foreground">
-                {sortedData.length} / {data.length} nations
-              </span>
-            )}
           </div>
         </motion.div>
 
