@@ -16,14 +16,14 @@ const RISK_COLORS: Record<string, string> = {
 
 function MiniSparkline({ data, color }: { data: { value: number }[]; color: string }) {
   return (
-    <div className="w-20 h-8">
+    <div className="w-24 h-10 opacity-80 hover:opacity-100 transition-opacity duration-300">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <Line
             type="monotone"
             dataKey="value"
             stroke={color}
-            strokeWidth={1.5}
+            strokeWidth={2}
             dot={false}
             isAnimationActive={false}
           />
@@ -114,20 +114,27 @@ export function ChapterRankings() {
             Explore the complete Pacific record.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
-            <input
-              type="text"
-              placeholder="Search nations..."
-              className="flex-1 max-w-sm bg-card/50 border border-border/50 rounded-md px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full mb-2">
+            <div className="relative w-full max-w-sm group">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg className="w-4 h-4 text-muted-foreground/60 group-focus-within:text-primary/70 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Search territories..."
+                className="w-full bg-card/30 backdrop-blur-md border border-border/50 rounded-full pl-11 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 hover:bg-card/50 transition-all duration-300"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
             <button
               onClick={() => sortedData.length && downloadCSV(sortedData)}
-              className="flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-card/60 border border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-full bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               Export CSV
             </button>
@@ -145,8 +152,8 @@ export function ChapterRankings() {
             className="bg-card/20 rounded-xl border border-border/50 overflow-hidden shadow-2xl"
           >
             <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left">
-                <thead className="text-xs uppercase bg-card/80 text-muted-foreground border-b border-border/50">
+              <table className="w-full text-sm text-left border-collapse">
+                <thead className="sticky top-0 z-20 text-xs uppercase bg-background/95 backdrop-blur-xl text-muted-foreground border-b border-border/50 shadow-sm">
                   <tr>
                     <th className="px-4 py-3 font-semibold">Trend</th>
                     <th className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('country')}>
@@ -182,7 +189,7 @@ export function ChapterRankings() {
                     return (
                       <tr
                         key={row.code}
-                        className={`border-b border-border/20 hover:bg-card/50 transition-colors ${isTop ? 'bg-primary/5' : ''}`}
+                        className={`border-b border-border/10 hover:bg-white/5 dark:hover:bg-white/5 transition-all duration-300 ${isTop ? 'bg-primary/5' : ''}`}
                       >
                         <td className="px-4 py-2">
                           {sparkData.length > 0 ? (
@@ -198,8 +205,8 @@ export function ChapterRankings() {
                         <td className="px-4 py-3">
                           {risk && (
                             <span
-                              className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold"
-                              style={{ color: riskColor, backgroundColor: `${riskColor}18` }}
+                              className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold tracking-wider shadow-sm"
+                              style={{ color: riskColor, backgroundColor: `${riskColor}20`, border: `1px solid ${riskColor}40` }}
                             >
                               {risk.riskLevel}
                             </span>
