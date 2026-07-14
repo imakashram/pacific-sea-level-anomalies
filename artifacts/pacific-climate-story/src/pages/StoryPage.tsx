@@ -14,7 +14,7 @@ import { Chapter5Heatmap } from "@/components/story/Chapter5Heatmap";
 import { ChapterCumulativeRise } from "@/components/story/ChapterCumulativeRise";
 import { ChapterForecast } from "@/components/story/ChapterForecast";
 import { ChapterRiskDashboard } from "@/components/story/ChapterRiskDashboard";
-import { ChapterCountryExplorer } from "@/components/story/ChapterCountryExplorer";
+
 import { ThePacificAtAGlance } from "@/components/story/ThePacificAtAGlance";
 import { ChapterWhatThisMeans } from "@/components/story/ChapterWhatThisMeans";
 import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
@@ -75,7 +75,7 @@ export default function StoryPage() {
         <ChapterRadialImpact />
         <ChapterThresholdCrossings />
         <ChapterBaselineBreach />
-        <ChapterCountryExplorer />
+
         <ThePacificAtAGlance />
         <ChapterWhatThisMeans />
       </main>
