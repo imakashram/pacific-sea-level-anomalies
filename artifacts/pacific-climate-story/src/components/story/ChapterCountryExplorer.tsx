@@ -336,7 +336,7 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
                   }
                   vs={
                     regionalAvg
-                      ? vsStr(profile.stats.slope, regionalAvg.slope, " slope")
+                      ? vsStr(profile.stats.slope * 1000, regionalAvg.slope * 1000, " mm/yr")
                       : undefined
                   }
                 />
