@@ -299,16 +299,11 @@ export function ChapterCountryExplorer({
               className="bg-card/15 backdrop-blur-md border border-border/40 rounded-3xl p-6 md:p-8 shadow-2xl"
             >
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
-                      {profile.country}{" "}
-                      <span className="text-muted-foreground text-xl md:text-2xl ml-1 font-mono font-normal">({profile.code})</span>
-                    </h3>
-                  </div>
+                <div>
+                  <h3 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
+                    {profile.country}{" "}
+                    <span className="text-muted-foreground text-xl md:text-2xl ml-1 font-mono font-normal">({profile.code})</span>
+                  </h3>
                 </div>
 
                 <div className="text-xs md:text-sm text-muted-foreground bg-card/30 border border-border/40 rounded-xl px-4 py-2 shadow-inner">
@@ -403,7 +398,7 @@ export function ChapterCountryExplorer({
                     <ResponsiveContainer width="100%" height="100%">
                       <ComposedChart
                         data={profile.timeSeries}
-                        margin={{ top: 15, right: 20, left: 20, bottom: 25 }}
+                        margin={{ top: 35, right: 20, left: 20, bottom: 25 }}
                       >
                         <defs>
                           <linearGradient id="areaColor" x1="0" y1="0" x2="0" y2="1">

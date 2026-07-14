@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetRankings, useGetSeaLevelByCountry, useGetRiskScores } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import { motion, AnimatePresence } from "framer-motion";
@@ -84,6 +84,17 @@ export function ThePacificAtAGlance() {
   const [activeTab, setActiveTab] = useState<'explorer' | 'table'>('explorer');
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("AS");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    if (showInfo) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showInfo]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
