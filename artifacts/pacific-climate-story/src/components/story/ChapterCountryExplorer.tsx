@@ -156,10 +156,21 @@ function CustomDecadeTooltip({ active, payload }: any) {
   return null;
 }
 
-export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolean }) {
+export function ChapterCountryExplorer({
+  isNested = false,
+  selectedCode: propsSelectedCode,
+  setSelectedCode: propsSetSelectedCode,
+}: {
+  isNested?: boolean;
+  selectedCode?: string;
+  setSelectedCode?: (code: string) => void;
+}) {
   const { data: rankings } = useGetRankings();
-  const [selectedCode, setSelectedCode] = useState<string>("AS");
+  const [localSelectedCode, localSetSelectedCode] = useState<string>("AS");
   const [isOpen, setIsOpen] = useState(false);
+
+  const selectedCode = propsSelectedCode ?? localSelectedCode;
+  const setSelectedCode = propsSetSelectedCode ?? localSetSelectedCode;
 
   const { data: profile, isLoading } = useGetCountryProfile(selectedCode, {
     query: { queryKey: ["countryProfile", selectedCode], enabled: !!selectedCode },
@@ -203,66 +214,68 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
         </motion.div>
       )}
 
-      {/* Territory Dropdown Selector */}
-      {rankings && (
-        <div className="relative w-full max-w-xs mx-auto mb-4 z-50">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center justify-between w-full px-5 py-3 rounded-2xl bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
-          >
-            <div className="flex items-center gap-3 text-left">
-              <Globe className="w-4 h-4 text-primary flex-shrink-0" />
-              <span>
-                {rankings.find(r => r.code === selectedCode)?.country || "Select Territory"}
-              </span>
-            </div>
-            <svg
-              className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isOpen ? 'rotate-180 text-foreground' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      {/* Territory Dropdown Selector (Only if selection is not controlled by props) */}
+      {!propsSelectedCode && rankings && (
+        <div className="flex justify-end w-full mb-6 z-50 relative">
+          <div className="relative w-full max-w-xs z-50">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center justify-between w-full px-5 py-3 rounded-2xl bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+              <div className="flex items-center gap-3 text-left">
+                <Globe className="w-4 h-4 text-primary flex-shrink-0" />
+                <span>
+                  {rankings.find(r => r.code === selectedCode)?.country || "Select Territory"}
+                </span>
+              </div>
+              <svg
+                className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isOpen ? 'rotate-180 text-foreground' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
 
-          <AnimatePresence>
-            {isOpen && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute left-0 right-0 mt-2 z-50 bg-card/95 backdrop-blur-xl border border-border/80 rounded-2xl shadow-2xl overflow-hidden max-h-[300px] overflow-y-auto custom-scrollbar"
-                >
-                  <div className="p-1.5 flex flex-col gap-0.5">
-                    {rankings.map((r) => (
-                      <button
-                        key={r.code}
-                        onClick={() => {
-                          setSelectedCode(r.code);
-                          setIsOpen(false);
-                        }}
-                        className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer text-left ${selectedCode === r.code
-                            ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/15"
-                            : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                          }`}
-                      >
-                        <span>{r.country}</span>
-                        {selectedCode === r.code && (
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
+            <AnimatePresence>
+              {isOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute left-0 right-0 mt-2 z-50 bg-card/95 backdrop-blur-xl border border-border/80 rounded-2xl shadow-2xl overflow-hidden max-h-[300px] overflow-y-auto custom-scrollbar"
+                  >
+                    <div className="p-1.5 flex flex-col gap-0.5">
+                      {rankings.map((r) => (
+                        <button
+                          key={r.code}
+                          onClick={() => {
+                            setSelectedCode(r.code);
+                            setIsOpen(false);
+                          }}
+                          className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer text-left ${selectedCode === r.code
+                              ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/15"
+                              : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                            }`}
+                          >
+                          <span>{r.country}</span>
+                          {selectedCode === r.code && (
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       )}
 

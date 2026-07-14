@@ -82,6 +82,8 @@ export function ThePacificAtAGlance() {
   const [sortField, setSortField] = useState<SortField>('cumulativeRise');
   const [sortDir, setSortDirection] = useState<SortDirection>('desc');
   const [activeTab, setActiveTab] = useState<'explorer' | 'table'>('explorer');
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("AS");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -145,16 +147,16 @@ export function ThePacificAtAGlance() {
           </motion.div>
         </div>
 
-        <div className="mb-2 w-full flex flex-col">
-          {/* Interactive controls (Centered) */}
+        <div className="max-w-5xl mx-auto w-full mb-2 flex flex-col">
+          {/* Interactive controls (Left-aligned) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col items-center justify-center w-full"
+            className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full"
           >
-            <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-2 max-w-md w-full mx-auto shadow-inner">
+            <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-2 max-w-md w-full shadow-inner flex-shrink-0">
               <button
                 onClick={() => setActiveTab('explorer')}
                 className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
@@ -178,6 +180,98 @@ export function ThePacificAtAGlance() {
                 Data Table
               </button>
             </div>
+
+            {/* Country Dropdown Selector (Inline right) */}
+            {activeTab === 'explorer' && data && (
+              <div className="relative w-full max-w-xs z-50 self-start sm:self-center">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center justify-between w-full px-5 py-3 rounded-2xl bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
+                >
+                  <div className="flex items-center gap-3 text-left">
+                    <Globe className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span>
+                      {data.find(r => r.code === selectedCountryCode)?.country || "Select Territory"}
+                    </span>
+                  </div>
+                  <svg
+                    className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-foreground' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <AnimatePresence>
+                  {isDropdownOpen && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute left-0 right-0 mt-2 z-50 bg-card/95 backdrop-blur-xl border border-border/80 rounded-2xl shadow-2xl overflow-hidden max-h-[300px] overflow-y-auto custom-scrollbar"
+                      >
+                        <div className="p-1.5 flex flex-col gap-0.5">
+                          {data.map((r) => (
+                            <button
+                              key={r.code}
+                              onClick={() => {
+                                setSelectedCountryCode(r.code);
+                                setIsDropdownOpen(false);
+                              }}
+                              className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer text-left ${selectedCountryCode === r.code
+                                  ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/15"
+                                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                                }`}
+                            >
+                              <span>{r.country}</span>
+                              {selectedCountryCode === r.code && (
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {/* Search & Export Controls Row (Inline right) */}
+            {activeTab === 'table' && (
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto items-stretch sm:items-center sm:justify-end z-20 self-start sm:self-center">
+                <div className="relative w-full sm:w-64 group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg className="w-4 h-4 text-muted-foreground/60 group-focus-within:text-primary/70 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search territories..."
+                    className="w-full bg-card/30 backdrop-blur-md border border-border/50 rounded-full pl-11 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 hover:bg-card/50 transition-all duration-300"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+                <button
+                  onClick={() => sortedData.length && downloadCSV(sortedData)}
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded-full bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Export CSV
+                </button>
+              </div>
+            )}
           </motion.div>
         </div>
 
@@ -194,33 +288,7 @@ export function ThePacificAtAGlance() {
                 transition={{ duration: 0.4 }}
                 className="flex flex-col gap-6 w-full animate-in fade-in duration-300"
               >
-                {/* Search & Export Controls Row */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
-                  <div className="relative w-full max-w-sm group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <svg className="w-4 h-4 text-muted-foreground/60 group-focus-within:text-primary/70 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Search territories..."
-                      className="w-full bg-card/30 backdrop-blur-md border border-border/50 rounded-full pl-11 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 hover:bg-card/50 transition-all duration-300"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                  </div>
-                  <button
-                    onClick={() => sortedData.length && downloadCSV(sortedData)}
-                    className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-full bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 transition-all duration-300 active:scale-95 cursor-pointer"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    Export CSV
-                  </button>
 
-                </div>
 
                 {/* Table View */}
                 <div className="bg-card/20 rounded-xl border border-border/50 overflow-hidden shadow-2xl">
@@ -323,7 +391,11 @@ export function ThePacificAtAGlance() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <ChapterCountryExplorer isNested={true} />
+                <ChapterCountryExplorer 
+                  isNested={true} 
+                  selectedCode={selectedCountryCode}
+                  setSelectedCode={setSelectedCountryCode}
+                />
               </motion.div>
             )}
           </AnimatePresence>
