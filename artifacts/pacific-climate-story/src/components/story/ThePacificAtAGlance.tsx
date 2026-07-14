@@ -127,9 +127,20 @@ export function ThePacificAtAGlance() {
           className="mb-8 text-center flex flex-col items-center"
         >
           <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">The Pacific at a Glance</h2>
-          <p className="text-xl text-muted-foreground mb-6 max-w-3xl">
+          <p className="text-xl text-muted-foreground mb-4 max-w-3xl">
             Explore the complete Pacific record.
           </p>
+
+          <button
+            onClick={() => setShowInfo(true)}
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500/25 hover:text-sky-300 hover:border-sky-500/30 transition-all duration-300 cursor-pointer shadow-sm text-xs font-semibold mb-6 animate-in fade-in duration-500"
+            title="Data Methodology"
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            How it's Calculated
+          </button>
 
           <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-6 max-w-md w-full mx-auto shadow-inner">
             <button
@@ -195,15 +206,7 @@ export function ThePacificAtAGlance() {
                     </svg>
                     Export CSV
                   </button>
-                  <button
-                    onClick={() => setShowInfo(true)}
-                    className="flex items-center justify-center w-10 h-10 rounded-full bg-card/50 border border-border/50 text-muted-foreground hover:text-foreground hover:bg-card hover:border-border transition-all duration-300 cursor-pointer"
-                    title="Data Methodology"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </button>
+
                 </div>
 
                 {/* Table View */}
