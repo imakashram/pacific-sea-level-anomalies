@@ -202,7 +202,10 @@ export function ThePacificAtAGlance() {
                   <div className="flex items-center gap-3 text-left">
                     <Globe className="w-4 h-4 text-primary flex-shrink-0" />
                     <span>
-                      {data.find(r => r.code === selectedCountryCode)?.country || "Select Territory"}
+                      {(() => {
+                        const country = data.find(r => r.code === selectedCountryCode);
+                        return country ? `${country.country} (${country.code})` : "Select Territory";
+                      })()}
                     </span>
                   </div>
                   <svg
@@ -239,7 +242,7 @@ export function ThePacificAtAGlance() {
                                   : "text-muted-foreground hover:text-foreground hover:bg-white/5"
                                 }`}
                             >
-                              <span>{r.country}</span>
+                              <span>{r.country} <span className="opacity-60 ml-1 font-mono text-[10px]">({r.code})</span></span>
                               {selectedCountryCode === r.code && (
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />

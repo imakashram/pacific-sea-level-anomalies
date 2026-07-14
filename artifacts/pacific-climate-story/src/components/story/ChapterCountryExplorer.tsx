@@ -380,7 +380,7 @@ export function ChapterCountryExplorer({
                 {/* 30-year trajectory with peak annotation */}
                 <div className="lg:col-span-2 bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-6">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans">
                       30-Year Anomaly Trajectory
                     </h4>
                     <div className="flex gap-4 text-xs text-muted-foreground font-medium">
@@ -510,7 +510,7 @@ export function ChapterCountryExplorer({
                 {/* Decade averages bar */}
                 <div className="bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
                   <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-6">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-6 font-sans">
                       Decadal Comparisons
                     </h4>
                     <div className="h-[180px]">
