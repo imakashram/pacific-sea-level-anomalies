@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetCountryProfile, useGetRankings } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import {
@@ -152,11 +152,18 @@ export function ExploreAnyNation({
   setSelectedCode?: (code: string) => void;
 }) {
   const { data: rankings } = useGetRankings();
-  const [localSelectedCode, localSetSelectedCode] = useState<string>("AS");
+  const [localSelectedCode, localSetSelectedCode] = useState<string>("PW");
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedCode = propsSelectedCode ?? localSelectedCode;
-  const setSelectedCode = propsSetSelectedCode ?? localSetSelectedCode;
+  useEffect(() => {
+    if (rankings && rankings.length > 0 && !localSelectedCode) {
+      const topCountry = rankings.slice().sort((a, b) => b.cumulativeRise - a.cumulativeRise)[0];
+      localSetSelectedCode(topCountry.code);
+    }
+  }, [rankings, localSelectedCode]);
+
+  const selectedCode = propsSelectedCode || localSelectedCode;
+  const setSelectedCode = propsSetSelectedCode || localSetSelectedCode;
 
   const { data: profile, isLoading } = useGetCountryProfile(selectedCode, {
     query: { queryKey: ["countryProfile", selectedCode], enabled: !!selectedCode },

@@ -82,8 +82,15 @@ export function ThePacificAtAGlance() {
   const [sortField, setSortField] = useState<SortField>('cumulativeRise');
   const [sortDir, setSortDirection] = useState<SortDirection>('desc');
   const [activeTab, setActiveTab] = useState<'explorer' | 'table'>('explorer');
-  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("AS");
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("PW");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    if (data && data.length > 0 && !selectedCountryCode) {
+      const topCountry = data.slice().sort((a, b) => b.cumulativeRise - a.cumulativeRise)[0];
+      setSelectedCountryCode(topCountry.code);
+    }
+  }, [data, selectedCountryCode]);
 
   useEffect(() => {
     if (showInfo) {
