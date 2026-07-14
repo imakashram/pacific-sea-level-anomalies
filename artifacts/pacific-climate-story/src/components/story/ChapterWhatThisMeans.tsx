@@ -32,6 +32,14 @@ function AnimatedCount({ target, decimals = 0, prefix = "", suffix = "" }: { tar
 
 
 
+const cardThemes: Record<string, { text: string; bg: string; border: string; glow: string }> = {
+  "text-[#f43f5e]": { text: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20", glow: "hover:border-rose-500/40 hover:shadow-rose-500/5 hover:bg-rose-950/5" },
+  "text-[#f97316]": { text: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", glow: "hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5" },
+  "text-[#eab308]": { text: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/20", glow: "hover:border-yellow-500/40 hover:shadow-yellow-500/5 hover:bg-yellow-950/5" },
+  "text-[#ef4444]": { text: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/20", glow: "hover:border-red-500/40 hover:shadow-red-500/5 hover:bg-red-950/5" },
+  "text-[#a855f7]": { text: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20", glow: "hover:border-purple-500/40 hover:shadow-purple-500/5 hover:bg-purple-950/5" }
+};
+
 export function ChapterWhatThisMeans() {
   const { data: accelData } = useGetAcceleration();
   const { data: decadeData } = useGetDecadeAnalysis();
@@ -59,14 +67,14 @@ export function ChapterWhatThisMeans() {
     <StorySection id="chapter-6" className="pb-32">
       <div className="max-w-5xl mx-auto">
         <motion.div
-          className="text-center mb-16"
+          className="text-left mb-8 border-b border-border/10 pb-6"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">What This Means</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
             Thirty years of observations. Twenty-one Pacific territories. A persistent rise in sea level anomalies.
           </p>
         </motion.div>
@@ -80,23 +88,34 @@ export function ChapterWhatThisMeans() {
             { value: crossedTenth, of: null, label: "Nations at +0.1m", color: "text-[#ef4444]", desc: "have breached the 10cm threshold", decimals: 0, prefix: "", suffix: "" },
             { value: maxRiseVal * 100, of: null, label: "Peak Nation Rise", color: "text-[#ef4444]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: "cm" },
             { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "Fastest Rise", color: "text-[#a855f7]", desc: `${highestSlope?.country ?? "…"} - fastest upward trend`, decimals: 2, prefix: "+", suffix: "mm/yr" },
-          ].map(({ value, of, label, color, desc, decimals, prefix, suffix }, i) => (
-            <motion.div
-              key={label}
-              className="p-6 bg-card/40 border border-border/50 rounded-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.6 }}
-            >
-              <div className={`text-4xl font-serif font-bold mb-1 ${color}`}>
-                <AnimatedCount target={value} decimals={decimals} prefix={prefix} suffix={suffix} />
-                {of != null && <span className="text-xl text-muted-foreground font-normal"> /{of}</span>}
-              </div>
-              <div className="text-sm font-semibold text-foreground mb-1">{label}</div>
-              <div className="text-xs text-muted-foreground leading-relaxed">{desc}</div>
-            </motion.div>
-          ))}
+          ].map(({ value, of, label, color, desc, decimals, prefix, suffix }, i) => {
+            const theme = cardThemes[color] || { text: color, bg: "bg-card/10", border: "border-border/30", glow: "hover:border-border/40" };
+            return (
+              <motion.div
+                key={label}
+                className={`p-5 bg-card/25 backdrop-blur-md border ${theme.border} rounded-2xl flex flex-col justify-between transition-all duration-300 group shadow-sm ${theme.glow} hover:-translate-y-1`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+              >
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-muted-foreground font-semibold group-hover:text-foreground transition-colors duration-300">{label}</span>
+                  <div className={`text-2xl md:text-3xl font-serif font-bold mt-2 tracking-tight ${theme.text}`}>
+                    <AnimatedCount target={value} decimals={decimals} prefix={prefix} suffix={suffix} />
+                    {of != null && (
+                      <span className="text-sm text-muted-foreground/60 font-mono font-normal ml-0.5">
+                        /{of}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground/75 mt-3 leading-relaxed border-t border-border/10 pt-2">
+                  {desc}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
 
 
