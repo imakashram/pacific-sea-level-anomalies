@@ -131,27 +131,27 @@ export function ThePacificAtAGlance() {
             Explore the complete Pacific record.
           </p>
 
-          <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-6 max-w-[340px] mx-auto shadow-inner">
+          <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-6 max-w-md w-full mx-auto shadow-inner">
             <button
               onClick={() => setActiveTab('explorer')}
-              className={`flex items-center justify-center gap-2 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer ${
+              className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
                 activeTab === 'explorer'
-                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105'
+                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Globe className="w-4 h-4" />
+              <Globe className="w-4 h-4 flex-shrink-0" />
               Explore Any Nation
             </button>
             <button
               onClick={() => setActiveTab('table')}
-              className={`flex items-center justify-center gap-2 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer ${
+              className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
                 activeTab === 'table'
-                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105'
+                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Table className="w-4 h-4" />
+              <Table className="w-4 h-4 flex-shrink-0" />
               Data Table
             </button>
           </div>
