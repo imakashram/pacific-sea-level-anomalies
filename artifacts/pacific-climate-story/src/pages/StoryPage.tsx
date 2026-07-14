@@ -39,7 +39,7 @@ export default function StoryPage() {
   }, []);
 
   return (
-    <div className="bg-background min-h-screen text-foreground font-sans overflow-x-hidden">
+    <div className="bg-background min-h-screen text-foreground font-sans">
       <main className="pt-8">
         <HeroSection />
         <Chapter1DataLandscape />
