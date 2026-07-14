@@ -297,9 +297,9 @@ export function ExploreAnyNation({
             >
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
                 <div>
-                  <h3 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
+                  <h3 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
                     {profile.country}{" "}
-                    <span className="text-muted-foreground text-xl md:text-2xl ml-1 font-mono font-normal">({profile.code})</span>
+                    <span className="text-muted-foreground text-lg md:text-xl ml-1 font-mono font-normal">({profile.code})</span>
                   </h3>
                 </div>
 

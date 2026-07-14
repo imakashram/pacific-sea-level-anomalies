@@ -197,7 +197,7 @@ export function ThePacificAtAGlance() {
               <div className="relative w-full max-w-xs z-50 self-start sm:self-center">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center justify-between w-full px-5 py-3 rounded-2xl bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
+                  className="flex items-center justify-between w-full px-5 py-2 rounded-full bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
                 >
                   <div className="flex items-center gap-3 text-left">
                     <Globe className="w-4 h-4 text-primary flex-shrink-0" />
