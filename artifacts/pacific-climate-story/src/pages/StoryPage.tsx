@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { ChapterNav } from "@/components/story/ChapterNav";
 import { HeroSection } from "@/components/story/HeroSection";
 import { Chapter1DataLandscape } from "@/components/story/Chapter1DataLandscape";
 import { Chapter2RisingTide } from "@/components/story/Chapter2RisingTide";
@@ -33,7 +32,6 @@ import { ChapterParallelCoords } from "@/components/story/ChapterParallelCoords"
 import { ChapterThresholdFunnel } from "@/components/story/ChapterThresholdFunnel";
 import { ChapterStreamGraph } from "@/components/story/ChapterStreamGraph";
 import { ChapterLollipop } from "@/components/story/ChapterLollipop";
-import { LiveDataTicker } from "@/components/story/LiveDataTicker";
 
 export default function StoryPage() {
   useEffect(() => {
@@ -42,8 +40,6 @@ export default function StoryPage() {
 
   return (
     <div className="bg-background min-h-screen text-foreground font-sans overflow-x-hidden">
-      <LiveDataTicker />
-      <ChapterNav />
       <main className="pt-8">
         <HeroSection />
         <Chapter1DataLandscape />
