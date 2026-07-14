@@ -16,7 +16,7 @@ import {
   Legend
 } from "recharts";
 import { Globe, Table } from "lucide-react";
-import { ChapterCountryExplorer } from "./ChapterCountryExplorer";
+import { ExploreAnyNation } from "./ExploreAnyNation";
 
 type SortField = 'country' | 'mean' | 'volatility' | 'cumulativeRise' | 'slope' | 'peakValue' | 'decadeAcceleration';
 type SortDirection = 'asc' | 'desc';
@@ -405,7 +405,7 @@ export function ThePacificAtAGlance() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <ChapterCountryExplorer 
+                <ExploreAnyNation 
                   isNested={true} 
                   selectedCode={selectedCountryCode}
                   setSelectedCode={setSelectedCountryCode}

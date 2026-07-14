@@ -156,7 +156,7 @@ function CustomDecadeTooltip({ active, payload }: any) {
   return null;
 }
 
-export function ChapterCountryExplorer({
+export function ExploreAnyNation({
   isNested = false,
   selectedCode: propsSelectedCode,
   setSelectedCode: propsSetSelectedCode,
