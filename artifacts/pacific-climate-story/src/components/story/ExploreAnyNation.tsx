@@ -31,7 +31,7 @@ function StatCard({
   value: string;
   sub?: string;
   vs?: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   themeClass?: "primary" | "emerald" | "orange" | "purple";
 }) {
   const themes = {
@@ -67,9 +67,6 @@ function StatCard({
     <div className={`group bg-card/25 backdrop-blur-md p-5 rounded-2xl border border-border/50 shadow-sm transition-all duration-300 ${currentTheme.glow}`}>
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{label}</span>
-        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${currentTheme.bg} ${currentTheme.text}`}>
-          {icon}
-        </div>
       </div>
       <div className={`text-2xl md:text-3xl font-serif font-bold ${currentTheme.text}`}>
         {value}
