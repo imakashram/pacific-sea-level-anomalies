@@ -75,7 +75,7 @@ function StatCard({
         {value}
       </div>
       {sub && <div className="text-xs text-muted-foreground mt-1 font-mono">{sub}</div>}
-      
+
       {vs && (
         <div className="text-xs mt-3 border-t border-border/10 pt-2">
           {vs.includes("✓") ? (
@@ -104,7 +104,7 @@ function CustomTrajectoryTooltip({ active, payload }: any) {
     const data = payload[0].payload;
     const value = payload.find((p: any) => p.dataKey === "value")?.value;
     const rollingAvg = payload.find((p: any) => p.dataKey === "rollingAvg")?.value;
-    
+
     return (
       <div className="bg-neutral-950/95 border border-white/10 p-3.5 rounded-xl shadow-2xl backdrop-blur-md text-xs flex flex-col gap-2 min-w-[150px]">
         <div className="font-mono text-white/50 border-b border-white/5 pb-1 flex justify-between items-center">
@@ -168,11 +168,11 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
   // Compute regional averages from rankings data
   const regionalAvg = rankings
     ? {
-        cumulativeRise: rankings.reduce((s, r) => s + r.cumulativeRise, 0) / rankings.length,
-        slope: rankings.reduce((s, r) => s + r.slope, 0) / rankings.length,
-        volatility: rankings.reduce((s, r) => s + r.volatility, 0) / rankings.length,
-        mean: rankings.reduce((s, r) => s + r.mean, 0) / rankings.length,
-      }
+      cumulativeRise: rankings.reduce((s, r) => s + r.cumulativeRise, 0) / rankings.length,
+      slope: rankings.reduce((s, r) => s + r.slope, 0) / rankings.length,
+      volatility: rankings.reduce((s, r) => s + r.volatility, 0) / rankings.length,
+      mean: rankings.reduce((s, r) => s + r.mean, 0) / rankings.length,
+    }
     : null;
 
   const peakYear = profile?.stats.peakYear;
@@ -205,7 +205,7 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
 
       {/* Territory Dropdown Selector */}
       {rankings && (
-        <div className="relative w-full max-w-xs mx-auto mb-10 z-50">
+        <div className="relative w-full max-w-xs mx-auto mb-4 z-50">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center justify-between w-full px-5 py-3 rounded-2xl bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
@@ -216,16 +216,16 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
                 {rankings.find(r => r.code === selectedCode)?.country || "Select Territory"}
               </span>
             </div>
-            <svg 
-              className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isOpen ? 'rotate-180 text-foreground' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isOpen ? 'rotate-180 text-foreground' : ''}`}
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          
+
           <AnimatePresence>
             {isOpen && (
               <>
@@ -245,11 +245,10 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
                           setSelectedCode(r.code);
                           setIsOpen(false);
                         }}
-                        className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer text-left ${
-                          selectedCode === r.code
+                        className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer text-left ${selectedCode === r.code
                             ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/15"
                             : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                        }`}
+                          }`}
                       >
                         <span>{r.country}</span>
                         {selectedCode === r.code && (
@@ -298,7 +297,7 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
                     </h3>
                   </div>
                 </div>
-                
+
                 <div className="text-xs md:text-sm text-muted-foreground bg-card/30 border border-border/40 rounded-xl px-4 py-2 shadow-inner">
                   Ranked{" "}
                   <span className="font-bold text-primary">
@@ -391,7 +390,7 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
                     <ResponsiveContainer width="100%" height="100%">
                       <ComposedChart
                         data={profile.timeSeries}
-                        margin={{ top: 15, right: 20, left: 15, bottom: 25 }}
+                        margin={{ top: 15, right: 20, left: 20, bottom: 25 }}
                       >
                         <defs>
                           <linearGradient id="areaColor" x1="0" y1="0" x2="0" y2="1">
@@ -428,7 +427,8 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
                           tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
                           tickFormatter={(val) => val.toFixed(2)}
                           tickLine={false}
-                          label={{ value: "Anomaly (m)", angle: -90, position: "insideLeft", offset: -10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
+                          width={55}
+                          label={{ value: "Anomaly (m)", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
                         />
                         <RechartsTooltip
                           content={<CustomTrajectoryTooltip />}
@@ -510,7 +510,7 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
                         <BarChart
                           data={profile.decadeBreakdown}
                           layout="vertical"
-                          margin={{ top: 5, right: 10, left: 10, bottom: 25 }}
+                          margin={{ top: 5, right: 10, left: 20, bottom: 25 }}
                         >
                           <CartesianGrid
                             strokeDasharray="3 3"
@@ -531,9 +531,9 @@ export function ChapterCountryExplorer({ isNested = false }: { isNested?: boolea
                             type="category"
                             stroke="rgba(255,255,255,0.3)"
                             tick={{ fontSize: 10, fill: "rgba(255,255,255,0.8)" }}
-                            width={80}
+                            width={85}
                             tickLine={false}
-                            label={{ value: "Decade", angle: -90, position: "insideLeft", offset: -10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
+                            label={{ value: "Decade", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
                           />
                           <RechartsTooltip
                             cursor={{ fill: "rgba(255,255,255,0.03)" }}

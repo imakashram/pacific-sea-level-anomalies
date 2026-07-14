@@ -81,7 +81,7 @@ export function ThePacificAtAGlance() {
   const [showInfo, setShowInfo] = useState(false);
   const [sortField, setSortField] = useState<SortField>('cumulativeRise');
   const [sortDir, setSortDirection] = useState<SortDirection>('desc');
-  const [activeTab, setActiveTab] = useState<'explorer' | 'table'>('table');
+  const [activeTab, setActiveTab] = useState<'explorer' | 'table'>('explorer');
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -119,54 +119,67 @@ export function ThePacificAtAGlance() {
       innerClassName="max-w-[95vw] mx-auto w-full px-4 lg:px-8"
     >
       <div className="w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="mb-8 text-center flex flex-col items-center"
-        >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">The Pacific at a Glance</h2>
-          <p className="text-xl text-muted-foreground mb-4 max-w-3xl">
-            Explore the complete Pacific record.
-          </p>
-
-          <button
-            onClick={() => setShowInfo(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500/25 hover:text-sky-300 hover:border-sky-500/30 transition-all duration-300 cursor-pointer shadow-sm text-xs font-semibold mb-6 animate-in fade-in duration-500"
-            title="Data Methodology"
+        <div className="max-w-5xl mx-auto w-full mb-4 border-b border-border/10 pb-3 text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
           >
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            How it's Calculated
-          </button>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+              <h2 className="text-5xl md:text-6xl font-serif font-bold">The Pacific at a Glance</h2>
+              <button
+                onClick={() => setShowInfo(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500/25 hover:text-sky-300 hover:border-sky-500/30 transition-all duration-300 cursor-pointer shadow-sm text-xs font-semibold self-start md:self-center"
+                title="Data Methodology"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                How it's Calculated
+              </button>
+            </div>
+            <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
+              Explore the complete Pacific record.
+            </p>
+          </motion.div>
+        </div>
 
-          <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-6 max-w-md w-full mx-auto shadow-inner">
-            <button
-              onClick={() => setActiveTab('explorer')}
-              className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
-                activeTab === 'explorer'
-                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <Globe className="w-4 h-4 flex-shrink-0" />
-              Explore Any Nation
-            </button>
-            <button
-              onClick={() => setActiveTab('table')}
-              className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
-                activeTab === 'table'
-                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <Table className="w-4 h-4 flex-shrink-0" />
-              Data Table
-            </button>
-          </div>
-        </motion.div>
+        <div className="mb-2 w-full flex flex-col">
+          {/* Interactive controls (Centered) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex flex-col items-center justify-center w-full"
+          >
+            <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-2 max-w-md w-full mx-auto shadow-inner">
+              <button
+                onClick={() => setActiveTab('explorer')}
+                className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
+                  activeTab === 'explorer'
+                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Globe className="w-4 h-4 flex-shrink-0" />
+                Explore Any Nation
+              </button>
+              <button
+                onClick={() => setActiveTab('table')}
+                className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
+                  activeTab === 'table'
+                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Table className="w-4 h-4 flex-shrink-0" />
+                Data Table
+              </button>
+            </div>
+          </motion.div>
+        </div>
 
         {isLoading ? (
           <div className="h-[400px] bg-card/20 animate-pulse rounded-xl" />
