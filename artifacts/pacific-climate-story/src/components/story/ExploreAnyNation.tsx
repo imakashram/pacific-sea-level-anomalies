@@ -64,29 +64,18 @@ function StatCard({
   const currentTheme = themes[themeClass];
 
   return (
-    <div className={`group bg-card/25 backdrop-blur-md p-5 rounded-2xl border border-border/50 shadow-sm transition-all duration-300 ${currentTheme.glow}`}>
+    <div className={`group bg-card/25 backdrop-blur-md p-5 rounded-2xl border ${currentTheme.border} shadow-sm transition-all duration-300 ${currentTheme.glow} hover:-translate-y-1`}>
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{label}</span>
       </div>
       <div className={`text-2xl md:text-3xl font-serif font-bold ${currentTheme.text}`}>
         {value}
       </div>
-      {sub && <div className="text-xs text-muted-foreground mt-1 font-mono">{sub}</div>}
-
-      {vs && (
-        <div className="text-xs mt-3 border-t border-border/10 pt-2">
-          {vs.includes("✓") ? (
-            <span className="inline-flex items-center gap-1 text-emerald-400 font-medium leading-none">
-              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-              </svg>
-              {vs.replace(/[✓⚠]/g, '').trim()}
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1 text-amber-400 font-medium leading-none">
-              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
+      {(sub || vs) && (
+        <div className="text-xs mt-3 border-t border-border/10 pt-2 flex flex-col gap-1">
+          {sub && <div className="text-muted-foreground font-mono">{sub}</div>}
+          {vs && (
+            <span className="text-muted-foreground font-medium leading-none">
               {vs.replace(/[✓⚠]/g, '').trim()}
             </span>
           )}
