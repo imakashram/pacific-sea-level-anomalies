@@ -73,7 +73,7 @@ function StatCard({
       </div>
       {(sub || vs) && (
         <div className="text-xs mt-3 border-t border-border/10 pt-2 flex flex-col gap-1">
-          {sub && <div className="text-muted-foreground font-mono">{sub}</div>}
+          {sub && <div className="text-muted-foreground font-sans">{sub}</div>}
           {vs && (
             <span className="text-muted-foreground font-medium leading-none">
               {vs.replace(/[✓⚠]/g, '').trim()}
