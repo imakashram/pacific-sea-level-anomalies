@@ -28,6 +28,7 @@ import { ChapterParallelCoords } from "@/components/story/ChapterParallelCoords"
 import { ChapterThresholdFunnel } from "@/components/story/ChapterThresholdFunnel";
 import { ChapterStreamGraph } from "@/components/story/ChapterStreamGraph";
 import { ChapterLollipop } from "@/components/story/ChapterLollipop";
+import { OceanDecorations } from "@/components/story/OceanDecorations";
 
 export default function StoryPage() {
   useEffect(() => {
@@ -35,7 +36,8 @@ export default function StoryPage() {
   }, []);
 
   return (
-    <div className="bg-background min-h-screen text-foreground font-sans">
+    <div className="bg-background min-h-screen text-foreground font-sans relative">
+      <OceanDecorations />
       <main className="pt-8">
         <HeroSection />
         <Chapter1DataLandscape />
