@@ -174,28 +174,28 @@ export function ThePacificAtAGlance() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full"
           >
-            <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-2 max-w-md w-full shadow-inner flex-shrink-0">
+            <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-2 max-w-[220px] w-full shadow-inner flex-shrink-0">
               <button
                 onClick={() => setActiveTab('explorer')}
-                className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
                   activeTab === 'explorer'
                     ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <Globe className="w-4 h-4 flex-shrink-0" />
-                Explore Any Nation
+                <Globe className="w-3.5 h-3.5 flex-shrink-0" />
+                Visual
               </button>
               <button
                 onClick={() => setActiveTab('table')}
-                className={`flex-1 flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
                   activeTab === 'table'
                     ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <Table className="w-4 h-4 flex-shrink-0" />
-                Data Table
+                <Table className="w-3.5 h-3.5 flex-shrink-0" />
+                Table
               </button>
             </div>
 
