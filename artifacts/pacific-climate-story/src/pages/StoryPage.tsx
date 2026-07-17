@@ -17,14 +17,10 @@ import { ChapterRiskDashboard } from "@/components/story/ChapterRiskDashboard";
 import { ThePacificAtAGlance } from "@/components/story/ThePacificAtAGlance";
 import { ChapterWhatThisMeans } from "@/components/story/ChapterWhatThisMeans";
 import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
-import { ChapterThresholdCrossings } from "@/components/story/ChapterThresholdCrossings";
 import { ChapterBaselineBreach } from "@/components/story/ChapterBaselineBreach";
-import { ChapterCorrelation } from "@/components/story/ChapterCorrelation";
 import { ChapterRankBump } from "@/components/story/ChapterRankBump";
-import { ChapterDecadeBoxplot } from "@/components/story/ChapterDecadeBoxplot";
 import { ChapterNationTreemap } from "@/components/story/ChapterNationTreemap";
 import { ChapterYoYBudget } from "@/components/story/ChapterYoYBudget";
-import { ChapterRidgePlot } from "@/components/story/ChapterRidgePlot";
 import { ChapterRadialImpact } from "@/components/story/ChapterRadialImpact";
 import { ChapterDumbbellLeap } from "@/components/story/ChapterDumbbellLeap";
 import { ChapterRegionalDonut } from "@/components/story/ChapterRegionalDonut";
@@ -46,7 +42,6 @@ export default function StoryPage() {
         <Chapter2RisingTide />
         <ChapterDecadeAnalysis />
         <ChapterRateOfChange />
-        <ChapterDecadeBoxplot />
         <Chapter3ElNino />
         <ChapterENSOSensitivity />
         <ChapterVolatility />
@@ -58,18 +53,15 @@ export default function StoryPage() {
         <ChapterCumulativeRise />
         <ChapterRegionalClusters />
         <ChapterRegionalDonut />
-        <ChapterRidgePlot />
         <ChapterRankBump />
         <ChapterParallelCoords />
         <ChapterThresholdFunnel />
         <ChapterStreamGraph />
         <ChapterLollipop />
-        <ChapterCorrelation />
         <ChapterForecast />
         <ChapterRiskDashboard />
         <ChapterNationTreemap />
         <ChapterRadialImpact />
-        <ChapterThresholdCrossings />
         <ChapterBaselineBreach />
 
         <ThePacificAtAGlance />
