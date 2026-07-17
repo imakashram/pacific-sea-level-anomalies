@@ -78,23 +78,20 @@ export function OceanDecorations() {
   // Scroll mapping for vertical ruler indicators
   const indicatorTop = useTransform(scrollYProgress, [0, 1], ["5%", "95%"]);
 
-  // Graduated timeline ticks definition (Major milestones + intermediate increments)
-  const timelineTicks = [
-    { year: 1993, major: true },
-    { year: 1996, major: false },
-    { year: 2000, major: true },
-    { year: 2004, major: false },
-    { year: 2008, major: true },
-    { year: 2012, major: false },
-    { year: 2016, major: true },
-    { year: 2020, major: false },
-    { year: 2023, major: true }
-  ];
+  // Graduated timeline ticks definition (Major milestones + intermediate increments for every year)
+  const timelineTicks = Array.from({ length: 2023 - 1993 + 1 }, (_, i) => {
+    const year = 1993 + i;
+    const majorYears = [1993, 2000, 2008, 2016, 2023];
+    return {
+      year,
+      major: majorYears.includes(year)
+    };
+  });
 
   return (
     <>
       {/* ================= LEFT MARGIN (Ultra-narrow SLA Ruler) ================= */}
-      <div className="fixed left-4 top-0 bottom-0 w-16 pointer-events-none select-none z-10 hidden xl:flex flex-col justify-between py-24 px-1 overflow-visible bg-gradient-to-r from-background/95 via-background/20 to-transparent">
+      <div className="fixed left-4 top-0 bottom-0 w-16 pointer-events-none select-none z-10 hidden xl:flex flex-col justify-between pt-12 pb-4 px-1 overflow-visible bg-gradient-to-r from-background/95 via-background/20 to-transparent">
         
         {/* Soft background blue blur spot (Intensifies on hover) */}
         <div 
@@ -182,7 +179,7 @@ export function OceanDecorations() {
       </div>
 
       {/* ================= RIGHT MARGIN (Ultra-narrow ENSO Ruler) ================= */}
-      <div className="fixed right-4 top-0 bottom-0 w-16 pointer-events-none select-none z-10 hidden xl:flex flex-col justify-between py-24 px-1 overflow-visible bg-gradient-to-l from-background/90 via-background/20 to-transparent">
+      <div className="fixed right-4 top-0 bottom-0 w-16 pointer-events-none select-none z-10 hidden xl:flex flex-col justify-between pt-12 pb-4 px-1 overflow-visible bg-gradient-to-l from-background/90 via-background/20 to-transparent">
         
         {/* Soft background warm blur spot (Intensifies on hover) */}
         <div 
