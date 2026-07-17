@@ -76,12 +76,12 @@ export function OceanDecorations() {
   const ensoDetails = ensoMapping[activeEnso as keyof typeof ensoMapping] ?? ensoMapping.neutral;
 
   // Scroll mapping for vertical ruler indicators
-  const indicatorTop = useTransform(scrollYProgress, [0, 1], ["5%", "95%"]);
+  const indicatorTop = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   // Graduated timeline ticks definition (Major milestones + intermediate increments for every year)
   const timelineTicks = Array.from({ length: 2023 - 1993 + 1 }, (_, i) => {
     const year = 1993 + i;
-    const majorYears = [1993, 2000, 2008, 2016, 2023];
+    const majorYears = [1993, 1998, 2003, 2008, 2013, 2018, 2023];
     return {
       year,
       major: majorYears.includes(year)
@@ -145,7 +145,9 @@ export function OceanDecorations() {
                   initial={{ opacity: 0, x: -10, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -10, scale: 0.95 }}
-                  className="absolute left-7 z-30 bg-[#081225] border border-cyan-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left"
+                  className={`absolute left-7 z-30 bg-[#081225] border border-cyan-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left ${
+                    activeYear <= 1997 ? "top-0" : activeYear >= 2019 ? "bottom-2" : "top-1/2 -translate-y-1/2"
+                  }`}
                 >
                   <span className="block text-[10px] font-mono font-bold text-cyan-300 uppercase tracking-wider">{activeYear} RECORD</span>
                   <span className="block text-[16px] font-mono font-black text-white mt-1">
@@ -158,7 +160,7 @@ export function OceanDecorations() {
           </motion.div>
 
           {/* Timeline markers aligned symmetrically to vertical axis (Graduated scale) */}
-          <div className="absolute inset-y-0 w-full flex flex-col justify-between py-1 text-[9px] font-mono font-medium text-cyan-400/50">
+          <div className="absolute inset-y-0 w-full flex flex-col justify-between py-0 text-[9px] font-mono font-medium text-cyan-400/50">
             {timelineTicks.map((tick) => (
               <div 
                 key={tick.year} 
@@ -233,7 +235,9 @@ export function OceanDecorations() {
                   initial={{ opacity: 0, x: 10, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 10, scale: 0.95 }}
-                  className="absolute right-7 z-30 bg-[#1d0f06] border border-orange-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left"
+                  className={`absolute right-7 z-30 bg-[#1d0f06] border border-orange-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left ${
+                    activeYear <= 1997 ? "top-0" : activeYear >= 2019 ? "bottom-2" : "top-1/2 -translate-y-1/2"
+                  }`}
                 >
                   <span className="block text-[10px] font-mono font-bold text-orange-300 uppercase tracking-wider">{activeYear} SCAN</span>
                   
@@ -252,7 +256,7 @@ export function OceanDecorations() {
           </motion.div>
 
           {/* Timeline markers aligned symmetrically to vertical axis (Graduated scale) */}
-          <div className="absolute inset-y-0 w-full flex flex-col justify-between py-1 text-[9px] font-mono font-medium text-orange-400/50">
+          <div className="absolute inset-y-0 w-full flex flex-col justify-between py-0 text-[9px] font-mono font-medium text-orange-400/50">
             {timelineTicks.map((tick) => (
               <div 
                 key={tick.year} 
