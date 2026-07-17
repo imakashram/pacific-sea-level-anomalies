@@ -124,6 +124,11 @@
   }
   html {
     overflow-x: hidden;
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+  }
+  html::-webkit-scrollbar {
+    display: none !important;  /* Chrome, Safari and Opera */
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
@@ -132,3 +137,9 @@
     @apply font-serif tracking-tight;
   }
 }
+
+/* Global scrollbar hiding fallback */
+::-webkit-scrollbar {
+  display: none !important;
+}
+
