@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useInView } from "framer-motion";
 import { HeroSection } from "@/components/story/HeroSection";
 import { Chapter1DataLandscape } from "@/components/story/Chapter1DataLandscape";
 import { Chapter2RisingTide } from "@/components/story/Chapter2RisingTide";
@@ -31,13 +32,19 @@ import { ChapterLollipop } from "@/components/story/ChapterLollipop";
 import { OceanDecorations } from "@/components/story/OceanDecorations";
 
 export default function StoryPage() {
+  const [activeTab, setActiveTab] = useState<'explorer' | 'table'>('explorer');
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isSectionInView = useInView(sectionRef, { amount: 0.1 });
+
   useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);
 
+  const hideDecorations = activeTab === 'table' && isSectionInView;
+
   return (
     <div className="bg-background min-h-screen text-foreground font-sans relative">
-      <OceanDecorations />
+      {!hideDecorations && <OceanDecorations />}
       <main className="pt-8">
         <HeroSection />
         <Chapter1DataLandscape />
@@ -66,7 +73,9 @@ export default function StoryPage() {
         <ChapterRadialImpact />
         <ChapterBaselineBreach />
 
-        <ThePacificAtAGlance />
+        <div ref={sectionRef}>
+          <ThePacificAtAGlance activeTab={activeTab} setActiveTab={setActiveTab} />
+        </div>
         <ChapterWhatThisMeans />
       </main>
     </div>

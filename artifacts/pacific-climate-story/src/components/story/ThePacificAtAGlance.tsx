@@ -73,7 +73,13 @@ function downloadCSV(rows: any[]) {
   URL.revokeObjectURL(url);
 }
 
-export function ThePacificAtAGlance() {
+export function ThePacificAtAGlance({
+  activeTab,
+  setActiveTab
+}: {
+  activeTab: 'explorer' | 'table';
+  setActiveTab: (tab: 'explorer' | 'table') => void;
+}) {
   const { data, isLoading } = useGetRankings();
   const { data: timeSeriesData } = useGetSeaLevelByCountry();
   const { data: riskData } = useGetRiskScores();
@@ -81,7 +87,6 @@ export function ThePacificAtAGlance() {
   const [showInfo, setShowInfo] = useState(false);
   const [sortField, setSortField] = useState<SortField>('cumulativeRise');
   const [sortDir, setSortDirection] = useState<SortDirection>('desc');
-  const [activeTab, setActiveTab] = useState<'explorer' | 'table'>('explorer');
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("PW");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
