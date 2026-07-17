@@ -105,6 +105,32 @@ export function OceanDecorations() {
           }`} 
         />
 
+        {/* Sea water liquid fill (100% filled sea water column - touches top & bottom of screen) */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-blue-950/65 via-cyan-950/45 to-blue-900/60 border-x border-cyan-500/10 shadow-[inset_0_0_20px_rgba(34,211,238,0.15)] overflow-hidden"
+        >
+          {/* Animated bubble particles inside the water */}
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 rounded-full bg-cyan-200/40 shadow-[0_0_2px_rgba(34,211,238,0.3)]"
+              style={{
+                left: `${10 + (i * 11) % 80}%`,
+              }}
+              animate={{
+                top: ["105%", "-5%"],
+                opacity: [0, 0.7, 0.7, 0],
+              }}
+              transition={{
+                duration: 6 + (i * 1.5),
+                repeat: Infinity,
+                ease: "linear",
+                delay: i * 0.6,
+              }}
+            />
+          ))}
+        </div>
+
         {/* GRADUATED DEPTH RULER */}
         <div className="relative w-full h-full flex justify-center">
           {/* Futuristic online status label at the start */}
@@ -194,6 +220,32 @@ export function OceanDecorations() {
             isRightHovered ? "opacity-100" : "opacity-40"
           }`} 
         />
+
+        {/* Sea water liquid fill (100% filled sea water column - touches top & bottom of screen) */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-rose-950/65 via-orange-950/45 to-rose-900/60 border-x border-orange-500/10 shadow-[inset_0_0_20px_rgba(249,115,22,0.15)] overflow-hidden"
+        >
+          {/* Animated bubble particles inside the water */}
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 rounded-full bg-orange-200/40 shadow-[0_0_2px_rgba(249,115,22,0.3)]"
+              style={{
+                left: `${10 + (i * 11) % 80}%`,
+              }}
+              animate={{
+                top: ["105%", "-5%"],
+                opacity: [0, 0.7, 0.7, 0],
+              }}
+              transition={{
+                duration: 6 + (i * 1.5),
+                repeat: Infinity,
+                ease: "linear",
+                delay: i * 0.6,
+              }}
+            />
+          ))}
+        </div>
 
         {/* GRADUATED DEPTH RULER */}
         <div className="relative w-full h-full flex justify-center">
