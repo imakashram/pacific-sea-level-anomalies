@@ -91,7 +91,7 @@ export function OceanDecorations() {
   return (
     <>
       {/* ================= LEFT MARGIN (Ultra-narrow SLA Ruler) ================= */}
-      <div className="fixed left-4 top-0 bottom-0 w-16 pointer-events-none select-none z-10 hidden xl:flex flex-col justify-between pt-12 pb-4 px-1 overflow-visible bg-gradient-to-r from-background/95 via-background/20 to-transparent">
+      <div className="fixed left-4 top-0 bottom-0 w-16 pointer-events-none select-none z-40 hidden xl:flex flex-col justify-between pt-12 pb-4 px-1 overflow-visible bg-gradient-to-r from-background/95 via-background/20 to-transparent">
         
         {/* Soft background blue blur spot (Intensifies on hover) */}
         <div 
@@ -144,7 +144,7 @@ export function OceanDecorations() {
 
           {/* Scrolling HUD crosshair pointer with hover triggers */}
           <motion.div 
-            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center z-20 pointer-events-auto cursor-pointer"
+            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center z-50 pointer-events-auto cursor-pointer"
             style={{ top: indicatorTop }}
             onMouseEnter={() => setIsLeftHovered(true)}
             onMouseLeave={() => setIsLeftHovered(false)}
@@ -171,7 +171,7 @@ export function OceanDecorations() {
                   initial={{ opacity: 0, x: -10, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -10, scale: 0.95 }}
-                  className={`absolute left-7 z-30 bg-[#081225] border border-cyan-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left ${
+                  className={`absolute left-7 z-50 bg-[#081225] border border-cyan-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left ${
                     activeYear <= 1997 ? "top-0" : activeYear >= 2019 ? "bottom-2" : "top-1/2 -translate-y-1/2"
                   }`}
                 >
@@ -207,7 +207,7 @@ export function OceanDecorations() {
       </div>
 
       {/* ================= RIGHT MARGIN (Ultra-narrow ENSO Ruler) ================= */}
-      <div className="fixed right-4 top-0 bottom-0 w-16 pointer-events-none select-none z-10 hidden xl:flex flex-col justify-between pt-12 pb-4 px-1 overflow-visible bg-gradient-to-l from-background/90 via-background/20 to-transparent">
+      <div className="fixed right-4 top-0 bottom-0 w-16 pointer-events-none select-none z-40 hidden xl:flex flex-col justify-between pt-12 pb-4 px-1 overflow-visible bg-gradient-to-l from-background/90 via-background/20 to-transparent">
         
         {/* Soft background warm blur spot (Intensifies on hover) */}
         <div 
@@ -260,7 +260,7 @@ export function OceanDecorations() {
 
           {/* Scrolling HUD crosshair pointer with hover triggers */}
           <motion.div 
-            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center z-20 pointer-events-auto cursor-pointer"
+            className="absolute -translate-y-1/2 w-8 h-8 flex items-center justify-center z-50 pointer-events-auto cursor-pointer"
             style={{ top: indicatorTop }}
             onMouseEnter={() => setIsRightHovered(true)}
             onMouseLeave={() => setIsRightHovered(false)}
@@ -287,7 +287,7 @@ export function OceanDecorations() {
                   initial={{ opacity: 0, x: 10, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 10, scale: 0.95 }}
-                  className={`absolute right-7 z-30 bg-[#1d0f06] border border-orange-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left ${
+                  className={`absolute right-7 z-50 bg-[#1d0f06] border border-orange-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left ${
                     activeYear <= 1997 ? "top-0" : activeYear >= 2019 ? "bottom-2" : "top-1/2 -translate-y-1/2"
                   }`}
                 >
