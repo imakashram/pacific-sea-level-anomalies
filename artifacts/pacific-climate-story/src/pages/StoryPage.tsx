@@ -38,6 +38,7 @@ export default function StoryPage() {
 
   useEffect(() => {
     document.documentElement.classList.add('dark');
+    document.title = "Pacific Sea Level Anomalies | Interactive Climate Data Story";
   }, []);
 
   const hideDecorations = activeTab === 'table' && isSectionInView;
