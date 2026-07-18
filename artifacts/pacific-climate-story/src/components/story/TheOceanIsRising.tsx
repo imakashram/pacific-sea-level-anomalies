@@ -343,6 +343,39 @@ export function TheOceanIsRising() {
             </ResponsiveContainer>
           ) : null}
         </div>
+
+        {/* Milestone Explainer Captions */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-muted-foreground border-t border-cyan-500/10 pt-6 relative z-10">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="inline-block w-2 h-2 rounded-full bg-[#f97316]" />
+              <span className="font-mono font-bold text-white uppercase tracking-wider">1998 El Niño</span>
+            </div>
+            <p className="leading-relaxed">
+              A major warm event that temporarily lowered sea levels in the Western Pacific, briefly hiding the long-term rising trend.
+            </p>
+          </div>
+          
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="inline-block w-2 h-2 rounded-full bg-[#38bdf8]" />
+              <span className="font-mono font-bold text-white uppercase tracking-wider">2011 La Niña</span>
+            </div>
+            <p className="leading-relaxed">
+              A strong cool event that temporarily raised sea levels and pushed more water onto local shorelines.
+            </p>
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="inline-block w-2 h-2 rounded-full bg-[#f97316]" />
+              <span className="font-mono font-bold text-white uppercase tracking-wider">2016 El Niño</span>
+            </div>
+            <p className="leading-relaxed">
+              One of the strongest warm ocean events ever recorded, causing very high ocean temperatures across the region.
+            </p>
+          </div>
+        </div>
       </div>
     </StorySection>
   );
