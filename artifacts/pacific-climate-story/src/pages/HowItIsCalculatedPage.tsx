@@ -7,285 +7,446 @@ import {
   Waves, 
   AlertTriangle, 
   Layers, 
-  Sliders, 
   BookOpen, 
-  CheckCircle2, 
-  Database,
-  FunctionSquare,
+  Terminal,
+  HelpCircle,
+  CheckCircle,
+  Lightbulb,
+  Scale,
+  Activity,
+  Flame,
+  PieChart,
+  BarChart2,
+  Calendar,
   Sparkles,
-  Info,
-  Terminal
+  MapPin,
+  TrendingDown
 } from "lucide-react";
 
-interface CalculationFormula {
+interface CalculationCard {
   id: string;
   title: string;
-  category: "baseline" | "trends" | "volatility" | "enso" | "risk" | "forecasting";
+  question: string;
   unit: string;
-  summary: string;
-  formulaTex: string;
-  parameters: { symbol: string; description: string }[];
-  steps: string[];
-  workedExample: {
-    entity: string;
-    inputs: string;
-    result: string;
-    explanation: string;
-  };
+  theme: "cyan" | "emerald" | "purple" | "orange" | "rose";
+  plainEnglish: string;
+  formulaSimple: string;
+  inputData: string;
+  outputResult: string;
+  exampleNation: string;
+  steps: { title: string; desc: string }[];
 }
 
-const FORMULAS: CalculationFormula[] = [
-  // Baseline & Units
+const CALCULATIONS: CalculationCard[] = [
+  // 1. Sea Level Anomaly
   {
     id: "sea-level-anomaly",
     title: "1. Sea Level Anomaly (SLA)",
-    category: "baseline",
+    question: "How much higher or lower is the ocean level compared to baseline?",
     unit: "Centimeters (cm)",
-    summary: "Measures how much the sea surface height deviates from the 10-year historical baseline (1993–2002).",
-    formulaTex: "SLA_y = h_y - \\bar{h}_{1993-2002}",
-    parameters: [
-      { symbol: "SLA_y", description: "Sea level anomaly value for calendar year y" },
-      { symbol: "h_y", description: "Observed mean annual sea surface height in year y" },
-      { symbol: "\\bar{h}_{1993-2002}", description: "Mean sea surface height during baseline decade (1993–2002)" }
-    ],
+    theme: "cyan",
+    plainEnglish: "We take the ocean's height in any given year and compare it to the average ocean height recorded during 1993–2002.",
+    formulaSimple: "Anomaly (cm) = (Ocean Height - 1993-2002 Baseline Avg) × 100",
+    inputData: "Annual satellite & tidal height measurements (meters)",
+    outputResult: "+12.4 cm current anomaly",
+    exampleNation: "Pacific Regional Average",
     steps: [
-      "Compute baseline average height across all Pacific stations from 1993 to 2002.",
-      "Subtract baseline average from each annual observed height.",
-      "Convert raw meter values to centimeters: SLA_cm = SLA_m × 100."
-    ],
-    workedExample: {
-      entity: "Palau (2023)",
-      inputs: "Observed height anomaly in raw meters = +0.200m",
-      result: "+20.0 cm",
-      explanation: "0.200m × 100 = +20.0cm above historical baseline average."
-    }
+      { title: "Find Baseline Average", desc: "Calculate mean ocean height from 1993 to 2002 (set as 0.0 cm)." },
+      { title: "Compare Current Height", desc: "Subtract baseline average from current year height." },
+      { title: "Convert to cm", desc: "Multiply meters by 100 to convert to centimeters (+12.4 cm)." }
+    ]
   },
+  // 2. Decadal Shift
   {
-    id: "decadal-shift",
+    id: "decade-shift",
     title: "2. Decadal Baseline Shift (Δ)",
-    category: "trends",
+    question: "How much has the sea level risen over 30 years?",
     unit: "Centimeters (cm)",
-    summary: "Calculates the net mean sea level increase between Decade 1 (1993–2002) and Decade 3 (2014–2023).",
-    formulaTex: "\\Delta_{1 \\rightarrow 3} = \\bar{SLA}_{Decade 3} - \\bar{SLA}_{Decade 1}",
-    parameters: [
-      { symbol: "\\Delta_{1 \\rightarrow 3}", description: "Net decadal shift between baseline and recent decade" },
-      { symbol: "\\bar{SLA}_{Decade 3}", description: "Average anomaly across 2014–2023 (+8.5cm regional avg)" },
-      { symbol: "\\bar{SLA}_{Decade 1}", description: "Average anomaly across 1993–2002 (0.0cm baseline avg)" }
-    ],
+    theme: "emerald",
+    plainEnglish: "We compare the 10-year average of the first decade (1993–2002) directly against the 10-year average of the recent decade (2014–2023).",
+    formulaSimple: "Decadal Shift = (Recent 10-Year Average) - (First 10-Year Average)",
+    inputData: "Decade 1 Mean (0.0 cm) vs Decade 3 Mean (+8.5 cm)",
+    outputResult: "+8.5 cm regional shift",
+    exampleNation: "Pacific Regional Average",
     steps: [
-      "Calculate 10-year arithmetic mean of annual anomalies for Decade 1 (1993–2002).",
-      "Calculate 10-year arithmetic mean of annual anomalies for Decade 3 (2014–2023).",
-      "Subtract Decade 1 mean from Decade 3 mean."
-    ],
-    workedExample: {
-      entity: "Regional Pacific Average",
-      inputs: "Decade 3 Mean = +8.5cm, Decade 1 Mean = 0.0cm",
-      result: "+8.5 cm",
-      explanation: "The regional average ocean height in 2014–2023 was +8.5cm higher than in 1993–2002."
-    }
+      { title: "Average Decade 1", desc: "Calculate mean ocean anomaly from 1993 to 2002." },
+      { title: "Average Decade 3", desc: "Calculate mean ocean anomaly from 2014 to 2023." },
+      { title: "Calculate Difference", desc: "Decade 3 mean minus Decade 1 mean gives total decadal shift." }
+    ]
   },
+  // 3. Speed Rate
   {
-    id: "linear-speed-rate",
-    title: "3. Rate of Rise / Speed Rate (Linear Slope)",
-    category: "trends",
+    id: "speed-rate",
+    title: "3. Speed Rate (Linear Trend)",
+    question: "How fast is the water level rising every year?",
     unit: "Millimeters per year (mm/yr)",
-    summary: "Determines the constant rate of annual ocean rise using Ordinary Least Squares (OLS) linear regression.",
-    formulaTex: "v = \\frac{\\sum_{i=1}^N (t_i - \\bar{t})(SLA_i - \\overline{SLA})}{\\sum_{i=1}^N (t_i - \\bar{t})^2} \\times 1000",
-    parameters: [
-      { symbol: "v", description: "Linear trend velocity rate in mm/year" },
-      { symbol: "t_i", description: "Time variable in years (t = 1993, 1994, ..., 2023)" },
-      { symbol: "SLA_i", description: "Observed sea level anomaly in year i (meters)" },
-      { symbol: "1000", description: "Scale multiplier converting meters/year to mm/year" }
-    ],
+    theme: "cyan",
+    plainEnglish: "We fit a linear regression trend line through 30 years of annual water level points to calculate yearly growth rate.",
+    formulaSimple: "Speed Rate = Trend Line OLS Slope × 1000 mm/m",
+    inputData: "30 annual anomaly records from 1993 to 2023",
+    outputResult: "4.84 mm/yr (13% above regional average)",
+    exampleNation: "Palau & Papua New Guinea",
     steps: [
-      "Compute mean year (t̄ = 2008) and mean anomaly (SLĀ).",
-      "Calculate covariance of time and anomaly divided by time variance.",
-      "Multiply resultant slope coefficient by 1,000 to convert to mm/year."
-    ],
-    workedExample: {
-      entity: "Papua New Guinea",
-      inputs: "OLS Slope = +0.00540 m/year",
-      result: "+5.40 mm/yr",
-      explanation: "Water levels have risen at an average rate of 5.40 mm every year over 30 years (+26% above regional average of 4.28 mm/yr)."
-    }
+      { title: "Plot Annual Heights", desc: "Chart all 30 annual water height points on a timeline." },
+      { title: "Fit OLS Regression Line", desc: "Calculate slope using Ordinary Least Squares regression." },
+      { title: "Express in mm/year", desc: "Multiply slope by 1,000 to get mm/year (4.84 mm/yr)." }
+    ]
   },
+  // 4. Anomaly Volatility
   {
-    id: "volatility-sd",
-    title: "4. Anomaly Volatility (Standard Deviation σ)",
-    category: "volatility",
-    unit: "Centimeters (±cm)",
-    summary: "Quantifies year-to-year water level instability and wave oscillation range around the mean trend.",
-    formulaTex: "\\sigma = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^N (SLA_i - \\overline{SLA})^2} \\times 100",
-    parameters: [
-      { symbol: "\\sigma", description: "Sample standard deviation of annual anomalies (cm)" },
-      { symbol: "N", description: "Total number of observation years (N = 31)" },
-      { symbol: "SLA_i", description: "Annual anomaly in year i" },
-      { symbol: "\\overline{SLA}", description: "30-year mean anomaly for the territory" }
-    ],
+    id: "volatility",
+    title: "4. Volatility (Fluctuation Range)",
+    question: "How unstable or jumpy are the annual ocean levels?",
+    unit: "± Centimeters (±cm)",
+    theme: "purple",
+    plainEnglish: "Volatility measures how far ocean levels bounce up and down around their mean trend line from one year to the next.",
+    formulaSimple: "Volatility = Standard Deviation (σ) of Annual Anomalies × 100",
+    inputData: "Yearly variance from 30-year average line",
+    outputResult: "±8.7 cm (41% above regional avg of 6.1 cm)",
+    exampleNation: "Palau (Most Volatile Nation)",
     steps: [
-      "Find 30-year average anomaly for the nation.",
-      "Calculate squared difference of each annual anomaly from the mean.",
-      "Sum squared differences, divide by N - 1 (30), take square root, and scale by 100."
-    ],
-    workedExample: {
-      entity: "Palau",
-      inputs: "Sample variance = 0.00753 m²",
-      result: "±8.7 cm",
-      explanation: "Palau experiences extreme annual fluctuations of ±8.7cm (+41% above regional avg of 6.1cm), driven by ENSO trade wind shifts."
-    }
+      { title: "Calculate Average", desc: "Find 30-year average sea level height for the territory." },
+      { title: "Measure Yearly Gaps", desc: "Measure how far each year's height deviates from average." },
+      { title: "Compute Std Dev", desc: "Take sample standard deviation (σ) to represent typical fluctuation in ±cm." }
+    ]
   },
+  // 5. Decadal Acceleration
   {
-    id: "acceleration-rate",
-    title: "5. Acceleration Coefficient",
-    category: "volatility",
-    unit: "Millimeters per year squared (mm/yr²)",
-    summary: "Measures whether the rate of sea level rise is accelerating or decelerating by fitting a second-degree polynomial.",
-    formulaTex: "SLA(t) = c + v \\cdot t + \\frac{1}{2} a \\cdot t^2 \\implies a = 2 \\times c_2 \\times 1000",
-    parameters: [
-      { symbol: "a", description: "Acceleration coefficient in mm/yr²" },
-      { symbol: "c_2", description: "Second-order polynomial fit coefficient" },
-      { symbol: "t", description: "Time relative to baseline (t = year - 1993)" }
-    ],
+    id: "acceleration",
+    title: "5. Decadal Acceleration",
+    question: "Is the ocean rising faster today than it was 20 years ago?",
+    unit: "mm/yr²",
+    theme: "orange",
+    plainEnglish: "Acceleration measures whether the annual rate of rise is speeding up over time rather than staying constant.",
+    formulaSimple: "Acceleration = 2 × Polynomial Fit Coefficient (c₂) × 1000",
+    inputData: "Second-degree polynomial fit (SLA = c₀ + c₁t + c₂t²)",
+    outputResult: "+0.24 mm/yr² (Speeding up)",
+    exampleNation: "Tuvalu & Marshall Islands",
     steps: [
-      "Perform quadratic regression SLA = c0 + c1·t + c2·t².",
-      "Extract c2 coefficient representing half of second-derivative d²SLA/dt².",
-      "Multiply c2 by 2,000 to express acceleration rate in mm/yr²."
-    ],
-    workedExample: {
-      entity: "Tuvalu",
-      inputs: "Quadratic coefficient c2 = 0.00012 m/yr²",
-      result: "+0.24 mm/yr²",
-      explanation: "Positive acceleration indicates the speed of rising seas is gaining momentum each decade."
-    }
+      { title: "Fit Quadratic Curve", desc: "Apply a 2nd-degree polynomial curve fit to detect bending." },
+      { title: "Extract Coefficient c₂", desc: "Extract coefficient c₂ representing 1/2 of second derivative." },
+      { title: "Determine Acceleration", desc: "Multiply by 2,000 to express acceleration in mm/yr²." }
+    ]
   },
+  // 6. Peak Record Anomaly
   {
-    id: "enso-correlation",
-    title: "6. ENSO Climate Correlation (Pearson r)",
-    category: "enso",
-    unit: "Correlation Coefficient (-1.0 to +1.0)",
-    summary: "Measures the statistical synchrony between sea level anomalies and Southern Oscillation Index (SOI) phases.",
-    formulaTex: "r = \\frac{\\sum_{i=1}^N (SLA_i - \\overline{SLA})(SOI_i - \\overline{SOI})}{\\sqrt{\\sum_{i=1}^N (SLA_i - \\overline{SLA})^2} \\sqrt{\\sum_{i=1}^N (SOI_i - \\overline{SOI})^2}}",
-    parameters: [
-      { symbol: "r", description: "Pearson product-moment correlation coefficient" },
-      { symbol: "SOI_i", description: "Annual Southern Oscillation Index value" },
-      { symbol: "SLA_i", description: "Annual sea level anomaly" }
-    ],
+    id: "peak-record",
+    title: "6. Peak Anomaly Record",
+    question: "What is the highest ocean level recorded in history?",
+    unit: "Centimeters (+cm)",
+    theme: "cyan",
+    plainEnglish: "The maximum positive height anomaly recorded across all 30 years of observation for a territory.",
+    formulaSimple: "Peak Record = Max(SLA₁, SLA₂, ..., SLA₃₀) × 100",
+    inputData: "30 annual anomaly records for territory",
+    outputResult: "Peak: +20.0 cm (Year 2008)",
+    exampleNation: "Palau Peak Record",
     steps: [
-      "Calculate cross-covariance between annual SOI indices and territory anomalies.",
-      "Normalize by the product of individual standard deviations.",
-      "Result ranges from -1.0 (strong inverse relation) to +1.0 (strong direct relation)."
-    ],
-    workedExample: {
-      entity: "Micronesia (ENSO Sensitivity)",
-      inputs: "Covariance = -0.042, SOI StdDev = 1.12, SLA StdDev = 0.052",
-      result: "-0.78",
-      explanation: "Strong negative correlation indicates ocean levels drop significantly during El Niño phases and surge during La Niña."
-    }
+      { title: "Scan Annual Values", desc: "Scan all 31 annual anomaly records from 1993 to 2023." },
+      { title: "Identify Highest Value", desc: "Locate the maximum positive value." },
+      { title: "Record Year & Height", desc: "Express peak height in +cm along with calendar year." }
+    ]
   },
+  // 7. Trough Record Anomaly
+  {
+    id: "trough-record",
+    title: "7. Trough Anomaly Record",
+    question: "What is the lowest ocean level drop recorded in history?",
+    unit: "Centimeters (-cm)",
+    theme: "purple",
+    plainEnglish: "The lowest negative height anomaly recorded during extreme drought or El Niño phases.",
+    formulaSimple: "Trough Record = Min(SLA₁, SLA₂, ..., SLA₃₀) × 100",
+    inputData: "30 annual anomaly records for territory",
+    outputResult: "Trough: -10.0 cm (Year 1993)",
+    exampleNation: "Palau Trough Record",
+    steps: [
+      { title: "Scan Annual Values", desc: "Scan all 31 annual anomaly records from 1993 to 2023." },
+      { title: "Identify Lowest Value", desc: "Locate the minimum negative value." },
+      { title: "Record Year & Height", desc: "Express trough drop in -cm along with calendar year." }
+    ]
+  },
+  // 8. Cumulative Rise Accumulation
   {
     id: "cumulative-rise",
-    title: "7. Cumulative Rise Accumulation",
-    category: "trends",
+    title: "8. Cumulative Rise Accumulation",
+    question: "What is the total accumulated water volume rise over 30 years?",
     unit: "Centimeters (cm)",
-    summary: "Calculates total net accumulated water volume rise over the 30-year observation span.",
-    formulaTex: "H_{cum} = \\sum_{y=1993}^{2023} \\max(0, SLA_y)",
-    parameters: [
-      { symbol: "H_{cum}", description: "Total accumulated sea level rise (cm)" },
-      { symbol: "SLA_y", description: "Positive anomaly recorded in year y" }
-    ],
+    theme: "emerald",
+    plainEnglish: "We accumulate all positive annual ocean height gains over 30 years to measure total vertical burden.",
+    formulaSimple: "Cumulative Rise = Sum of all positive annual anomalies",
+    inputData: "Time-series of annual positive anomalies",
+    outputResult: "+20.0 cm accumulated rise",
+    exampleNation: "Palau & Solomon Islands",
     steps: [
-      "Sum positive annual anomalies from 1993 to 2023.",
-      "Converts annual shifts into total vertical accumulated burden."
-    ],
-    workedExample: {
-      entity: "Palau Peak Record",
-      inputs: "Sum of positive anomaly accumulation over 30 years",
-      result: "+20.0 cm",
-      explanation: "Palau recorded a cumulative peak anomaly breach of +20.0cm above baseline."
-    }
+      { title: "Filter Positive Years", desc: "Select annual years where sea level anomaly > 0." },
+      { title: "Sum Anomaly Gains", desc: "Add positive annual height gains over 30 years." },
+      { title: "Express Total Burden", desc: "Display total accumulated ocean height burden in cm." }
+    ]
   },
+  // 9. Start-to-End Leap Delta
   {
-    id: "risk-scoring-index",
-    title: "8. Composite Climate Risk Index (R)",
-    category: "risk",
-    unit: "Risk Score (0–100)",
-    summary: "Evaluates multi-criteria vulnerability index combining rate of rise, volatility, decadal acceleration, and low-elevation exposure.",
-    formulaTex: "R = 0.35 \\cdot V_{rate} + 0.25 \\cdot V_{vol} + 0.20 \\cdot V_{accel} + 0.20 \\cdot V_{elev}",
-    parameters: [
-      { symbol: "R", description: "Composite Risk Score (0 = Lowest Risk, 100 = Critical Risk)" },
-      { symbol: "V_{rate}", description: "Normalized score of linear rise speed (0–100)" },
-      { symbol: "V_{vol}", description: "Normalized score of anomaly volatility (0–100)" },
-      { symbol: "V_{accel}", description: "Normalized score of decadal acceleration (0–100)" },
-      { symbol: "V_{elev}", description: "Normalized score of territorial elevation vulnerability (0–100)" }
-    ],
+    id: "start-end-leap",
+    title: "9. Start-to-End Leap Delta",
+    question: "How much did ocean height jump between 1993 and 2023?",
+    unit: "Centimeters (cm)",
+    theme: "emerald",
+    plainEnglish: "The direct height difference between the starting year of observations (1993) and the latest ending year (2023).",
+    formulaSimple: "Leap Delta = SLA(2023) - SLA(1993)",
+    inputData: "Initial anomaly in 1993 (-5.2 cm) vs Final anomaly in 2023 (+14.8 cm)",
+    outputResult: "+20.0 cm total leap",
+    exampleNation: "Papua New Guinea",
     steps: [
-      "Normalize each sub-metric to a 0–100 percentile rank across all 21 Pacific territories.",
-      "Apply weighted sum formula with risk factor weights.",
-      "Categorize: Critical (R ≥ 80), High (65 ≤ R < 80), Medium (45 ≤ R < 65), Low (R < 45)."
-    ],
-    workedExample: {
-      entity: "Tuvalu Risk Classification",
-      inputs: "V_rate = 85, V_vol = 90, V_accel = 88, V_elev = 95",
-      result: "89.5 (CRITICAL RISK)",
-      explanation: "Extreme low elevation combined with accelerated rise places Tuvalu at top Critical Risk."
-    }
+      { title: "Extract 1993 Value", desc: "Record the starting sea level anomaly in 1993." },
+      { title: "Extract 2023 Value", desc: "Record the ending sea level anomaly in 2023." },
+      { title: "Calculate Leap Delta", desc: "Subtract 1993 starting level from 2023 ending level." }
+    ]
   },
+  // 10. ENSO Climate Correlation
+  {
+    id: "enso-correlation",
+    title: "10. ENSO Climate Sensitivity (Pearson r)",
+    question: "How do major climate events (El Niño / La Niña) alter sea levels?",
+    unit: "Correlation (-1.0 to +1.0)",
+    theme: "orange",
+    plainEnglish: "Measures statistical synchrony between sea level anomalies and Southern Oscillation Index (SOI) phases.",
+    formulaSimple: "ENSO Correlation = Pearson Correlation (SLA vs SOI)",
+    inputData: "Annual SOI Index matched against territory sea level anomalies",
+    outputResult: "-0.78 (Strong Inverse Sensitivity)",
+    exampleNation: "Micronesia & Palau",
+    steps: [
+      { title: "Track ENSO Index", desc: "Record annual Southern Oscillation Index (SOI) values." },
+      { title: "Overlay Sea Levels", desc: "Align sea level drops with major El Niño years (1997-98, 2015-16)." },
+      { title: "Compute Pearson r", desc: "Scores near -1.0 indicate strong sea level drops during El Niño." }
+    ]
+  },
+  // 11. Composite Risk Index
+  {
+    id: "risk-score",
+    title: "11. Composite Risk Index (R)",
+    question: "Which Pacific nations face the highest overall climate threat?",
+    unit: "Score (0–100 Risk Level)",
+    theme: "rose",
+    plainEnglish: "We combine 4 risk factors (Rise Speed + Volatility + Acceleration + Low Elevation) into a single 0–100 risk score.",
+    formulaSimple: "Risk Score = 35% Rise Speed + 25% Volatility + 20% Acceleration + 20% Elevation",
+    inputData: "Normalized percentile rankings across all 21 Pacific nations",
+    outputResult: "89.5 Score (CRITICAL RISK LEVEL)",
+    exampleNation: "Tuvalu & Kiribati",
+    steps: [
+      { title: "Rank Territories", desc: "Rank all 21 nations across speed, volatility, acceleration, and elevation." },
+      { title: "Apply Weights", desc: "Multiply rankings by safety impact weights (35% speed, 25% volatility, etc.)." },
+      { title: "Assign Category", desc: "Classify into Critical (≥80), High (65-79), Medium (45-64), or Low (<45)." }
+    ]
+  },
+  // 12. Threshold Breach Year
+  {
+    id: "threshold-breach",
+    title: "12. Threshold Breach Year",
+    question: "When did a territory first breach critical height benchmarks?",
+    unit: "Calendar Year (YYYY)",
+    theme: "rose",
+    plainEnglish: "Identifies the first calendar year when a territory's sea level anomaly permanently crossed threshold levels (+0cm, +10cm, +20cm).",
+    formulaSimple: "First Year (y*) where SLA(y*) ≥ Threshold Level",
+    inputData: "Annual anomaly time series per territory",
+    outputResult: "Breached +10cm in Year 2012",
+    exampleNation: "Marshall Islands",
+    steps: [
+      { title: "Set Benchmark Threshold", desc: "Define threshold level (+0.0 cm, +10.0 cm, or +20.0 cm)." },
+      { title: "Scan Time Series", desc: "Find first year where annual anomaly exceeds benchmark." },
+      { title: "Record Breach Year", desc: "Flag calendar year of first breach for threshold funnel charts." }
+    ]
+  },
+  // 13. Year-Over-Year Budget Share
+  {
+    id: "yoy-budget",
+    title: "13. Year-Over-Year Budget Share",
+    question: "What percentage of total 30-year rise occurred in a single year?",
+    unit: "Percentage (%)",
+    theme: "purple",
+    plainEnglish: "Calculates the fractional percentage share of a single year's anomaly relative to 30-year total accumulation.",
+    formulaSimple: "Budget Share (%) = (Annual Anomaly / 30-Year Sum) × 100",
+    inputData: "Annual anomaly divided by sum of all positive anomalies",
+    outputResult: "7.8% annual rise budget share",
+    exampleNation: "Fiji (2016 Peak Year)",
+    steps: [
+      { title: "Calculate Total Sum", desc: "Sum all positive sea level anomalies over 30 years." },
+      { title: "Divide Annual Anomaly", desc: "Divide target year anomaly by 30-year total sum." },
+      { title: "Express as Percentage", desc: "Multiply by 100 to get fractional yearly budget share." }
+    ]
+  },
+  // 14. Sub-Regional Group Averages
+  {
+    id: "regional-clusters",
+    title: "14. Sub-Regional Cluster Averages",
+    question: "How do Melanesia, Micronesia, and Polynesia compare?",
+    unit: "Centimeters (cm)",
+    theme: "cyan",
+    plainEnglish: "Groups 21 territories into 3 sub-regions to calculate regional mean rise trajectories.",
+    formulaSimple: "Cluster Average = Mean of Member Territory Anomalies",
+    inputData: "Territory groupings: Melanesia, Micronesia, Polynesia",
+    outputResult: "Micronesia Mean: +10.2 cm",
+    exampleNation: "Micronesia Sub-Region",
+    steps: [
+      { title: "Group Nations by Region", desc: "Assign each territory to Melanesia, Micronesia, or Polynesia." },
+      { title: "Calculate Regional Means", desc: "Compute average sea level anomaly for each cluster per year." },
+      { title: "Compare Trends", desc: "Chart sub-regional stream graphs and donut share distributions." }
+    ]
+  },
+  // 15. Decadal Percentile Distributions
+  {
+    id: "percentile-distributions",
+    title: "15. Decadal Percentile Distributions (P10, P50, P90)",
+    question: "What are the lower, median, and upper bounds of ocean rise?",
+    unit: "Centimeters (cm)",
+    theme: "purple",
+    plainEnglish: "Computes 10th percentile (lower bound), 50th percentile (median), and 90th percentile (upper bound) across monitoring stations.",
+    formulaSimple: "Percentile Rank (P₁₀, P₅₀, P₉₀) of Annual Anomalies",
+    inputData: "Sorted annual anomaly array across 21 stations",
+    outputResult: "P₅₀ (Median): +8.5 cm, P₉₀ (Upper): +15.2 cm",
+    exampleNation: "Regional Distribution Boxplot",
+    steps: [
+      { title: "Sort Anomaly Values", desc: "Order all territory anomalies for a decade from lowest to highest." },
+      { title: "Extract Percentiles", desc: "Extract P10 (lowest 10%), P50 (median), and P90 (highest 10%)." },
+      { title: "Chart Boxplot Range", desc: "Use distribution bounds to display decadal spread." }
+    ]
+  },
+  // 16. Annual Cross-Territory Variance
+  {
+    id: "annual-deviation",
+    title: "16. Cross-Territory Annual Dispersion",
+    question: "How much did ocean rise vary across different islands each year?",
+    unit: "Standard Deviation (σ_y)",
+    theme: "purple",
+    plainEnglish: "Calculates the cross-sectional standard deviation among all 21 nations for every calendar year.",
+    formulaSimple: "Annual Dispersion = Standard Deviation across 21 nations in Year y",
+    inputData: "21 territory anomaly values for a single year",
+    outputResult: "σ₂₀₁₆ = ±4.2 cm cross-island dispersion",
+    exampleNation: "Lollipop Anomaly Chart",
+    steps: [
+      { title: "Gather Yearly Values", desc: "Collect anomaly values for all 21 nations in calendar year y." },
+      { title: "Compute Cross-Section Mean", desc: "Find average anomaly across all nations for that year." },
+      { title: "Calculate Std Dev", desc: "Compute standard deviation (σ_y) to measure cross-island spread." }
+    ]
+  },
+  // 17. Nations Rising Count per Year
+  {
+    id: "nations-rising-count",
+    title: "17. Nations Rising Count per Year",
+    question: "How many Pacific nations experienced positive ocean rise each year?",
+    unit: "Count (0 to 21 Nations)",
+    theme: "emerald",
+    plainEnglish: "Counts how many of the 21 Pacific territories recorded positive height anomalies (>0.0cm) in any given calendar year.",
+    formulaSimple: "Nations Rising = Count of Nations where SLA_y > 0",
+    inputData: "Annual anomaly check (>0.0cm) for 21 nations",
+    outputResult: "21 of 21 Nations Rising (100% in 2023)",
+    exampleNation: "Rising Tide Chapter",
+    steps: [
+      { title: "Check Annual Anomalies", desc: "Evaluate anomaly level for each of the 21 nations in year y." },
+      { title: "Count Positive Anomalies", desc: "Increment count if nation's anomaly > 0.0 cm." },
+      { title: "Express Total Count", desc: "Display count out of 21 (e.g. 21/21 nations rising in recent years)." }
+    ]
+  },
+  // 18. Predictive Projection Model (2024–2050)
   {
     id: "forecasting-model",
-    title: "9. Predictive Projection Model (2024–2050)",
-    category: "forecasting",
+    title: "18. Predictive Projection Model (2024–2050)",
+    question: "What will ocean height levels be in 2050?",
     unit: "Centimeters (cm)",
-    summary: "Extrapolates ocean rise trajectories from 2024 to 2050 using historical linear speed and acceleration parameters with confidence bounds.",
-    formulaTex: "SLA(t) = SLA_{2023} + v \\cdot (t - 2023) + \\frac{1}{2} a \\cdot (t - 2023)^2 \\pm 1.96 \\sigma",
-    parameters: [
-      { symbol: "SLA(t)", description: "Projected anomaly in target year t (2024 to 2050)" },
-      { symbol: "SLA_{2023}", description: "Baseline anomaly level at end of dataset (2023)" },
-      { symbol: "v", description: "Linear trend velocity (mm/yr)" },
-      { symbol: "a", description: "Acceleration coefficient (mm/yr²)" },
-      { symbol: "1.96 \\sigma", description: "95% statistical confidence interval band based on historical volatility" }
-    ],
+    theme: "orange",
+    plainEnglish: "Extrapolates ocean rise from 2024 to 2050 using historical linear speed and acceleration parameters with confidence bounds.",
+    formulaSimple: "Projected SLA(t) = SLA₂₀₂₃ + Speed × (t - 2023) + ½ Acceleration × (t - 2023)² ± 1.96σ",
+    inputData: "2023 baseline level + OLS slope (v) + acceleration (a) + volatility (σ)",
+    outputResult: "+19.8 cm projected mean by 2050 (+13.7cm to +25.9cm range)",
+    exampleNation: "2050 Climate Forecast",
     steps: [
-      "Take 2023 ending anomaly level as starting point.",
-      "Project forward using linear speed rate v.",
-      "Add quadratic acceleration term 1/2 a t².",
-      "Compute upper (+1.96σ) and lower (-1.96σ) risk envelopes."
-    ],
-    workedExample: {
-      entity: "2050 Regional Projection",
-      inputs: "Target year t = 2050 (27 years ahead), v = 4.28 mm/yr, a = 0.15 mm/yr²",
-      result: "+19.8 cm (Range: +13.7cm to +25.9cm)",
-      explanation: "By 2050, regional average sea level anomalies are projected to reach ~20cm above 1993 baseline."
-    }
+      { title: "Set 2023 Starting Point", desc: "Use 2023 ending sea level anomaly as starting benchmark." },
+      { title: "Apply Linear & Curved Growth", desc: "Project forward using linear speed rate and quadratic acceleration." },
+      { title: "Add 95% Confidence Band", desc: "Apply ±1.96σ confidence band based on historical volatility." }
+    ]
+  },
+  // 19. 5-Year Rolling Moving Average (SMA)
+  {
+    id: "rolling-average",
+    title: "19. 5-Year Rolling Moving Average (SMA)",
+    question: "How do we smooth out short-term year-to-year noise in charts?",
+    unit: "Centimeters (cm)",
+    theme: "cyan",
+    plainEnglish: "Calculates a 5-year centered moving average to smooth out sudden short-term spikes and reveal underlying long-term trends.",
+    formulaSimple: "SMA(y) = (SLA_y-2 + SLA_y-1 + SLA_y + SLA_y+1 + SLA_y+2) / 5",
+    inputData: "5-year window centered around year y",
+    outputResult: "Smoothed trend curve line",
+    exampleNation: "Time Series & Explorer Charts",
+    steps: [
+      { title: "Define 5-Year Window", desc: "Take anomaly values for 2 years prior, target year, and 2 years ahead." },
+      { title: "Calculate Window Mean", desc: "Add the 5 annual anomaly values and divide by 5." },
+      { title: "Plot Smooth Line", desc: "Render smoothed moving average line overlay on charts." }
+    ]
+  },
+  // 20. Relative Regional Comparison Ratio (%)
+  {
+    id: "relative-comparison-ratio",
+    title: "20. Relative Regional Comparison Ratio (%)",
+    question: "How much higher or lower is a nation's metric compared to the regional average?",
+    unit: "Percentage (%)",
+    theme: "emerald",
+    plainEnglish: "Compares a single territory's metric (e.g. cumulative rise or speed rate) directly against the 21-nation regional benchmark average.",
+    formulaSimple: "Relative Ratio (%) = ((Nation Metric / Regional Avg Metric) - 1) × 100",
+    inputData: "Nation metric value vs Regional benchmark average",
+    outputResult: "+62% above regional average (12.4 cm vs 7.6 cm)",
+    exampleNation: "Palau Cumulative Rise Stat Card",
+    steps: [
+      { title: "Calculate Regional Average", desc: "Find mean value of metric across all 21 Pacific territories." },
+      { title: "Divide Nation Metric", desc: "Divide target nation's metric by regional average metric." },
+      { title: "Express Percentage Shift", desc: "Subtract 1 and multiply by 100 to show % above/below average." }
+    ]
   }
 ];
 
 export default function HowItIsCalculatedPage() {
   const [, setLocation] = useLocation();
-  const [activeCategory, setActiveCategory] = useState<"all" | "baseline" | "trends" | "volatility" | "enso" | "risk" | "forecasting">("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredFormulas = FORMULAS.filter((item) => {
-    const matchesCategory = activeCategory === "all" || item.category === activeCategory;
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          item.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.formulaTex.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredCalculations = CALCULATIONS.filter((item) => 
+    item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.plainEnglish.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const categoryIcons = {
-    all: <FunctionSquare className="w-3.5 h-3.5" />,
-    baseline: <Database className="w-3.5 h-3.5" />,
-    trends: <TrendingUp className="w-3.5 h-3.5" />,
-    volatility: <Waves className="w-3.5 h-3.5" />,
-    enso: <Layers className="w-3.5 h-3.5" />,
-    risk: <AlertTriangle className="w-3.5 h-3.5" />,
-    forecasting: <Sparkles className="w-3.5 h-3.5" />
+  const themeClasses = {
+    cyan: {
+      badge: "bg-cyan-500/10 border-cyan-500/30 text-cyan-400",
+      card: "hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(6,182,212,0.04)]",
+      accent: "text-cyan-400",
+      box: "bg-cyan-950/20 border-cyan-500/20"
+    },
+    emerald: {
+      badge: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
+      card: "hover:border-emerald-500/40 hover:shadow-[0_0_25px_rgba(16,185,129,0.04)]",
+      accent: "text-emerald-400",
+      box: "bg-emerald-950/20 border-emerald-500/20"
+    },
+    purple: {
+      badge: "bg-purple-500/10 border-purple-500/30 text-purple-400",
+      card: "hover:border-purple-500/40 hover:shadow-[0_0_25px_rgba(168,85,247,0.04)]",
+      accent: "text-purple-400",
+      box: "bg-purple-950/20 border-purple-500/20"
+    },
+    orange: {
+      badge: "bg-orange-500/10 border-orange-500/30 text-orange-400",
+      card: "hover:border-orange-500/40 hover:shadow-[0_0_25px_rgba(249,115,22,0.04)]",
+      accent: "text-orange-400",
+      box: "bg-orange-950/20 border-orange-500/20"
+    },
+    rose: {
+      badge: "bg-rose-500/10 border-rose-500/30 text-rose-400",
+      card: "hover:border-rose-500/40 hover:shadow-[0_0_25px_rgba(244,63,94,0.04)]",
+      accent: "text-rose-400",
+      box: "bg-rose-950/20 border-rose-500/20"
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#070913] text-[#f8fafc] font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200">
       
-      {/* Ambient background glows */}
+      {/* Background ambient glows */}
       <div className="absolute top-0 left-1/3 w-[600px] h-[600px] rounded-full bg-cyan-500/5 blur-[150px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/3 w-[600px] h-[600px] rounded-full bg-blue-500/5 blur-[150px] pointer-events-none" />
 
@@ -321,165 +482,163 @@ export default function HowItIsCalculatedPage() {
         </button>
       </header>
 
-      {/* Main Content Area */}
-      <main className="max-w-[1400px] mx-auto p-6 lg:p-10 flex flex-col gap-8">
+      {/* Main Container */}
+      <main className="max-w-[1400px] mx-auto p-6 lg:p-10 flex flex-col gap-10">
         
-        {/* Intro Hero Box */}
-        <div className="bg-slate-900/30 border border-slate-800/60 p-8 rounded-2xl flex flex-col gap-4 shadow-xl">
+        {/* Simple Guide Introduction Header */}
+        <div className="bg-slate-900/30 border border-slate-800/60 p-8 rounded-3xl flex flex-col gap-6 shadow-xl relative overflow-hidden">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
-              <BookOpen className="w-6 h-6" />
+            <div className="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+              <Lightbulb className="w-7 h-7" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold font-serif text-slate-100">Mathematical Formulas & Data Transformations</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Complete guide detailing how every sea level anomaly metric, trend slope, volatility range, and risk index in this project is calculated from raw station observations.
+              <h2 className="text-2xl font-bold font-serif text-slate-100">Complete Master Calculation Index (20 Metrics)</h2>
+              <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
+                Comprehensive guide covering all 20 calculated data points, formulas, smoothing algorithms, baseline transformations, and statistical models used across the entire Pacific Climate Story project.
               </p>
             </div>
           </div>
 
-          {/* Key Standard Badges */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2 pt-4 border-t border-slate-800/40 text-xs">
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-0.5" />
-              <div>
-                <span className="font-semibold text-slate-200 block">Height Standard (cm)</span>
-                <span className="text-[11px] text-slate-400">All anomalies & decadal cumulative rises are expressed in centimeters (cm).</span>
-              </div>
+          {/* Quick Cheat Sheet Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-800/50">
+            
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-slate-800/50 flex flex-col gap-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+                <Scale className="w-3.5 h-3.5" /> Heights in Centimeters (cm)
+              </span>
+              <span className="text-xs font-semibold text-slate-200">1 Meter = 100 cm</span>
+              <p className="text-[11px] text-slate-400 leading-normal">
+                We multiply raw meter anomalies by 100 so height numbers look like <strong className="text-slate-300">+12.4 cm</strong> instead of 0.124m.
+              </p>
             </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
-              <div>
-                <span className="font-semibold text-slate-200 block">Velocity Standard (mm/yr)</span>
-                <span className="text-[11px] text-slate-400">Rate of rise speeds are calculated using OLS linear regression in mm/year.</span>
-              </div>
+
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-slate-800/50 flex flex-col gap-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5" /> Rise Speed in mm/yr
+              </span>
+              <span className="text-xs font-semibold text-slate-200">1 Meter = 1,000 mm</span>
+              <p className="text-[11px] text-slate-400 leading-normal">
+                Annual rise rates use linear slope fitting expressed in millimeters per year (<strong className="text-slate-300">4.84 mm/yr</strong>).
+              </p>
             </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-purple-400 mt-0.5" />
-              <div>
-                <span className="font-semibold text-slate-200 block">Baseline Period (1993–2002)</span>
-                <span className="text-[11px] text-slate-400">First decade mean serves as reference benchmark 0.0cm across 21 territories.</span>
-              </div>
+
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-slate-800/50 flex flex-col gap-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
+                <Activity className="w-3.5 h-3.5" /> Baseline = 1993–2002
+              </span>
+              <span className="text-xs font-semibold text-slate-200">10-Year Reference Zero</span>
+              <p className="text-[11px] text-slate-400 leading-normal">
+                The average sea level during 1993–2002 serves as the benchmark zero (<strong className="text-slate-300">0.0 cm</strong>) line.
+              </p>
             </div>
+
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-slate-800/50 flex flex-col gap-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-orange-400 flex items-center gap-1.5">
+                <Waves className="w-3.5 h-3.5" /> Volatility = ±cm
+              </span>
+              <span className="text-xs font-semibold text-slate-200">Yearly Fluctuation Range</span>
+              <p className="text-[11px] text-slate-400 leading-normal">
+                Standard deviation measures how much water heights bounce up and down each year (<strong className="text-slate-300">±8.7 cm</strong> in Palau).
+              </p>
+            </div>
+
           </div>
         </div>
 
-        {/* Category Filters and Search */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950/40 p-4 rounded-2xl border border-slate-900">
-          
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-1.5">
-            {(["all", "baseline", "trends", "volatility", "enso", "risk", "forecasting"] as const).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer transition ${
-                  activeCategory === cat 
-                    ? "bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold" 
-                    : "bg-slate-900/40 border border-slate-800 text-slate-400 hover:bg-slate-800/40 hover:text-slate-200"
-                }`}
+        {/* Search Bar */}
+        <div className="relative w-full max-w-md">
+          <input
+            type="text"
+            placeholder="Search all 20 calculated metrics (e.g. peak, trough, speed, moving avg)..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-slate-900/60 border border-slate-800 rounded-2xl px-5 py-3 text-xs text-foreground focus:outline-none focus:border-cyan-500/40 transition shadow-inner"
+          />
+        </div>
+
+        {/* Calculation Cards Stack */}
+        <div className="flex flex-col gap-8">
+          {filteredCalculations.map((item) => {
+            const theme = themeClasses[item.theme];
+            return (
+              <div 
+                key={item.id}
+                className={`bg-slate-900/20 border border-slate-800/80 p-6 lg:p-8 rounded-3xl flex flex-col gap-6 transition-all duration-300 shadow-xl ${theme.card}`}
               >
-                {categoryIcons[cat]}
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Search Box */}
-          <div className="relative w-full md:w-64">
-            <input
-              type="text"
-              placeholder="Search formulas..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-1.5 text-xs text-foreground focus:outline-none focus:border-cyan-500/40 transition"
-            />
-          </div>
-        </div>
-
-        {/* Formula Cards List */}
-        <div className="grid grid-cols-1 gap-6">
-          {filteredFormulas.map((item) => (
-            <div 
-              key={item.id}
-              className="bg-slate-900/20 border border-slate-800/80 hover:border-slate-700/80 p-6 rounded-2xl flex flex-col gap-5 transition shadow-lg group"
-            >
-              {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/50 pb-4">
-                <div className="flex items-center gap-3">
-                  <span className="px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-mono text-xs font-bold">{item.category.toUpperCase()}</span>
-                  <h3 className="text-xl font-bold font-serif text-slate-100">{item.title}</h3>
-                </div>
-                <span className="px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 text-xs font-mono self-start sm:self-auto">
-                  Unit: <span className="text-cyan-400 font-bold">{item.unit}</span>
-                </span>
-              </div>
-
-              {/* Summary */}
-              <p className="text-sm text-slate-300 leading-relaxed">
-                {item.summary}
-              </p>
-
-              {/* Mathematical Formula Box */}
-              <div className="bg-[#03050c] border border-cyan-500/20 p-5 rounded-xl flex flex-col gap-2 font-mono shadow-inner relative overflow-x-auto">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-cyan-400/80">FORMULA</span>
-                <div className="text-lg md:text-xl font-bold text-cyan-300 py-1 tracking-wide selection:bg-cyan-500/20 selection:text-cyan-200">
-                  {item.formulaTex}
-                </div>
-              </div>
-
-              {/* Parameters Breakdown Grid */}
-              <div className="bg-slate-950/40 border border-slate-800/40 p-4 rounded-xl flex flex-col gap-3">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Parameter Variables</span>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {item.parameters.map((param, idx) => (
-                    <div key={idx} className="flex flex-col bg-slate-900/40 p-2.5 rounded-lg border border-slate-800/50">
-                      <span className="font-mono text-xs font-bold text-cyan-400">{param.symbol}</span>
-                      <span className="text-[11px] text-slate-400 mt-0.5">{param.description}</span>
+                {/* Card Top Title Row */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/50 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <h3 className="text-xl font-bold font-serif text-slate-100">{item.title}</h3>
+                      <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+                        <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
+                        <span className="italic">{item.question}</span>
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Step-by-Step Procedure & Worked Example */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                
-                {/* Steps */}
-                <div className="flex flex-col gap-2.5">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
-                    <Sliders className="w-3.5 h-3.5 text-cyan-400" /> Calculation Steps
+                  </div>
+                  <span className={`px-3 py-1 rounded-full border text-xs font-mono font-bold self-start sm:self-auto ${theme.badge}`}>
+                    Unit: {item.unit}
                   </span>
-                  <ul className="flex flex-col gap-2 text-xs text-slate-300">
-                    {item.steps.map((step, sIdx) => (
-                      <li key={sIdx} className="flex items-start gap-2 bg-slate-900/30 p-2.5 rounded-lg border border-slate-800/40">
-                        <span className="font-mono text-cyan-400 font-bold text-[11px] mt-0.5">{sIdx + 1}.</span>
-                        <span className="leading-relaxed">{step}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
 
-                {/* Worked Example Card */}
-                <div className="flex flex-col gap-2.5 bg-cyan-950/10 border border-cyan-500/20 p-4 rounded-xl">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-cyan-400 flex items-center gap-1.5">
-                    <Info className="w-3.5 h-3.5 text-cyan-400" /> Worked Example
-                  </span>
-                  <div className="flex flex-col gap-1.5 text-xs">
-                    <span className="font-semibold text-slate-200">{item.workedExample.entity}</span>
-                    <span className="text-slate-400 font-mono text-[11px]">{item.workedExample.inputs}</span>
-                    <div className="my-1 py-1 px-3 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-300 font-mono font-bold text-sm inline-block self-start">
-                      Result: {item.workedExample.result}
-                    </div>
-                    <p className="text-[11px] text-slate-400 leading-relaxed italic">
-                      "{item.workedExample.explanation}"
+                {/* Plain-English Explanation Banner */}
+                <div className="bg-slate-950/60 border border-slate-800/60 p-4 rounded-2xl flex items-start gap-3">
+                  <BookOpen className={`w-5 h-5 flex-shrink-0 mt-0.5 ${theme.accent}`} />
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 font-mono">IN PLAIN WORDS</span>
+                    <p className="text-xs text-slate-200 leading-relaxed">
+                      {item.plainEnglish}
                     </p>
                   </div>
                 </div>
 
-              </div>
+                {/* 3-Step Visual Process */}
+                <div className="flex flex-col gap-3">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 font-mono">HOW IT WORKS IN 3 STEPS</span>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {item.steps.map((step, sIdx) => (
+                      <div key={sIdx} className="bg-slate-900/40 border border-slate-800/60 p-4 rounded-2xl flex flex-col gap-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-mono font-bold text-slate-500">STEP {sIdx + 1}</span>
+                          <CheckCircle className={`w-3.5 h-3.5 ${theme.accent}`} />
+                        </div>
+                        <span className="text-xs font-bold text-slate-200">{step.title}</span>
+                        <p className="text-[11px] text-slate-400 leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-            </div>
-          ))}
+                {/* Simple Formula & Worked Example Box */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                  
+                  {/* Formula Box */}
+                  <div className={`p-5 rounded-2xl border flex flex-col gap-2 font-mono ${theme.box}`}>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">MATH FORMULA</span>
+                    <div className={`text-sm md:text-base font-bold py-1 ${theme.accent}`}>
+                      {item.formulaSimple}
+                    </div>
+                    <span className="text-[10px] text-slate-400 mt-1">Source data: {item.inputData}</span>
+                  </div>
+
+                  {/* Worked Example */}
+                  <div className="bg-slate-950/50 border border-slate-800/60 p-5 rounded-2xl flex flex-col gap-2">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">REAL DATA EXAMPLE ({item.exampleNation})</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-slate-300 font-semibold">Calculated Result:</span>
+                      <span className={`px-2.5 py-0.5 rounded-lg bg-slate-900 border border-slate-800 font-mono text-xs font-bold ${theme.accent}`}>
+                        {item.outputResult}
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            );
+          })}
         </div>
 
       </main>
