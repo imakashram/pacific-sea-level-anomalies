@@ -109,7 +109,7 @@ function CustomTrajectoryTooltip({ active, payload }: any) {
             <div className="flex justify-between items-center gap-6">
               <span className="text-white/60">Annual:</span>
               <span className="font-mono font-bold text-white/90">
-                {value >= 0 ? "+" : ""}{value.toFixed(1)}cm
+                {value >= 0 ? "+" : ""}{value.toFixed(1)} cm
               </span>
             </div>
           )}
@@ -117,7 +117,7 @@ function CustomTrajectoryTooltip({ active, payload }: any) {
             <div className="flex justify-between items-center gap-6">
               <span className="text-primary-light text-sky-400">5-Yr Avg:</span>
               <span className="font-mono font-bold text-sky-400">
-                {rollingAvg >= 0 ? "+" : ""}{rollingAvg.toFixed(1)}cm
+                {rollingAvg >= 0 ? "+" : ""}{rollingAvg.toFixed(1)} cm
               </span>
             </div>
           )}
@@ -140,7 +140,7 @@ function CustomDecadeTooltip({ active, payload }: any) {
         <div className="flex justify-between items-center gap-6">
           <span className="text-white/60">Avg Anomaly:</span>
           <span className="font-mono font-bold text-sky-400">
-            {data.avg >= 0 ? "+" : ""}{data.avg.toFixed(1)}cm
+            {data.avg >= 0 ? "+" : ""}{data.avg.toFixed(1)} cm
           </span>
         </div>
       </div>
@@ -331,7 +331,7 @@ export function ExploreAnyNation({
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <StatCard
                   label="Cumulative Rise"
-                  value={`+${(profile.stats.cumulativeRise * 100).toFixed(1)}cm`}
+                  value={`+${(profile.stats.cumulativeRise * 100).toFixed(1)} cm`}
                   themeClass="primary"
                   icon={
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -340,7 +340,7 @@ export function ExploreAnyNation({
                   }
                   vs={
                     regionalAvg
-                      ? vsStr(profile.stats.cumulativeRise * 100, regionalAvg.cumulativeRise * 100, "cm")
+                      ? vsStr(profile.stats.cumulativeRise * 100, regionalAvg.cumulativeRise * 100, " cm")
                       : undefined
                   }
                 />
@@ -361,7 +361,7 @@ export function ExploreAnyNation({
                 />
                 <StatCard
                   label="Volatility"
-                  value={`±${(profile.stats.volatility * 100).toFixed(1)}cm`}
+                  value={`±${(profile.stats.volatility * 100).toFixed(1)} cm`}
                   themeClass="orange"
                   icon={
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -370,7 +370,7 @@ export function ExploreAnyNation({
                   }
                   vs={
                     regionalAvg
-                      ? vsStr(profile.stats.volatility * 100, regionalAvg.volatility * 100, "cm")
+                      ? vsStr(profile.stats.volatility * 100, regionalAvg.volatility * 100, " cm")
                       : undefined
                   }
                 />
@@ -383,8 +383,8 @@ export function ExploreAnyNation({
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z" />
                     </svg>
                   }
-                  sub={`Peak: +${(profile.stats.peakValue * 100).toFixed(1)}cm`}
-                  vs={`Trough: ${profile.stats.troughYear} (${(profile.stats.troughValue * 100).toFixed(1)}cm)`}
+                  sub={`Peak: +${(profile.stats.peakValue * 100).toFixed(1)} cm`}
+                  vs={`Trough: ${profile.stats.troughYear} (${(profile.stats.troughValue * 100).toFixed(1)} cm)`}
                 />
               </div>
 
@@ -591,7 +591,7 @@ export function ExploreAnyNation({
                           const d1 = profile.decadeBreakdown[0]?.avg ?? 0;
                           const d3 = profile.decadeBreakdown[2]?.avg ?? 0;
                           const delta = d3 - d1;
-                          return `${delta > 0 ? "+" : ""}${(delta * 100).toFixed(1)}cm`;
+                          return `${delta > 0 ? "+" : ""}${(delta * 100).toFixed(1)} cm`;
                         })()}
                       </span>
                     </div>
