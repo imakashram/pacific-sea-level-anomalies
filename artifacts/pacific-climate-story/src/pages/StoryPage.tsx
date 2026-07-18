@@ -22,7 +22,6 @@ import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClust
 import { ChapterRankBump } from "@/components/story/ChapterRankBump";
 import { ChapterNationTreemap } from "@/components/story/ChapterNationTreemap";
 import { ChapterYoYBudget } from "@/components/story/ChapterYoYBudget";
-import { ChapterRadialImpact } from "@/components/story/ChapterRadialImpact";
 import { ChapterDumbbellLeap } from "@/components/story/ChapterDumbbellLeap";
 import { ChapterRegionalDonut } from "@/components/story/ChapterRegionalDonut";
 import { ChapterParallelCoords } from "@/components/story/ChapterParallelCoords";
@@ -70,7 +69,6 @@ export default function StoryPage() {
         <ChapterForecast />
         <ChapterRiskDashboard />
         <ChapterNationTreemap />
-        <ChapterRadialImpact />
 
         <div ref={sectionRef}>
           <PacificAtAGlance activeTab={activeTab} setActiveTab={setActiveTab} />

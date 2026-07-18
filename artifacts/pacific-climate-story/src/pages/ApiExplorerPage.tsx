@@ -222,7 +222,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Formats tree-nodes with hierarchical area indicators for regional representation.",
     category: "visuals",
-    usedIn: ["ChapterNationTreemap", "ChapterRadialImpact"]
+    usedIn: ["ChapterNationTreemap"]
   },
   {
     path: "/api/climate/yoy-budget",
