@@ -32,7 +32,7 @@ export function TheDataLandscape() {
 
       {/* Middle Statistics Cards Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="p-6 border border-slate-800/80 bg-card/20 backdrop-blur-sm rounded-xl flex flex-col gap-2 hover:border-slate-700 transition group">
+        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-primary/40 hover:shadow-[0_4px_20px_rgba(6,182,212,0.05)] hover:bg-slate-900/40 hover:-translate-y-1">
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs font-semibold uppercase tracking-wider">Time Window</span>
             <CalendarRange className="w-4 h-4 text-primary opacity-60 group-hover:opacity-100 transition" />
@@ -43,7 +43,7 @@ export function TheDataLandscape() {
           <span className="text-xs text-muted-foreground">30-year period analysis</span>
         </div>
 
-        <div className="p-6 border border-slate-800/80 bg-card/20 backdrop-blur-sm rounded-xl flex flex-col gap-2 hover:border-slate-700 transition group">
+        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-primary/40 hover:shadow-[0_4px_20px_rgba(6,182,212,0.05)] hover:bg-slate-900/40 hover:-translate-y-1">
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs font-semibold uppercase tracking-wider">Observations</span>
             <Database className="w-4 h-4 text-primary opacity-60 group-hover:opacity-100 transition" />
@@ -54,24 +54,24 @@ export function TheDataLandscape() {
           <span className="text-xs text-muted-foreground">Datapoints processed</span>
         </div>
 
-        <div className="p-6 border border-slate-800/80 bg-card/20 backdrop-blur-sm rounded-xl flex flex-col gap-2 hover:border-slate-700 transition group">
+        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-cyan-500/40 hover:shadow-[0_4px_20px_rgba(6,182,212,0.05)] hover:bg-cyan-950/5 hover:-translate-y-1">
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs font-semibold uppercase tracking-wider">Baseline Avg</span>
             <Waves className="w-4 h-4 text-cyan-500 opacity-60 group-hover:opacity-100 transition" />
           </div>
           <span className="text-3xl font-serif text-cyan-500/95 font-bold">
-            {isLoading ? "..." : `${baselineVal.toFixed(3)}m`}
+            {isLoading ? "..." : `${(baselineVal * 100).toFixed(1)}cm`}
           </span>
           <span className="text-xs text-muted-foreground">Reference level (1993–2002)</span>
         </div>
 
-        <div className="p-6 border border-primary/20 bg-primary/5 backdrop-blur-sm rounded-xl flex flex-col gap-2 hover:border-primary/30 transition group shadow-[0_0_15px_rgba(6,182,212,0.04)]">
+        <div className="p-6 bg-primary/5 backdrop-blur-md border border-primary/20 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-primary/40 hover:shadow-[0_4px_20px_rgba(6,182,212,0.05)] hover:bg-primary/10 hover:-translate-y-1">
           <div className="flex items-center justify-between text-primary mb-1">
             <span className="text-xs font-semibold uppercase tracking-wider">Recent Decade Avg</span>
             <TrendingUp className="w-4 h-4 text-primary opacity-80 group-hover:opacity-100 transition" />
           </div>
           <span className="text-3xl font-serif text-primary font-bold">
-            {isLoading ? "..." : `+${recentVal.toFixed(3)}m`}
+            {isLoading ? "..." : `+${(recentVal * 100).toFixed(1)}cm`}
           </span>
           <span className="text-xs text-primary/70">Third decade (2014–2023)</span>
         </div>
