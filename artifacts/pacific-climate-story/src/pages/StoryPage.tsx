@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useInView } from "framer-motion";
 import { HeroSection } from "@/components/story/HeroSection";
-import { Chapter1DataLandscape } from "@/components/story/Chapter1DataLandscape";
+import { TheDataLandscape } from "@/components/story/TheDataLandscape";
 import { Chapter2RisingTide } from "@/components/story/Chapter2RisingTide";
 import { ChapterDecadeAnalysis } from "@/components/story/ChapterDecadeAnalysis";
 import { ChapterRateOfChange } from "@/components/story/ChapterRateOfChange";
@@ -48,7 +48,7 @@ export default function StoryPage() {
       {!hideDecorations && <OceanDecorations />}
       <main className="pt-8">
         <HeroSection />
-        <Chapter1DataLandscape />
+        <TheDataLandscape />
         <Chapter2RisingTide />
         <ChapterDecadeAnalysis />
         <ChapterRateOfChange />

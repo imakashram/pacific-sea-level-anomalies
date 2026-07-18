@@ -2,7 +2,7 @@ import { StorySection } from "./StorySection";
 import { useGetClimateOverview } from "@workspace/api-client-react";
 import { CalendarRange, Database, Waves, TrendingUp, ExternalLink } from "lucide-react";
 
-export function Chapter1DataLandscape() {
+export function TheDataLandscape() {
   const { data: overview, isLoading } = useGetClimateOverview();
 
   const baselineVal = overview?.baselineDecadeAvg ?? 0;
