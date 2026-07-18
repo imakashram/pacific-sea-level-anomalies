@@ -49,7 +49,7 @@ export function TheDataLandscape() {
             <Waves className="w-4 h-4 text-cyan-500 opacity-60 group-hover:opacity-100 transition" />
           </div>
           <span className="text-3xl font-serif text-cyan-500/95 font-bold">
-            {isLoading ? "..." : `${(baselineVal * 100).toFixed(1)}cm`}
+            {isLoading ? "..." : `${(baselineVal * 100).toFixed(1)} cm`}
           </span>
           <span className="text-xs text-muted-foreground">Reference level (1993–2002)</span>
         </div>
@@ -60,7 +60,7 @@ export function TheDataLandscape() {
             <TrendingUp className="w-4 h-4 text-primary opacity-80 group-hover:opacity-100 transition" />
           </div>
           <span className="text-3xl font-serif text-primary font-bold">
-            {isLoading ? "..." : `+${(recentVal * 100).toFixed(1)}cm`}
+            {isLoading ? "..." : `+${(recentVal * 100).toFixed(1)} cm`}
           </span>
           <span className="text-xs text-primary/70">Third decade (2014–2023)</span>
         </div>
