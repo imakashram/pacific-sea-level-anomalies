@@ -392,10 +392,10 @@ export function ExploreAnyNation({
                 {/* 30-year trajectory with peak annotation */}
                 <div className="lg:col-span-2 bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-6">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
                       30-Year Anomaly Trajectory
                     </h4>
-                    <div className="flex gap-4 text-xs text-muted-foreground font-medium">
+                    <div className="flex gap-4 text-xs text-muted-foreground font-mono">
                       <span className="flex items-center gap-1.5">
                         <span className="w-3.5 h-0.5 bg-muted-foreground/45 inline-block" />
                         Annual
@@ -440,7 +440,7 @@ export function ExploreAnyNation({
                           stroke="rgba(255,255,255,0.3)"
                           tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
                           tickLine={false}
-                          label={{ value: "Year", position: "insideBottom", offset: -12, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
+                          label={{ value: "Year", position: "insideBottom", offset: -12, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold', fontFamily: 'monospace' } }}
                         />
                         <YAxis
                           stroke="rgba(255,255,255,0.3)"
@@ -448,7 +448,7 @@ export function ExploreAnyNation({
                           tickFormatter={(val) => val.toFixed(1)}
                           tickLine={false}
                           width={55}
-                          label={{ value: "Anomaly (cm)", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
+                          label={{ value: "Anomaly (cm)", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold', fontFamily: 'monospace' } }}
                         />
                         <RechartsTooltip
                           content={<CustomTrajectoryTooltip />}
@@ -522,7 +522,7 @@ export function ExploreAnyNation({
                 {/* Decade averages bar */}
                 <div className="bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
                   <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-6 font-sans">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-6 font-mono">
                       Decadal Comparisons
                     </h4>
                     <div className="h-[180px]">
@@ -544,16 +544,16 @@ export function ExploreAnyNation({
                             tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
                             tickLine={false}
                             tickFormatter={(v) => v.toFixed(1)}
-                            label={{ value: "Avg Anomaly (cm)", position: "insideBottom", offset: -12, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
+                            label={{ value: "Avg Anomaly (cm)", position: "insideBottom", offset: -12, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold', fontFamily: 'monospace' } }}
                           />
                           <YAxis
                             dataKey="label"
                             type="category"
                             stroke="rgba(255,255,255,0.3)"
-                            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.8)" }}
+                            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.8)", fontFamily: "monospace" }}
                             width={85}
                             tickLine={false}
-                            label={{ value: "Decade", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
+                            label={{ value: "Decade", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold', fontFamily: 'monospace' } }}
                           />
                           <RechartsTooltip
                             cursor={{ fill: "rgba(255,255,255,0.03)" }}
