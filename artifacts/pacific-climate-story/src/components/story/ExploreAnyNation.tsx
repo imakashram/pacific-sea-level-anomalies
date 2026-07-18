@@ -39,45 +39,52 @@ function StatCard({
       text: "text-primary",
       bg: "bg-primary/10",
       border: "border-primary/20",
-      glow: "hover:border-primary/40 hover:shadow-primary/5"
+      glow: "hover:border-primary/40 hover:shadow-primary/5 hover:bg-primary/5"
     },
     emerald: {
       text: "text-emerald-400",
       bg: "bg-emerald-500/10",
       border: "border-emerald-500/20",
-      glow: "hover:border-emerald-500/40 hover:shadow-emerald-500/5"
+      glow: "hover:border-emerald-500/40 hover:shadow-emerald-500/5 hover:bg-emerald-950/5"
     },
     orange: {
       text: "text-orange-400",
       bg: "bg-orange-500/10",
       border: "border-orange-500/20",
-      glow: "hover:border-orange-500/40 hover:shadow-orange-500/5"
+      glow: "hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5"
     },
     purple: {
       text: "text-purple-400",
       bg: "bg-purple-500/10",
       border: "border-purple-500/20",
-      glow: "hover:border-purple-500/40 hover:shadow-purple-500/5"
+      glow: "hover:border-purple-500/40 hover:shadow-purple-500/5 hover:bg-purple-950/5"
     }
   };
 
   const currentTheme = themes[themeClass];
 
   return (
-    <div className={`group bg-card/25 backdrop-blur-md p-5 rounded-2xl border ${currentTheme.border} shadow-sm transition-all duration-300 ${currentTheme.glow} hover:-translate-y-1`}>
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{label}</span>
+    <div className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${currentTheme.glow} hover:-translate-y-1`}>
+      <div className="flex items-center justify-between text-muted-foreground mb-1">
+        <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+          {label}
+        </span>
+        {icon && (
+          <div className={`${currentTheme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
+            {icon}
+          </div>
+        )}
       </div>
-      <div className={`text-2xl md:text-3xl font-serif font-bold ${currentTheme.text}`}>
+      <div className={`text-3xl font-serif font-bold tracking-tight ${currentTheme.text}`}>
         {value}
       </div>
       {(sub || vs) && (
-        <div className="text-xs mt-3 border-t border-border/10 pt-2 flex flex-col gap-1">
-          {sub && <div className="text-muted-foreground font-sans">{sub}</div>}
+        <div className="text-xs text-muted-foreground mt-1 leading-relaxed flex flex-col gap-0.5">
+          {sub && <div>{sub}</div>}
           {vs && (
-            <span className="text-muted-foreground font-medium leading-none">
+            <div className="font-medium">
               {vs.replace(/[✓⚠]/g, '').trim()}
-            </span>
+            </div>
           )}
         </div>
       )}
@@ -102,7 +109,7 @@ function CustomTrajectoryTooltip({ active, payload }: any) {
             <div className="flex justify-between items-center gap-6">
               <span className="text-white/60">Annual:</span>
               <span className="font-mono font-bold text-white/90">
-                {value >= 0 ? "+" : ""}{value.toFixed(3)}m
+                {value >= 0 ? "+" : ""}{value.toFixed(1)}cm
               </span>
             </div>
           )}
@@ -110,7 +117,7 @@ function CustomTrajectoryTooltip({ active, payload }: any) {
             <div className="flex justify-between items-center gap-6">
               <span className="text-primary-light text-sky-400">5-Yr Avg:</span>
               <span className="font-mono font-bold text-sky-400">
-                {rollingAvg >= 0 ? "+" : ""}{rollingAvg.toFixed(3)}m
+                {rollingAvg >= 0 ? "+" : ""}{rollingAvg.toFixed(1)}cm
               </span>
             </div>
           )}
@@ -133,7 +140,7 @@ function CustomDecadeTooltip({ active, payload }: any) {
         <div className="flex justify-between items-center gap-6">
           <span className="text-white/60">Avg Anomaly:</span>
           <span className="font-mono font-bold text-sky-400">
-            {data.avg >= 0 ? "+" : ""}{data.avg.toFixed(4)}m
+            {data.avg >= 0 ? "+" : ""}{data.avg.toFixed(1)}cm
           </span>
         </div>
       </div>
@@ -181,12 +188,24 @@ export function ExploreAnyNation({
 
   const peakYear = profile?.stats.peakYear;
 
+  const timeSeriesCm = profile?.timeSeries.map((d) => ({
+    ...d,
+    value: d.value * 100,
+    rollingAvg: d.rollingAvg !== undefined ? d.rollingAvg * 100 : undefined,
+  })) || [];
+
+  const decadeBreakdownCm = profile?.decadeBreakdown.map((d) => ({
+    ...d,
+    avg: d.avg * 100,
+  })) || [];
+
   const vsStr = (val: number, avg: number, unit: string, higherIsBad = true) => {
     const diff = val - avg;
     const pct = Math.abs(diff / avg) * 100;
     const dir = diff > 0 ? "above" : "below";
     const icon = (diff > 0) === higherIsBad ? "⚠" : "✓";
-    return `${icon} ${pct.toFixed(0)}% ${dir} regional avg (${avg.toFixed(3)}${unit})`;
+    const decimals = unit.trim() === "cm" ? 1 : 3;
+    return `${icon} ${pct.toFixed(0)}% ${dir} regional avg (${avg.toFixed(decimals)}${unit})`;
   };
 
   const mainContent = (
@@ -312,7 +331,7 @@ export function ExploreAnyNation({
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <StatCard
                   label="Cumulative Rise"
-                  value={`+${profile.stats.cumulativeRise.toFixed(3)}m`}
+                  value={`+${(profile.stats.cumulativeRise * 100).toFixed(1)}cm`}
                   themeClass="primary"
                   icon={
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -321,7 +340,7 @@ export function ExploreAnyNation({
                   }
                   vs={
                     regionalAvg
-                      ? vsStr(profile.stats.cumulativeRise, regionalAvg.cumulativeRise, "m")
+                      ? vsStr(profile.stats.cumulativeRise * 100, regionalAvg.cumulativeRise * 100, "cm")
                       : undefined
                   }
                 />
@@ -342,7 +361,7 @@ export function ExploreAnyNation({
                 />
                 <StatCard
                   label="Volatility"
-                  value={`±${profile.stats.volatility.toFixed(3)}m`}
+                  value={`±${(profile.stats.volatility * 100).toFixed(1)}cm`}
                   themeClass="orange"
                   icon={
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -351,7 +370,7 @@ export function ExploreAnyNation({
                   }
                   vs={
                     regionalAvg
-                      ? vsStr(profile.stats.volatility, regionalAvg.volatility, "m")
+                      ? vsStr(profile.stats.volatility * 100, regionalAvg.volatility * 100, "cm")
                       : undefined
                   }
                 />
@@ -364,8 +383,8 @@ export function ExploreAnyNation({
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z" />
                     </svg>
                   }
-                  sub={`Peak: +${profile.stats.peakValue.toFixed(3)}m`}
-                  vs={`Trough: ${profile.stats.troughYear} (${profile.stats.troughValue.toFixed(3)}m)`}
+                  sub={`Peak: +${(profile.stats.peakValue * 100).toFixed(1)}cm`}
+                  vs={`Trough: ${profile.stats.troughYear} (${(profile.stats.troughValue * 100).toFixed(1)}cm)`}
                 />
               </div>
 
@@ -390,7 +409,7 @@ export function ExploreAnyNation({
                   <div className="h-[280px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <ComposedChart
-                        data={profile.timeSeries}
+                        data={timeSeriesCm}
                         margin={{ top: 35, right: 20, left: 20, bottom: 25 }}
                       >
                         <defs>
@@ -426,10 +445,10 @@ export function ExploreAnyNation({
                         <YAxis
                           stroke="rgba(255,255,255,0.3)"
                           tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
-                          tickFormatter={(val) => val.toFixed(2)}
+                          tickFormatter={(val) => val.toFixed(1)}
                           tickLine={false}
                           width={55}
-                          label={{ value: "Anomaly (m)", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
+                          label={{ value: "Anomaly (cm)", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
                         />
                         <RechartsTooltip
                           content={<CustomTrajectoryTooltip />}
@@ -443,7 +462,7 @@ export function ExploreAnyNation({
                         {/* Regional average line */}
                         {regionalAvg && (
                           <ReferenceLine
-                            y={regionalAvg.mean}
+                            y={regionalAvg.mean * 100}
                             stroke="#f97316"
                             strokeDasharray="4 3"
                             strokeWidth={1}
@@ -481,7 +500,7 @@ export function ExploreAnyNation({
                         {peakYear && (
                           <ReferenceDot
                             x={peakYear}
-                            y={profile.stats.peakValue}
+                            y={profile.stats.peakValue * 100}
                             r={5}
                             fill="hsl(var(--primary))"
                             stroke="#fff"
@@ -509,7 +528,7 @@ export function ExploreAnyNation({
                     <div className="h-[180px]">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart
-                          data={profile.decadeBreakdown}
+                          data={decadeBreakdownCm}
                           layout="vertical"
                           margin={{ top: 5, right: 10, left: 20, bottom: 25 }}
                         >
@@ -524,8 +543,8 @@ export function ExploreAnyNation({
                             stroke="rgba(255,255,255,0.3)"
                             tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
                             tickLine={false}
-                            tickFormatter={(v) => v.toFixed(2)}
-                            label={{ value: "Avg Anomaly (m)", position: "insideBottom", offset: -12, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
+                            tickFormatter={(v) => v.toFixed(1)}
+                            label={{ value: "Avg Anomaly (cm)", position: "insideBottom", offset: -12, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' } }}
                           />
                           <YAxis
                             dataKey="label"
@@ -542,7 +561,7 @@ export function ExploreAnyNation({
                           />
                           <ReferenceLine x={0} stroke="rgba(255,255,255,0.1)" />
                           <Bar dataKey="avg" name="Avg Anomaly" radius={[0, 4, 4, 0]} barSize={12}>
-                            {profile.decadeBreakdown.map((_, index) => {
+                            {decadeBreakdownCm.map((_, index) => {
                               const colors = [
                                 "url(#barColorD1)",
                                 "url(#barColorD2)",
@@ -572,7 +591,7 @@ export function ExploreAnyNation({
                           const d1 = profile.decadeBreakdown[0]?.avg ?? 0;
                           const d3 = profile.decadeBreakdown[2]?.avg ?? 0;
                           const delta = d3 - d1;
-                          return `${delta > 0 ? "+" : ""}${delta.toFixed(4)}m`;
+                          return `${delta > 0 ? "+" : ""}${(delta * 100).toFixed(1)}cm`;
                         })()}
                       </span>
                     </div>

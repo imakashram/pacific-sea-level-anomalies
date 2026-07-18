@@ -15,7 +15,7 @@ import { ChapterCumulativeRise } from "@/components/story/ChapterCumulativeRise"
 import { ChapterForecast } from "@/components/story/ChapterForecast";
 import { ChapterRiskDashboard } from "@/components/story/ChapterRiskDashboard";
 
-import { ThePacificAtAGlance } from "@/components/story/ThePacificAtAGlance";
+import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
 import { WhatThisMeans } from "@/components/story/WhatThisMeans";
 import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
 import { ChapterBaselineBreach } from "@/components/story/ChapterBaselineBreach";
@@ -75,7 +75,7 @@ export default function StoryPage() {
         <ChapterBaselineBreach />
 
         <div ref={sectionRef}>
-          <ThePacificAtAGlance activeTab={activeTab} setActiveTab={setActiveTab} />
+          <PacificAtAGlance activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
         <WhatThisMeans />
       </main>

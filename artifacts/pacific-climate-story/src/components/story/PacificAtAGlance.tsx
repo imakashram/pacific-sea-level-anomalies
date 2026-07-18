@@ -73,7 +73,7 @@ function downloadCSV(rows: any[]) {
   URL.revokeObjectURL(url);
 }
 
-export function ThePacificAtAGlance({
+export function PacificAtAGlance({
   activeTab,
   setActiveTab
 }: {
@@ -382,12 +382,12 @@ export function ThePacificAtAGlance({
                                   </span>
                                 )}
                               </td>
-                              <td className="px-4 py-3 text-muted-foreground font-mono">{row.mean.toFixed(3)}m</td>
-                              <td className="px-4 py-3 text-muted-foreground font-mono">±{row.volatility.toFixed(3)}m</td>
-                              <td className="px-4 py-3 font-bold text-foreground font-mono">{row.cumulativeRise > 0 ? "+" : ""}{row.cumulativeRise.toFixed(3)}m</td>
+                              <td className="px-4 py-3 text-muted-foreground font-mono">{(row.mean * 100).toFixed(1)}cm</td>
+                              <td className="px-4 py-3 text-muted-foreground font-mono">±{(row.volatility * 100).toFixed(1)}cm</td>
+                              <td className="px-4 py-3 font-bold text-foreground font-mono">{row.cumulativeRise > 0 ? "+" : ""}{(row.cumulativeRise * 100).toFixed(1)}cm</td>
                               <td className="px-4 py-3 text-muted-foreground font-mono">{(row.slope * 1000).toFixed(2)}<span className="text-xs ml-0.5">mm/yr</span></td>
                               <td className="px-4 py-3 text-muted-foreground font-mono whitespace-nowrap">
-                                {row.peakValue.toFixed(3)}m
+                                {(row.peakValue * 100).toFixed(1)}cm
                                 <span className="text-xs opacity-40 ml-1">({row.peakYear})</span>
                               </td>
                               <td className="px-4 py-3">
@@ -395,7 +395,7 @@ export function ThePacificAtAGlance({
                                   className="font-mono text-sm font-semibold"
                                   style={{ color: row.decadeAcceleration > 0 ? "#f97316" : "#22c55e" }}
                                 >
-                                  {row.decadeAcceleration > 0 ? "+" : ""}{row.decadeAcceleration.toFixed(3)}m
+                                  {row.decadeAcceleration > 0 ? "+" : ""}{(row.decadeAcceleration * 100).toFixed(1)}cm
                                 </span>
                               </td>
                             </tr>
