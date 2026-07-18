@@ -20,7 +20,6 @@ import { ChapterRiskDashboard } from "@/components/story/ChapterRiskDashboard";
 import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
 import { WhatThisMeans } from "@/components/story/WhatThisMeans";
 import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
-import { ChapterBaselineBreach } from "@/components/story/ChapterBaselineBreach";
 import { ChapterRankBump } from "@/components/story/ChapterRankBump";
 import { ChapterNationTreemap } from "@/components/story/ChapterNationTreemap";
 import { ChapterYoYBudget } from "@/components/story/ChapterYoYBudget";
@@ -74,7 +73,6 @@ export default function StoryPage() {
         <ChapterRiskDashboard />
         <ChapterNationTreemap />
         <ChapterRadialImpact />
-        <ChapterBaselineBreach />
 
         <div ref={sectionRef}>
           <PacificAtAGlance activeTab={activeTab} setActiveTab={setActiveTab} />
