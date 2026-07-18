@@ -20,7 +20,6 @@ import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
 import { WhatThisMeans } from "@/components/story/WhatThisMeans";
 import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
 import { ChapterRankBump } from "@/components/story/ChapterRankBump";
-import { ChapterNationTreemap } from "@/components/story/ChapterNationTreemap";
 import { ChapterDumbbellLeap } from "@/components/story/ChapterDumbbellLeap";
 import { ChapterRegionalDonut } from "@/components/story/ChapterRegionalDonut";
 import { ChapterThresholdFunnel } from "@/components/story/ChapterThresholdFunnel";
@@ -64,7 +63,6 @@ export default function StoryPage() {
         <ChapterLollipop />
         <ChapterForecast />
         <ChapterRiskDashboard />
-        <ChapterNationTreemap />
 
         <div ref={sectionRef}>
           <PacificAtAGlance activeTab={activeTab} setActiveTab={setActiveTab} />
