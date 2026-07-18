@@ -6,7 +6,6 @@ import { HeroSection } from "@/components/story/HeroSection";
 import { TheDataLandscape } from "@/components/story/TheDataLandscape";
 import { TheOceanIsRising } from "@/components/story/TheOceanIsRising";
 import { ChapterDecadeAnalysis } from "@/components/story/ChapterDecadeAnalysis";
-import { ChapterRateOfChange } from "@/components/story/ChapterRateOfChange";
 import { Chapter3ElNino } from "@/components/story/Chapter3ElNino";
 import { ChapterENSOSensitivity } from "@/components/story/ChapterENSOSensitivity";
 import { ChapterVolatility } from "@/components/story/ChapterVolatility";
@@ -52,7 +51,6 @@ export default function StoryPage() {
         <TheDataLandscape />
         <TheOceanIsRising />
         <ChapterDecadeAnalysis />
-        <ChapterRateOfChange />
         <Chapter3ElNino />
         <ChapterENSOSensitivity />
         <ChapterVolatility />

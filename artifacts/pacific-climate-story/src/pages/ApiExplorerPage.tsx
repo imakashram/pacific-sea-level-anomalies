@@ -90,7 +90,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Calculates the yearly linear trend rate of sea level rise (in mm/year) for all territories.",
     category: "trends",
-    usedIn: ["ChapterRateOfChange"]
+    usedIn: []
   },
   {
     path: "/api/climate/volatility",
