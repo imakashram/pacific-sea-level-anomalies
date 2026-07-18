@@ -115,7 +115,7 @@ export function ChapterStreamGraph() {
             Tides of Three Worlds
           </h2>
           <p className="text-lg text-white/60 max-w-2xl mx-auto">
-            Thirty years of sea level rise, seen as three flowing rivers — one
+            30 years of sea level rise, seen as three flowing rivers — one
             per geographic region. The width of each stream at any year reflects
             that region's average anomaly. Watch how the streams swell together
             after 2012.
