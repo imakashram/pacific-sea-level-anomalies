@@ -21,7 +21,6 @@ import { WhatThisMeans } from "@/components/story/WhatThisMeans";
 import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
 import { ChapterRankBump } from "@/components/story/ChapterRankBump";
 import { ChapterNationTreemap } from "@/components/story/ChapterNationTreemap";
-import { ChapterYoYBudget } from "@/components/story/ChapterYoYBudget";
 import { ChapterDumbbellLeap } from "@/components/story/ChapterDumbbellLeap";
 import { ChapterRegionalDonut } from "@/components/story/ChapterRegionalDonut";
 import { ChapterParallelCoords } from "@/components/story/ChapterParallelCoords";
@@ -54,7 +53,6 @@ export default function StoryPage() {
         <ChapterENSOSensitivity />
         <ChapterVolatility />
         <ChapterAcceleration />
-        <ChapterYoYBudget />
         <ChapterDumbbellLeap />
         <Chapter4NationsSideBySide />
         <Chapter5Heatmap />

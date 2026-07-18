@@ -229,7 +229,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Calculates yearly sea level rise budget ratios for each territory.",
     category: "visuals",
-    usedIn: ["ChapterYoYBudget"]
+    usedIn: []
   },
   {
     path: "/api/climate/anomaly-profiles",
