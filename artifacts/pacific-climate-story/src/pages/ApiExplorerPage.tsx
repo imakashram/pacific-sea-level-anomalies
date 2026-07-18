@@ -250,7 +250,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Fetches detailed grid metrics for the Side-by-Side comparison panel.",
     category: "visuals",
-    usedIn: ["Chapter4NationsSideBySide", "ChapterParallelCoords"]
+    usedIn: ["Chapter4NationsSideBySide"]
   },
   {
     path: "/api/climate/threshold-funnel",

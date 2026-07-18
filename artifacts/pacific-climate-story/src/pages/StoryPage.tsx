@@ -23,7 +23,6 @@ import { ChapterRankBump } from "@/components/story/ChapterRankBump";
 import { ChapterNationTreemap } from "@/components/story/ChapterNationTreemap";
 import { ChapterDumbbellLeap } from "@/components/story/ChapterDumbbellLeap";
 import { ChapterRegionalDonut } from "@/components/story/ChapterRegionalDonut";
-import { ChapterParallelCoords } from "@/components/story/ChapterParallelCoords";
 import { ChapterThresholdFunnel } from "@/components/story/ChapterThresholdFunnel";
 import { ChapterStreamGraph } from "@/components/story/ChapterStreamGraph";
 import { ChapterLollipop } from "@/components/story/ChapterLollipop";
@@ -60,7 +59,6 @@ export default function StoryPage() {
         <ChapterRegionalClusters />
         <ChapterRegionalDonut />
         <ChapterRankBump />
-        <ChapterParallelCoords />
         <ChapterThresholdFunnel />
         <ChapterStreamGraph />
         <ChapterLollipop />
