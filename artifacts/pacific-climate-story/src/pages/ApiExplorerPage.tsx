@@ -243,7 +243,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Provides decadal share metrics grouped by sub-region.",
     category: "visuals",
-    usedIn: ["ChapterRegionalDonut"]
+    usedIn: []
   },
   {
     path: "/api/climate/nation-metrics",

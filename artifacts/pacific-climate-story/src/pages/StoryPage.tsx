@@ -21,7 +21,6 @@ import { WhatThisMeans } from "@/components/story/WhatThisMeans";
 import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
 import { ChapterRankBump } from "@/components/story/ChapterRankBump";
 import { ChapterDumbbellLeap } from "@/components/story/ChapterDumbbellLeap";
-import { ChapterRegionalDonut } from "@/components/story/ChapterRegionalDonut";
 import { ChapterThresholdFunnel } from "@/components/story/ChapterThresholdFunnel";
 import { ChapterStreamGraph } from "@/components/story/ChapterStreamGraph";
 import { ChapterLollipop } from "@/components/story/ChapterLollipop";
@@ -56,7 +55,6 @@ export default function StoryPage() {
         <Chapter5Heatmap />
         <ChapterCumulativeRise />
         <ChapterRegionalClusters />
-        <ChapterRegionalDonut />
         <ChapterRankBump />
         <ChapterThresholdFunnel />
         <ChapterStreamGraph />
