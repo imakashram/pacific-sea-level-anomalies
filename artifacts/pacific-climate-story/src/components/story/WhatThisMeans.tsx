@@ -2,6 +2,7 @@ import { StorySection } from "./StorySection";
 import { motion, useInView } from "framer-motion";
 import { useGetDecadeAnalysis, useGetAcceleration, useGetClimateOverview, useGetThresholdCrossings, useGetRankings } from "@workspace/api-client-react";
 import { useEffect, useRef, useState } from "react";
+import { ChevronsUp, Waves, AlertCircle, AlertTriangle, ArrowUpCircle, Gauge } from "lucide-react";
 
 function AnimatedCount({ target, decimals = 0, prefix = "", suffix = "" }: { target: number; decimals?: number; prefix?: string; suffix?: string }) {
   const [value, setValue] = useState(0);
@@ -40,7 +41,7 @@ const cardThemes: Record<string, { text: string; bg: string; border: string; glo
   "text-[#a855f7]": { text: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20", glow: "hover:border-purple-500/40 hover:shadow-purple-500/5 hover:bg-purple-950/5" }
 };
 
-export function ChapterWhatThisMeans() {
+export function WhatThisMeans() {
   const { data: accelData } = useGetAcceleration();
   const { data: decadeData } = useGetDecadeAnalysis();
   const { data: overview } = useGetClimateOverview();
@@ -82,37 +83,40 @@ export function ChapterWhatThisMeans() {
         {/* Animated counter grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-16">
           {[
-            { value: acceleratingCount, of: totalCount, label: "Nations Accelerating", color: "text-[#f43f5e]", desc: "are not just rising but rising faster", decimals: 0, prefix: "", suffix: "" },
-            { value: shift * 100, of: null, label: "Baseline Shift", color: "text-[#f97316]", desc: "average rise from Decade 1 to Decade 3", decimals: 1, prefix: "+", suffix: "cm" },
-            { value: crossedZero, of: null, label: "Nations Above Zero", color: "text-[#eab308]", desc: "have crossed into persistent positive anomaly", decimals: 0, prefix: "", suffix: "" },
-            { value: crossedTenth, of: null, label: "Nations at +0.1m", color: "text-[#ef4444]", desc: "have breached the 10cm threshold", decimals: 0, prefix: "", suffix: "" },
-            { value: maxRiseVal * 100, of: null, label: "Peak Nation Rise", color: "text-[#ef4444]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: "cm" },
-            { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "Fastest Rise", color: "text-[#a855f7]", desc: `${highestSlope?.country ?? "…"} - fastest upward trend`, decimals: 2, prefix: "+", suffix: "mm/yr" },
-          ].map(({ value, of, label, color, desc, decimals, prefix, suffix }, i) => {
+            { value: acceleratingCount, of: totalCount, label: "Nations Accelerating", color: "text-[#f43f5e]", desc: "are not just rising but rising faster", decimals: 0, prefix: "", suffix: "", icon: ChevronsUp },
+            { value: shift * 100, of: null, label: "Baseline Shift", color: "text-[#f97316]", desc: "average rise from Decade 1 to Decade 3", decimals: 1, prefix: "+", suffix: "cm", icon: Waves },
+            { value: crossedZero, of: null, label: "Nations Above Zero", color: "text-[#eab308]", desc: "have crossed into persistent positive anomaly", decimals: 0, prefix: "", suffix: "", icon: AlertCircle },
+            { value: crossedTenth, of: null, label: "Nations at +10cm", color: "text-[#ef4444]", desc: "have breached the 10cm threshold", decimals: 0, prefix: "", suffix: "", icon: AlertTriangle },
+            { value: maxRiseVal * 100, of: null, label: "Peak Nation Rise", color: "text-[#ef4444]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: "cm", icon: ArrowUpCircle },
+            { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "Fastest Rise", color: "text-[#a855f7]", desc: `${highestSlope?.country ?? "…"} - fastest upward trend`, decimals: 2, prefix: "+", suffix: "mm/yr", icon: Gauge },
+          ].map(({ value, of, label, color, desc, decimals, prefix, suffix, icon: Icon }, i) => {
             const theme = cardThemes[color] || { text: color, bg: "bg-card/10", border: "border-border/30", glow: "hover:border-border/40" };
             return (
               <motion.div
                 key={label}
-                className={`p-5 bg-card/25 backdrop-blur-md border ${theme.border} rounded-2xl flex flex-col justify-between transition-all duration-300 group shadow-sm ${theme.glow} hover:-translate-y-1`}
+                className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${theme.glow} hover:-translate-y-1`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.6 }}
               >
-                <div>
-                  <span className="text-xs uppercase tracking-wider text-muted-foreground font-semibold group-hover:text-foreground transition-colors duration-300">{label}</span>
-                  <div className={`text-2xl md:text-3xl font-serif font-bold mt-2 tracking-tight ${theme.text}`}>
-                    <AnimatedCount target={value} decimals={decimals} prefix={prefix} suffix={suffix} />
-                    {of != null && (
-                      <span className="text-sm text-muted-foreground/60 font-mono font-normal ml-0.5">
-                        /{of}
-                      </span>
-                    )}
-                  </div>
+                <div className="flex items-center justify-between text-muted-foreground mb-1">
+                  <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                    {label}
+                  </span>
+                  <Icon className={`w-4 h-4 ${theme.text} opacity-60 group-hover:opacity-100 transition-all duration-300`} />
                 </div>
-                <p className="text-xs text-muted-foreground/75 mt-3 leading-relaxed border-t border-border/10 pt-2">
+                <div className={`text-3xl font-serif font-bold tracking-tight ${theme.text}`}>
+                  <AnimatedCount target={value} decimals={decimals} prefix={prefix} suffix={suffix} />
+                  {of != null && (
+                    <span className="text-sm text-muted-foreground/60 font-mono font-normal ml-0.5">
+                      /{of}
+                    </span>
+                  )}
+                </div>
+                <span className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   {desc}
-                </p>
+                </span>
               </motion.div>
             );
           })}
