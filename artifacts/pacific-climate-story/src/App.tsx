@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import StoryPage from "@/pages/StoryPage";
 import ApiExplorerPage from "@/pages/ApiExplorerPage";
+import HowItIsCalculatedPage from "@/pages/HowItIsCalculatedPage";
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,9 @@ function Router() {
       <Route path="/" component={StoryPage} />
       <Route path="/explorer" component={ApiExplorerPage} />
       <Route path="/api-explorer" component={ApiExplorerPage} />
+      <Route path="/how-it-is-calculated" component={HowItIsCalculatedPage} />
+      <Route path="/calculations" component={HowItIsCalculatedPage} />
+      <Route path="/methodology" component={HowItIsCalculatedPage} />
       <Route component={NotFound} />
     </Switch>
   );

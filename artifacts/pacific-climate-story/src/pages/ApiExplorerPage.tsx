@@ -13,7 +13,8 @@ import {
   AlertTriangle, 
   Layers,
   Code,
-  Layout
+  Layout,
+  Calculator
 } from "lucide-react";
 
 interface ApiEndpoint {
@@ -395,24 +396,35 @@ export default function ApiExplorerPage() {
       <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] rounded-full bg-blue-500/5 blur-[150px] pointer-events-none" />
 
       {/* Header Bar */}
-      <header className="sticky top-0 z-50 bg-[#070913]/80 backdrop-blur-xl border-b border-slate-800/60 shadow-lg px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => setLocation("/")}
-            className="flex items-center justify-center w-9 h-9 rounded-full bg-slate-900 border border-slate-800/80 hover:border-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
+            title="Return to Climate Story"
           >
             <ArrowLeft className="w-4 h-4" />
+            <span>Back to Story</span>
           </button>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-mono text-[10px] font-semibold tracking-wider">DEV PORTAL</span>
+          <div className="h-5 w-px bg-slate-800" />
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+              <Terminal className="w-4 h-4" />
             </div>
-            <h1 className="text-xl font-bold font-serif bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">Pacific Climate API Explorer</h1>
+            <h1 className="text-xl font-bold font-serif text-slate-100 tracking-tight">
+              Pacific Climate API Explorer
+            </h1>
           </div>
         </div>
-        <div className="flex items-center gap-4 text-xs text-slate-500">
-          <span className="flex items-center gap-1.5"><Cpu className="w-3.5 h-3.5 text-cyan-500" /> Database Status: <span className="text-emerald-400 font-bold">ONLINE</span></span>
-        </div>
+
+        {/* Navigation Link to Methodology Guide */}
+        <button
+          onClick={() => setLocation("/how-it-is-calculated")}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
+        >
+          <Calculator className="w-4 h-4 text-cyan-400" />
+          <span>How It's Calculated</span>
+        </button>
       </header>
 
       <main className="max-w-[1600px] mx-auto p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100vh-80px)] overflow-hidden">
@@ -432,29 +444,11 @@ export default function ApiExplorerPage() {
             />
           </div>
 
-          {/* Category Filters Pills */}
-          <div className="flex flex-wrap gap-1.5 pb-2 border-b border-slate-800/40">
-            {(["all", "core", "trends", "enso", "risk", "visuals"] as const).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategoryFilter(cat)}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition ${
-                  categoryFilter === cat 
-                    ? "bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold" 
-                    : "bg-slate-900/20 border border-slate-900 text-slate-400 hover:bg-slate-800/40 hover:text-slate-300"
-                }`}
-              >
-                {categoryIcons[cat]}
-                {cat}
-              </button>
-            ))}
-          </div>
-
           {/* Endpoint List scroll box */}
           <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-2 scrollbar-thin">
             {filteredEndpoints.length === 0 ? (
               <div className="py-12 text-center text-slate-500 italic text-xs">
-                No endpoints found matching filters.
+                No endpoints found matching search.
               </div>
             ) : (
               filteredEndpoints.map((ep) => {
@@ -473,12 +467,10 @@ export default function ApiExplorerPage() {
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-[9px] font-bold tracking-wider">{ep.method}</span>
-                      <span className="text-[9px] text-slate-500 uppercase font-mono tracking-wider">{ep.category}</span>
+                      <span className={`font-mono text-xs font-semibold overflow-hidden text-ellipsis whitespace-nowrap ${isSelected ? "text-cyan-400" : "text-slate-300"}`}>
+                        {ep.path}
+                      </span>
                     </div>
-                    <span className={`font-mono text-xs font-semibold overflow-hidden text-ellipsis whitespace-nowrap w-full ${isSelected ? "text-cyan-400" : "text-slate-300"}`}>
-                      {ep.path}
-                    </span>
                     <p className="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">
                       {ep.description}
                     </p>
@@ -507,7 +499,6 @@ export default function ApiExplorerPage() {
             <div className="flex justify-between items-start gap-4">
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-3">
-                  <span className="px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-xs font-bold tracking-wider">{selectedApi.method}</span>
                   <span className="font-mono text-base font-bold text-cyan-400">{getTargetUrl()}</span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
