@@ -18,7 +18,6 @@ import { ChapterRiskDashboard } from "@/components/story/ChapterRiskDashboard";
 
 import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
 import { WhatThisMeans } from "@/components/story/WhatThisMeans";
-import { ChapterRegionalClusters } from "@/components/story/ChapterRegionalClusters";
 import { ChapterRankBump } from "@/components/story/ChapterRankBump";
 import { ChapterDumbbellLeap } from "@/components/story/ChapterDumbbellLeap";
 import { ChapterThresholdFunnel } from "@/components/story/ChapterThresholdFunnel";
@@ -54,7 +53,6 @@ export default function StoryPage() {
         <Chapter4NationsSideBySide />
         <Chapter5Heatmap />
         <ChapterCumulativeRise />
-        <ChapterRegionalClusters />
         <ChapterRankBump />
         <ChapterThresholdFunnel />
         <ChapterStreamGraph />
