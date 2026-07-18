@@ -100,11 +100,14 @@ export function ThePacificAtAGlance({
   useEffect(() => {
     if (showInfo) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     };
   }, [showInfo]);
 
@@ -438,7 +441,7 @@ export function ThePacificAtAGlance({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-card/95 backdrop-blur-xl w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-3xl border border-border/80 shadow-2xl p-6 md:p-8 custom-scrollbar flex flex-col gap-6"
+            className="bg-card/95 backdrop-blur-xl w-full max-w-4xl max-h-[85vh] overflow-y-auto overscroll-contain rounded-3xl border border-border/80 shadow-2xl p-6 md:p-8 custom-scrollbar flex flex-col gap-6"
           >
             {/* Header */}
             <div className="flex justify-between items-center pb-4 border-b border-border/50">
