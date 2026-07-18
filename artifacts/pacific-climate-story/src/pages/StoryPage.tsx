@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { Terminal } from "lucide-react";
 import { HeroSection } from "@/components/story/HeroSection";
 import { TheDataLandscape } from "@/components/story/TheDataLandscape";
-import { Chapter2OceanIsRising } from "@/components/story/Chapter2OceanIsRising";
+import { TheOceanIsRising } from "@/components/story/TheOceanIsRising";
 import { ChapterDecadeAnalysis } from "@/components/story/ChapterDecadeAnalysis";
 import { ChapterRateOfChange } from "@/components/story/ChapterRateOfChange";
 import { Chapter3ElNino } from "@/components/story/Chapter3ElNino";
@@ -50,7 +50,7 @@ export default function StoryPage() {
       <main className="pt-8">
         <HeroSection />
         <TheDataLandscape />
-        <Chapter2OceanIsRising />
+        <TheOceanIsRising />
         <ChapterDecadeAnalysis />
         <ChapterRateOfChange />
         <Chapter3ElNino />

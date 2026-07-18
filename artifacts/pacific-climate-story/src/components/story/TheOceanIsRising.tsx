@@ -42,7 +42,7 @@ const RisingTooltip = ({ active, payload, label }: any) => {
   );
 };
 
-export function Chapter2OceanIsRising() {
+export function TheOceanIsRising() {
   const { data: trendData, isLoading: trendLoading } = useGetSeaLevelTrend();
   const { data: risingData, isLoading: risingLoading } = useGetNationsRisingByYear();
   const ref = useRef(null);
