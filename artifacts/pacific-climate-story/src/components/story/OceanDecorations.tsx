@@ -90,7 +90,7 @@ export function OceanDecorations() {
 
   return (
     <>
-      {/* ================= LEFT MARGIN (Ultra-narrow SLA Ruler) ================= */}
+      {/* ================= LEFT MARGIN (Pacific Sea Level Anomaly Hydro-Gauge) ================= */}
       <div className="fixed left-4 top-0 bottom-0 w-16 pointer-events-none select-none z-40 hidden xl:flex flex-col justify-between pt-12 pb-4 px-1 overflow-visible bg-gradient-to-r from-background/95 via-background/20 to-transparent">
         
         {/* Soft background blue blur spot (Intensifies on hover) */}
@@ -105,27 +105,52 @@ export function OceanDecorations() {
           }`} 
         />
 
-        {/* Sea water liquid fill (100% filled sea water column - touches top & bottom of screen) */}
+        {/* Sea water liquid fill (Dynamic ocean water body matching SLA level) */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-blue-950/65 via-cyan-950/45 to-blue-900/60 border-x border-cyan-500/10 shadow-[inset_0_0_20px_rgba(34,211,238,0.15)] overflow-hidden"
+          className="absolute inset-0 bg-gradient-to-b from-blue-950/70 via-cyan-950/50 to-blue-900/70 border-x border-cyan-500/20 shadow-[inset_0_0_20px_rgba(34,211,238,0.2)] overflow-hidden"
         >
+          {/* Dynamic rising sea water column (Fills as scroll progresses) */}
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-cyan-600/40 via-blue-500/30 to-cyan-400/50 border-t border-cyan-300/60 shadow-[0_0_12px_rgba(34,211,238,0.5)]"
+            style={{ top: indicatorTop }}
+          >
+            {/* Animated SVG Ocean Wave Crest at water surface pointer */}
+            <div className="absolute -top-2 left-0 right-0 h-3 overflow-hidden pointer-events-none z-10">
+              <motion.svg
+                viewBox="0 0 1200 120"
+                preserveAspectRatio="none"
+                className="absolute top-0 left-0 w-[200%] h-full opacity-90"
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              >
+                <path
+                  d="M0,30 C150,80 350,-20 500,40 C650,110 900,-20 1200,30 V120 H0 Z"
+                  fill="#22d3ee"
+                />
+              </motion.svg>
+            </div>
+          </motion.div>
+
           {/* Animated bubble particles inside the water */}
-          {[...Array(12)].map((_, i) => (
+          {[...Array(14)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 rounded-full bg-cyan-200/40 shadow-[0_0_2px_rgba(34,211,238,0.3)]"
+              className="absolute rounded-full bg-cyan-200/50 shadow-[0_0_3px_rgba(34,211,238,0.5)]"
               style={{
+                width: 2 + (i % 2),
+                height: 2 + (i % 2),
                 left: `${10 + (i * 11) % 80}%`,
               }}
               animate={{
                 top: ["105%", "-5%"],
-                opacity: [0, 0.7, 0.7, 0],
+                x: [0, (i % 2 === 0 ? 3 : -3), 0],
+                opacity: [0, 0.75, 0.75, 0],
               }}
               transition={{
-                duration: 6 + (i * 1.5),
+                duration: 5 + (i * 1.2),
                 repeat: Infinity,
                 ease: "linear",
-                delay: i * 0.6,
+                delay: i * 0.4,
               }}
             />
           ))}
@@ -136,7 +161,7 @@ export function OceanDecorations() {
           {/* Futuristic online status label at the start */}
           <div className="absolute -top-10 left-0 flex items-center gap-1.5 bg-cyan-950/55 border border-cyan-500/35 rounded-full px-3 py-1 text-[8px] font-mono font-bold text-cyan-400 tracking-wider shadow-sm shadow-cyan-950/50 whitespace-nowrap animate-fadeIn">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_4px_#22d3ee]" />
-            SLA SCANS
+            PACIFIC SLA
           </div>
 
           {/* Main vertical axis line */}
@@ -171,15 +196,22 @@ export function OceanDecorations() {
                   initial={{ opacity: 0, x: -10, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -10, scale: 0.95 }}
-                  className={`absolute left-7 z-50 bg-[#081225] border border-cyan-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left ${
+                  className={`absolute left-7 z-50 bg-[#081225]/95 border border-cyan-400/50 rounded-lg py-2.5 px-3.5 shadow-[0_10px_30px_rgba(0,0,0,0.85)] w-48 pointer-events-none text-left backdrop-blur-md ${
                     activeYear <= 1997 ? "top-0" : activeYear >= 2019 ? "bottom-2" : "top-1/2 -translate-y-1/2"
                   }`}
                 >
-                  <span className="block text-[10px] font-mono font-bold text-cyan-300 uppercase tracking-wider">{activeYear} RECORD</span>
-                  <span className="block text-[16px] font-mono font-black text-white mt-1">
+                  <span className="block text-[10px] font-mono font-bold text-cyan-300 uppercase tracking-widest">
+                    {activeYear} TELEMETRY
+                  </span>
+                  <span className="block text-[18px] font-mono font-black text-white mt-1 leading-none">
                     {activeAvg > 0 ? "+" : ""}{(activeAvg * 100).toFixed(2)} cm
                   </span>
-                  <span className="block text-[8px] font-mono text-cyan-400 uppercase tracking-wider mt-0.5">PACIFIC AVG SLA</span>
+                  <span className="block text-[10px] font-mono text-cyan-200/90 mt-1.5 font-medium">
+                    {activeCount} of 21 Nations Rising ({Math.round((activeCount / 21) * 100)}%)
+                  </span>
+                  <span className="block text-[8px] font-mono text-cyan-400/70 uppercase tracking-wider mt-1 border-t border-cyan-500/20 pt-1">
+                    PACIFIC SEA LEVEL ANOMALY
+                  </span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -206,7 +238,7 @@ export function OceanDecorations() {
         </div>
       </div>
 
-      {/* ================= RIGHT MARGIN (Ultra-narrow ENSO Ruler) ================= */}
+      {/* ================= RIGHT MARGIN (Pacific Ocean Climate Thermal Gauge) ================= */}
       <div className="fixed right-4 top-0 bottom-0 w-16 pointer-events-none select-none z-40 hidden xl:flex flex-col justify-between pt-12 pb-4 px-1 overflow-visible bg-gradient-to-l from-background/90 via-background/20 to-transparent">
         
         {/* Soft background warm blur spot (Intensifies on hover) */}
@@ -221,27 +253,66 @@ export function OceanDecorations() {
           }`} 
         />
 
-        {/* Sea water liquid fill (100% filled sea water column - touches top & bottom of screen) */}
+        {/* Sea water liquid fill (Dynamic climate cycle water body) */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-rose-950/65 via-orange-950/45 to-rose-900/60 border-x border-orange-500/10 shadow-[inset_0_0_20px_rgba(249,115,22,0.15)] overflow-hidden"
+          className={`absolute inset-0 border-x transition-colors duration-500 overflow-hidden ${
+            activeEnso === "el-nino" 
+              ? "bg-gradient-to-b from-rose-950/75 via-orange-950/55 to-amber-900/70 border-orange-500/30 shadow-[inset_0_0_20px_rgba(249,115,22,0.25)]" 
+              : activeEnso === "la-nina" 
+              ? "bg-gradient-to-b from-sky-950/75 via-blue-950/55 to-cyan-900/70 border-sky-500/30 shadow-[inset_0_0_20px_rgba(56,189,248,0.25)]" 
+              : "bg-gradient-to-b from-slate-950/75 via-slate-900/55 to-slate-900/70 border-slate-500/30 shadow-[inset_0_0_20px_rgba(148,163,184,0.15)]"
+          }`}
         >
+          {/* Dynamic sea water body */}
+          <motion.div
+            className={`absolute bottom-0 left-0 right-0 border-t shadow-md transition-colors duration-500 ${
+              activeEnso === "el-nino" 
+                ? "bg-gradient-to-t from-orange-600/40 via-amber-500/30 to-orange-400/50 border-orange-300/60 shadow-[0_0_12px_rgba(249,115,22,0.5)]" 
+                : activeEnso === "la-nina"
+                ? "bg-gradient-to-t from-sky-600/40 via-blue-500/30 to-cyan-400/50 border-sky-300/60 shadow-[0_0_12px_rgba(56,189,248,0.5)]"
+                : "bg-gradient-to-t from-slate-600/40 via-slate-500/30 to-slate-400/50 border-slate-300/60 shadow-[0_0_12px_rgba(148,163,184,0.3)]"
+            }`}
+            style={{ top: indicatorTop }}
+          >
+            {/* Animated SVG Ocean Wave Crest at water surface pointer */}
+            <div className="absolute -top-2 left-0 right-0 h-3 overflow-hidden pointer-events-none z-10">
+              <motion.svg
+                viewBox="0 0 1200 120"
+                preserveAspectRatio="none"
+                className="absolute top-0 left-0 w-[200%] h-full opacity-90"
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              >
+                <path
+                  d="M0,30 C150,80 350,-20 500,40 C650,110 900,-20 1200,30 V120 H0 Z"
+                  fill={activeEnso === "el-nino" ? "#f97316" : activeEnso === "la-nina" ? "#38bdf8" : "#94a3b8"}
+                />
+              </motion.svg>
+            </div>
+          </motion.div>
+
           {/* Animated bubble particles inside the water */}
-          {[...Array(12)].map((_, i) => (
+          {[...Array(14)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 rounded-full bg-orange-200/40 shadow-[0_0_2px_rgba(249,115,22,0.3)]"
+              className={`absolute rounded-full shadow-sm transition-colors duration-500 ${
+                activeEnso === "el-nino" ? "bg-orange-200/50 shadow-orange-500/50" : activeEnso === "la-nina" ? "bg-sky-200/50 shadow-sky-500/50" : "bg-slate-200/40 shadow-slate-500/30"
+              }`}
               style={{
+                width: 2 + (i % 2),
+                height: 2 + (i % 2),
                 left: `${10 + (i * 11) % 80}%`,
               }}
               animate={{
                 top: ["105%", "-5%"],
-                opacity: [0, 0.7, 0.7, 0],
+                x: [0, (i % 2 === 0 ? 3 : -3), 0],
+                opacity: [0, 0.75, 0.75, 0],
               }}
               transition={{
-                duration: 6 + (i * 1.5),
+                duration: 5 + (i * 1.2),
                 repeat: Infinity,
                 ease: "linear",
-                delay: i * 0.6,
+                delay: i * 0.4,
               }}
             />
           ))}
@@ -250,9 +321,13 @@ export function OceanDecorations() {
         {/* GRADUATED DEPTH RULER */}
         <div className="relative w-full h-full flex justify-center">
           {/* Futuristic online status label at the start */}
-          <div className="absolute -top-10 right-0 flex items-center gap-1.5 bg-orange-950/55 border border-orange-500/35 rounded-full px-3 py-1 text-[8px] font-mono font-bold text-orange-400 tracking-wider shadow-sm shadow-orange-950/50 whitespace-nowrap animate-fadeIn">
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse shadow-[0_0_4px_#f97316]" />
-            REGIONAL RISING
+          <div className={`absolute -top-10 right-0 flex items-center gap-1.5 bg-slate-950/80 border rounded-full px-3 py-1 text-[8px] font-mono font-bold tracking-wider shadow-sm whitespace-nowrap animate-fadeIn ${
+            activeEnso === "el-nino" ? "border-orange-500/40 text-orange-400" : activeEnso === "la-nina" ? "border-sky-500/40 text-sky-400" : "border-slate-500/40 text-slate-400"
+          }`}>
+            <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${
+              activeEnso === "el-nino" ? "bg-orange-400 shadow-[0_0_4px_#f97316]" : activeEnso === "la-nina" ? "bg-sky-400 shadow-[0_0_4px_#38bdf8]" : "bg-slate-400 shadow-[0_0_4px_#94a3b8]"
+            }`} />
+            REGIONAL IMPACT
           </div>
 
           {/* Main vertical axis line */}
@@ -266,16 +341,20 @@ export function OceanDecorations() {
             onMouseLeave={() => setIsRightHovered(false)}
           >
             {/* Pulsing visual core */}
-            <div className="w-3.5 h-3.5 rounded-full bg-orange-400 border border-white shadow-[0_0_12px_#f97316] flex items-center justify-center">
+            <div className={`w-3.5 h-3.5 rounded-full border border-white flex items-center justify-center ${
+              activeEnso === "el-nino" ? "bg-orange-400 shadow-[0_0_12px_#f97316]" : activeEnso === "la-nina" ? "bg-sky-400 shadow-[0_0_12px_#38bdf8]" : "bg-slate-400 shadow-[0_0_12px_#94a3b8]"
+            }`}>
               <div className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
             </div>
             {/* Horizontal cursor crosshairs */}
-            <div className="absolute w-6 h-px bg-orange-400" />
-            <div className="absolute w-px h-6 bg-orange-400" />
+            <div className={`absolute w-6 h-px ${activeEnso === "el-nino" ? "bg-orange-400" : activeEnso === "la-nina" ? "bg-sky-400" : "bg-slate-400"}`} />
+            <div className={`absolute w-px h-6 ${activeEnso === "el-nino" ? "bg-orange-400" : activeEnso === "la-nina" ? "bg-sky-400" : "bg-slate-400"}`} />
 
             {/* Level label at circle - Styled as a capsule readout (Hidden on hover to avoid overlap) */}
             {!isRightHovered && (
-              <span className="absolute right-8 text-[9px] font-mono font-bold text-orange-200 bg-orange-950/85 px-2.5 py-0.5 border border-orange-400/40 rounded-full whitespace-nowrap shadow-lg shadow-black/80 backdrop-blur-sm">
+              <span className={`absolute right-8 text-[9px] font-mono font-bold bg-slate-950/85 px-2.5 py-0.5 border rounded-full whitespace-nowrap shadow-lg shadow-black/80 backdrop-blur-sm ${
+                activeEnso === "el-nino" ? "text-orange-200 border-orange-400/40" : activeEnso === "la-nina" ? "text-sky-200 border-sky-400/40" : "text-slate-200 border-slate-400/40"
+              }`}>
                 {activeCount} / 21
               </span>
             )}
@@ -287,21 +366,25 @@ export function OceanDecorations() {
                   initial={{ opacity: 0, x: 10, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 10, scale: 0.95 }}
-                  className={`absolute right-7 z-50 bg-[#1d0f06] border border-orange-400/50 rounded-md py-2 px-3 shadow-[0_10px_25px_rgba(0,0,0,0.8)] w-40 pointer-events-none text-left ${
+                  className={`absolute right-7 z-50 bg-[#1d0f06]/95 border border-orange-400/50 rounded-lg py-2.5 px-3.5 shadow-[0_10px_30px_rgba(0,0,0,0.85)] w-48 pointer-events-none text-left backdrop-blur-md ${
                     activeYear <= 1997 ? "top-0" : activeYear >= 2019 ? "bottom-2" : "top-1/2 -translate-y-1/2"
                   }`}
                 >
-                  <span className="block text-[10px] font-mono font-bold text-orange-300 uppercase tracking-wider">{activeYear} SCAN</span>
+                  <span className="block text-[10px] font-mono font-bold text-orange-300 uppercase tracking-widest">
+                    {activeYear} PACIFIC CYCLE
+                  </span>
                   
                   {/* ENSO Status in bold matching colors */}
-                  <span className={`block text-[12px] font-mono font-black mt-1 uppercase ${ensoDetails.color}`}>
+                  <span className={`block text-[15px] font-mono font-black mt-1 uppercase leading-none ${ensoDetails.color}`}>
                     {ensoDetails.label}
                   </span>
                   
-                  <span className="block text-[13px] font-mono font-black text-orange-100 mt-1">
-                    {activeCount} / 21 RISING
+                  <span className="block text-[10px] font-mono text-orange-200/90 mt-1.5 font-medium">
+                    {activeCount} of 21 Nations Rising ({Math.round((activeCount / 21) * 100)}%)
                   </span>
-                  <span className="block text-[8px] font-mono text-orange-400 uppercase tracking-wider mt-0.5">REGIONAL STATUS</span>
+                  <span className="block text-[8px] font-mono text-orange-400/70 uppercase tracking-wider mt-1 border-t border-orange-500/20 pt-1">
+                    REGIONAL CLIMATE STATUS
+                  </span>
                 </motion.div>
               )}
             </AnimatePresence>
