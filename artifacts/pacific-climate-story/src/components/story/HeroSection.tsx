@@ -68,7 +68,7 @@ export function HeroSection() {
         </div>
 
         {/* Middle: Full Width Statistics Grid */}
-        {!overviewLoading && overview && (
+        {!overviewLoading && overview && decadeData && accelData && volData && (
           <motion.div 
             className="w-full border border-slate-800/60 py-8 bg-slate-950/40 backdrop-blur-md rounded-2xl px-8 shadow-xl"
             initial={{ opacity: 0, y: 20 }}
@@ -77,11 +77,11 @@ export function HeroSection() {
           >
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 md:gap-8">
               <div className="border-l-2 border-primary pl-4 py-1">
-                <div className="text-2xl font-serif font-bold text-foreground">+{overview.avgRiseMeters.toFixed(2)}m</div>
+                <div className="text-2xl font-serif font-bold text-foreground">+{(overview.avgRiseMeters * 100).toFixed(1)}cm</div>
                 <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Average Rise</div>
               </div>
               <div className="border-l-2 border-indigo-400 pl-4 py-1">
-                <div className="text-2xl font-serif font-bold text-foreground">+{shift.toFixed(3)}m</div>
+                <div className="text-2xl font-serif font-bold text-foreground">+{(shift * 100).toFixed(1)}cm</div>
                 <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Decade Shift (D1-D3)</div>
               </div>
               {fastest && (
@@ -97,7 +97,7 @@ export function HeroSection() {
                   <div className="text-2xl font-serif font-bold text-foreground truncate" title={mostVolatile.country}>
                     {mostVolatile.country}
                   </div>
-                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Most Volatile (±{mostVolatile.volatility.toFixed(2)}m)</div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Most Volatile (±{(mostVolatile.volatility * 100).toFixed(1)}cm)</div>
                 </div>
               )}
             </div>
