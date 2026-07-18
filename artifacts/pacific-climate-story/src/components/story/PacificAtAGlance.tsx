@@ -132,17 +132,16 @@ export function PacificAtAGlance({
       innerClassName="max-w-[95vw] mx-auto w-full px-4 lg:px-8"
     >
       <div className="w-full">
-        <div className="max-w-5xl mx-auto w-full mb-4 border-b border-border/10 pb-3 text-left">
+        <div className="max-w-5xl mx-auto w-full mb-4 border-b border-border/10 pb-3 text-center flex flex-col items-center justify-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
+            className="flex flex-col items-center justify-center text-center mx-auto"
           >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-              <h2 className="text-5xl md:text-6xl font-serif font-bold">The Pacific at a Glance</h2>
-            </div>
-            <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
+            <h2 className="text-5xl md:text-6xl font-serif font-bold mb-3 text-center">The Pacific at a Glance</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed text-center mx-auto">
               Explore the complete Pacific record.
             </p>
           </motion.div>

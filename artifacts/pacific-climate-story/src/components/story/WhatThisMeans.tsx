@@ -68,14 +68,14 @@ export function WhatThisMeans() {
     <StorySection id="chapter-6" className="pb-32">
       <div className="max-w-5xl mx-auto">
         <motion.div
-          className="text-left mb-8 border-b border-border/10 pb-6"
+          className="text-center flex flex-col items-center justify-center mb-8 border-b border-border/10 pb-6 mx-auto"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">What This Means</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-center">What This Means</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed text-center mx-auto">
             Over 30 years of observations across 21 Pacific territories reveal a persistent rise in sea level anomalies.
           </p>
         </motion.div>

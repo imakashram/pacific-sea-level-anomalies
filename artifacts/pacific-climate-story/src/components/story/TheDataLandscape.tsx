@@ -11,22 +11,10 @@ export function TheDataLandscape() {
 
   return (
     <StorySection id="chapter-1">
-      {/* Title & Introduction Block with Right-aligned Data Link */}
-      <div className="mb-10">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <h2 className="text-5xl md:text-6xl font-serif font-bold">The Data Landscape</h2>
-          <a
-            href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_CLIMATE_CHANGE&df[ag]=SPC&df[vs]=1.0&av=true&dq=A.SEA_LVL.&pd=,&to[TIME_PERIOD]=false"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-900/60 hover:bg-slate-800/40 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-semibold text-muted-foreground hover:text-foreground transition shadow-md self-start md:self-auto"
-          >
-            <Database className="w-4 h-4 text-primary" />
-            Pacific Data Hub Source
-            <ExternalLink className="w-3.5 h-3.5 opacity-60" />
-          </a>
-        </div>
-        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
+      {/* Title & Introduction Block */}
+      <div className="mb-10 text-center flex flex-col items-center justify-center">
+        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-center">The Data Landscape</h2>
+        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed text-center mx-auto">
           Before we look at the rising ocean, let's understand the metric behind the data. <strong className="text-foreground">Sea Level Anomaly</strong> measures how much the ocean surface is above or below its long-term average.
         </p>
       </div>
@@ -80,6 +68,16 @@ export function TheDataLandscape() {
 
       {/* Bottom Action Bar below cards */}
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_CLIMATE_CHANGE&df[ag]=SPC&df[vs]=1.0&av=true&dq=A.SEA_LVL.&pd=,&to[TIME_PERIOD]=false"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900/60 hover:bg-slate-800/60 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all duration-300 shadow-md cursor-pointer group"
+        >
+          <Database className="w-4 h-4 text-primary group-hover:scale-110 transition-transform duration-300" />
+          <span>Pacific Data Hub Source</span>
+          <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+        </a>
         <Link href="/explorer">
           <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-xl text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-all duration-300 shadow-md cursor-pointer group">
             <Terminal className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform duration-300" />
