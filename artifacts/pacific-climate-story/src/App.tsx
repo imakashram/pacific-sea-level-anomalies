@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import StoryPage from "@/pages/StoryPage";
+import ApiExplorerPage from "@/pages/ApiExplorerPage";
 
 const queryClient = new QueryClient();
 
@@ -12,6 +13,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={StoryPage} />
+      <Route path="/explorer" component={ApiExplorerPage} />
+      <Route path="/api-explorer" component={ApiExplorerPage} />
       <Route component={NotFound} />
     </Switch>
   );

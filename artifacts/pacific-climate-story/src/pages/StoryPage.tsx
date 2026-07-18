@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useInView } from "framer-motion";
+import { Link } from "wouter";
+import { Terminal } from "lucide-react";
 import { HeroSection } from "@/components/story/HeroSection";
 import { TheDataLandscape } from "@/components/story/TheDataLandscape";
 import { Chapter2RisingTide } from "@/components/story/Chapter2RisingTide";

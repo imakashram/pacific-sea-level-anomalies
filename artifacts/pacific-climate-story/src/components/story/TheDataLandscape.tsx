@@ -1,6 +1,7 @@
 import { StorySection } from "./StorySection";
 import { useGetClimateOverview } from "@workspace/api-client-react";
-import { CalendarRange, Database, Waves, TrendingUp, ExternalLink } from "lucide-react";
+import { CalendarRange, Database, Waves, TrendingUp, ExternalLink, Terminal } from "lucide-react";
+import { Link } from "wouter";
 
 export function TheDataLandscape() {
   const { data: overview, isLoading } = useGetClimateOverview();
@@ -75,6 +76,17 @@ export function TheDataLandscape() {
           </span>
           <span className="text-xs text-primary/70">Third decade (2014–2023)</span>
         </div>
+      </div>
+
+      {/* Bottom Action Bar below cards */}
+      <div className="mt-8 flex justify-center">
+        <Link href="/explorer">
+          <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-xl text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-all duration-300 shadow-md cursor-pointer group">
+            <Terminal className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform duration-300" />
+            <span>API Explorer</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
+          </button>
+        </Link>
       </div>
     </StorySection>
   );
