@@ -55,7 +55,7 @@ export function Chapter4NationsSideBySide() {
   const aboveAvgCount = sortedData.filter((d) => d.cumulativeRise > avgRise).length;
 
   return (
-    <StorySection id="chapter-4">
+    <StorySection id="nations-side-by-side">
       <div className="mb-12 text-center">
         <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">Nations Side by Side</h2>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">

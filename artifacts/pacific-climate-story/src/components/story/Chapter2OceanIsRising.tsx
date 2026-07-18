@@ -42,7 +42,7 @@ const RisingTooltip = ({ active, payload, label }: any) => {
   );
 };
 
-export function Chapter2RisingTide() {
+export function Chapter2OceanIsRising() {
   const { data: trendData, isLoading: trendLoading } = useGetSeaLevelTrend();
   const { data: risingData, isLoading: risingLoading } = useGetNationsRisingByYear();
   const ref = useRef(null);
@@ -55,11 +55,11 @@ export function Chapter2RisingTide() {
   const peakYear = risingData?.reduce((best, d) => d.pct > best.pct ? d : best, { pct: 0, year: 0, count: 0, total: 21 });
 
   return (
-    <StorySection id="chapter-2">
-      <div className="mb-10">
-        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Rising Tide</h2>
-        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
-          Aggregating all 21 nations reveals a stark, indisputable reality. Despite year-to-year volatility driven by El Niño cycles, the ocean's trajectory is clear and accelerating.
+    <StorySection id="the-ocean-is-rising">
+      <div className="mb-10 text-center flex flex-col items-center justify-center">
+        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-center">The Ocean Is Rising</h2>
+        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed text-center mx-auto">
+          Across 21 Pacific nations, sea levels have risen steadily over the past 30 years. Short-term climate cycles create temporary ups and downs, but the long-term trend remains unmistakably upward.
         </p>
       </div>
 

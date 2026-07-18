@@ -10,7 +10,7 @@ export function TheDataLandscape() {
   const recentVal = overview?.recentDecadeAvg ?? 0.085;
 
   return (
-    <StorySection id="chapter-1">
+    <StorySection id="the-data-landscape">
       {/* Title & Introduction Block */}
       <div className="mb-10 text-center flex flex-col items-center justify-center">
         <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-center">The Data Landscape</h2>

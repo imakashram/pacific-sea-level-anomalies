@@ -45,7 +45,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
     category: "core",
-    usedIn: ["Chapter2RisingTide", "PacificAtAGlance"]
+    usedIn: ["Chapter2OceanIsRising", "PacificAtAGlance"]
   },
   {
     path: "/api/climate/country-profile/:code",
@@ -201,7 +201,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Counts how many Pacific nations recorded positive anomalies for each calendar year.",
     category: "visuals",
-    usedIn: ["Chapter2RisingTide"]
+    usedIn: ["Chapter2OceanIsRising"]
   },
   {
     path: "/api/climate/rankings",

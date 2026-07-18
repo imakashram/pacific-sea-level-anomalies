@@ -65,7 +65,7 @@ export function WhatThisMeans() {
   const highestSlope = rankings?.slice().sort((a, b) => b.slope - a.slope)[0];
 
   return (
-    <StorySection id="chapter-6" className="pb-32">
+    <StorySection id="what-this-means" className="pb-32">
       <div className="max-w-5xl mx-auto">
         <motion.div
           className="text-center flex flex-col items-center justify-center mb-8 border-b border-border/10 pb-6 mx-auto"

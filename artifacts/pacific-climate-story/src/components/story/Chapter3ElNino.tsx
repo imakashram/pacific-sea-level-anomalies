@@ -76,7 +76,7 @@ export function Chapter3ElNino() {
   const displayNations = showAll ? data?.nations ?? [] : data?.nations.slice(0, 12) ?? [];
 
   return (
-    <StorySection id="chapter-3" className="bg-background relative">
+    <StorySection id="el-ninos-deception" className="bg-background relative">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/10 via-background to-background pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto">

@@ -57,7 +57,7 @@ export function Chapter5Heatmap() {
   ];
 
   return (
-    <StorySection id="chapter-5" className="bg-background">
+    <StorySection id="the-heatmap" className="bg-background">
       <div className="mb-8">
         <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Heatmap</h2>
         <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
