@@ -84,11 +84,11 @@ export function WhatThisMeans() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-16">
           {[
             { value: acceleratingCount, of: totalCount, label: "Nations Accelerating", color: "text-[#f43f5e]", desc: "are not just rising but rising faster", decimals: 0, prefix: "", suffix: "", icon: ChevronsUp },
-            { value: shift * 100, of: null, label: "Baseline Shift", color: "text-[#f97316]", desc: "average rise from Decade 1 to Decade 3", decimals: 1, prefix: "+", suffix: "cm", icon: Waves },
+            { value: shift * 100, of: null, label: "Baseline Shift", color: "text-[#f97316]", desc: "average rise from Decade 1 to Decade 3", decimals: 1, prefix: "+", suffix: " cm", icon: Waves },
             { value: crossedZero, of: null, label: "Nations Above Zero", color: "text-[#eab308]", desc: "have crossed into persistent positive anomaly", decimals: 0, prefix: "", suffix: "", icon: AlertCircle },
-            { value: crossedTenth, of: null, label: "Nations at +10cm", color: "text-[#ef4444]", desc: "have breached the 10cm threshold", decimals: 0, prefix: "", suffix: "", icon: AlertTriangle },
-            { value: maxRiseVal * 100, of: null, label: "Peak Nation Rise", color: "text-[#ef4444]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: "cm", icon: ArrowUpCircle },
-            { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "Fastest Rise", color: "text-[#a855f7]", desc: `${highestSlope?.country ?? "…"} - fastest upward trend`, decimals: 2, prefix: "+", suffix: "mm/yr", icon: Gauge },
+            { value: crossedTenth, of: null, label: "Nations at +10 cm", color: "text-[#ef4444]", desc: "have breached the 10 cm threshold", decimals: 0, prefix: "", suffix: "", icon: AlertTriangle },
+            { value: maxRiseVal * 100, of: null, label: "Peak Nation Rise", color: "text-[#ef4444]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: " cm", icon: ArrowUpCircle },
+            { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "Fastest Rise", color: "text-[#a855f7]", desc: `${highestSlope?.country ?? "…"} - fastest upward trend`, decimals: 2, prefix: "+", suffix: " mm/yr", icon: Gauge },
           ].map(({ value, of, label, color, desc, decimals, prefix, suffix, icon: Icon }, i) => {
             const theme = cardThemes[color] || { text: color, bg: "bg-card/10", border: "border-border/30", glow: "hover:border-border/40" };
             return (
