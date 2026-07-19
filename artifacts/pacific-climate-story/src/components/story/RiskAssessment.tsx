@@ -91,6 +91,13 @@ const SHORT_COUNTRY_NAMES: Record<string, string> = {
 };
 
 
+const getScoreColor = (score: number): string => {
+  if (score >= 80) return "#ef4444";
+  if (score >= 60) return "#f97316";
+  if (score >= 40) return "#eab308";
+  return "#22c55e";
+};
+
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const d = payload[0]?.payload;
@@ -98,7 +105,7 @@ const CustomTooltip = ({ active, payload }: any) => {
     return (
       <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px]">
         {/* Header Row */}
-        <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2.5 gap-3">
+        <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2 gap-3">
           <span className="font-serif text-lg font-bold text-white">{d.country}</span>
           <span
             className="text-[10px] font-mono px-2 py-0.5 rounded-full uppercase border font-semibold"
@@ -114,37 +121,37 @@ const CustomTooltip = ({ active, payload }: any) => {
 
         {/* Content Rows */}
         <div className="space-y-2 text-xs">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center gap-6">
             <span className="text-muted-foreground font-medium">Risk Index</span>
             <span className="font-mono font-bold text-sm" style={{ color }}>
               {d.riskScore} <span className="text-xs text-muted-foreground font-normal">/ 100</span>
             </span>
           </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Cumulative Rise</span>
-            <span className="font-mono font-semibold text-slate-200">
+          <div className="flex justify-between items-center gap-6">
+            <span className="text-cyan-400/90 font-medium">Cumulative Rise</span>
+            <span className="font-mono font-bold text-cyan-400 text-sm">
               {d.cumulativeRise > 0 ? "+" : ""}{(d.cumulativeRise * 100).toFixed(1)} cm
             </span>
           </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Annual Speed</span>
-            <span className="font-mono font-semibold text-cyan-400">
+          <div className="flex justify-between items-center gap-6">
+            <span className="text-teal-400/90 font-medium">Annual Speed</span>
+            <span className="font-mono font-bold text-teal-400">
               {d.slope.toFixed(2)} mm/yr
             </span>
           </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Volatility Spread</span>
-            <span className="font-mono text-slate-300">
+          <div className="flex justify-between items-center gap-6">
+            <span className="text-purple-400/90 font-medium">Volatility Spread</span>
+            <span className="font-mono font-bold text-purple-400">
               ±{(d.volatility * 100).toFixed(1)} cm
             </span>
           </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Decadal Shift</span>
-            <span className="font-mono text-amber-400 font-bold">
+          <div className="flex justify-between items-center gap-6 pt-1 border-t border-cyan-500/10">
+            <span className="text-orange-400/90 font-medium">Decadal Shift</span>
+            <span className="font-mono font-bold text-orange-400">
               +{(d.decadeAcceleration * 100).toFixed(1)} cm
             </span>
           </div>
@@ -556,23 +563,26 @@ export function RiskAssessment() {
 
                       {/* Component breakdown mini cards */}
                       <div className="grid grid-cols-4 gap-2 pt-2 border-t border-border/20">
-                        {radarData.map((item) => (
-                          <div
-                            key={item.subject}
-                            className="bg-card/40 border border-border/30 rounded-lg p-2 text-center"
-                          >
-                            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-                              {item.subject}
-                            </p>
-                            <p
-                              className="text-base font-mono font-bold mt-0.5"
-                              style={{ color: RISK_COLORS[selectedCountry.riskLevel] }}
+                        {radarData.map((item) => {
+                          const itemColor = getScoreColor(item.value);
+                          return (
+                            <div
+                              key={item.subject}
+                              className="bg-card/40 border border-border/30 rounded-lg p-2 text-center"
                             >
-                              {Math.round(item.value)}
-                              <span className="text-[9px] text-muted-foreground font-normal">/100</span>
-                            </p>
-                          </div>
-                        ))}
+                              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+                                {item.subject}
+                              </p>
+                              <p
+                                className="text-base font-mono font-bold mt-0.5"
+                                style={{ color: itemColor }}
+                              >
+                                {Math.round(item.value)}
+                                <span className="text-[9px] text-muted-foreground font-normal">/100</span>
+                              </p>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   ) : (
