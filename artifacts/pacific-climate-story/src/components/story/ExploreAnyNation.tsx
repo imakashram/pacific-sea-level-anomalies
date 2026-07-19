@@ -509,15 +509,19 @@ export function ExploreAnyNation({
                             <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.25}/>
                             <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
                           </linearGradient>
-                          <linearGradient id="barColorD1" x1="0" y1="0" x2="1" y2="0">
+                          <linearGradient id="barColorCyan" x1="0" y1="0" x2="1" y2="0">
                             <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3}/>
                             <stop offset="100%" stopColor="#38bdf8" stopOpacity={0.85}/>
                           </linearGradient>
-                          <linearGradient id="barColorD2" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.3}/>
-                            <stop offset="100%" stopColor="#fbbf24" stopOpacity={0.85}/>
+                          <linearGradient id="barColorAmber" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#eab308" stopOpacity={0.3}/>
+                            <stop offset="100%" stopColor="#fef08a" stopOpacity={0.85}/>
                           </linearGradient>
-                          <linearGradient id="barColorD3" x1="0" y1="0" x2="1" y2="0">
+                          <linearGradient id="barColorOrange" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#f97316" stopOpacity={0.3}/>
+                            <stop offset="100%" stopColor="#fdba74" stopOpacity={0.85}/>
+                          </linearGradient>
+                          <linearGradient id="barColorRed" x1="0" y1="0" x2="1" y2="0">
                             <stop offset="0%" stopColor="#ef4444" stopOpacity={0.3}/>
                             <stop offset="100%" stopColor="#f87171" stopOpacity={0.9}/>
                           </linearGradient>
@@ -665,16 +669,22 @@ export function ExploreAnyNation({
                               dataKey="avg"
                               content={renderCustomBarLabel}
                             />
-                            {decadeBreakdownCm.map((_, index) => {
-                              const colors = [
-                                "url(#barColorD1)",
-                                "url(#barColorD2)",
-                                "url(#barColorD3)",
-                              ];
-                              return (
-                                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                              );
-                            })}
+                             {decadeBreakdownCm.map((entry, index) => {
+                               const val = entry.avg;
+                               let fill = "url(#barColorCyan)";
+                               if (val < 0) {
+                                 fill = "url(#barColorCyan)"; // Negative/Safe baseline
+                               } else if (val < 4) {
+                                 fill = "url(#barColorAmber)"; // Low positive anomaly (0 to 4cm)
+                               } else if (val < 8) {
+                                 fill = "url(#barColorOrange)"; // Moderate positive anomaly (4 to 8cm)
+                               } else {
+                                 fill = "url(#barColorRed)"; // Severe positive anomaly (>= 8cm)
+                               }
+                               return (
+                                 <Cell key={`cell-${index}`} fill={fill} />
+                               );
+                             })}
                           </Bar>
                         </BarChart>
                       </ResponsiveContainer>
