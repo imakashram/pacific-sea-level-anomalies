@@ -21,10 +21,13 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const histItem = payload.find((p: any) => p.dataKey === "historical");
     const projItem = payload.find((p: any) => p.dataKey === "projected");
     const bandItem = payload.find((p: any) => p.dataKey === "band");
+    const baseline2023 = payload[0]?.payload?.baseline2023;
 
-    // Retrieve 2023 baseline value from payload if available
+    // Compute net rise vs 2023 dynamically from dataset baseline
     const projVal = projItem?.value;
-    const netRiseFrom2023 = projVal != null && isProjected ? projVal - 10.91 : null;
+    const netRiseFrom2023 = projVal != null && isProjected && baseline2023 != null
+      ? projVal - baseline2023
+      : null;
 
     return (
       <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] font-mono">
@@ -96,6 +99,7 @@ export function FutureOutlook() {
             lower: null as number | null,
             upper: null as number | null,
             band: null as [number, number] | null,
+            baseline2023: lastHistCm,
           })),
           ...(lastHist ? [{
             year: lastHist.year,
@@ -104,6 +108,7 @@ export function FutureOutlook() {
             lower: lastHistCm,
             upper: lastHistCm,
             band: [lastHistCm!, lastHistCm!] as [number, number],
+            baseline2023: lastHistCm,
           }] : []),
           ...data.projected.map((p) => ({
             year: p.year,
@@ -112,6 +117,7 @@ export function FutureOutlook() {
             lower: p.lower * 100,
             upper: p.upper * 100,
             band: [p.lower * 100, p.upper * 100] as [number, number],
+            baseline2023: lastHistCm,
           })),
         ];
       })()
