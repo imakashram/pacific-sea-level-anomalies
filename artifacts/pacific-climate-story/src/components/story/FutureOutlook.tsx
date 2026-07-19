@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  ReferenceDot,
 } from "recharts";
 import { motion } from "framer-motion";
 import { Gauge, Activity, Calendar, ShieldAlert } from "lucide-react";
@@ -17,22 +18,44 @@ import { Gauge, Activity, Calendar, ShieldAlert } from "lucide-react";
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const isProjected = label > 2023;
+    const histItem = payload.find((p: any) => p.dataKey === "historical");
+    const projItem = payload.find((p: any) => p.dataKey === "projected");
+    const bandItem = payload.find((p: any) => p.dataKey === "band");
+
     return (
-      <div className="bg-background/95 border border-border/50 p-4 rounded-lg shadow-xl backdrop-blur-md">
-        <p className="font-bold text-foreground mb-2">
-          {label}{" "}
-          {isProjected && (
-            <span className="text-xs text-primary/80 font-normal">projection</span>
+      <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[230px] font-mono">
+        <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5">
+          <span className="font-serif text-base font-bold text-white">{label}</span>
+          <span className={`text-[10px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider ${isProjected ? "bg-orange-500/20 text-orange-400 border border-orange-500/30" : "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"}`}>
+            {isProjected ? "Projection" : "Historical"}
+          </span>
+        </div>
+        <div className="space-y-2 text-xs">
+          {histItem && histItem.value != null && (
+            <div className="flex justify-between items-center gap-4">
+              <span className="text-cyan-400/90 font-medium">Historical Avg</span>
+              <span className="font-bold text-cyan-400 text-sm">
+                {histItem.value >= 0 ? "+" : ""}{Number(histItem.value).toFixed(2)} cm
+              </span>
+            </div>
           )}
-        </p>
-        {payload.map((p: any) => {
-          if (p.value == null) return null;
-          return (
-            <p key={p.name} className="text-sm" style={{ color: p.color }}>
-              {p.name}: <span className="font-mono">{Number(p.value).toFixed(4)}m</span>
-            </p>
-          );
-        })}
+          {projItem && projItem.value != null && (
+            <div className="flex justify-between items-center gap-4">
+              <span className="text-orange-400/90 font-medium">Projected Avg</span>
+              <span className="font-bold text-orange-400 text-sm">
+                {projItem.value >= 0 ? "+" : ""}{Number(projItem.value).toFixed(2)} cm
+              </span>
+            </div>
+          )}
+          {bandItem && Array.isArray(bandItem.value) && (
+            <div className="flex justify-between items-center gap-4 text-[11px] text-muted-foreground pt-1.5 border-t border-white/5">
+              <span>±2σ Confidence</span>
+              <span className="font-bold text-amber-400/90">
+                [{bandItem.value[0].toFixed(1)} to {bandItem.value[1].toFixed(1)}] cm
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -50,24 +73,36 @@ export function FutureOutlook() {
   const { data, isLoading } = useGetForecast();
 
   const chartData = data
-    ? [
-        ...data.historical.map((h) => ({
-          year: h.year,
-          historical: h.avgAnomaly,
-          projected: null as number | null,
-          lower: null as number | null,
-          upper: null as number | null,
-          band: null as [number, number] | null,
-        })),
-        ...data.projected.map((p) => ({
-          year: p.year,
-          historical: null as number | null,
-          projected: p.projected,
-          lower: p.lower,
-          upper: p.upper,
-          band: [p.lower, p.upper] as [number, number],
-        })),
-      ]
+    ? (() => {
+        const lastHist = data.historical[data.historical.length - 1];
+        const lastHistCm = lastHist ? lastHist.avgAnomaly * 100 : null;
+        return [
+          ...data.historical.map((h) => ({
+            year: h.year,
+            historical: h.avgAnomaly * 100,
+            projected: null as number | null,
+            lower: null as number | null,
+            upper: null as number | null,
+            band: null as [number, number] | null,
+          })),
+          ...(lastHist ? [{
+            year: lastHist.year,
+            historical: lastHistCm,
+            projected: lastHistCm,
+            lower: lastHistCm,
+            upper: lastHistCm,
+            band: [lastHistCm!, lastHistCm!] as [number, number],
+          }] : []),
+          ...data.projected.map((p) => ({
+            year: p.year,
+            historical: null as number | null,
+            projected: p.projected * 100,
+            lower: p.lower * 100,
+            upper: p.upper * 100,
+            band: [p.lower * 100, p.upper * 100] as [number, number],
+          })),
+        ];
+      })()
     : [];
 
   return (
@@ -214,7 +249,7 @@ export function FutureOutlook() {
               className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-2xl"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
                   Sea Level Anomaly — Historical & Projected (2024–2033)
                 </h3>
                 <div className="flex items-center gap-4 text-xs text-muted-foreground">
@@ -234,64 +269,95 @@ export function FutureOutlook() {
               </div>
               <div className="h-[380px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={chartData} margin={{ top: 10, right: 30, left: -10, bottom: 0 }}>
+                  <ComposedChart data={chartData} margin={{ top: 15, right: 30, left: 0, bottom: 5 }}>
                     <defs>
                       <linearGradient id="confidenceGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.25} />
-                        <stop offset="95%" stopColor="#f97316" stopOpacity={0.05} />
+                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.28} />
+                        <stop offset="95%" stopColor="#f97316" stopOpacity={0.04} />
                       </linearGradient>
+                      <filter id="glowOrange" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="2.5" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                      </filter>
+                      <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="2.5" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                      </filter>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                     <XAxis
                       dataKey="year"
-                      stroke="hsl(var(--muted-foreground))"
-                      tick={{ fontSize: 12 }}
+                      stroke="rgba(255,255,255,0.3)"
+                      tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
                       tickLine={false}
+                      axisLine={false}
                     />
                     <YAxis
-                      stroke="hsl(var(--muted-foreground))"
-                      tick={{ fontSize: 12 }}
-                      tickFormatter={(v) => `${v.toFixed(2)}m`}
+                      stroke="rgba(255,255,255,0.3)"
+                      tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
+                      tickFormatter={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)} cm`}
                       tickLine={false}
+                      axisLine={false}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <ReferenceLine x={2023} stroke="hsl(var(--muted-foreground))" strokeDasharray="4 4" label={{ value: "Now", position: "top", fill: "hsl(var(--muted-foreground))", fontSize: 11 }} />
-                    <ReferenceLine y={0} stroke="hsl(var(--border))" strokeWidth={1} />
+                    <ReferenceLine
+                      x={2023}
+                      stroke="rgba(255,255,255,0.3)"
+                      strokeDasharray="3 3"
+                      label={{
+                        value: "Now (2023)",
+                        position: "top",
+                        fill: "rgba(255,255,255,0.6)",
+                        fontSize: 10,
+                        fontWeight: "bold",
+                        fontFamily: "monospace"
+                      }}
+                    />
+                    <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
                     <Area
                       type="monotone"
-                      dataKey="upper"
+                      dataKey="band"
                       stroke="none"
                       fill="url(#confidenceGrad)"
-                      connectNulls={false}
-                      legendType="none"
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="lower"
-                      stroke="none"
-                      fill="hsl(var(--background))"
-                      connectNulls={false}
-                      legendType="none"
+                      connectNulls={true}
                     />
                     <Line
                       type="monotone"
                       dataKey="historical"
                       name="Historical avg"
                       stroke="hsl(var(--primary))"
-                      strokeWidth={2.5}
+                      strokeWidth={3}
                       dot={false}
-                      connectNulls={false}
+                      connectNulls={true}
                     />
                     <Line
                       type="monotone"
                       dataKey="projected"
                       name="Projected avg"
                       stroke="#f97316"
-                      strokeWidth={2.5}
+                      strokeWidth={3}
                       strokeDasharray="6 4"
                       dot={false}
-                      connectNulls={false}
+                      connectNulls={true}
                     />
+                    {data.projectedRise2033 != null && (
+                      <ReferenceDot
+                        x={2033}
+                        y={data.projectedRise2033 * 100}
+                        r={5}
+                        fill="#f97316"
+                        stroke="#ffffff"
+                        strokeWidth={2}
+                        label={{
+                          value: `+${(data.projectedRise2033 * 100).toFixed(1)} cm`,
+                          position: "top",
+                          fill: "#f97316",
+                          fontSize: 10,
+                          fontWeight: "bold",
+                          fontFamily: "monospace"
+                        }}
+                      />
+                    )}
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>
