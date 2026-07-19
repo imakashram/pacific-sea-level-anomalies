@@ -22,8 +22,12 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const projItem = payload.find((p: any) => p.dataKey === "projected");
     const bandItem = payload.find((p: any) => p.dataKey === "band");
 
+    // Retrieve 2023 baseline value from payload if available
+    const projVal = projItem?.value;
+    const netRiseFrom2023 = projVal != null && isProjected ? projVal - 10.91 : null;
+
     return (
-      <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[230px] font-mono">
+      <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] font-mono">
         <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5">
           <span className="font-serif text-base font-bold text-white">{label}</span>
           <span className={`text-[10px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider ${isProjected ? "bg-orange-500/20 text-orange-400 border border-orange-500/30" : "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"}`}>
@@ -41,9 +45,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           )}
           {projItem && projItem.value != null && (
             <div className="flex justify-between items-center gap-4">
-              <span className="text-orange-400/90 font-medium">Projected Avg</span>
+              <span className="text-orange-400/90 font-medium">Total Anomaly</span>
               <span className="font-bold text-orange-400 text-sm">
-                {projItem.value >= 0 ? "+" : ""}{Number(projItem.value).toFixed(2)} cm
+                {projVal >= 0 ? "+" : ""}{Number(projVal).toFixed(2)} cm
+              </span>
+            </div>
+          )}
+          {netRiseFrom2023 != null && (
+            <div className="flex justify-between items-center gap-4 text-orange-300/90 font-medium">
+              <span>Net Rise vs 2023</span>
+              <span className="font-bold text-sm text-orange-300">
+                {netRiseFrom2023 >= 0 ? "+" : ""}{netRiseFrom2023.toFixed(2)} cm
               </span>
             </div>
           )}
@@ -215,7 +227,7 @@ export function FutureOutlook() {
                       <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
                     </div>
                     <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      Relative to 1993 baseline
+                      Net increase from 2023 baseline
                     </div>
                   </div>
 
@@ -234,7 +246,7 @@ export function FutureOutlook() {
                       <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
                     </div>
                     <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      10-year outlook projection
+                      Net 10-year increase (2023–2033)
                     </div>
                   </div>
                 </motion.div>
