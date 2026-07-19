@@ -67,7 +67,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Returns comparison summaries of multi-nation anomalies to chart and correlate side-by-side.",
     category: "core",
-    usedIn: ["Chapter4NationsSideBySide"]
+    usedIn: []
   },
   {
     path: "/api/climate/anomalies",
@@ -236,7 +236,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Compiles comparison anomaly curves.",
     category: "visuals",
-    usedIn: ["Chapter4NationsSideBySide"]
+    usedIn: []
   },
   {
     path: "/api/climate/regional-decade-shares",
@@ -250,7 +250,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Fetches detailed grid metrics for the Side-by-Side comparison panel.",
     category: "visuals",
-    usedIn: ["Chapter4NationsSideBySide"]
+    usedIn: []
   },
   {
     path: "/api/climate/threshold-funnel",

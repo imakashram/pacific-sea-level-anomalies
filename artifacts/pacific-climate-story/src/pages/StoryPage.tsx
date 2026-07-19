@@ -10,7 +10,6 @@ import { Chapter3ElNino } from "@/components/story/Chapter3ElNino";
 import { ChapterENSOSensitivity } from "@/components/story/ChapterENSOSensitivity";
 import { ChapterVolatility } from "@/components/story/ChapterVolatility";
 import { ChapterAcceleration } from "@/components/story/ChapterAcceleration";
-import { Chapter4NationsSideBySide } from "@/components/story/Chapter4NationsSideBySide";
 import { Chapter5Heatmap } from "@/components/story/Chapter5Heatmap";
 import { ChapterCumulativeRise } from "@/components/story/ChapterCumulativeRise";
 import { ChapterForecast } from "@/components/story/ChapterForecast";
@@ -50,7 +49,6 @@ export default function StoryPage() {
         <ChapterVolatility />
         <ChapterAcceleration />
         <ChapterDumbbellLeap />
-        <Chapter4NationsSideBySide />
         <Chapter5Heatmap />
         <ChapterCumulativeRise />
         <ChapterRankBump />
