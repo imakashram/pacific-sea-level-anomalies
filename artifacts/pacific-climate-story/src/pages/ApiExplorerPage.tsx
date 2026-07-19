@@ -164,7 +164,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Evaluates risk categories (Critical, High, Medium, Low) for all nations based on acceleration, rise, and elevation factors.",
     category: "risk",
-    usedIn: ["ChapterRiskDashboard", "PacificAtAGlance"]
+    usedIn: ["RiskAssessment", "PacificAtAGlance"]
   },
   {
     path: "/api/climate/geographic-clusters",

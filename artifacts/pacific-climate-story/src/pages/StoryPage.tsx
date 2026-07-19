@@ -13,7 +13,7 @@ import { ChapterAcceleration } from "@/components/story/ChapterAcceleration";
 import { Chapter5Heatmap } from "@/components/story/Chapter5Heatmap";
 import { ChapterCumulativeRise } from "@/components/story/ChapterCumulativeRise";
 import { ChapterForecast } from "@/components/story/ChapterForecast";
-import { ChapterRiskDashboard } from "@/components/story/ChapterRiskDashboard";
+import { RiskAssessment } from "@/components/story/RiskAssessment";
 
 import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
 import { WhatThisMeans } from "@/components/story/WhatThisMeans";
@@ -54,7 +54,7 @@ export default function StoryPage() {
         <ChapterThresholdFunnel />
         <ChapterStreamGraph />
         <ChapterForecast />
-        <ChapterRiskDashboard />
+        <RiskAssessment />
 
         <div ref={sectionRef}>
           <PacificAtAGlance activeTab={activeTab} setActiveTab={setActiveTab} />

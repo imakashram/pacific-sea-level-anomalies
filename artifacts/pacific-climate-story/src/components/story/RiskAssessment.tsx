@@ -58,7 +58,7 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export function ChapterRiskDashboard() {
+export function RiskAssessment() {
   const { data, isLoading } = useGetRiskScores();
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
 
@@ -85,12 +85,12 @@ export function ChapterRiskDashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="mb-12"
+          className="mb-12 text-center flex flex-col items-center"
         >
           <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
             Risk Assessment
           </h2>
-          <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl">
+          <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
             A composite risk score (0–100) combining cumulative rise, rate of
             change, volatility, and decade-over-decade acceleration. This is
             the full picture of existential threat by nation.
