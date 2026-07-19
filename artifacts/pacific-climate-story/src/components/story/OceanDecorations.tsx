@@ -150,29 +150,37 @@ export function OceanDecorations() {
           </motion.div>
 
           {/* Animated bubble particles inside the water */}
-          {[...Array(14)].map((_, i) => (
-            <motion.div
-              key={i}
-              className={`absolute rounded-full shadow-sm transition-colors duration-500 ${activeEnso === "el-nino" ? "bg-orange-200/50 shadow-orange-500/50" : activeEnso === "la-nina" ? "bg-sky-200/50 shadow-sky-500/50" : "bg-slate-200/40 shadow-slate-500/30"
+          {[...Array(35)].map((_, i) => {
+            const size = 1.5 + (i % 4) * 0.8;
+            return (
+              <motion.div
+                key={i}
+                className={`absolute rounded-full border border-white/25 shadow-[0_0_2px_rgba(255,255,255,0.5)] transition-colors duration-500 ${
+                  activeEnso === "el-nino" 
+                    ? "bg-orange-200/40 shadow-orange-500/30" 
+                    : activeEnso === "la-nina" 
+                    ? "bg-sky-200/40 shadow-sky-500/30" 
+                    : "bg-slate-200/30 shadow-slate-500/20"
                 }`}
-              style={{
-                width: 2 + (i % 2),
-                height: 2 + (i % 2),
-                left: `${10 + (i * 11) % 80}%`,
-              }}
-              animate={{
-                top: ["105%", "-5%"],
-                x: [0, (i % 2 === 0 ? 3 : -3), 0],
-                opacity: [0, 0.75, 0.75, 0],
-              }}
-              transition={{
-                duration: 5 + (i * 1.2),
-                repeat: Infinity,
-                ease: "linear",
-                delay: i * 0.4,
-              }}
-            />
-          ))}
+                style={{
+                  width: size,
+                  height: size,
+                  left: `${15 + (i * 17) % 70}%`,
+                }}
+                animate={{
+                  top: ["102%", "-5%"],
+                  x: [0, (i % 2 === 0 ? 6 : -6), (i % 2 === 0 ? -4 : 4), 0],
+                  opacity: [0, 0.85, 0.85, 0],
+                }}
+                transition={{
+                  duration: 3.5 + (i % 5) * 1.2,
+                  repeat: Infinity,
+                  ease: "linear",
+                  delay: i * 0.15,
+                }}
+              />
+            );
+          })}
         </div>
 
         {/* GRADUATED DEPTH RULER */}
@@ -323,29 +331,37 @@ export function OceanDecorations() {
           </motion.div>
 
           {/* Animated bubble particles inside the water */}
-          {[...Array(14)].map((_, i) => (
-            <motion.div
-              key={i}
-              className={`absolute rounded-full shadow-sm transition-colors duration-500 ${activeEnso === "el-nino" ? "bg-orange-200/50 shadow-orange-500/50" : activeEnso === "la-nina" ? "bg-sky-200/50 shadow-sky-500/50" : "bg-slate-200/40 shadow-slate-500/30"
+          {[...Array(35)].map((_, i) => {
+            const size = 1.5 + (i % 4) * 0.8;
+            return (
+              <motion.div
+                key={i}
+                className={`absolute rounded-full border border-white/25 shadow-[0_0_2px_rgba(255,255,255,0.5)] transition-colors duration-500 ${
+                  activeEnso === "el-nino" 
+                    ? "bg-orange-200/40 shadow-orange-500/30" 
+                    : activeEnso === "la-nina" 
+                    ? "bg-sky-200/40 shadow-sky-500/30" 
+                    : "bg-slate-200/30 shadow-slate-500/20"
                 }`}
-              style={{
-                width: 2 + (i % 2),
-                height: 2 + (i % 2),
-                left: `${10 + (i * 11) % 80}%`,
-              }}
-              animate={{
-                top: ["105%", "-5%"],
-                x: [0, (i % 2 === 0 ? 3 : -3), 0],
-                opacity: [0, 0.75, 0.75, 0],
-              }}
-              transition={{
-                duration: 5 + (i * 1.2),
-                repeat: Infinity,
-                ease: "linear",
-                delay: i * 0.4,
-              }}
-            />
-          ))}
+                style={{
+                  width: size,
+                  height: size,
+                  left: `${15 + (i * 17) % 70}%`,
+                }}
+                animate={{
+                  top: ["102%", "-5%"],
+                  x: [0, (i % 2 === 0 ? 6 : -6), (i % 2 === 0 ? -4 : 4), 0],
+                  opacity: [0, 0.85, 0.85, 0],
+                }}
+                transition={{
+                  duration: 3.5 + (i % 5) * 1.2,
+                  repeat: Infinity,
+                  ease: "linear",
+                  delay: i * 0.15,
+                }}
+              />
+            );
+          })}
         </div>
 
         {/* GRADUATED DEPTH RULER */}
