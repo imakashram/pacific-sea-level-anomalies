@@ -269,7 +269,7 @@ export function FutureOutlook() {
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
-                  Sea Level Anomaly — Historical & Projected (2024–2033)
+                  Sea Level Anomaly (1993–2033)
                 </h3>
                 <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
                   <span className="flex items-center gap-1.5">
