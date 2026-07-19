@@ -15,6 +15,7 @@ import {
   Radar,
   LabelList,
   Label,
+  ReferenceLine,
 } from "recharts";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -254,7 +255,7 @@ export function RiskAssessment() {
                       <BarChart
                         data={data.countries}
                         layout="vertical"
-                        margin={{ top: 0, right: 40, left: 15, bottom: 22 }}
+                        margin={{ top: 25, right: 40, left: 15, bottom: 28 }}
                         barCategoryGap="20%"
                       >
                         <defs>
@@ -346,6 +347,72 @@ export function RiskAssessment() {
                           />
                         </YAxis>
                         <Tooltip content={<CustomTooltip />} cursor={{ fill: "hsl(var(--muted)/0.1)" }} />
+                        <ReferenceLine
+                          x={data.avgRiskScore}
+                          stroke="#38bdf8"
+                          strokeDasharray="3 3"
+                          strokeWidth={1.5}
+                          label={(props: any) => {
+                            const { viewBox } = props;
+                            if (!viewBox) return <g />;
+                            const { x, y, height } = viewBox;
+                            return (
+                              <g>
+                                {/* Top Label */}
+                                <g transform={`translate(${x}, -10)`}>
+                                  <rect
+                                    x={-36}
+                                    y={-9}
+                                    width={72}
+                                    height={18}
+                                    rx={4}
+                                    fill="hsl(var(--card))"
+                                    stroke="#38bdf8"
+                                    strokeWidth={1}
+                                  />
+                                  <text
+                                    x={0}
+                                    y={0}
+                                    textAnchor="middle"
+                                    dominantBaseline="central"
+                                    fill="#38bdf8"
+                                    fontSize={10}
+                                    fontFamily="monospace"
+                                    fontWeight={700}
+                                  >
+                                    Avg: {data.avgRiskScore}
+                                  </text>
+                                </g>
+
+                                {/* Bottom Label (Inside Plot Area) */}
+                                <g transform={`translate(${x}, ${y + height - 12})`}>
+                                  <rect
+                                    x={-36}
+                                    y={-9}
+                                    width={72}
+                                    height={18}
+                                    rx={4}
+                                    fill="hsl(var(--card))"
+                                    stroke="#38bdf8"
+                                    strokeWidth={1}
+                                  />
+                                  <text
+                                    x={0}
+                                    y={0}
+                                    textAnchor="middle"
+                                    dominantBaseline="central"
+                                    fill="#38bdf8"
+                                    fontSize={10}
+                                    fontFamily="monospace"
+                                    fontWeight={700}
+                                  >
+                                    Avg: {data.avgRiskScore}
+                                  </text>
+                                </g>
+                              </g>
+                            );
+                          }}
+                        />
                         <Bar
                           dataKey="riskScore"
                           name="Risk Score"
@@ -382,12 +449,7 @@ export function RiskAssessment() {
                     </ResponsiveContainer>
                   </div>
                 </div>
-                <div className="flex justify-end items-center border-t border-border/20 pt-4 mt-4">
-                  <p className="text-xs text-muted-foreground">
-                    Regional avg:{" "}
-                    <span className="text-foreground font-semibold font-mono">{data.avgRiskScore}/100</span>
-                  </p>
-                </div>
+
               </motion.div>
 
               {/* Right Column: Radar/Spider Chart (Detail Breakdown) */}
@@ -423,7 +485,7 @@ export function RiskAssessment() {
 
                       <div className="h-[360px] w-full flex items-center justify-center -mt-2">
                         <ResponsiveContainer width="100%" height="100%">
-                          <RadarChart data={radarData} outerRadius="76%" margin={{ top: 0, right: 45, bottom: 15, left: 55 }}>
+                          <RadarChart data={radarData} outerRadius="84%" margin={{ top: 10, right: 35, bottom: 10, left: 35 }}>
                             <defs>
                               <linearGradient id={`radar-grad-${selectedCountry.riskLevel}`} x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="0%" stopColor={RISK_COLORS[selectedCountry.riskLevel]} stopOpacity={0.4} />
@@ -433,23 +495,23 @@ export function RiskAssessment() {
                             <PolarGrid stroke="hsl(var(--border)/0.5)" />
                             <PolarAngleAxis
                               dataKey="subject"
-                              tick={({ x, y, cx, cy, payload, textAnchor }: any) => {
+                              tick={({ x, y, cx, cy, payload, textAnchor, index }: any) => {
                                 const angle = Math.atan2(y - cy, x - cx);
-                                const offset = 12;
+                                const offset = 8;
                                 const newX = x + Math.cos(angle) * offset;
                                 const newY = y + Math.sin(angle) * offset;
                                 return (
-                                  <text
-                                    x={newX}
-                                    y={newY}
-                                    textAnchor={textAnchor}
-                                    fill="hsl(var(--muted-foreground))"
-                                    fontSize={10}
-                                    fontWeight={500}
-                                    fontFamily="monospace"
-                                  >
-                                    {payload.value}
-                                  </text>
+                                  <g transform={`translate(${newX}, ${newY})`}>
+                                    <text
+                                      textAnchor={textAnchor}
+                                      fontSize={11}
+                                      fontFamily="monospace"
+                                      fill="hsl(var(--foreground))"
+                                      fontWeight={600}
+                                    >
+                                      {payload.value}
+                                    </text>
+                                  </g>
                                 );
                               }}
                             />
@@ -470,6 +532,27 @@ export function RiskAssessment() {
                           </RadarChart>
                         </ResponsiveContainer>
                       </div>
+
+                      {/* Component breakdown mini cards */}
+                      <div className="grid grid-cols-4 gap-2 pt-2 border-t border-border/20">
+                        {radarData.map((item) => (
+                          <div
+                            key={item.subject}
+                            className="bg-card/40 border border-border/30 rounded-lg p-2 text-center"
+                          >
+                            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+                              {item.subject}
+                            </p>
+                            <p
+                              className="text-base font-mono font-bold mt-0.5"
+                              style={{ color: RISK_COLORS[selectedCountry.riskLevel] }}
+                            >
+                              {Math.round(item.value)}
+                              <span className="text-[9px] text-muted-foreground font-normal">/100</span>
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-border/20 rounded-xl my-6 min-h-[300px]">
@@ -483,14 +566,6 @@ export function RiskAssessment() {
                     </div>
                   )}
                 </div>
-
-                {selectedCountry && (
-                  <div className="text-[11px] text-muted-foreground/80 border-t border-border/20 pt-4 mt-2 leading-relaxed flex flex-wrap gap-x-4 gap-y-1 justify-center">
-                    <span>Rise: <strong className="text-foreground">{selectedCountry.cumulativeRise.toFixed(2)}m</strong></span>
-                    <span>Speed: <strong className="text-foreground">{(selectedCountry.slope * 1000).toFixed(1)} mm/yr</strong></span>
-                    <span>Acc: <strong className="text-foreground">+{selectedCountry.decadeAcceleration.toFixed(2)}m</strong></span>
-                  </div>
-                )}
               </motion.div>
             </div>
           </>
