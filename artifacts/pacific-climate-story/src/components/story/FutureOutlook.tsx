@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
   ReferenceDot,
+  ReferenceArea,
 } from "recharts";
 import { motion } from "framer-motion";
 import { Gauge, Activity, Calendar, ShieldAlert } from "lucide-react";
@@ -287,7 +288,7 @@ export function FutureOutlook() {
               </div>
               <div className="h-[380px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={chartData} margin={{ top: 15, right: 30, left: 0, bottom: 5 }}>
+                  <ComposedChart data={chartData} margin={{ top: 35, right: 45, left: 10, bottom: 10 }}>
                     <defs>
                       <linearGradient id="confidenceGrad" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#f97316" stopOpacity={0.28} />
@@ -311,6 +312,7 @@ export function FutureOutlook() {
                       axisLine={false}
                     />
                     <YAxis
+                      domain={['auto', (dataMax: number) => Math.ceil(dataMax + 3)]}
                       stroke="rgba(255,255,255,0.3)"
                       tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
                       tickFormatter={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)} cm`}
@@ -318,6 +320,12 @@ export function FutureOutlook() {
                       axisLine={false}
                     />
                     <Tooltip content={<CustomTooltip />} />
+                    <ReferenceArea
+                      x1={2023}
+                      x2={2033}
+                      fill="#f97316"
+                      fillOpacity={0.03}
+                    />
                     <ReferenceLine
                       x={2023}
                       stroke="rgba(255,255,255,0.3)"
@@ -358,24 +366,54 @@ export function FutureOutlook() {
                       dot={false}
                       connectNulls={true}
                     />
-                    {data.projectedRise2033 != null && (
-                      <ReferenceDot
-                        x={2033}
-                        y={data.projectedRise2033 * 100}
-                        r={5}
-                        fill="#f97316"
-                        stroke="#ffffff"
-                        strokeWidth={2}
-                        label={{
-                          value: `+${(data.projectedRise2033 * 100).toFixed(1)} cm`,
-                          position: "top",
-                          fill: "#f97316",
-                          fontSize: 10,
-                          fontWeight: "bold",
-                          fontFamily: "monospace"
-                        }}
-                      />
-                    )}
+                    {/* 2030 Mid-Decade Milestone Dot */}
+                    {(() => {
+                      const pt2030 = chartData.find((d) => d.year === 2030 && d.projected != null);
+                      const yVal = pt2030?.projected;
+                      if (yVal == null) return null;
+                      return (
+                        <ReferenceDot
+                          x={2030}
+                          y={yVal}
+                          r={4.5}
+                          fill="#f97316"
+                          stroke="#ffffff"
+                          strokeWidth={1.5}
+                          label={{
+                            value: `2030: +${yVal.toFixed(1)} cm`,
+                            position: "top",
+                            fill: "#f97316",
+                            fontSize: 9,
+                            fontWeight: "bold",
+                            fontFamily: "monospace"
+                          }}
+                        />
+                      );
+                    })()}
+                    {/* 2033 Final Outlook Milestone Dot */}
+                    {(() => {
+                      const pt2033 = chartData.find((d) => d.year === 2033 && d.projected != null);
+                      const yVal = pt2033?.projected;
+                      if (yVal == null) return null;
+                      return (
+                        <ReferenceDot
+                          x={2033}
+                          y={yVal}
+                          r={5.5}
+                          fill="#f97316"
+                          stroke="#ffffff"
+                          strokeWidth={2}
+                          label={{
+                            value: `2033: +${yVal.toFixed(1)} cm`,
+                            position: "top",
+                            fill: "#f97316",
+                            fontSize: 10,
+                            fontWeight: "bold",
+                            fontFamily: "monospace"
+                          }}
+                        />
+                      );
+                    })()}
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>
