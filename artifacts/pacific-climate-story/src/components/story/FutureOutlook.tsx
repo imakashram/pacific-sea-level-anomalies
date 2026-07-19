@@ -252,7 +252,7 @@ export function FutureOutlook() {
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
                   Sea Level Anomaly — Historical & Projected (2024–2033)
                 </h3>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
                   <span className="flex items-center gap-1.5">
                     <span className="w-4 h-0.5 bg-primary inline-block" />
                     Historical
@@ -363,16 +363,26 @@ export function FutureOutlook() {
               </div>
             </motion.div>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
-              className="text-xs text-muted-foreground/60 mt-4 text-center italic"
+              className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-mono text-muted-foreground/75 bg-card/10 border border-border/20 px-5 py-2.5 rounded-xl text-center max-w-3xl mx-auto shadow-sm"
             >
-              Projection uses ordinary least-squares linear regression fitted on 1993–2023 historical data.
-              Confidence bands represent ±2× RMSE of historical residuals. R² = {(data.r2 * 100).toFixed(1)}%.
-            </motion.p>
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 inline-block" />
+                <span>Model: OLS Linear Regression (1993–2023)</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-400/80 inline-block" />
+                <span>Confidence: ±2× RMSE Residuals</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80 inline-block" />
+                <span>R² Score: {(data.r2 * 100).toFixed(1)}%</span>
+              </span>
+            </motion.div>
           </>
         )}
       </div>
