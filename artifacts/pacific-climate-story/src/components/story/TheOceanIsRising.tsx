@@ -141,10 +141,10 @@ export function TheOceanIsRising() {
 
       {/* Header Block */}
       <div className="mb-12 text-center flex flex-col items-center justify-center relative z-10">
-        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-center">
+        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
           The Ocean Is Rising
         </h2>
-        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed text-center mx-auto">
+        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
           Across 21 Pacific nations, sea levels have risen steadily over the past 30 years. Short-term climate cycles create temporary ups and downs, but the overall trend is still upward.
         </p>
       </div>
@@ -218,10 +218,6 @@ export function TheOceanIsRising() {
                   <linearGradient id="rangeGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.15} />
                     <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.01} />
-                  </linearGradient>
-                  <linearGradient id="movingAvgGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.08)" vertical={false} />
