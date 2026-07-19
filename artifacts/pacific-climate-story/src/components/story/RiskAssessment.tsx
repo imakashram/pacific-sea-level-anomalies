@@ -28,20 +28,6 @@ const RISK_COLORS: Record<string, string> = {
   Low: "#22c55e",
 };
 
-const RISK_BG: Record<string, string> = {
-  Critical: "bg-red-500/10 border-red-500/30",
-  High: "bg-orange-500/10 border-orange-500/30",
-  Medium: "bg-yellow-500/10 border-yellow-500/30",
-  Low: "bg-green-500/10 border-green-500/30",
-};
-
-const RISK_GLOW: Record<string, string> = {
-  Critical: "rgba(239,68,68,0.15)",
-  High: "rgba(249,115,22,0.15)",
-  Medium: "rgba(234,179,8,0.15)",
-  Low: "rgba(34,197,94,0.15)",
-};
-
 const RISK_THEMES: Record<string, { text: string; bg: string; border: string; glow: string; icon: any }> = {
   Critical: {
     text: "text-red-400",
@@ -72,24 +58,6 @@ const RISK_THEMES: Record<string, { text: string; bg: string; border: string; gl
     icon: Shield
   }
 };
-
-const SHORT_COUNTRY_NAMES: Record<string, string> = {
-  "Palau": "Palau",
-  "Vanuatu": "Vanuatu",
-  "Samoa": "Samoa",
-  "Cook Islands": "Cook Is.",
-  "Wallis and Futuna": "Wallis & Fut.",
-  "French Polynesia": "Fr. Polynesia",
-  "Kiribati": "Kiribati",
-  "Marshall Islands": "Marshall Is.",
-  "Tonga": "Tonga",
-  "Northern Mariana Islands": "N. Mariana Is.",
-  "Federated States of Micronesia": "Micronesia",
-  "Solomon Islands": "Solomon Is.",
-  "American Samoa": "Am. Samoa",
-  "Papua New Guinea": "PNG",
-};
-
 
 const getScoreColor = (score: number): string => {
   if (score >= 80) return "#ef4444";
@@ -178,8 +146,6 @@ export function RiskAssessment() {
       { subject: "Accel.", value: selectedCountry.components.accelerationScore, fullMark: 100 },
     ]
     : [];
-
-  const top5 = data?.countries.slice(0, 5) ?? [];
 
   return (
     <StorySection id="chapter-risk" className="py-12 md:py-16">
