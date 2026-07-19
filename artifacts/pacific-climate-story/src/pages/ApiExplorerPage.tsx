@@ -125,7 +125,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Computes standard deviation variances of annual anomalies on a year-by-year scale.",
     category: "trends",
-    usedIn: ["ChapterLollipop"]
+    usedIn: []
   },
 
   // ENSO

@@ -21,7 +21,6 @@ import { ChapterRankBump } from "@/components/story/ChapterRankBump";
 import { ChapterDumbbellLeap } from "@/components/story/ChapterDumbbellLeap";
 import { ChapterThresholdFunnel } from "@/components/story/ChapterThresholdFunnel";
 import { ChapterStreamGraph } from "@/components/story/ChapterStreamGraph";
-import { ChapterLollipop } from "@/components/story/ChapterLollipop";
 import { OceanDecorations } from "@/components/story/OceanDecorations";
 
 export default function StoryPage() {
@@ -54,7 +53,6 @@ export default function StoryPage() {
         <ChapterRankBump />
         <ChapterThresholdFunnel />
         <ChapterStreamGraph />
-        <ChapterLollipop />
         <ChapterForecast />
         <ChapterRiskDashboard />
 
