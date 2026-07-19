@@ -92,7 +92,7 @@ function StatCard({
   );
 }
 
-function CustomTrajectoryTooltip({ active, payload }: any) {
+function CustomTrajectoryTooltip({ active, payload, showMovingAvg = true, showTrendline = true }: any) {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     const value = payload.find((p: any) => p.dataKey === "value")?.value;
@@ -109,17 +109,25 @@ function CustomTrajectoryTooltip({ active, payload }: any) {
         <div className="space-y-2 text-xs">
           {value !== undefined && (
             <div className="flex justify-between items-center gap-6">
-              <span className="text-muted-foreground font-medium">Annual Anomaly</span>
-              <span className="font-mono font-bold text-cyan-400 text-sm">
+              <span className="text-cyan-400/90 font-medium">Annual Anomaly</span>
+              <span className="font-mono font-bold text-cyan-400 font-bold">
                 {value >= 0 ? "+" : ""}{value.toFixed(1)} cm
               </span>
             </div>
           )}
-          {rollingAvg !== undefined && (
+          {showMovingAvg && rollingAvg !== undefined && (
             <div className="flex justify-between items-center gap-6">
               <span className="text-amber-400/90 font-medium">5-Year Moving Avg</span>
               <span className="font-mono font-bold text-amber-400">
                 {rollingAvg >= 0 ? "+" : ""}{rollingAvg.toFixed(1)} cm
+              </span>
+            </div>
+          )}
+          {showTrendline && data?.linearTrend !== undefined && (
+            <div className="flex justify-between items-center gap-6">
+              <span className="text-teal-400 font-medium">Linear Trend</span>
+              <span className="font-mono font-bold text-teal-400">
+                {data.linearTrend >= 0 ? "+" : ""}{data.linearTrend.toFixed(1)} cm
               </span>
             </div>
           )}
@@ -133,6 +141,12 @@ function CustomTrajectoryTooltip({ active, payload }: any) {
 function CustomDecadeTooltip({ active, payload }: any) {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
+    const decadeLabel = String(data.label || "");
+    const colorClass = decadeLabel.includes("1993") || decadeLabel.includes("D1")
+      ? "text-cyan-400"
+      : decadeLabel.includes("2003") || decadeLabel.includes("D2")
+      ? "text-amber-400"
+      : "text-rose-400";
     return (
       <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px]">
         <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2.5">
@@ -144,7 +158,7 @@ function CustomDecadeTooltip({ active, payload }: any) {
         <div className="space-y-2 text-xs">
           <div className="flex justify-between items-center gap-6">
             <span className="text-muted-foreground font-medium">Average Anomaly</span>
-            <span className="font-mono font-bold text-cyan-400 text-sm">
+            <span className={`font-mono font-bold text-sm ${colorClass}`}>
               {data.avg >= 0 ? "+" : ""}{data.avg.toFixed(1)} cm
             </span>
           </div>
@@ -193,12 +207,35 @@ export function ExploreAnyNation({
     : null;
 
   const peakYear = profile?.stats.peakYear;
+  const troughYear = profile?.stats.troughYear;
+  const troughValue = profile?.stats.troughValue;
 
-  const timeSeriesCm = profile?.timeSeries.map((d) => ({
-    ...d,
-    value: d.value * 100,
-    rollingAvg: d.rollingAvg !== undefined ? d.rollingAvg * 100 : undefined,
-  })) || [];
+  const [showMovingAvg, setShowMovingAvg] = useState(true);
+  const [showTrendline, setShowTrendline] = useState(true);
+
+  // Calculate linear regression points for timeSeriesCm
+  const timeSeriesCm = profile?.timeSeries ? (() => {
+    const pts = profile.timeSeries;
+    const n = pts.length;
+    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+    for (let i = 0; i < n; i++) {
+      const x = pts[i].year;
+      const y = pts[i].value * 100;
+      sumX += x;
+      sumY += y;
+      sumXY += x * y;
+      sumXX += x * x;
+    }
+    const slope = n > 0 ? (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) : 0;
+    const intercept = n > 0 ? (sumY - slope * sumX) / n : 0;
+
+    return pts.map((d) => ({
+      ...d,
+      value: d.value * 100,
+      rollingAvg: d.rollingAvg !== undefined ? d.rollingAvg * 100 : undefined,
+      linearTrend: parseFloat((slope * d.year + intercept).toFixed(2)),
+    }));
+  })() : [];
 
   const decadeBreakdownCm = profile?.decadeBreakdown.map((d) => ({
     ...d,
@@ -397,21 +434,32 @@ export function ExploreAnyNation({
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* 30-year trajectory with peak annotation */}
                 <div className="lg:col-span-2 bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm">
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
                       30-Year Anomaly Trajectory
                     </h4>
-                    <div className="flex gap-4 text-xs text-muted-foreground font-mono">
-                      <span className="flex items-center gap-1.5">
-                        <span className="w-3.5 h-0.5 bg-muted-foreground/45 inline-block" />
-                        Annual
+                    <div className="flex items-center gap-4 text-xs font-mono">
+                      <span className="flex items-center gap-1.5 text-cyan-400">
+                        <span className="w-3.5 h-0.5 bg-cyan-400 inline-block rounded" />
+                        <span className="font-semibold">Annual</span>
                       </span>
-                      <span className="flex items-center gap-1.5">
-                        <span className="w-3.5 h-0.5 bg-primary inline-block" />
-                        5-yr Average
-                      </span>
+                      <button
+                        onClick={() => setShowMovingAvg(!showMovingAvg)}
+                        className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${showMovingAvg ? "opacity-100" : "opacity-40"}`}
+                      >
+                        <span className="w-3.5 h-0.5 bg-amber-400 inline-block rounded" />
+                        <span className="font-semibold">5-yr Avg</span>
+                      </button>
+                      <button
+                        onClick={() => setShowTrendline(!showTrendline)}
+                        className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${showTrendline ? "opacity-100" : "opacity-40"}`}
+                      >
+                        <span className="w-3.5 h-0.5 bg-teal-400 inline-block border-t border-dashed border-teal-400" />
+                        <span className="font-semibold">Linear Trend</span>
+                      </button>
                     </div>
                   </div>
+
                   <div className="h-[280px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <ComposedChart
@@ -420,20 +468,20 @@ export function ExploreAnyNation({
                       >
                         <defs>
                           <linearGradient id="areaColor" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.25}/>
-                            <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.25}/>
+                            <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
                           </linearGradient>
                           <linearGradient id="barColorD1" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="rgba(255, 255, 255, 0.05)"/>
-                            <stop offset="100%" stopColor="rgba(255, 255, 255, 0.25)"/>
+                            <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3}/>
+                            <stop offset="100%" stopColor="#38bdf8" stopOpacity={0.85}/>
                           </linearGradient>
                           <linearGradient id="barColorD2" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="rgba(14, 165, 233, 0.15)"/>
-                            <stop offset="100%" stopColor="rgba(14, 165, 233, 0.45)"/>
+                            <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.3}/>
+                            <stop offset="100%" stopColor="#fbbf24" stopOpacity={0.85}/>
                           </linearGradient>
                           <linearGradient id="barColorD3" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="rgba(59, 130, 246, 0.3)"/>
-                            <stop offset="100%" stopColor="rgba(59, 130, 246, 0.75)"/>
+                            <stop offset="0%" stopColor="#ef4444" stopOpacity={0.3}/>
+                            <stop offset="100%" stopColor="#f87171" stopOpacity={0.9}/>
                           </linearGradient>
                         </defs>
                         <CartesianGrid
@@ -457,7 +505,7 @@ export function ExploreAnyNation({
                           label={{ value: "Anomaly (cm)", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold', fontFamily: 'monospace' } }}
                         />
                         <RechartsTooltip
-                          content={<CustomTrajectoryTooltip />}
+                          content={<CustomTrajectoryTooltip showMovingAvg={showMovingAvg} showTrendline={showTrendline} />}
                           cursor={{ stroke: "rgba(255, 255, 255, 0.1)", strokeWidth: 1 }}
                         />
                         <ReferenceLine
@@ -480,28 +528,43 @@ export function ExploreAnyNation({
                             }}
                           />
                         )}
-                        <Area
-                          type="monotone"
-                          dataKey="rollingAvg"
-                          stroke="none"
-                          fill="url(#areaColor)"
-                        />
+                        {showMovingAvg && (
+                          <Area
+                            type="monotone"
+                            dataKey="rollingAvg"
+                            stroke="none"
+                            fill="url(#areaColor)"
+                          />
+                        )}
                         <Line
                           type="monotone"
                           dataKey="value"
                           name="Annual"
-                          stroke="rgba(255,255,255,0.15)"
-                          strokeWidth={1.5}
+                          stroke="#38bdf8"
+                          strokeWidth={1.8}
                           dot={false}
                         />
-                        <Line
-                          type="monotone"
-                          dataKey="rollingAvg"
-                          name="5-yr Avg"
-                          stroke="hsl(var(--primary))"
-                          strokeWidth={3}
-                          dot={false}
-                        />
+                        {showMovingAvg && (
+                          <Line
+                            type="monotone"
+                            dataKey="rollingAvg"
+                            name="5-yr Avg"
+                            stroke="#f59e0b"
+                            strokeWidth={3}
+                            dot={false}
+                          />
+                        )}
+                        {showTrendline && (
+                          <Line
+                            type="monotone"
+                            dataKey="linearTrend"
+                            name="Linear Trend"
+                            stroke="#2dd4bf"
+                            strokeDasharray="4 4"
+                            strokeWidth={2}
+                            dot={false}
+                          />
+                        )}
                         {/* Peak year marker */}
                         {peakYear && (
                           <ReferenceDot
@@ -515,6 +578,24 @@ export function ExploreAnyNation({
                               value: `Peak ${peakYear}`,
                               position: "top",
                               fill: "#fff",
+                              fontSize: 9,
+                              fontWeight: "bold"
+                            }}
+                          />
+                        )}
+                        {/* Trough year marker */}
+                        {troughYear && troughValue !== undefined && (
+                          <ReferenceDot
+                            x={troughYear}
+                            y={troughValue * 100}
+                            r={5}
+                            fill="#ef4444"
+                            stroke="#fff"
+                            strokeWidth={2}
+                            label={{
+                              value: `Trough ${troughYear}`,
+                              position: "bottom",
+                              fill: "#ef4444",
                               fontSize: 9,
                               fontWeight: "bold"
                             }}
