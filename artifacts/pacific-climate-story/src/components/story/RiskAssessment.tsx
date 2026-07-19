@@ -131,7 +131,7 @@ const CustomTooltip = ({ active, payload }: any) => {
           <div className="flex justify-between items-center">
             <span className="text-muted-foreground">Annual Speed</span>
             <span className="font-mono font-semibold text-cyan-400">
-              {(d.slope * 1000).toFixed(2)} mm/yr
+              {d.slope.toFixed(2)} mm/yr
             </span>
           </div>
 
