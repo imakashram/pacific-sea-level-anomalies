@@ -583,24 +583,7 @@ export function ExploreAnyNation({
                             }}
                           />
                         )}
-                        {/* Trough year marker */}
-                        {troughYear && troughValue !== undefined && (
-                          <ReferenceDot
-                            x={troughYear}
-                            y={troughValue * 100}
-                            r={5}
-                            fill="#ef4444"
-                            stroke="#fff"
-                            strokeWidth={2}
-                            label={{
-                              value: `Trough ${troughYear}`,
-                              position: "bottom",
-                              fill: "#ef4444",
-                              fontSize: 9,
-                              fontWeight: "bold"
-                            }}
-                          />
-                        )}
+
                       </ComposedChart>
                     </ResponsiveContainer>
                   </div>
