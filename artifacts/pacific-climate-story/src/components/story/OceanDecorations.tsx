@@ -96,19 +96,19 @@ export function OceanDecorations() {
         {/* Soft background blur spot (Intensifies on hover, matches ENSO phase) */}
         <div
           className={`absolute top-1/3 left-[-120px] w-64 h-64 rounded-full transition-all duration-500 blur-[80px] ${activeEnso === "el-nino"
-              ? "bg-orange-600/5"
-              : activeEnso === "la-nina"
-                ? "bg-sky-600/5"
-                : "bg-slate-600/5"
+            ? "bg-orange-600/5"
+            : activeEnso === "la-nina"
+              ? "bg-sky-600/5"
+              : "bg-slate-600/5"
             } ${isLeftHovered ? "opacity-100" : "opacity-40"
             }`}
         />
         <div
           className={`absolute bottom-1/3 left-[-120px] w-64 h-64 rounded-full transition-all duration-500 blur-[80px] ${activeEnso === "el-nino"
-              ? "bg-rose-600/5"
-              : activeEnso === "la-nina"
-                ? "bg-blue-600/5"
-                : "bg-slate-600/5"
+            ? "bg-rose-600/5"
+            : activeEnso === "la-nina"
+              ? "bg-blue-600/5"
+              : "bg-slate-600/5"
             } ${isLeftHovered ? "opacity-100" : "opacity-40"
             }`}
         />
@@ -116,19 +116,19 @@ export function OceanDecorations() {
         {/* Sea water liquid fill (Dynamic ocean water body matching SLA level & ENSO phase) */}
         <div
           className={`absolute inset-0 border-x transition-colors duration-500 overflow-hidden ${activeEnso === "el-nino"
-              ? "bg-gradient-to-b from-rose-950/75 via-orange-950/55 to-amber-900/70 border-orange-500/30 shadow-[inset_0_0_20px_rgba(249,115,22,0.25)]"
-              : activeEnso === "la-nina"
-                ? "bg-gradient-to-b from-sky-950/75 via-blue-950/55 to-cyan-900/70 border-sky-500/30 shadow-[inset_0_0_20px_rgba(56,189,248,0.25)]"
-                : "bg-gradient-to-b from-slate-950/75 via-slate-900/55 to-slate-900/70 border-slate-500/30 shadow-[inset_0_0_20px_rgba(148,163,184,0.15)]"
+            ? "bg-gradient-to-b from-rose-950/75 via-orange-950/55 to-amber-900/70 border-orange-500/30 shadow-[inset_0_0_20px_rgba(249,115,22,0.25)]"
+            : activeEnso === "la-nina"
+              ? "bg-gradient-to-b from-sky-950/75 via-blue-950/55 to-cyan-900/70 border-sky-500/30 shadow-[inset_0_0_20px_rgba(56,189,248,0.25)]"
+              : "bg-gradient-to-b from-slate-950/75 via-slate-900/55 to-slate-900/70 border-slate-500/30 shadow-[inset_0_0_20px_rgba(148,163,184,0.15)]"
             }`}
         >
           {/* Dynamic rising sea water column (Fills as scroll progresses) */}
           <motion.div
             className={`absolute bottom-0 left-0 right-0 border-t shadow-md transition-colors duration-500 ${activeEnso === "el-nino"
-                ? "bg-gradient-to-t from-orange-600/40 via-amber-500/30 to-orange-400/50 border-orange-300/60 shadow-[0_0_12px_rgba(249,115,22,0.5)]"
-                : activeEnso === "la-nina"
-                  ? "bg-gradient-to-t from-sky-600/40 via-blue-500/30 to-cyan-400/50 border-sky-300/60 shadow-[0_0_12px_rgba(56,189,248,0.5)]"
-                  : "bg-gradient-to-t from-slate-600/40 via-slate-500/30 to-slate-400/50 border-slate-300/60 shadow-[0_0_12px_rgba(148,163,184,0.3)]"
+              ? "bg-gradient-to-t from-orange-600/40 via-amber-500/30 to-orange-400/50 border-orange-300/60 shadow-[0_0_12px_rgba(249,115,22,0.5)]"
+              : activeEnso === "la-nina"
+                ? "bg-gradient-to-t from-sky-600/40 via-blue-500/30 to-cyan-400/50 border-sky-300/60 shadow-[0_0_12px_rgba(56,189,248,0.5)]"
+                : "bg-gradient-to-t from-slate-600/40 via-slate-500/30 to-slate-400/50 border-slate-300/60 shadow-[0_0_12px_rgba(148,163,184,0.3)]"
               }`}
             style={{ top: indicatorTop }}
           >
@@ -147,6 +147,55 @@ export function OceanDecorations() {
                 />
               </motion.svg>
             </div>
+
+            {/* Shimmering Volumetric Ocean Light Rays (Sun shafts) */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen"
+              style={{
+                background: "repeating-linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 8%, rgba(255,255,255,0.06) 12%, rgba(255,255,255,0) 16%)",
+                backgroundSize: "200% 200%"
+              }}
+              animate={{
+                backgroundPosition: ["0% 0%", "100% 50%"]
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+
+            {/* Ocean Surface Light Bloom */}
+            <div className={`absolute top-0 left-0 right-0 h-16 bg-gradient-to-b to-transparent pointer-events-none mix-blend-screen transition-colors duration-500 ${activeEnso === "el-nino" ? "from-orange-400/30" : activeEnso === "la-nina" ? "from-sky-300/35" : "from-slate-300/25"
+              }`} />
+
+            {/* 3D Cylindrical Glass Vignette & Depth Shadows */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/35 pointer-events-none z-10" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_15%,rgba(255,255,255,0)_85%,rgba(255,255,255,0.03)_100%)] pointer-events-none z-10" />
+
+            {/* Floating marine snow / plankton dust */}
+            {[...Array(12)].map((_, i) => (
+              <motion.div
+                key={`snow-left-${i}`}
+                className="absolute rounded-full bg-white/25 blur-[0.5px]"
+                style={{
+                  width: 1 + (i % 2),
+                  height: 1 + (i % 2),
+                  left: `${20 + (i * 23) % 60}%`,
+                }}
+                animate={{
+                  top: ["100%", "0%"],
+                  x: [0, (i % 2 === 0 ? 5 : -5), 0],
+                  opacity: [0, 0.45, 0.45, 0]
+                }}
+                transition={{
+                  duration: 8 + (i % 3) * 3,
+                  repeat: Infinity,
+                  ease: "linear",
+                  delay: i * 0.4
+                }}
+              />
+            ))}
           </motion.div>
 
           {/* Animated bubble particles inside the water */}
@@ -155,13 +204,12 @@ export function OceanDecorations() {
             return (
               <motion.div
                 key={i}
-                className={`absolute rounded-full border border-white/25 shadow-[0_0_2px_rgba(255,255,255,0.5)] transition-colors duration-500 ${
-                  activeEnso === "el-nino" 
-                    ? "bg-orange-200/40 shadow-orange-500/30" 
-                    : activeEnso === "la-nina" 
-                    ? "bg-sky-200/40 shadow-sky-500/30" 
-                    : "bg-slate-200/30 shadow-slate-500/20"
-                }`}
+                className={`absolute rounded-full border border-white/25 shadow-[0_0_2px_rgba(255,255,255,0.5)] transition-colors duration-500 ${activeEnso === "el-nino"
+                    ? "bg-orange-200/40 shadow-orange-500/30"
+                    : activeEnso === "la-nina"
+                      ? "bg-sky-200/40 shadow-sky-500/30"
+                      : "bg-slate-200/30 shadow-slate-500/20"
+                  }`}
                 style={{
                   width: size,
                   height: size,
@@ -195,10 +243,10 @@ export function OceanDecorations() {
 
           {/* Main vertical axis line */}
           <div className={`absolute top-0 bottom-0 w-px transition-colors duration-500 ${activeEnso === "el-nino"
-              ? "bg-gradient-to-b from-orange-500/35 via-orange-400/85 to-orange-500/35"
-              : activeEnso === "la-nina"
-                ? "bg-gradient-to-b from-sky-500/35 via-sky-400/85 to-sky-500/35"
-                : "bg-gradient-to-b from-slate-500/35 via-slate-400/85 to-slate-500/35"
+            ? "bg-gradient-to-b from-orange-500/35 via-orange-400/85 to-orange-500/35"
+            : activeEnso === "la-nina"
+              ? "bg-gradient-to-b from-sky-500/35 via-sky-400/85 to-sky-500/35"
+              : "bg-gradient-to-b from-slate-500/35 via-slate-400/85 to-slate-500/35"
             }`} />
 
           {/* Scrolling HUD crosshair pointer with hover triggers */}
@@ -297,19 +345,19 @@ export function OceanDecorations() {
         {/* Sea water liquid fill (Dynamic climate cycle water body) */}
         <div
           className={`absolute inset-0 border-x transition-colors duration-500 overflow-hidden ${activeEnso === "el-nino"
-              ? "bg-gradient-to-b from-rose-950/75 via-orange-950/55 to-amber-900/70 border-orange-500/30 shadow-[inset_0_0_20px_rgba(249,115,22,0.25)]"
-              : activeEnso === "la-nina"
-                ? "bg-gradient-to-b from-sky-950/75 via-blue-950/55 to-cyan-900/70 border-sky-500/30 shadow-[inset_0_0_20px_rgba(56,189,248,0.25)]"
-                : "bg-gradient-to-b from-slate-950/75 via-slate-900/55 to-slate-900/70 border-slate-500/30 shadow-[inset_0_0_20px_rgba(148,163,184,0.15)]"
+            ? "bg-gradient-to-b from-rose-950/75 via-orange-950/55 to-amber-900/70 border-orange-500/30 shadow-[inset_0_0_20px_rgba(249,115,22,0.25)]"
+            : activeEnso === "la-nina"
+              ? "bg-gradient-to-b from-sky-950/75 via-blue-950/55 to-cyan-900/70 border-sky-500/30 shadow-[inset_0_0_20px_rgba(56,189,248,0.25)]"
+              : "bg-gradient-to-b from-slate-950/75 via-slate-900/55 to-slate-900/70 border-slate-500/30 shadow-[inset_0_0_20px_rgba(148,163,184,0.15)]"
             }`}
         >
           {/* Dynamic sea water body */}
           <motion.div
             className={`absolute bottom-0 left-0 right-0 border-t shadow-md transition-colors duration-500 ${activeEnso === "el-nino"
-                ? "bg-gradient-to-t from-orange-600/40 via-amber-500/30 to-orange-400/50 border-orange-300/60 shadow-[0_0_12px_rgba(249,115,22,0.5)]"
-                : activeEnso === "la-nina"
-                  ? "bg-gradient-to-t from-sky-600/40 via-blue-500/30 to-cyan-400/50 border-sky-300/60 shadow-[0_0_12px_rgba(56,189,248,0.5)]"
-                  : "bg-gradient-to-t from-slate-600/40 via-slate-500/30 to-slate-400/50 border-slate-300/60 shadow-[0_0_12px_rgba(148,163,184,0.3)]"
+              ? "bg-gradient-to-t from-orange-600/40 via-amber-500/30 to-orange-400/50 border-orange-300/60 shadow-[0_0_12px_rgba(249,115,22,0.5)]"
+              : activeEnso === "la-nina"
+                ? "bg-gradient-to-t from-sky-600/40 via-blue-500/30 to-cyan-400/50 border-sky-300/60 shadow-[0_0_12px_rgba(56,189,248,0.5)]"
+                : "bg-gradient-to-t from-slate-600/40 via-slate-500/30 to-slate-400/50 border-slate-300/60 shadow-[0_0_12px_rgba(148,163,184,0.3)]"
               }`}
             style={{ top: indicatorTop }}
           >
@@ -328,6 +376,55 @@ export function OceanDecorations() {
                 />
               </motion.svg>
             </div>
+
+            {/* Shimmering Volumetric Ocean Light Rays (Sun shafts) */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen"
+              style={{
+                background: "repeating-linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 8%, rgba(255,255,255,0.06) 12%, rgba(255,255,255,0) 16%)",
+                backgroundSize: "200% 200%"
+              }}
+              animate={{
+                backgroundPosition: ["0% 0%", "100% 50%"]
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+
+            {/* Ocean Surface Light Bloom */}
+            <div className={`absolute top-0 left-0 right-0 h-16 bg-gradient-to-b to-transparent pointer-events-none mix-blend-screen transition-colors duration-500 ${activeEnso === "el-nino" ? "from-orange-400/30" : activeEnso === "la-nina" ? "from-sky-300/35" : "from-slate-300/25"
+              }`} />
+
+            {/* 3D Cylindrical Glass Vignette & Depth Shadows */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/35 pointer-events-none z-10" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_15%,rgba(255,255,255,0)_85%,rgba(255,255,255,0.03)_100%)] pointer-events-none z-10" />
+
+            {/* Floating marine snow / plankton dust */}
+            {[...Array(12)].map((_, i) => (
+              <motion.div
+                key={`snow-right-${i}`}
+                className="absolute rounded-full bg-white/25 blur-[0.5px]"
+                style={{
+                  width: 1 + (i % 2),
+                  height: 1 + (i % 2),
+                  left: `${20 + (i * 23) % 60}%`,
+                }}
+                animate={{
+                  top: ["100%", "0%"],
+                  x: [0, (i % 2 === 0 ? 5 : -5), 0],
+                  opacity: [0, 0.45, 0.45, 0]
+                }}
+                transition={{
+                  duration: 8 + (i % 3) * 3,
+                  repeat: Infinity,
+                  ease: "linear",
+                  delay: i * 0.4
+                }}
+              />
+            ))}
           </motion.div>
 
           {/* Animated bubble particles inside the water */}
@@ -336,13 +433,12 @@ export function OceanDecorations() {
             return (
               <motion.div
                 key={i}
-                className={`absolute rounded-full border border-white/25 shadow-[0_0_2px_rgba(255,255,255,0.5)] transition-colors duration-500 ${
-                  activeEnso === "el-nino" 
-                    ? "bg-orange-200/40 shadow-orange-500/30" 
-                    : activeEnso === "la-nina" 
-                    ? "bg-sky-200/40 shadow-sky-500/30" 
-                    : "bg-slate-200/30 shadow-slate-500/20"
-                }`}
+                className={`absolute rounded-full border border-white/25 shadow-[0_0_2px_rgba(255,255,255,0.5)] transition-colors duration-500 ${activeEnso === "el-nino"
+                    ? "bg-orange-200/40 shadow-orange-500/30"
+                    : activeEnso === "la-nina"
+                      ? "bg-sky-200/40 shadow-sky-500/30"
+                      : "bg-slate-200/30 shadow-slate-500/20"
+                  }`}
                 style={{
                   width: size,
                   height: size,
@@ -376,10 +472,10 @@ export function OceanDecorations() {
 
           {/* Main vertical axis line */}
           <div className={`absolute top-0 bottom-0 w-px transition-colors duration-500 ${activeEnso === "el-nino"
-              ? "bg-gradient-to-b from-orange-500/35 via-orange-400/85 to-orange-500/35"
-              : activeEnso === "la-nina"
-                ? "bg-gradient-to-b from-sky-500/35 via-sky-400/85 to-sky-500/35"
-                : "bg-gradient-to-b from-slate-500/35 via-slate-400/85 to-slate-500/35"
+            ? "bg-gradient-to-b from-orange-500/35 via-orange-400/85 to-orange-500/35"
+            : activeEnso === "la-nina"
+              ? "bg-gradient-to-b from-sky-500/35 via-sky-400/85 to-sky-500/35"
+              : "bg-gradient-to-b from-slate-500/35 via-slate-400/85 to-slate-500/35"
             }`} />
 
           {/* Scrolling HUD crosshair pointer with hover triggers */}
