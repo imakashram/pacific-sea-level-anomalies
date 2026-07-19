@@ -90,38 +90,38 @@ export function FutureOutlook() {
 
   const chartData = data
     ? (() => {
-        const lastHist = data.historical[data.historical.length - 1];
-        const lastHistCm = lastHist ? lastHist.avgAnomaly * 100 : null;
-        return [
-          ...data.historical.map((h) => ({
-            year: h.year,
-            historical: h.avgAnomaly * 100,
-            projected: null as number | null,
-            lower: null as number | null,
-            upper: null as number | null,
-            band: null as [number, number] | null,
-            baseline2023: lastHistCm,
-          })),
-          ...(lastHist ? [{
-            year: lastHist.year,
-            historical: lastHistCm,
-            projected: lastHistCm,
-            lower: lastHistCm,
-            upper: lastHistCm,
-            band: [lastHistCm!, lastHistCm!] as [number, number],
-            baseline2023: lastHistCm,
-          }] : []),
-          ...data.projected.map((p) => ({
-            year: p.year,
-            historical: null as number | null,
-            projected: p.projected * 100,
-            lower: p.lower * 100,
-            upper: p.upper * 100,
-            band: [p.lower * 100, p.upper * 100] as [number, number],
-            baseline2023: lastHistCm,
-          })),
-        ];
-      })()
+      const lastHist = data.historical[data.historical.length - 1];
+      const lastHistCm = lastHist ? lastHist.avgAnomaly * 100 : null;
+      return [
+        ...data.historical.map((h) => ({
+          year: h.year,
+          historical: h.avgAnomaly * 100,
+          projected: null as number | null,
+          lower: null as number | null,
+          upper: null as number | null,
+          band: null as [number, number] | null,
+          baseline2023: lastHistCm,
+        })),
+        ...(lastHist ? [{
+          year: lastHist.year,
+          historical: lastHistCm,
+          projected: lastHistCm,
+          lower: lastHistCm,
+          upper: lastHistCm,
+          band: [lastHistCm!, lastHistCm!] as [number, number],
+          baseline2023: lastHistCm,
+        }] : []),
+        ...data.projected.map((p) => ({
+          year: p.year,
+          historical: null as number | null,
+          projected: p.projected * 100,
+          lower: p.lower * 100,
+          upper: p.upper * 100,
+          band: [p.lower * 100, p.upper * 100] as [number, number],
+          baseline2023: lastHistCm,
+        })),
+      ];
+    })()
     : [];
 
   return (
