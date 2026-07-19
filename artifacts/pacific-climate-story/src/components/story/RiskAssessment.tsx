@@ -94,38 +94,59 @@ const SHORT_COUNTRY_NAMES: Record<string, string> = {
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const d = payload[0]?.payload;
-    const theme = RISK_THEMES[d.riskLevel] || { text: "text-foreground" };
+    const color = RISK_COLORS[d.riskLevel] || "#38bdf8";
     return (
-      <div className="relative overflow-hidden bg-background/95 border border-border/40 p-4 rounded-xl shadow-2xl backdrop-blur-md pl-6">
-        <div
-          className="absolute left-0 top-0 bottom-0 w-1.5"
-          style={{ backgroundColor: RISK_COLORS[d.riskLevel] }}
-        />
-        <p className="font-bold text-foreground text-sm mb-1">{d.country}</p>
-        <p className="text-xs mb-2">
+      <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px]">
+        {/* Header Row */}
+        <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2.5 gap-3">
+          <span className="font-serif text-lg font-bold text-white">{d.country}</span>
           <span
-            className={`font-mono font-bold ${theme.text}`}
+            className="text-[10px] font-mono px-2 py-0.5 rounded-full uppercase border font-semibold"
+            style={{
+              backgroundColor: `${color}15`,
+              color: color,
+              borderColor: `${color}40`,
+            }}
           >
             {d.riskLevel} Risk
-          </span>{" "}
-          — Score: <span className="font-bold">{d.riskScore}</span>/100
-        </p>
-        <div className="text-[11px] text-muted-foreground/90 space-y-1.5 font-medium">
-          <div className="flex justify-between gap-4">
-            <span>Rise:</span>
-            <span className="font-mono text-foreground font-semibold">{d.cumulativeRise.toFixed(3)}m</span>
+          </span>
+        </div>
+
+        {/* Content Rows */}
+        <div className="space-y-2 text-xs">
+          <div className="flex justify-between items-center">
+            <span className="text-muted-foreground font-medium">Risk Index</span>
+            <span className="font-mono font-bold text-sm" style={{ color }}>
+              {d.riskScore} <span className="text-xs text-muted-foreground font-normal">/ 100</span>
+            </span>
           </div>
-          <div className="flex justify-between gap-4">
-            <span>Speed:</span>
-            <span className="font-mono text-foreground font-semibold">{(d.slope * 1000).toFixed(2)} mm/yr</span>
+
+          <div className="flex justify-between items-center">
+            <span className="text-muted-foreground">Cumulative Rise</span>
+            <span className="font-mono font-semibold text-slate-200">
+              {d.cumulativeRise > 0 ? "+" : ""}{(d.cumulativeRise * 100).toFixed(1)} cm
+            </span>
           </div>
-          <div className="flex justify-between gap-4">
-            <span>Volatility:</span>
-            <span className="font-mono text-foreground font-semibold">±{d.volatility.toFixed(3)}m</span>
+
+          <div className="flex justify-between items-center">
+            <span className="text-muted-foreground">Annual Speed</span>
+            <span className="font-mono font-semibold text-cyan-400">
+              {(d.slope * 1000).toFixed(2)} mm/yr
+            </span>
           </div>
-          <div className="flex justify-between gap-4">
-            <span>D1→D3 Shift:</span>
-            <span className="font-mono text-foreground font-semibold">+{d.decadeAcceleration.toFixed(3)}m</span>
+
+          <div className="flex justify-between items-center">
+            <span className="text-muted-foreground">Volatility Spread</span>
+            <span className="font-mono text-slate-300">
+              ±{(d.volatility * 100).toFixed(1)} cm
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-muted-foreground">Decadal Shift</span>
+            <span className="font-mono text-amber-400 font-bold">
+              +{(d.decadeAcceleration * 100).toFixed(1)} cm
+            </span>
           </div>
         </div>
       </div>
