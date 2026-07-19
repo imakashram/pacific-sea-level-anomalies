@@ -38,7 +38,8 @@ const cardThemes: Record<string, { text: string; bg: string; border: string; glo
   "text-[#f97316]": { text: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", glow: "hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5" },
   "text-[#eab308]": { text: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/20", glow: "hover:border-yellow-500/40 hover:shadow-yellow-500/5 hover:bg-yellow-950/5" },
   "text-[#ef4444]": { text: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/20", glow: "hover:border-red-500/40 hover:shadow-red-500/5 hover:bg-red-950/5" },
-  "text-[#a855f7]": { text: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20", glow: "hover:border-purple-500/40 hover:shadow-purple-500/5 hover:bg-purple-950/5" }
+  "text-[#38bdf8]": { text: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", glow: "hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5" },
+  "text-[#2dd4bf]": { text: "text-teal-400", bg: "bg-teal-500/10", border: "border-teal-500/20", glow: "hover:border-teal-500/40 hover:shadow-teal-500/5 hover:bg-teal-950/5" }
 };
 
 export function WhatThisMeans() {
@@ -87,8 +88,8 @@ export function WhatThisMeans() {
             { value: shift * 100, of: null, label: "Baseline Shift", color: "text-[#f97316]", desc: "average rise from Decade 1 to Decade 3", decimals: 1, prefix: "+", suffix: " cm", icon: Waves },
             { value: crossedZero, of: null, label: "Nations Above Zero", color: "text-[#eab308]", desc: "have crossed into persistent positive anomaly", decimals: 0, prefix: "", suffix: "", icon: AlertCircle },
             { value: crossedTenth, of: null, label: "Nations at +10 cm", color: "text-[#ef4444]", desc: "have breached the 10 cm threshold", decimals: 0, prefix: "", suffix: "", icon: AlertTriangle },
-            { value: maxRiseVal * 100, of: null, label: "Peak Nation Rise", color: "text-[#ef4444]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: " cm", icon: ArrowUpCircle },
-            { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "Fastest Rise", color: "text-[#a855f7]", desc: `${highestSlope?.country ?? "…"} - fastest upward trend`, decimals: 2, prefix: "+", suffix: " mm/yr", icon: Gauge },
+            { value: maxRiseVal * 100, of: null, label: "Peak Nation Rise", color: "text-[#38bdf8]", desc: `highest single-nation cumulative rise (${overview?.maxRiseCountry || "…"})`, decimals: 0, prefix: "+", suffix: " cm", icon: ArrowUpCircle },
+            { value: (highestSlope?.slope ?? 0) * 1000, of: null, label: "Fastest Rise", color: "text-[#2dd4bf]", desc: `${highestSlope?.country ?? "…"} - fastest upward trend`, decimals: 2, prefix: "+", suffix: " mm/yr", icon: Gauge },
           ].map(({ value, of, label, color, desc, decimals, prefix, suffix, icon: Icon }, i) => {
             const theme = cardThemes[color] || { text: color, bg: "bg-card/10", border: "border-border/30", glow: "hover:border-border/40" };
             return (
