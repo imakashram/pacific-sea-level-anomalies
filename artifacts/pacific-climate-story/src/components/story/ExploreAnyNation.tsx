@@ -405,7 +405,7 @@ export function ExploreAnyNation({
                 <StatCard
                   label="Volatility"
                   value={`±${(profile.stats.volatility * 100).toFixed(1)} cm`}
-                  themeClass="orange"
+                  themeClass="purple"
                   icon={
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -420,7 +420,7 @@ export function ExploreAnyNation({
                 <StatCard
                   label="Peak Record"
                   value={`${profile.stats.peakYear}`}
-                  themeClass="purple"
+                  themeClass="orange"
                   icon={
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z" />

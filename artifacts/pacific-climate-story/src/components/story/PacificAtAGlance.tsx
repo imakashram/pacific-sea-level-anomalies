@@ -356,13 +356,13 @@ export function PacificAtAGlance({
                                   </span>
                                 )}
                               </td>
-                              <td className="px-4 py-3 text-muted-foreground font-mono">{(row.mean * 100).toFixed(1)} cm</td>
-                              <td className="px-4 py-3 text-muted-foreground font-mono">±{(row.volatility * 100).toFixed(1)} cm</td>
-                              <td className="px-4 py-3 font-bold text-foreground font-mono">{row.cumulativeRise > 0 ? "+" : ""}{(row.cumulativeRise * 100).toFixed(1)} cm</td>
-                              <td className="px-4 py-3 text-muted-foreground font-mono">{(row.slope * 1000).toFixed(2)} <span className="text-xs">mm/yr</span></td>
-                              <td className="px-4 py-3 text-muted-foreground font-mono whitespace-nowrap">
+                              <td className="px-4 py-3 text-cyan-400/90 font-mono">{(row.mean * 100).toFixed(1)} cm</td>
+                              <td className="px-4 py-3 text-purple-400/90 font-mono">±{(row.volatility * 100).toFixed(1)} cm</td>
+                              <td className="px-4 py-3 font-bold text-cyan-400 font-mono">{row.cumulativeRise > 0 ? "+" : ""}{(row.cumulativeRise * 100).toFixed(1)} cm</td>
+                              <td className="px-4 py-3 text-teal-400/90 font-mono">{(row.slope * 1000).toFixed(2)} <span className="text-xs">mm/yr</span></td>
+                              <td className="px-4 py-3 text-rose-400/90 font-mono whitespace-nowrap">
                                 {(row.peakValue * 100).toFixed(1)} cm
-                                <span className="text-xs opacity-40 ml-1.5">({row.peakYear})</span>
+                                <span className="text-xs opacity-60 ml-1.5 text-muted-foreground">({row.peakYear})</span>
                               </td>
                               <td className="px-4 py-3">
                                 <span
