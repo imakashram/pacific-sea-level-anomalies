@@ -194,8 +194,8 @@ export function TheOceanIsRising() {
             </div>
             <div className="w-px h-7 bg-slate-700/50 self-stretch" />
             <div className="flex flex-col">
-              <span className="text-[9px] text-indigo-400/80 font-mono uppercase">Decadal Shift</span>
-              <span className="text-sm font-mono font-bold text-indigo-400">
+              <span className="text-[9px] text-orange-400/80 font-mono uppercase">Decadal Shift</span>
+              <span className="text-sm font-mono font-bold text-orange-400">
                 +{(shiftCm).toFixed(1)} cm
               </span>
             </div>
@@ -292,13 +292,13 @@ export function TheOceanIsRising() {
                 />
                 <ReferenceLine 
                   x={2016} 
-                  stroke="#f97316" 
+                  stroke="#f43f5e" 
                   strokeWidth={1.2}
                   strokeDasharray="4 4" 
                   label={{ 
                     position: "top", 
                     value: "2016 El Niño", 
-                    fill: "#f97316", 
+                    fill: "#f43f5e", 
                     fontSize: 10,
                     fontFamily: "monospace",
                     fontWeight: "bold"
@@ -378,7 +378,7 @@ export function TheOceanIsRising() {
 
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-[#f97316]" />
+              <span className="inline-block w-2 h-2 rounded-full bg-[#f43f5e]" />
               <span className="font-mono font-bold text-white uppercase tracking-wider">2016 El Niño</span>
             </div>
             <p className="leading-relaxed">
