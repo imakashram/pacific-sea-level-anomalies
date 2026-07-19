@@ -211,8 +211,8 @@ export function FutureOutlook() {
                       </div>
                     </div>
                     <div className={`text-3xl font-serif font-bold tracking-tight ${p2030Theme.text}`}>
-                      +{(data.projectedRise2030 * 1000).toFixed(0)}
-                      <span className="text-sm font-sans text-muted-foreground ml-1">mm</span>
+                      +{(data.projectedRise2030 * 100).toFixed(1)}
+                      <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
                     </div>
                     <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                       Relative to 1993 baseline
@@ -230,8 +230,8 @@ export function FutureOutlook() {
                       </div>
                     </div>
                     <div className={`text-3xl font-serif font-bold tracking-tight ${p2033Theme.text}`}>
-                      +{(data.projectedRise2033 * 1000).toFixed(0)}
-                      <span className="text-sm font-sans text-muted-foreground ml-1">mm</span>
+                      +{(data.projectedRise2033 * 100).toFixed(1)}
+                      <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
                     </div>
                     <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                       10-year outlook projection
