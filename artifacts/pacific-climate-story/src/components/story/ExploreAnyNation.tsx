@@ -109,15 +109,15 @@ function CustomTrajectoryTooltip({ active, payload, showMovingAvg = true, showTr
         <div className="space-y-2 text-xs">
           {value !== undefined && (
             <div className="flex justify-between items-center gap-6">
-              <span className="text-cyan-400/90 font-medium">Annual Anomaly</span>
-              <span className="font-mono font-bold text-cyan-400 font-bold">
+              <span className="text-cyan-400/90 font-medium">Annual</span>
+              <span className="font-mono font-bold text-cyan-400 text-sm">
                 {value >= 0 ? "+" : ""}{value.toFixed(1)} cm
               </span>
             </div>
           )}
           {showMovingAvg && rollingAvg !== undefined && (
             <div className="flex justify-between items-center gap-6">
-              <span className="text-amber-400/90 font-medium">5-Year Moving Avg</span>
+              <span className="text-amber-400/90 font-medium">5-yr Avg</span>
               <span className="font-mono font-bold text-amber-400">
                 {rollingAvg >= 0 ? "+" : ""}{rollingAvg.toFixed(1)} cm
               </span>
@@ -125,7 +125,7 @@ function CustomTrajectoryTooltip({ active, payload, showMovingAvg = true, showTr
           )}
           {showTrendline && data?.linearTrend !== undefined && (
             <div className="flex justify-between items-center gap-6">
-              <span className="text-teal-400 font-medium">Linear Trend</span>
+              <span className="text-teal-400/90 font-medium">Linear Trend</span>
               <span className="font-mono font-bold text-teal-400">
                 {data.linearTrend >= 0 ? "+" : ""}{data.linearTrend.toFixed(1)} cm
               </span>
@@ -454,7 +454,7 @@ export function ExploreAnyNation({
                         onClick={() => setShowTrendline(!showTrendline)}
                         className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${showTrendline ? "opacity-100" : "opacity-40"}`}
                       >
-                        <span className="w-3.5 h-0.5 bg-teal-400 inline-block border-t border-dashed border-teal-400" />
+                        <span className="w-4 h-0 border-t-2 border-dotted border-teal-400 inline-block shrink-0" />
                         <span className="font-semibold">Linear Trend</span>
                       </button>
                     </div>
@@ -528,14 +528,7 @@ export function ExploreAnyNation({
                             }}
                           />
                         )}
-                        {showMovingAvg && (
-                          <Area
-                            type="monotone"
-                            dataKey="rollingAvg"
-                            stroke="none"
-                            fill="url(#areaColor)"
-                          />
-                        )}
+
                         <Line
                           type="monotone"
                           dataKey="value"

@@ -22,40 +22,40 @@ const TrendTooltip = ({ active, payload, label, showRegression, showMovingAvg }:
         <span className="text-[10px] font-mono px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-500/20 rounded-full uppercase">SLA Record</span>
       </div>
       <div className="space-y-2 text-xs">
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Regional Average</span>
+        <div className="flex justify-between items-center gap-6">
+          <span className="text-cyan-400/90 font-medium">Annual</span>
           <span className="font-mono font-bold text-cyan-400 text-sm">
             {Number(avgEntry.value) > 0 ? "+" : ""}{(Number(avgEntry.value) * 100).toFixed(1)} cm
           </span>
         </div>
         
         {showMovingAvg && movingEntry && movingEntry.value != null && (
-          <div className="flex justify-between items-center text-amber-400/90 font-medium">
-            <span>5-Year Moving Avg</span>
-            <span className="font-mono font-bold">
+          <div className="flex justify-between items-center gap-6">
+            <span className="text-amber-400/90 font-medium">5-yr Avg</span>
+            <span className="font-mono font-bold text-amber-400">
               {Number(movingEntry.value) > 0 ? "+" : ""}{(Number(movingEntry.value) * 100).toFixed(1)} cm
             </span>
           </div>
         )}
 
         {showRegression && regressionEntry && regressionEntry.value != null && (
-          <div className="flex justify-between items-center text-teal-400/90 font-medium">
-            <span>Linear Trendline</span>
-            <span className="font-mono font-bold">
+          <div className="flex justify-between items-center gap-6">
+            <span className="text-teal-400/90 font-medium">Linear Trend</span>
+            <span className="font-mono font-bold text-teal-400">
               {Number(regressionEntry.value) > 0 ? "+" : ""}{(Number(regressionEntry.value) * 100).toFixed(1)} cm
             </span>
           </div>
         )}
 
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Range Spread</span>
+        <div className="flex justify-between items-center gap-6 pt-1 border-t border-cyan-500/10">
+          <span className="text-muted-foreground font-medium">Min – Max Range</span>
           <span className="font-mono text-slate-300">
             {(Number(dataPoint.minAnomaly) * 100).toFixed(1)} cm → {(Number(dataPoint.maxAnomaly) * 100).toFixed(1)} cm
           </span>
         </div>
         
-        <div className="pt-2 border-t border-cyan-500/10 flex justify-between items-center">
-          <span className="text-muted-foreground flex items-center gap-1">
+        <div className="pt-1 flex justify-between items-center gap-6">
+          <span className="text-muted-foreground flex items-center gap-1 font-medium">
             <Waves className="w-3.5 h-3.5 text-cyan-400/80" />
             Nations Rising
           </span>
@@ -157,18 +157,24 @@ export function TheOceanIsRising() {
                {/* Analytics Summary Bar Header */}
         <div className="flex flex-wrap items-center justify-between gap-6 border-b border-cyan-500/10 pb-6 mb-6 relative z-10">
           
-          <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground select-none">
-            <button 
+          <div className="flex items-center gap-4 text-xs font-mono select-none">
+            <span className="flex items-center gap-1.5 text-cyan-400">
+              <span className="w-3.5 h-0.5 bg-cyan-400 inline-block rounded" />
+              <span className="font-semibold">Annual</span>
+            </span>
+            <button
               onClick={() => setShowMovingAvg(!showMovingAvg)}
-              className={`px-2.5 py-1 rounded-md border text-[10px] font-semibold transition cursor-pointer ${showMovingAvg ? 'bg-amber-500/15 border-amber-500/35 text-amber-300' : 'border-slate-800 text-slate-500 hover:text-slate-350'}`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${showMovingAvg ? "opacity-100" : "opacity-40"}`}
             >
-              5y Moving Avg
+              <span className="w-3.5 h-0.5 bg-amber-400 inline-block rounded" />
+              <span className="font-semibold">5-yr Avg</span>
             </button>
-            <button 
+            <button
               onClick={() => setShowRegression(!showRegression)}
-              className={`px-2.5 py-1 rounded-md border text-[10px] font-semibold transition cursor-pointer ${showRegression ? 'bg-emerald-500/15 border-emerald-500/35 text-emerald-300' : 'border-slate-800 text-slate-500 hover:text-slate-350'}`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${showRegression ? "opacity-100" : "opacity-40"}`}
             >
-              Linear Trend
+              <span className="w-4 h-0 border-t-2 border-dotted border-teal-400 inline-block shrink-0" />
+              <span className="font-semibold">Linear Trend</span>
             </button>
           </div>
 
@@ -210,8 +216,12 @@ export function TheOceanIsRising() {
               >
                 <defs>
                   <linearGradient id="rangeGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.25} />
+                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.15} />
                     <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.01} />
+                  </linearGradient>
+                  <linearGradient id="movingAvgGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.08)" vertical={false} />
@@ -297,16 +307,29 @@ export function TheOceanIsRising() {
                 
                 {/* Range Spread (Min-Max fill) */}
                 <Area type="monotone" dataKey="range" stroke="none" fill="url(#rangeGrad)" isAnimationActive />
+
+                {/* Annual Regional Average Line */}
+                <Line 
+                  type="monotone" 
+                  dataKey="avgAnomaly" 
+                  name="Annual"
+                  stroke="#38bdf8" 
+                  strokeWidth={2} 
+                  dot={false} 
+                  activeDot={{ r: 5, fill: "#38bdf8", stroke: "#ffffff", strokeWidth: 1.5 }} 
+                  isAnimationActive 
+                  animationDuration={1500} 
+                />
                 
-                {/* 5-Year Moving Average (Smoothed trendline) */}
+                {/* 5-Year Moving Average Line */}
                 {showMovingAvg && (
                   <Line
                     type="monotone"
                     dataKey="movingAvg"
+                    name="5-yr Avg"
                     stroke="#f59e0b"
-                    strokeWidth={1.8}
+                    strokeWidth={3}
                     dot={false}
-                    name="5y Moving Avg"
                     isAnimationActive
                     animationDuration={1500}
                   />
@@ -317,28 +340,15 @@ export function TheOceanIsRising() {
                   <Line
                     type="monotone"
                     dataKey="linearTrend"
-                    stroke="#14b8a6"
-                    strokeWidth={2}
-                    strokeDasharray="6 4"
-                    dot={false}
                     name="Linear Trend"
+                    stroke="#2dd4bf"
+                    strokeWidth={2}
+                    strokeDasharray="4 4"
+                    dot={false}
                     isAnimationActive
                     animationDuration={1500}
                   />
                 )}
-
-                {/* Average SLA Trendline with Drop-glow shadow */}
-                <Line 
-                  type="monotone" 
-                  dataKey="avgAnomaly" 
-                  stroke="hsl(var(--primary))" 
-                  strokeWidth={3} 
-                  dot={false} 
-                  activeDot={{ r: 5, fill: "hsl(var(--primary))", stroke: "#ffffff", strokeWidth: 1.5 }} 
-                  isAnimationActive 
-                  animationDuration={2200} 
-                  animationEasing="ease-out" 
-                />
               </ComposedChart>
             </ResponsiveContainer>
           ) : null}
