@@ -288,7 +288,7 @@ export function FutureOutlook() {
               </div>
               <div className="h-[380px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={chartData} margin={{ top: 35, right: 45, left: 10, bottom: 10 }}>
+                  <ComposedChart data={chartData} margin={{ top: 35, right: 35, left: 15, bottom: 25 }}>
                     <defs>
                       <linearGradient id="confidenceGrad" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#f97316" stopOpacity={0.28} />
@@ -306,18 +306,33 @@ export function FutureOutlook() {
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                     <XAxis
                       dataKey="year"
+                      height={45}
                       stroke="rgba(255,255,255,0.3)"
                       tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
                       tickLine={false}
                       axisLine={false}
+                      label={{
+                        value: "Year",
+                        position: "insideBottom",
+                        offset: 0,
+                        style: { textAnchor: "middle", fill: "rgba(255, 255, 255, 0.4)", fontSize: 10, fontWeight: "bold", fontFamily: "monospace" }
+                      }}
                     />
                     <YAxis
+                      width={75}
                       domain={['auto', (dataMax: number) => Math.ceil(dataMax + 3)]}
                       stroke="rgba(255,255,255,0.3)"
                       tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
-                      tickFormatter={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)} cm`}
+                      tickFormatter={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)}`}
                       tickLine={false}
                       axisLine={false}
+                      label={{
+                        value: "Sea Level Anomaly (cm)",
+                        angle: -90,
+                        position: "insideLeft",
+                        offset: 20,
+                        style: { textAnchor: "middle", fill: "rgba(255, 255, 255, 0.4)", fontSize: 10, fontWeight: "bold", fontFamily: "monospace" }
+                      }}
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <ReferenceArea
