@@ -10,7 +10,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
-  Legend,
 } from "recharts";
 import { motion } from "framer-motion";
 
@@ -39,7 +38,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export function ChapterForecast() {
+export function FutureOutlook() {
   const { data, isLoading } = useGetForecast();
 
   const chartData = data
@@ -71,15 +70,14 @@ export function ChapterForecast() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="mb-12"
+          className="text-center mb-12"
         >
           <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
-            Looking Forward
+            Future Outlook
           </h2>
-          <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl">
-            If the current trajectory holds, the model projects continued acceleration
-            through 2033. The shaded band represents the ±2σ confidence interval —
-            there is no scenario where the trend reverses without intervention.
+          <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+            Based on current trends, sea levels are projected to continue rising through 2033.
+            The shaded band represents the ±2σ confidence interval, illustrating the range of expected outcomes.
           </p>
         </motion.div>
 

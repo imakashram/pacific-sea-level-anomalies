@@ -12,7 +12,7 @@ import { ChapterVolatility } from "@/components/story/ChapterVolatility";
 import { ChapterAcceleration } from "@/components/story/ChapterAcceleration";
 import { Chapter5Heatmap } from "@/components/story/Chapter5Heatmap";
 import { ChapterCumulativeRise } from "@/components/story/ChapterCumulativeRise";
-import { ChapterForecast } from "@/components/story/ChapterForecast";
+import { FutureOutlook } from "@/components/story/FutureOutlook";
 import { RiskAssessment } from "@/components/story/RiskAssessment";
 
 import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
@@ -53,7 +53,7 @@ export default function StoryPage() {
         <ChapterRankBump />
         <ChapterThresholdFunnel />
         <ChapterStreamGraph />
-        <ChapterForecast />
+        <FutureOutlook />
         <RiskAssessment />
 
         <div ref={sectionRef}>

@@ -157,7 +157,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Uses 30-year trend slopes and volatility ranges to model regional projection trajectories (2024-2050).",
     category: "risk",
-    usedIn: ["ChapterForecast"]
+    usedIn: ["FutureOutlook"]
   },
   {
     path: "/api/climate/risk-scores",
