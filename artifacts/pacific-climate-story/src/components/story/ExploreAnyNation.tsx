@@ -4,7 +4,6 @@ import { StorySection } from "./StorySection";
 import {
   ComposedChart,
   Line,
-  Area,
   BarChart,
   Bar,
   XAxis,
@@ -15,6 +14,7 @@ import {
   ReferenceLine,
   ReferenceDot,
   Cell,
+  LabelList,
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe } from "lucide-react";
@@ -138,35 +138,75 @@ function CustomTrajectoryTooltip({ active, payload, showMovingAvg = true, showTr
   return null;
 }
 
-function CustomDecadeTooltip({ active, payload }: any) {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    const decadeLabel = String(data.label || "");
-    const colorClass = decadeLabel.includes("1993") || decadeLabel.includes("D1")
-      ? "text-cyan-400"
-      : decadeLabel.includes("2003") || decadeLabel.includes("D2")
-      ? "text-amber-400"
-      : "text-rose-400";
-    return (
-      <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px]">
-        <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2.5">
-          <span className="font-serif text-lg font-bold text-white">{data.label}</span>
-          <span className="text-[10px] font-mono px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-500/20 rounded-full uppercase font-semibold">
-            Decade Avg
-          </span>
-        </div>
-        <div className="space-y-2 text-xs">
-          <div className="flex justify-between items-center gap-6">
-            <span className="text-muted-foreground font-medium">Average Anomaly</span>
-            <span className={`font-mono font-bold text-sm ${colorClass}`}>
-              {data.avg >= 0 ? "+" : ""}{data.avg.toFixed(1)} cm
-            </span>
-          </div>
-        </div>
-      </div>
-    );
+
+
+function renderCustomBarLabel(props: any) {
+  const { x, y, width, height, value } = props;
+  if (value === undefined || value === null || typeof value !== "number") return null;
+  const isPositive = value >= 0;
+  const xPos = isPositive ? x + width + 8 : x + width - 8;
+  return (
+    <text
+      x={xPos}
+      y={y + height / 2 + 3}
+      fill="rgba(255, 255, 255, 0.85)"
+      fontSize={10}
+      fontWeight={600}
+      fontFamily="monospace"
+      textAnchor={isPositive ? "start" : "end"}
+    >
+      {isPositive ? "+" : ""}{value.toFixed(1)}
+    </text>
+  );
+}
+
+function CustomYAxisTick(props: any) {
+  const { x, y, payload } = props;
+  const val = payload?.value;
+  if (!val) return null;
+
+  let label = "";
+  let years = "";
+  if (val.includes("1993") || val.includes("D1")) {
+    label = "D1";
+    years = "1993–2002";
+  } else if (val.includes("2003") || val.includes("D2")) {
+    label = "D2";
+    years = "2003–2012";
+  } else if (val.includes("2013") || val.includes("D3")) {
+    label = "D3";
+    years = "2013–2023";
+  } else {
+    label = val;
   }
-  return null;
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={-8}
+        y={-4}
+        fill="rgba(255, 255, 255, 0.85)"
+        fontSize={11}
+        fontWeight={700}
+        fontFamily="monospace"
+        textAnchor="end"
+      >
+        {label}
+      </text>
+      {years && (
+        <text
+          x={-8}
+          y={8}
+          fill="rgba(255, 255, 255, 0.45)"
+          fontSize={8}
+          fontFamily="monospace"
+          textAnchor="end"
+        >
+          {years}
+        </text>
+      )}
+    </g>
+  );
 }
 
 export function ExploreAnyNation({
@@ -207,8 +247,6 @@ export function ExploreAnyNation({
     : null;
 
   const peakYear = profile?.stats.peakYear;
-  const troughYear = profile?.stats.troughYear;
-  const troughValue = profile?.stats.troughValue;
 
   const [showMovingAvg, setShowMovingAvg] = useState(true);
   const [showTrendline, setShowTrendline] = useState(true);
@@ -593,7 +631,7 @@ export function ExploreAnyNation({
                         <BarChart
                           data={decadeBreakdownCm}
                           layout="vertical"
-                          margin={{ top: 5, right: 10, left: 20, bottom: 25 }}
+                          margin={{ top: 5, right: 48, left: 20, bottom: 25 }}
                         >
                           <CartesianGrid
                             strokeDasharray="3 3"
@@ -603,9 +641,11 @@ export function ExploreAnyNation({
                           />
                           <XAxis
                             type="number"
+                            domain={[-6, 'auto']}
                             stroke="rgba(255,255,255,0.3)"
                             tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
                             tickLine={false}
+                            axisLine={false}
                             tickFormatter={(v) => v.toFixed(1)}
                             label={{ value: "Avg Anomaly (cm)", position: "insideBottom", offset: -12, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold', fontFamily: 'monospace' } }}
                           />
@@ -613,17 +653,18 @@ export function ExploreAnyNation({
                             dataKey="label"
                             type="category"
                             stroke="rgba(255,255,255,0.3)"
-                            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.8)", fontFamily: "monospace" }}
-                            width={85}
+                            tick={<CustomYAxisTick />}
+                            width={90}
                             tickLine={false}
+                            axisLine={false}
                             label={{ value: "Decade", angle: -90, position: "insideLeft", offset: 10, style: { textAnchor: 'middle', fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold', fontFamily: 'monospace' } }}
                           />
-                          <RechartsTooltip
-                            cursor={{ fill: "rgba(255,255,255,0.03)" }}
-                            content={<CustomDecadeTooltip />}
-                          />
-                          <ReferenceLine x={0} stroke="rgba(255,255,255,0.1)" />
+                          <ReferenceLine x={0} stroke="rgba(255,255,255,0.15)" />
                           <Bar dataKey="avg" name="Avg Anomaly" radius={[0, 4, 4, 0]} barSize={12}>
+                            <LabelList
+                              dataKey="avg"
+                              content={renderCustomBarLabel}
+                            />
                             {decadeBreakdownCm.map((_, index) => {
                               const colors = [
                                 "url(#barColorD1)",
