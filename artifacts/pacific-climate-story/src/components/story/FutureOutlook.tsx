@@ -12,6 +12,7 @@ import {
   ReferenceLine,
 } from "recharts";
 import { motion } from "framer-motion";
+import { Gauge, Activity, Calendar, ShieldAlert } from "lucide-react";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -36,6 +37,13 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     );
   }
   return null;
+};
+
+const cardThemes: Record<string, { text: string; bg: string; border: string; glow: string }> = {
+  teal: { text: "text-teal-400", bg: "bg-teal-500/10", border: "border-teal-500/20", glow: "hover:border-teal-500/40 hover:shadow-teal-500/5 hover:bg-teal-950/5" },
+  cyan: { text: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", glow: "hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5" },
+  orange: { text: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", glow: "hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5" },
+  red: { text: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/20", glow: "hover:border-red-500/40 hover:shadow-red-500/5 hover:bg-red-950/5" }
 };
 
 export function FutureOutlook() {
@@ -85,50 +93,118 @@ export function FutureOutlook() {
           <div className="h-[480px] bg-card/20 animate-pulse rounded-xl" />
         ) : (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
-            >
-              <div className="bg-card/40 border border-border/50 rounded-xl p-5">
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-                  Trend Rate
-                </div>
-                <div className="text-3xl font-serif font-bold text-primary">
-                  +{data.slopeMmPerYear.toFixed(2)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">mm/yr</span>
-                </div>
-              </div>
-              <div className="bg-card/40 border border-border/50 rounded-xl p-5">
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-                  Model Fit R²
-                </div>
-                <div className="text-3xl font-serif font-bold">
-                  {(data.r2 * 100).toFixed(1)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">%</span>
-                </div>
-              </div>
-              <div className="bg-card/40 border border-border/50 rounded-xl p-5">
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-                  Projected by 2030
-                </div>
-                <div className="text-3xl font-serif font-bold text-[#f97316]">
-                  +{(data.projectedRise2030 * 1000).toFixed(0)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">mm</span>
-                </div>
-              </div>
-              <div className="bg-card/40 border border-primary/30 bg-primary/5 rounded-xl p-5">
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-                  Projected by 2033
-                </div>
-                <div className="text-3xl font-serif font-bold text-primary">
-                  +{(data.projectedRise2033 * 1000).toFixed(0)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">mm</span>
-                </div>
-              </div>
-            </motion.div>
+            {(() => {
+              const getTrendTheme = (rate: number) => {
+                if (rate >= 5.0) return cardThemes.red;
+                if (rate >= 3.5) return cardThemes.orange;
+                if (rate >= 2.0) return cardThemes.cyan;
+                return cardThemes.teal;
+              };
+
+              const getR2Theme = (r2: number) => {
+                if (r2 >= 0.7) return cardThemes.teal;
+                if (r2 >= 0.5) return cardThemes.cyan;
+                return cardThemes.orange;
+              };
+
+              const getProjectedTheme = (valMm: number) => {
+                if (valMm >= 40) return cardThemes.red;
+                if (valMm >= 25) return cardThemes.orange;
+                if (valMm >= 10) return cardThemes.cyan;
+                return cardThemes.teal;
+              };
+
+              const trendTheme = getTrendTheme(data.slopeMmPerYear);
+              const r2Theme = getR2Theme(data.r2);
+              const p2030Theme = getProjectedTheme(data.projectedRise2030 * 1000);
+              const p2033Theme = getProjectedTheme(data.projectedRise2033 * 1000);
+
+              return (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-10"
+                >
+                  {/* Trend Rate */}
+                  <div className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${trendTheme.glow} hover:-translate-y-1`}>
+                    <div className="flex items-center justify-between text-muted-foreground mb-1">
+                      <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                        Trend Rate
+                      </span>
+                      <div className={`${trendTheme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
+                        <Gauge className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div className={`text-3xl font-serif font-bold tracking-tight ${trendTheme.text}`}>
+                      +{data.slopeMmPerYear.toFixed(2)}
+                      <span className="text-sm font-sans text-muted-foreground ml-1">mm/yr</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      Historical trend line slope
+                    </div>
+                  </div>
+
+                  {/* Model Fit R² */}
+                  <div className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${r2Theme.glow} hover:-translate-y-1`}>
+                    <div className="flex items-center justify-between text-muted-foreground mb-1">
+                      <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                        Model Fit R²
+                      </span>
+                      <div className={`${r2Theme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
+                        <Activity className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div className={`text-3xl font-serif font-bold tracking-tight ${r2Theme.text}`}>
+                      {(data.r2 * 100).toFixed(1)}
+                      <span className="text-sm font-sans text-muted-foreground ml-1">%</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      Goodness of fit index
+                    </div>
+                  </div>
+
+                  {/* Projected by 2030 */}
+                  <div className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${p2030Theme.glow} hover:-translate-y-1`}>
+                    <div className="flex items-center justify-between text-muted-foreground mb-1">
+                      <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                        Projected by 2030
+                      </span>
+                      <div className={`${p2030Theme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
+                        <Calendar className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div className={`text-3xl font-serif font-bold tracking-tight ${p2030Theme.text}`}>
+                      +{(data.projectedRise2030 * 1000).toFixed(0)}
+                      <span className="text-sm font-sans text-muted-foreground ml-1">mm</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      Relative to 1993 baseline
+                    </div>
+                  </div>
+
+                  {/* Projected by 2033 */}
+                  <div className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${p2033Theme.glow} hover:-translate-y-1`}>
+                    <div className="flex items-center justify-between text-muted-foreground mb-1">
+                      <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                        Projected by 2033
+                      </span>
+                      <div className={`${p2033Theme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
+                        <ShieldAlert className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div className={`text-3xl font-serif font-bold tracking-tight ${p2033Theme.text}`}>
+                      +{(data.projectedRise2033 * 1000).toFixed(0)}
+                      <span className="text-sm font-sans text-muted-foreground ml-1">mm</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      10-year outlook projection
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })()}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
