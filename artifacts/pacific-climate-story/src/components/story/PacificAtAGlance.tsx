@@ -5,15 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LineChart,
   Line,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip as RechartsTooltip,
   ResponsiveContainer,
-  Cell,
-  Legend
 } from "recharts";
 import { Globe, Table } from "lucide-react";
 import { ExploreAnyNation } from "./ExploreAnyNation";
@@ -140,8 +132,8 @@ export function PacificAtAGlance({
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center justify-center text-center mx-auto"
           >
-            <h2 className="text-5xl md:text-6xl font-serif font-bold mb-3 text-center">The Pacific at a Glance</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed text-center mx-auto">
+            <h2 className="text-5xl md:text-6xl font-serif font-bold mb-3">The Pacific at a Glance</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
               Explore the complete Pacific record.
             </p>
           </motion.div>
