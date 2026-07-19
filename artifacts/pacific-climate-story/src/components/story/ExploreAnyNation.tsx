@@ -99,24 +99,26 @@ function CustomTrajectoryTooltip({ active, payload }: any) {
     const rollingAvg = payload.find((p: any) => p.dataKey === "rollingAvg")?.value;
 
     return (
-      <div className="bg-neutral-950/95 border border-white/10 p-3.5 rounded-xl shadow-2xl backdrop-blur-md text-xs flex flex-col gap-2 min-w-[150px]">
-        <div className="font-mono text-white/50 border-b border-white/5 pb-1 flex justify-between items-center">
-          <span>Year</span>
-          <span className="font-bold text-white">{data.year}</span>
+      <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px]">
+        <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2.5">
+          <span className="font-serif text-lg font-bold text-white">{data.year}</span>
+          <span className="text-[10px] font-mono px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-500/20 rounded-full uppercase font-semibold">
+            SLA Record
+          </span>
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="space-y-2 text-xs">
           {value !== undefined && (
             <div className="flex justify-between items-center gap-6">
-              <span className="text-white/60">Annual:</span>
-              <span className="font-mono font-bold text-white/90">
+              <span className="text-muted-foreground font-medium">Annual Anomaly</span>
+              <span className="font-mono font-bold text-cyan-400 text-sm">
                 {value >= 0 ? "+" : ""}{value.toFixed(1)} cm
               </span>
             </div>
           )}
           {rollingAvg !== undefined && (
             <div className="flex justify-between items-center gap-6">
-              <span className="text-primary-light text-sky-400">5-Yr Avg:</span>
-              <span className="font-mono font-bold text-sky-400">
+              <span className="text-amber-400/90 font-medium">5-Year Moving Avg</span>
+              <span className="font-mono font-bold text-amber-400">
                 {rollingAvg >= 0 ? "+" : ""}{rollingAvg.toFixed(1)} cm
               </span>
             </div>
@@ -132,16 +134,20 @@ function CustomDecadeTooltip({ active, payload }: any) {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-neutral-950/95 border border-white/10 p-3.5 rounded-xl shadow-2xl backdrop-blur-md text-xs flex flex-col gap-2 min-w-[150px]">
-        <div className="font-mono text-white/50 border-b border-white/5 pb-1 flex justify-between items-center">
-          <span>Decade</span>
-          <span className="font-bold text-white">{data.label}</span>
-        </div>
-        <div className="flex justify-between items-center gap-6">
-          <span className="text-white/60">Avg Anomaly:</span>
-          <span className="font-mono font-bold text-sky-400">
-            {data.avg >= 0 ? "+" : ""}{data.avg.toFixed(1)} cm
+      <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px]">
+        <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2.5">
+          <span className="font-serif text-lg font-bold text-white">{data.label}</span>
+          <span className="text-[10px] font-mono px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-500/20 rounded-full uppercase font-semibold">
+            Decade Avg
           </span>
+        </div>
+        <div className="space-y-2 text-xs">
+          <div className="flex justify-between items-center gap-6">
+            <span className="text-muted-foreground font-medium">Average Anomaly</span>
+            <span className="font-mono font-bold text-cyan-400 text-sm">
+              {data.avg >= 0 ? "+" : ""}{data.avg.toFixed(1)} cm
+            </span>
+          </div>
         </div>
       </div>
     );
