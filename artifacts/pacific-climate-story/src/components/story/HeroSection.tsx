@@ -76,28 +76,28 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 md:gap-8">
-              <div className="border-l-2 border-primary pl-4 py-1">
-                <div className="text-2xl font-serif font-bold text-foreground">+{(overview.avgRiseMeters * 100).toFixed(1)} cm</div>
-                <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Average Rise</div>
+              <div className="border-l-2 border-cyan-400 pl-4 py-1">
+                <div className="text-2xl font-serif font-bold text-cyan-400">+{(overview.avgRiseMeters * 100).toFixed(1)} cm</div>
+                <div className="text-[10px] text-cyan-300/80 font-mono uppercase tracking-wider mt-0.5">Average Rise</div>
               </div>
               <div className="border-l-2 border-indigo-400 pl-4 py-1">
-                <div className="text-2xl font-serif font-bold text-foreground">+{(shift * 100).toFixed(1)} cm</div>
-                <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Decade Shift (D1-D3)</div>
+                <div className="text-2xl font-serif font-bold text-indigo-400">+{(shift * 100).toFixed(1)} cm</div>
+                <div className="text-[10px] text-indigo-300/80 font-mono uppercase tracking-wider mt-0.5">Decade Shift (D1-D3)</div>
               </div>
               {fastest && (
                 <div className="border-l-2 border-emerald-400 pl-4 py-1">
-                  <div className="text-2xl font-serif font-bold text-foreground truncate" title={fastest.country}>
+                  <div className="text-2xl font-serif font-bold text-emerald-400 truncate" title={fastest.country}>
                     {fastest.country}
                   </div>
-                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Fastest Rising (+{(fastest.slopeFullPeriod * 1000).toFixed(1)} mm/yr)</div>
+                  <div className="text-[10px] text-emerald-300/80 font-mono uppercase tracking-wider mt-0.5">Fastest Rising (+{(fastest.slopeFullPeriod * 1000).toFixed(1)} mm/yr)</div>
                 </div>
               )}
               {mostVolatile && (
-                <div className="border-l-2 border-amber-500 pl-4 py-1">
-                  <div className="text-2xl font-serif font-bold text-foreground truncate" title={mostVolatile.country}>
+                <div className="border-l-2 border-amber-400 pl-4 py-1">
+                  <div className="text-2xl font-serif font-bold text-amber-400 truncate" title={mostVolatile.country}>
                     {mostVolatile.country}
                   </div>
-                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Most Volatile (±{(mostVolatile.volatility * 100).toFixed(1)} cm)</div>
+                  <div className="text-[10px] text-amber-300/80 font-mono uppercase tracking-wider mt-0.5">Most Volatile (±{(mostVolatile.volatility * 100).toFixed(1)} cm)</div>
                 </div>
               )}
             </div>

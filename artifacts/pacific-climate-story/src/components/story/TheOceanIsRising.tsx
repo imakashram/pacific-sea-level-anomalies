@@ -178,25 +178,25 @@ export function TheOceanIsRising() {
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 sm:gap-6 bg-cyan-950/30 border border-cyan-500/15 rounded-xl px-4 py-2">
+          <div className="flex flex-wrap items-center gap-5 sm:gap-6 bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-2">
             <div className="flex flex-col">
-              <span className="text-[9px] text-muted-foreground font-mono uppercase">Linear Trend Rate</span>
-              <span className="text-sm font-mono font-bold text-cyan-400">
-                +{ (reg.slope * 1000).toFixed(2) } mm/yr
+              <span className="text-[9px] text-teal-400/80 font-mono uppercase">Linear Trend Rate</span>
+              <span className="text-sm font-mono font-bold text-teal-400">
+                +{(reg.slope * 1000).toFixed(2)} mm/yr
               </span>
             </div>
-            <div className="w-px h-7 bg-cyan-500/10 self-stretch" />
+            <div className="w-px h-7 bg-slate-700/50 self-stretch" />
             <div className="flex flex-col">
-              <span className="text-[9px] text-muted-foreground font-mono uppercase">30y Net Rise</span>
+              <span className="text-[9px] text-cyan-400/80 font-mono uppercase">30y Net Rise</span>
               <span className="text-sm font-mono font-bold text-cyan-400">
-                +{ totalRiseCm.toFixed(1) } cm
+                +{(totalRiseCm).toFixed(1)} cm
               </span>
             </div>
-            <div className="w-px h-7 bg-cyan-500/10 self-stretch" />
+            <div className="w-px h-7 bg-slate-700/50 self-stretch" />
             <div className="flex flex-col">
-              <span className="text-[9px] text-muted-foreground font-mono uppercase">Decadal Shift</span>
-              <span className="text-sm font-mono font-bold text-cyan-400">
-                +{ shiftCm.toFixed(1) } cm
+              <span className="text-[9px] text-indigo-400/80 font-mono uppercase">Decadal Shift</span>
+              <span className="text-sm font-mono font-bold text-indigo-400">
+                +{(shiftCm).toFixed(1)} cm
               </span>
             </div>
           </div>
