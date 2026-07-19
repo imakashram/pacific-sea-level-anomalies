@@ -59,8 +59,6 @@ export function WhatThisMeans() {
   const crossedZero = thresholdData?.summary.crossedZero || 0;
   const crossedTenth = thresholdData?.summary.crossedTenth || 0;
 
-  const totalObs = overview?.totalObservations || 0;
-  const avgRise = overview?.avgRiseMeters || 0;
   const maxRiseVal = overview?.maxRiseValue || 0;
 
   const highestSlope = rankings?.slice().sort((a, b) => b.slope - a.slope)[0];
@@ -75,8 +73,8 @@ export function WhatThisMeans() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-center">What This Means</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed text-center mx-auto">
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">What This Means</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
             Over 30 years of observations across 21 Pacific territories reveal a persistent rise in sea level anomalies.
           </p>
         </motion.div>
