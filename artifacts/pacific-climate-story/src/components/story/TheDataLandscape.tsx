@@ -13,8 +13,8 @@ export function TheDataLandscape() {
     <StorySection id="the-data-landscape">
       {/* Title & Introduction Block */}
       <div className="mb-10 text-center flex flex-col items-center justify-center">
-        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-center">The Data Landscape</h2>
-        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed text-center mx-auto">
+        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Data Landscape</h2>
+        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
           Before we look at the rising ocean, let's understand the metric behind the data. <strong className="text-foreground">Sea Level Anomaly</strong> measures how much the ocean surface is above or below its long-term average.
         </p>
       </div>
