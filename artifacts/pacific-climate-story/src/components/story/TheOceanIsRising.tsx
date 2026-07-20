@@ -6,7 +6,7 @@ import {
 } from "recharts";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Waves } from "lucide-react";
+import { Waves, Sun, CloudRain, Flame } from "lucide-react";
 
 const TrendTooltip = ({ active, payload, label, showRegression, showMovingAvg }: any) => {
   if (!active || !payload?.length) return null;
@@ -147,6 +147,63 @@ export function TheOceanIsRising() {
         <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
           Across 21 Pacific nations, sea levels have risen steadily over the past 30 years. Short-term climate cycles create temporary ups and downs, but the overall trend is still upward.
         </p>
+      </div>
+
+      {/* Top 3 Climate Event Feature Cards (Identical font & style to Future Outlook) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10 max-w-5xl mx-auto relative z-10">
+        {/* Card 1: 1998 El Niño */}
+        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5 hover:-translate-y-1">
+          <div className="flex items-center justify-between text-muted-foreground mb-1">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+              El Niño
+            </span>
+            <div className="text-orange-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+              <Sun className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-3xl font-serif font-bold tracking-tight text-orange-400">
+            Warm Event
+          </div>
+          <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+            A major warm event that temporarily lowered sea levels in the Western Pacific, briefly hiding the long-term rising trend.
+          </div>
+        </div>
+
+        {/* Card 2: 2011 La Niña */}
+        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-sky-500/40 hover:shadow-sky-500/5 hover:bg-sky-950/5 hover:-translate-y-1">
+          <div className="flex items-center justify-between text-muted-foreground mb-1">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+              La Niña
+            </span>
+            <div className="text-sky-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+              <CloudRain className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-3xl font-serif font-bold tracking-tight text-sky-400">
+            Cool Event
+          </div>
+          <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+            A strong cool event that temporarily raised sea levels and pushed more water onto local shorelines.
+          </div>
+        </div>
+
+        {/* Card 3: 2016 El Niño */}
+        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-rose-500/40 hover:shadow-rose-500/5 hover:bg-rose-950/5 hover:-translate-y-1">
+          <div className="flex items-center justify-between text-muted-foreground mb-1">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+              El Niño
+            </span>
+            <div className="text-rose-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+              <Flame className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-3xl font-serif font-bold tracking-tight text-rose-400">
+            Extreme Warm
+          </div>
+          <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+            One of the strongest warm ocean events ever recorded, causing very high ocean temperatures across the region.
+          </div>
+        </div>
       </div>
 
       {/* Main Chart (Full Width) */}
@@ -350,38 +407,7 @@ export function TheOceanIsRising() {
           ) : null}
         </div>
 
-        {/* Milestone Explainer Captions */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-muted-foreground border-t border-cyan-500/10 pt-6 relative z-10">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-[#f97316]" />
-              <span className="font-mono font-bold text-white uppercase tracking-wider">1998 El Niño</span>
-            </div>
-            <p className="leading-relaxed">
-              A major warm event that temporarily lowered sea levels in the Western Pacific, briefly hiding the long-term rising trend.
-            </p>
-          </div>
-          
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-[#38bdf8]" />
-              <span className="font-mono font-bold text-white uppercase tracking-wider">2011 La Niña</span>
-            </div>
-            <p className="leading-relaxed">
-              A strong cool event that temporarily raised sea levels and pushed more water onto local shorelines.
-            </p>
-          </div>
 
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-[#f43f5e]" />
-              <span className="font-mono font-bold text-white uppercase tracking-wider">2016 El Niño</span>
-            </div>
-            <p className="leading-relaxed">
-              One of the strongest warm ocean events ever recorded, causing very high ocean temperatures across the region.
-            </p>
-          </div>
-        </div>
       </div>
     </StorySection>
   );
