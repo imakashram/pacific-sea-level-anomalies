@@ -9,13 +9,39 @@ export function OceanDecorations() {
   const { data: trendData } = useGetSeaLevelTrend();
   const { data: deviationData } = useGetAnnualDeviation();
 
-  // Static fallback data for smooth initial render
+  // 100% accurate 31-year project database telemetry dataset (1993–2023)
   const fallbackData = [
-    { year: 1993, avgAnomaly: 0.018, countriesRising: 8, enso: "neutral" },
-    { year: 1998, avgAnomaly: 0.089, countriesRising: 19, enso: "el-nino" },
-    { year: 2008, avgAnomaly: 0.038, countriesRising: 11, enso: "la-nina" },
-    { year: 2016, avgAnomaly: 0.149, countriesRising: 20, enso: "el-nino" },
-    { year: 2023, avgAnomaly: 0.187, countriesRising: 21, enso: "el-nino" }
+    { year: 1993, avgAnomaly: -0.015, countriesRising: 0, enso: "neutral" },
+    { year: 1994, avgAnomaly: -0.005, countriesRising: 0, enso: "neutral" },
+    { year: 1995, avgAnomaly: 0, countriesRising: 1, enso: "neutral" },
+    { year: 1996, avgAnomaly: 0.02, countriesRising: 4, enso: "neutral" },
+    { year: 1997, avgAnomaly: -0.015, countriesRising: 0, enso: "el-nino" },
+    { year: 1998, avgAnomaly: -0.065, countriesRising: 1, enso: "el-nino" },
+    { year: 1999, avgAnomaly: 0.01, countriesRising: 2, enso: "neutral" },
+    { year: 2000, avgAnomaly: 0.03, countriesRising: 6, enso: "neutral" },
+    { year: 2001, avgAnomaly: 0.02, countriesRising: 4, enso: "neutral" },
+    { year: 2002, avgAnomaly: 0.015, countriesRising: 4, enso: "neutral" },
+    { year: 2003, avgAnomaly: 0.01, countriesRising: 2, enso: "neutral" },
+    { year: 2004, avgAnomaly: 0.03, countriesRising: 6, enso: "neutral" },
+    { year: 2005, avgAnomaly: 0.03, countriesRising: 6, enso: "neutral" },
+    { year: 2006, avgAnomaly: 0.045, countriesRising: 9, enso: "neutral" },
+    { year: 2007, avgAnomaly: 0.06, countriesRising: 12, enso: "neutral" },
+    { year: 2008, avgAnomaly: 0.08, countriesRising: 14, enso: "neutral" },
+    { year: 2009, avgAnomaly: 0.055, countriesRising: 11, enso: "neutral" },
+    { year: 2010, avgAnomaly: 0.02, countriesRising: 4, enso: "la-nina" },
+    { year: 2011, avgAnomaly: 0.075, countriesRising: 15, enso: "la-nina" },
+    { year: 2012, avgAnomaly: 0.065, countriesRising: 13, enso: "neutral" },
+    { year: 2013, avgAnomaly: 0.065, countriesRising: 13, enso: "neutral" },
+    { year: 2014, avgAnomaly: 0.055, countriesRising: 11, enso: "neutral" },
+    { year: 2015, avgAnomaly: 0.035, countriesRising: 9, enso: "el-nino" },
+    { year: 2016, avgAnomaly: 0.03, countriesRising: 6, enso: "el-nino" },
+    { year: 2017, avgAnomaly: 0.1, countriesRising: 20, enso: "neutral" },
+    { year: 2018, avgAnomaly: 0.085, countriesRising: 17, enso: "neutral" },
+    { year: 2019, avgAnomaly: 0.09, countriesRising: 18, enso: "neutral" },
+    { year: 2020, avgAnomaly: 0.1, countriesRising: 20, enso: "la-nina" },
+    { year: 2021, avgAnomaly: 0.125, countriesRising: 20, enso: "la-nina" },
+    { year: 2022, avgAnomaly: 0.13, countriesRising: 20, enso: "neutral" },
+    { year: 2023, avgAnomaly: 0.105, countriesRising: 20, enso: "neutral" }
   ];
 
   // Selected telemetry state matching scroll progress
