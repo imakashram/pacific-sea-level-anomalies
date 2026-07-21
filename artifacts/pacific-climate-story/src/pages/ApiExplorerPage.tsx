@@ -190,13 +190,6 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["Chapter5Heatmap"]
   },
   {
-    path: "/api/climate/cumulative-rise-timeseries",
-    method: "GET",
-    description: "Generates time-series records of cumulative sea level rise indicators.",
-    category: "visuals",
-    usedIn: ["ApiExplorer"]
-  },
-  {
     path: "/api/climate/nations-rising-by-year",
     method: "GET",
     description: "Counts how many Pacific nations recorded positive anomalies for each calendar year.",

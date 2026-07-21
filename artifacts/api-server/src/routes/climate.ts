@@ -750,44 +750,6 @@ router.get("/climate/risk-scores", (req, res): void => {
   });
 });
 
-// ── Cumulative rise timeseries ────────────────────────────────────────────────
-router.get("/climate/cumulative-rise-timeseries", (req, res): void => {
-  const data = getData();
-  const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
-  const years = [...new Set(seaLevel.map((d) => d.year))].sort((a, b) => a - b);
-
-  const countryGroups = new Map<string, { country: string; code: string; pts: { year: number; value: number }[] }>();
-  for (const d of seaLevel) {
-    if (!countryGroups.has(d.country)) {
-      countryGroups.set(d.country, { country: d.country, code: d.code, pts: [] });
-    }
-    countryGroups.get(d.country)!.pts.push({ year: d.year, value: d.value });
-  }
-
-  const countries = Array.from(countryGroups.values()).map(({ country, code, pts }) => {
-    pts.sort((a, b) => a.year - b.year);
-    const baseline = pts[0]?.value ?? 0;
-
-    const dataPoints = years.map((y) => {
-      const pt = pts.find((p) => p.year === y);
-      const raw = pt?.value ?? null;
-      return {
-        year: y,
-        cumulative: raw != null ? parseFloat((raw - baseline).toFixed(4)) : null,
-        raw: raw != null ? parseFloat(raw.toFixed(4)) : null,
-      };
-    }).filter((p) => p.raw != null) as { year: number; cumulative: number; raw: number }[];
-
-    const totalRise = parseFloat(((pts[pts.length - 1]?.value ?? 0) - baseline).toFixed(4));
-    return { country, code, totalRise, data: dataPoints };
-  });
-
-  // Sort by totalRise descending so top risers come first
-  countries.sort((a, b) => b.totalRise - a.totalRise);
-
-  res.json({ years, countries });
-});
-
 // ── Nations rising by year ────────────────────────────────────────────────────
 router.get("/climate/nations-rising-by-year", (req, res): void => {
   const data = getData();
