@@ -145,7 +145,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Prepares pivoted and ordered grids to feed the multi-nation decadal heatmap.",
     category: "visuals",
-    usedIn: ["ChapterPatternsOverTime"]
+    usedIn: ["PatternsOverTime"]
   },
   {
     path: "/api/climate/sea-level-trend",
