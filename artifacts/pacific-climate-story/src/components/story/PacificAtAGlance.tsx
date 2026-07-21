@@ -239,13 +239,13 @@ export function PacificAtAGlance({
             className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full"
           >
             {/* View Mode Switcher Pills */}
-            <div className="flex bg-card/20 backdrop-blur-md p-1 rounded-full border border-border/50 mb-2 max-w-[220px] w-full shadow-inner flex-shrink-0">
+            <div className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5 mb-2 max-w-[200px] w-full shadow-inner flex-shrink-0 select-none">
               <button
                 onClick={() => setActiveTab("explorer")}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   activeTab === "explorer"
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/10"
+                    : "text-muted-foreground hover:text-white"
                 }`}
               >
                 <Globe className="w-3.5 h-3.5 flex-shrink-0" />
@@ -253,10 +253,10 @@ export function PacificAtAGlance({
               </button>
               <button
                 onClick={() => setActiveTab("table")}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-full transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   activeTab === "table"
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/10"
+                    : "text-muted-foreground hover:text-white"
                 }`}
               >
                 <Table className="w-3.5 h-3.5 flex-shrink-0" />
