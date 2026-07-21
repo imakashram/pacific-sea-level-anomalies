@@ -215,7 +215,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Provides decadal and historical YoY ranking shifts.",
     category: "visuals",
-    usedIn: ["ChapterRankBump"]
+    usedIn: []
   },
   {
     path: "/api/climate/nation-treemap",
