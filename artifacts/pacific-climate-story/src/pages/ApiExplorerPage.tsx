@@ -171,7 +171,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Groups territories geographically (Melanesia, Micronesia, Polynesia) to compile sub-regional summaries.",
     category: "risk",
-    usedIn: []
+    usedIn: ["ChapterSubRegionalClusters"]
   },
   {
     path: "/api/climate/threshold-crossings",
