@@ -376,7 +376,7 @@ export function TheOceanIsRising() {
                   dataKey="year"
                   stroke="rgba(148, 163, 184, 0.3)"
                   tick={{ fill: "rgba(148, 163, 184, 0.7)", fontSize: 11, fontFamily: "monospace" }}
-                  tickLine={false}
+                  tickLine={{ stroke: "rgba(148, 163, 184, 0.3)" }}
                   tickMargin={6}
                   label={{
                     value: "Year",
@@ -392,7 +392,7 @@ export function TheOceanIsRising() {
                   stroke="rgba(148, 163, 184, 0.3)"
                   tick={{ fill: "rgba(148, 163, 184, 0.7)", fontSize: 11, fontFamily: "monospace" }}
                   tickFormatter={(v) => `${v > 0 ? "+" : ""}${(v * 100).toFixed(0)}`}
-                  tickLine={false}
+                  tickLine={{ stroke: "rgba(148, 163, 184, 0.3)" }}
                   width={60}
                   label={{
                     value: "Sea Level Anomaly (cm)",
