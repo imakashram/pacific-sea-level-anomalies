@@ -18,7 +18,6 @@ import { RiskAssessment } from "@/components/story/RiskAssessment";
 import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
 import { WhatThisMeans } from "@/components/story/WhatThisMeans";
 import { ChapterRankBump } from "@/components/story/ChapterRankBump";
-import { ChapterThresholdFunnel } from "@/components/story/ChapterThresholdFunnel";
 import { OceanDecorations } from "@/components/story/OceanDecorations";
 
 export default function StoryPage() {
@@ -48,7 +47,6 @@ export default function StoryPage() {
         <Chapter5Heatmap />
         <ChapterCumulativeRise />
         <ChapterRankBump />
-        <ChapterThresholdFunnel />
         <FutureOutlook />
         <RiskAssessment />
 

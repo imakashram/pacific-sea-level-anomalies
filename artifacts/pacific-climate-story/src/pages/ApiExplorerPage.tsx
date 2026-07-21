@@ -257,7 +257,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Returns stage counts for the historical threshold funnel visualization.",
     category: "visuals",
-    usedIn: ["ChapterThresholdFunnel"]
+    usedIn: []
   },
   {
     path: "/api/climate/regional-streams",
