@@ -107,6 +107,7 @@ export function PatternsOverTime() {
                   <span className="text-[9px] uppercase tracking-wider text-amber-400/70 font-semibold absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${d2Center}%` }}>Decade 2 (2003-2012)</span>
                   <span className="text-[9px] uppercase tracking-wider text-rose-400/80 font-semibold absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${d3Center}%` }}>Decade 3 (2013-2023)</span>
                 </div>
+                <div className="w-16 flex-shrink-0" />
               </div>
 
               <div className="space-y-[3px] group/heatmap">
@@ -182,7 +183,7 @@ export function PatternsOverTime() {
               <div className="flex items-center justify-center gap-4 mt-8 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-sm" style={{ background: "rgba(56,189,248,0.85)" }} />
-                  <span>Below baseline ({Math.abs(heatmapData.minValue * 100).toFixed(0)}cm max)</span>
+                  <span>Below baseline (-{Math.abs(heatmapData.minValue * 100).toFixed(0)}cm max)</span>
                 </div>
                 <div className="flex-1 max-w-40 h-2 rounded-full bg-gradient-to-r from-sky-400 via-background/40 to-rose-400 border border-border/30" />
                 <div className="flex items-center gap-2">
@@ -191,7 +192,7 @@ export function PatternsOverTime() {
                 </div>
               </div>
               <div className="flex items-center gap-6 mt-3 text-[10px] text-muted-foreground/60 justify-center">
-                <span className="flex items-center gap-1.5"><span className="inline-block w-[2px] h-4 bg-border/60" />Decade boundary</span>
+                <span className="flex items-center gap-1.5"><span className="inline-block w-[2px] h-4 bg-white/20" />Decade boundary</span>
                 <span>Hover any cell for exact value · Right column = total rise (cm)</span>
               </div>
             </div>
