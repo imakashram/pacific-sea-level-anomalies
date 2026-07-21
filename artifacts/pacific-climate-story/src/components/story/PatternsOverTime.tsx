@@ -49,6 +49,10 @@ export function PatternsOverTime() {
   const decade2013Idx = heatmapData?.years.findIndex((y) => y === 2013) ?? -1;
   const numYears = heatmapData?.years.length ?? 31;
 
+  const d1Center = decade2003Idx > 0 ? ((0 + decade2003Idx) / 2 / numYears) * 100 : 16;
+  const d2Center = decade2003Idx > 0 && decade2013Idx > 0 ? ((decade2003Idx + decade2013Idx) / 2 / numYears) * 100 : 50;
+  const d3Center = decade2013Idx > 0 ? ((decade2013Idx + numYears) / 2 / numYears) * 100 : 83;
+
   const sortOptions: { key: SortKey; label: string }[] = [
     { key: "totalRise", label: "Total Rise" },
     { key: "avg", label: "Avg Anomaly" },
@@ -91,28 +95,7 @@ export function PatternsOverTime() {
             </div>
           ) : isInView ? (
             <div>
-              {/* Year header with decade labels */}
-              <div className="flex mb-1">
-                <div className="w-36 flex-shrink-0" />
-                <div className="flex-1 flex relative">
-                  {decade2003Idx > 0 && (
-                    <div
-                      className="absolute top-0 bottom-0 -translate-x-1/2 flex flex-col items-center pointer-events-none"
-                      style={{ left: `${(decade2003Idx / numYears) * 100}%` }}
-                    >
-                      <span className="text-[9px] text-muted-foreground/60 uppercase tracking-wider -rotate-0 whitespace-nowrap">2003</span>
-                    </div>
-                  )}
-                  {decade2013Idx > 0 && (
-                    <div
-                      className="absolute top-0 bottom-0 -translate-x-1/2 flex flex-col items-center pointer-events-none"
-                      style={{ left: `${(decade2013Idx / numYears) * 100}%` }}
-                    >
-                      <span className="text-[9px] text-muted-foreground/60 uppercase tracking-wider whitespace-nowrap">2013</span>
-                    </div>
-                  )}
-                </div>
-              </div>
+              {/* Year header at 5-year intervals */}
               <div className="flex mb-2">
                 <div className="w-36 flex-shrink-0" />
                 <div className="flex-1 flex justify-between text-[10px] text-muted-foreground/70">
@@ -125,53 +108,75 @@ export function PatternsOverTime() {
               {/* Decade labels above */}
               <div className="flex mb-2">
                 <div className="w-36 flex-shrink-0" />
-                <div className="flex-1 flex relative">
-                  <span className="text-[9px] uppercase tracking-wider text-blue-400/50" style={{ position: "absolute", left: "5%" }}>Decade 1</span>
-                  <span className="text-[9px] uppercase tracking-wider text-yellow-400/50" style={{ position: "absolute", left: "37%" }}>Decade 2</span>
-                  <span className="text-[9px] uppercase tracking-wider text-red-400/60" style={{ position: "absolute", left: "68%" }}>Decade 3</span>
+                <div className="flex-1 flex relative h-4 select-none">
+                  <span className="text-[9px] uppercase tracking-wider text-blue-400/70 font-semibold absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${d1Center}%` }}>Decade 1 (1993-2002)</span>
+                  <span className="text-[9px] uppercase tracking-wider text-amber-400/70 font-semibold absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${d2Center}%` }}>Decade 2 (2003-2012)</span>
+                  <span className="text-[9px] uppercase tracking-wider text-rose-400/80 font-semibold absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${d3Center}%` }}>Decade 3 (2013-2023)</span>
                 </div>
               </div>
 
-              <div className="space-y-[3px]">
+              <div className="space-y-[3px] group/heatmap">
                 {sortedIndices.map((origIdx, sortedPos) => {
                   const country = heatmapData.countries[origIdx];
                   const row = heatmapData.matrix[origIdx];
                   return (
-                    <div key={country} className="flex items-center group">
-                      <div className="w-36 flex-shrink-0 text-[11px] font-medium text-muted-foreground group-hover:text-foreground transition-colors truncate pr-2">
+                    <div
+                      key={country}
+                      className="flex items-center group/row transition-all duration-200 hover:scale-[1.01] hover:bg-slate-800/30 px-2 py-0.5 rounded-md group-hover/heatmap:opacity-30 hover:!opacity-100"
+                    >
+                      <div className="w-34 flex-shrink-0 text-[11px] font-semibold text-muted-foreground group-hover/row:text-white transition-colors truncate pr-2">
                         {country}
                       </div>
                       <div className="flex-1 flex h-[18px] relative">
                         {/* Decade separator lines */}
                         {decade2003Idx > 0 && (
                           <div
-                            className="absolute top-0 bottom-0 w-[2px] bg-border/40 z-10"
+                            className="absolute top-0 bottom-0 w-[2px] bg-white/20 z-10 pointer-events-none"
                             style={{ left: `${(decade2003Idx / numYears) * 100}%` }}
                           />
                         )}
                         {decade2013Idx > 0 && (
                           <div
-                            className="absolute top-0 bottom-0 w-[2px] bg-border/40 z-10"
+                            className="absolute top-0 bottom-0 w-[2px] bg-white/20 z-10 pointer-events-none"
                             style={{ left: `${(decade2013Idx / numYears) * 100}%` }}
                           />
                         )}
-                        {row.map((val, j) => (
-                          <motion.div
-                            key={`${country}-${heatmapData.years[j]}`}
-                            className="flex-1 h-full mx-[1px] rounded-[2px] relative group/cell"
-                            style={{ backgroundColor: val !== null ? getColor(val, heatmapData.minValue, heatmapData.maxValue) : "transparent" }}
-                            initial={{ opacity: 0, scaleY: 0 }}
-                            animate={{ opacity: 1, scaleY: 1 }}
-                            transition={{ delay: (sortedPos * 0.03) + (j * 0.006), duration: 0.25 }}
-                          >
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover/cell:block z-50 bg-background border border-border px-2 py-1 text-xs rounded pointer-events-none whitespace-nowrap shadow-lg">
-                              {country} · {heatmapData.years[j]}: {val !== null ? `${val >= 0 ? "+" : ""}${val.toFixed(3)}m` : "N/A"}
-                            </div>
-                          </motion.div>
-                        ))}
+                        {row.map((val, j) => {
+                          const isPositive = val !== null && val >= 0;
+                          const cellBorderColor = isPositive ? "border-rose-500/40" : "border-sky-500/40";
+                          const cellTextColor = isPositive ? "text-rose-400" : "text-sky-400";
+                          return (
+                            <motion.div
+                              key={`${country}-${heatmapData.years[j]}`}
+                              className="flex-1 h-full mx-[1px] rounded-[2px] relative group/cell cursor-pointer transition-all duration-150 hover:scale-125 hover:z-30 hover:ring-2 hover:ring-white hover:shadow-[0_0_12px_rgba(255,255,255,0.7)]"
+                              style={{ backgroundColor: val !== null ? getColor(val, heatmapData.minValue, heatmapData.maxValue) : "transparent" }}
+                              initial={{ opacity: 0, scaleY: 0 }}
+                              animate={{ opacity: 1, scaleY: 1 }}
+                              transition={{ delay: (sortedPos * 0.03) + (j * 0.006), duration: 0.25 }}
+                            >
+                              {/* Custom premium Tooltip matching The Ocean Is Rising */}
+                              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 hidden group-hover/cell:block z-50 bg-[#0b1528]/95 border ${isPositive ? "border-rose-500/30" : "border-cyan-500/30"} p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] font-sans text-left`}>
+                                <div className={`flex items-center justify-between border-b ${isPositive ? "border-rose-500/10" : "border-cyan-500/10"} pb-2 mb-2`}>
+                                  <span className="font-serif text-lg font-bold text-white truncate max-w-[130px]">{country}</span>
+                                  <span className="text-[10px] font-mono px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-500/20 rounded-full uppercase">
+                                    {heatmapData.years[j]}
+                                  </span>
+                                </div>
+                                <div className="space-y-2 text-xs">
+                                  <div className="flex justify-between items-center gap-6">
+                                    <span className={`${isPositive ? "text-rose-400/90" : "text-cyan-400/90"} font-medium`}>Anomaly</span>
+                                    <span className={`font-mono font-bold text-sm ${isPositive ? "text-rose-400" : "text-cyan-400"}`}>
+                                      {val !== null ? `${val >= 0 ? "+" : ""}${(val * 100).toFixed(1)} cm` : "N/A"}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          );
+                        })}
                       </div>
                       {/* Row total */}
-                      <div className="w-16 flex-shrink-0 text-right text-[10px] font-mono pl-2 text-muted-foreground/60">
+                      <div className="w-16 flex-shrink-0 text-right text-[10px] font-mono pl-2 text-muted-foreground/60 group-hover/row:text-white transition-colors">
                         {totalRiseOfRow(row) >= 0 ? "+" : ""}{(totalRiseOfRow(row) * 100).toFixed(0)}cm
                       </div>
                     </div>
@@ -183,12 +188,12 @@ export function PatternsOverTime() {
               <div className="flex items-center justify-center gap-4 mt-8 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-sm" style={{ background: "rgba(56,189,248,0.85)" }} />
-                  <span>Below baseline ({Math.abs(heatmapData.minValue).toFixed(2)}m max)</span>
+                  <span>Below baseline ({Math.abs(heatmapData.minValue * 100).toFixed(0)}cm max)</span>
                 </div>
                 <div className="flex-1 max-w-40 h-2 rounded-full bg-gradient-to-r from-sky-400 via-background/40 to-rose-400 border border-border/30" />
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-sm" style={{ background: "rgba(251,113,133,0.85)" }} />
-                  <span>Above baseline (+{heatmapData.maxValue.toFixed(2)}m max)</span>
+                  <span>Above baseline (+{(heatmapData.maxValue * 100).toFixed(0)}cm max)</span>
                 </div>
               </div>
               <div className="flex items-center gap-6 mt-3 text-[10px] text-muted-foreground/60 justify-center">
