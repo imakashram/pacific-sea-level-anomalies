@@ -62,20 +62,6 @@ const ENDPOINTS: ApiEndpoint[] = [
       }
     ]
   },
-  {
-    path: "/api/climate/country-comparison",
-    method: "GET",
-    description: "Returns comparison summaries of multi-nation anomalies to chart and correlate side-by-side.",
-    category: "core",
-    usedIn: []
-  },
-  {
-    path: "/api/climate/anomalies",
-    method: "GET",
-    description: "Returns raw database records of climate anomaly entries, supports query filtering.",
-    category: "core",
-    usedIn: ["ApiExplorerPage"]
-  },
 
   // Trends
   {
@@ -84,13 +70,6 @@ const ENDPOINTS: ApiEndpoint[] = [
     description: "Divides observations into Decade 1 (1993-2002), Decade 2 (2003-2012), and Decade 3 (2013-2023) to compute baseline shifts and regional changes.",
     category: "trends",
     usedIn: ["HeroSection", "ChapterDecadeAnalysis", "WhatThisMeans"]
-  },
-  {
-    path: "/api/climate/rate-of-change",
-    method: "GET",
-    description: "Calculates the yearly linear trend rate of sea level rise (in mm/year) for all territories.",
-    category: "trends",
-    usedIn: []
   },
   {
     path: "/api/climate/volatility",
@@ -107,25 +86,11 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["HeroSection", "ChapterAcceleration", "WhatThisMeans"]
   },
   {
-    path: "/api/climate/decade-distributions",
-    method: "GET",
-    description: "Computes decadal statistical distributions and percentiles across all monitoring stations.",
-    category: "trends",
-    usedIn: ["ChapterDecadeAnalysis"]
-  },
-  {
-    path: "/api/climate/start-end-comparison",
-    method: "GET",
-    description: "Performs comparison between the first year of records (1993) and the latest (2023).",
-    category: "trends",
-    usedIn: []
-  },
-  {
     path: "/api/climate/annual-deviation",
     method: "GET",
     description: "Computes standard deviation variances of annual anomalies on a year-by-year scale.",
     category: "trends",
-    usedIn: []
+    usedIn: ["OceanDecorations"]
   },
 
   // ENSO
@@ -140,13 +105,6 @@ const ENDPOINTS: ApiEndpoint[] = [
     path: "/api/climate/enso-sensitivity",
     method: "GET",
     description: "Correlates annual sea level anomalies with Southern Oscillation Index (SOI) datasets to measure ENSO susceptibility.",
-    category: "enso",
-    usedIn: ["ChapterENSOSensitivity"]
-  },
-  {
-    path: "/api/climate/correlation-matrix",
-    method: "GET",
-    description: "Computes cross-correlation coefficients between all 21 nations to index climate synchrony.",
     category: "enso",
     usedIn: ["ChapterENSOSensitivity"]
   },
@@ -178,7 +136,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Computes indicators mapping when territories first crossed anomaly thresholds (+0.0m, +0.1m, +0.2m).",
     category: "risk",
-    usedIn: ["ChapterBaselineBreach", "WhatThisMeans"]
+    usedIn: ["WhatThisMeans"]
   },
 
   // Visuals
@@ -190,11 +148,11 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["Chapter5Heatmap"]
   },
   {
-    path: "/api/climate/nations-rising-by-year",
+    path: "/api/climate/sea-level-trend",
     method: "GET",
-    description: "Counts how many Pacific nations recorded positive anomalies for each calendar year.",
+    description: "Returns annual global sea level trend values across the Pacific.",
     category: "visuals",
-    usedIn: ["TheOceanIsRising"]
+    usedIn: ["TheOceanIsRising", "OceanDecorations"]
   },
   {
     path: "/api/climate/rankings",
@@ -202,62 +160,6 @@ const ENDPOINTS: ApiEndpoint[] = [
     description: "Generates detailed rankings of countries by rise, volatility, and linear slope.",
     category: "visuals",
     usedIn: ["PacificAtAGlance", "ExploreAnyNation", "WhatThisMeans"]
-  },
-  {
-    path: "/api/climate/nation-rankings",
-    method: "GET",
-    description: "Provides decadal and historical YoY ranking shifts.",
-    category: "visuals",
-    usedIn: []
-  },
-  {
-    path: "/api/climate/nation-treemap",
-    method: "GET",
-    description: "Formats tree-nodes with hierarchical area indicators for regional representation.",
-    category: "visuals",
-    usedIn: []
-  },
-  {
-    path: "/api/climate/yoy-budget",
-    method: "GET",
-    description: "Calculates yearly sea level rise budget ratios for each territory.",
-    category: "visuals",
-    usedIn: []
-  },
-  {
-    path: "/api/climate/anomaly-profiles",
-    method: "GET",
-    description: "Compiles comparison anomaly curves.",
-    category: "visuals",
-    usedIn: []
-  },
-  {
-    path: "/api/climate/regional-decade-shares",
-    method: "GET",
-    description: "Provides decadal share metrics grouped by sub-region.",
-    category: "visuals",
-    usedIn: []
-  },
-  {
-    path: "/api/climate/nation-metrics",
-    method: "GET",
-    description: "Fetches detailed grid metrics for the Side-by-Side comparison panel.",
-    category: "visuals",
-    usedIn: []
-  },
-  {
-    path: "/api/climate/threshold-funnel",
-    method: "GET",
-    description: "Returns stage counts for the historical threshold funnel visualization.",
-    category: "visuals",
-    usedIn: []
-  },
-  {
-    path: "/api/climate/regional-streams",
-    method: "GET",
-    description: "Compiles time-series matrices for StreamGraph area charts.",
-    category: "visuals",
-    usedIn: []
   }
 ];
 
