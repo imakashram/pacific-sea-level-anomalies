@@ -264,7 +264,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Compiles time-series matrices for StreamGraph area charts.",
     category: "visuals",
-    usedIn: ["ChapterStreamGraph"]
+    usedIn: []
   }
 ];
 
