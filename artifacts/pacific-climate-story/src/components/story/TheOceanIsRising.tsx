@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  ReferenceArea,
   Line,
   ComposedChart,
 } from "recharts";
@@ -140,6 +141,7 @@ export function TheOceanIsRising() {
 
   const [showRegression, setShowRegression] = useState(true);
   const [showMovingAvg, setShowMovingAvg] = useState(true);
+  const [showEnso, setShowEnso] = useState(true);
 
   // Fallback calculations for data
   const data = trendData && trendData.length > 0 ? trendData : [];
@@ -148,21 +150,21 @@ export function TheOceanIsRising() {
   const reg =
     data.length > 0
       ? (() => {
-          const n = data.length;
-          let sumX = 0,
-            sumY = 0,
-            sumXY = 0,
-            sumXX = 0;
-          for (let i = 0; i < n; i++) {
-            sumX += data[i].year;
-            sumY += data[i].avgAnomaly;
-            sumXY += data[i].year * data[i].avgAnomaly;
-            sumXX += data[i].year * data[i].year;
-          }
-          const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-          const intercept = (sumY - slope * sumX) / n;
-          return { slope, intercept };
-        })()
+        const n = data.length;
+        let sumX = 0,
+          sumY = 0,
+          sumXY = 0,
+          sumXX = 0;
+        for (let i = 0; i < n; i++) {
+          sumX += data[i].year;
+          sumY += data[i].avgAnomaly;
+          sumXY += data[i].year * data[i].avgAnomaly;
+          sumXX += data[i].year * data[i].year;
+        }
+        const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+        return { slope, intercept };
+      })()
       : { slope: 0.00428, intercept: 0 };
 
   // Calculate Net 30y Rise & Decadal Shift
@@ -298,9 +300,8 @@ export function TheOceanIsRising() {
 
             <button
               onClick={() => setShowMovingAvg(!showMovingAvg)}
-              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${
-                showMovingAvg ? "opacity-100" : "opacity-40"
-              }`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${showMovingAvg ? "opacity-100" : "opacity-40"
+                }`}
             >
               <span className="w-3.5 h-0.5 bg-amber-400 inline-block rounded" />
               <span className="font-semibold">5-yr Avg</span>
@@ -308,12 +309,20 @@ export function TheOceanIsRising() {
 
             <button
               onClick={() => setShowRegression(!showRegression)}
-              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${
-                showRegression ? "opacity-100" : "opacity-40"
-              }`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${showRegression ? "opacity-100" : "opacity-40"
+                }`}
             >
               <span className="w-4 h-0 border-t-2 border-dotted border-teal-400 inline-block shrink-0" />
               <span className="font-semibold">Linear Trend</span>
+            </button>
+
+            <button
+              onClick={() => setShowEnso(!showEnso)}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-orange-400 ${showEnso ? "opacity-100" : "opacity-40"
+                }`}
+            >
+              <span className="w-3.5 h-2 bg-orange-400/20 border border-orange-400/50 inline-block rounded" />
+              <span className="font-semibold">ENSO Events</span>
             </button>
           </div>
 
@@ -411,49 +420,86 @@ export function TheOceanIsRising() {
                 />
                 <ReferenceLine y={0} stroke="rgba(148, 163, 184, 0.4)" strokeDasharray="3 3" />
 
-                {/* Milestone Reference Lines */}
-                <ReferenceLine
-                  x={1998}
-                  stroke="#f97316"
-                  strokeWidth={1.2}
-                  strokeDasharray="4 4"
-                  label={{
-                    position: "top",
-                    value: "1998 El Niño",
-                    fill: "#f97316",
-                    fontSize: 10,
-                    fontFamily: "monospace",
-                    fontWeight: "bold"
-                  }}
-                />
-                <ReferenceLine
-                  x={2011}
-                  stroke="#38bdf8"
-                  strokeWidth={1.2}
-                  strokeDasharray="4 4"
-                  label={{
-                    position: "top",
-                    value: "2011 La Niña",
-                    fill: "#38bdf8",
-                    fontSize: 10,
-                    fontFamily: "monospace",
-                    fontWeight: "bold"
-                  }}
-                />
-                <ReferenceLine
-                  x={2016}
-                  stroke="#f43f5e"
-                  strokeWidth={1.2}
-                  strokeDasharray="4 4"
-                  label={{
-                    position: "top",
-                    value: "2016 El Niño",
-                    fill: "#f43f5e",
-                    fontSize: 10,
-                    fontFamily: "monospace",
-                    fontWeight: "bold"
-                  }}
-                />
+                {/* Milestone Reference Areas for ENSO events */}
+                {/* 1997-1998 El Niño */}
+                {showEnso && (
+                  <ReferenceArea
+                    x1={1997}
+                    x2={1998}
+                    fill="#f97316"
+                    fillOpacity={0.06}
+                    stroke="#f97316"
+                    strokeOpacity={0.15}
+                    label={{
+                      position: "top",
+                      value: "El Niño (1997-1998)",
+                      fill: "#f97316",
+                      fontSize: 9,
+                      fontFamily: "monospace",
+                      fontWeight: "bold"
+                    }}
+                  />
+                )}
+
+                {/* 2010-2011 La Niña */}
+                {showEnso && (
+                  <ReferenceArea
+                    x1={2010}
+                    x2={2011}
+                    fill="#38bdf8"
+                    fillOpacity={0.06}
+                    stroke="#38bdf8"
+                    strokeOpacity={0.15}
+                    label={{
+                      position: "top",
+                      value: "La Niña (2010-2011)",
+                      fill: "#38bdf8",
+                      fontSize: 9,
+                      fontFamily: "monospace",
+                      fontWeight: "bold"
+                    }}
+                  />
+                )}
+
+                {/* 2015-2016 El Niño */}
+                {showEnso && (
+                  <ReferenceArea
+                    x1={2015}
+                    x2={2016}
+                    fill="#f43f5e"
+                    fillOpacity={0.06}
+                    stroke="#f43f5e"
+                    strokeOpacity={0.15}
+                    label={{
+                      position: "top",
+                      value: "El Niño (2015-2016)",
+                      fill: "#f43f5e",
+                      fontSize: 9,
+                      fontFamily: "monospace",
+                      fontWeight: "bold"
+                    }}
+                  />
+                )}
+
+                {/* 2020-2021 La Niña */}
+                {showEnso && (
+                  <ReferenceArea
+                    x1={2020}
+                    x2={2021}
+                    fill="#06b6d4"
+                    fillOpacity={0.06}
+                    stroke="#06b6d4"
+                    strokeOpacity={0.15}
+                    label={{
+                      position: "top",
+                      value: "La Niña (2020-2021)",
+                      fill: "#06b6d4",
+                      fontSize: 9,
+                      fontFamily: "monospace",
+                      fontWeight: "bold"
+                    }}
+                  />
+                )}
 
                 {/* Range Spread Fill */}
                 <Area
