@@ -25,6 +25,9 @@ export function PatternsOverTime() {
   const [sortKey, setSortKey] = useState<SortKey>("totalRise");
 
   const getColor = (value: number, min: number, max: number) => {
+    if (value === 0) {
+      return "transparent"; // Zero represents no deviation, matching the background
+    }
     if (value < 0) {
       const intensity = Math.min(1, Math.abs(value / (min || -0.001)));
       return `rgba(56, 189, 248, ${0.08 + intensity * 0.85})`;
@@ -137,15 +140,38 @@ export function PatternsOverTime() {
                           />
                         )}
                         {row.map((val, j) => {
-                          const isPositive = val !== null && val >= 0;
-                          const cellBorderColor = isPositive ? "border-rose-500/40" : "border-sky-500/40";
-                          const cellTextColor = isPositive ? "text-rose-400" : "text-sky-400";
+                          const isZero = val === 0;
+                          const isPositive = val !== null && val > 0;
+                          const isNegative = val !== null && val < 0;
+
+                          let cellBorderColor = "border-slate-700/50";
+                          let cellTextColor = "text-slate-400";
+                          let badgeBg = "bg-slate-950";
+                          let badgeText = "text-slate-400";
+                          let badgeBorder = "border-slate-800";
+                          let shadowColor = "rgba(148, 163, 184, 0.15)";
+
+                          if (isPositive) {
+                            cellBorderColor = "border-rose-500/40";
+                            cellTextColor = "text-rose-400";
+                            badgeBg = "bg-rose-950";
+                            badgeText = "text-rose-400";
+                            badgeBorder = "border-rose-500/20";
+                            shadowColor = "rgba(244, 63, 94, 0.15)";
+                          } else if (isNegative) {
+                            cellBorderColor = "border-cyan-500/40";
+                            cellTextColor = "text-cyan-400";
+                            badgeBg = "bg-cyan-950";
+                            badgeText = "text-cyan-400";
+                            badgeBorder = "border-cyan-500/20";
+                            shadowColor = "rgba(6, 182, 212, 0.15)";
+                          }
                           
                           const isTopRow = sortedPos < 4;
                           const isLeftCol = j < 5;
                           const isRightCol = j > numYears - 6;
 
-                          let positionClasses = "absolute hidden group-hover/cell:block z-50 bg-[#0b1528] border p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] font-sans text-left ";
+                          let positionClasses = `absolute hidden group-hover/cell:block z-50 bg-[#0b1528] border p-4 rounded-xl shadow-[0_10px_30px_${shadowColor}] backdrop-blur-md min-w-[240px] font-sans text-left `;
                           
                           if (isTopRow) {
                             positionClasses += "top-full mt-2.5 ";
@@ -171,10 +197,10 @@ export function PatternsOverTime() {
                               transition={{ delay: (sortedPos * 0.03) + (j * 0.006), duration: 0.25 }}
                             >
                               {/* Custom premium Tooltip matching The Ocean Is Rising */}
-                              <div className={`${positionClasses} ${isPositive ? "border-rose-500/30" : "border-cyan-500/30"}`}>
-                                <div className={`flex items-center justify-between border-b ${isPositive ? "border-rose-500/10" : "border-cyan-500/10"} pb-2 mb-2`}>
+                              <div className={`${positionClasses} ${cellBorderColor}`}>
+                                <div className={`flex items-center justify-between border-b ${isPositive ? "border-rose-500/10" : isNegative ? "border-cyan-500/10" : "border-slate-800"} pb-2 mb-2`}>
                                   <span className="font-serif text-lg font-bold text-white">{heatmapData.years[j]}</span>
-                                  <span className="text-[10px] font-mono px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-500/20 rounded-full uppercase">
+                                  <span className={`text-[10px] font-mono px-2 py-0.5 ${badgeBg} ${badgeText} border ${badgeBorder} rounded-full uppercase`}>
                                     Annual Anomaly
                                   </span>
                                 </div>
@@ -186,9 +212,9 @@ export function PatternsOverTime() {
                                     </span>
                                   </div>
                                   <div className="flex justify-between items-center gap-6">
-                                    <span className={`${isPositive ? "text-rose-400/90" : "text-cyan-400/90"} font-medium`}>Anomaly</span>
-                                    <span className={`font-mono font-bold text-sm ${isPositive ? "text-rose-400" : "text-cyan-400"}`}>
-                                      {val !== null ? `${val >= 0 ? "+" : ""}${(val * 100).toFixed(1)} cm` : "N/A"}
+                                    <span className={`${cellTextColor}/90 font-medium`}>Anomaly</span>
+                                    <span className={`font-mono font-bold text-sm ${cellTextColor}`}>
+                                      {val !== null ? `${val > 0 ? "+" : ""}${(val * 100).toFixed(1)} cm` : "N/A"}
                                     </span>
                                   </div>
                                 </div>
@@ -199,7 +225,7 @@ export function PatternsOverTime() {
                       </div>
                       {/* Row total */}
                       <div className="w-16 flex-shrink-0 text-right text-[10px] font-mono pl-2 text-muted-foreground/60 group-hover/row:text-white transition-colors">
-                        {totalRiseOfRow(row) >= 0 ? "+" : ""}{(totalRiseOfRow(row) * 100).toFixed(0)}cm
+                        {totalRiseOfRow(row) > 0 ? "+" : ""}{(totalRiseOfRow(row) * 100).toFixed(0)}cm
                       </div>
                     </div>
                   );
