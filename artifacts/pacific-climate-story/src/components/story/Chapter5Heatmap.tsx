@@ -58,10 +58,10 @@ export function Chapter5Heatmap() {
 
   return (
     <StorySection id="the-heatmap" className="bg-background">
-      <div className="mb-8">
-        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Heatmap</h2>
-        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
-          A matrix of every nation across every year. The shift from cool blues (below baseline) to alarming reds (above baseline) tells the entire story in a single view. Each decade is separated to make the escalation visible.
+      <div className="mb-8 text-center flex flex-col items-center justify-center">
+        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">Patterns Over Time</h2>
+        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
+          Every Pacific territory, every year, in a single view. The transition from cooler to warmer anomalies reveals how sea levels have changed across decades.
         </p>
       </div>
 
