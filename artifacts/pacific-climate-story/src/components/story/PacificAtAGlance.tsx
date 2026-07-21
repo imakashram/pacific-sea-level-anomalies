@@ -269,7 +269,7 @@ export function PacificAtAGlance({
               <div className="relative w-full max-w-xs z-50 self-start sm:self-center">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center justify-between w-full px-5 py-2 rounded-full bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
+                  className="flex items-center justify-between w-full px-5 py-2 rounded-lg bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
                 >
                   <div className="flex items-center gap-3 text-left">
                     <Globe className="w-4 h-4 text-primary flex-shrink-0" />
@@ -301,7 +301,7 @@ export function PacificAtAGlance({
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute left-0 right-0 mt-2 z-50 bg-card/95 backdrop-blur-xl border border-border/80 rounded-2xl shadow-2xl overflow-hidden max-h-[300px] overflow-y-auto custom-scrollbar"
+                        className="absolute left-0 right-0 mt-2 z-50 bg-card/95 backdrop-blur-xl border border-border/80 rounded-lg shadow-2xl overflow-hidden max-h-[300px] overflow-y-auto custom-scrollbar"
                       >
                         <div className="p-1.5 flex flex-col gap-0.5">
                           {data.map((r) => (
@@ -311,7 +311,7 @@ export function PacificAtAGlance({
                                 setSelectedCountryCode(r.code);
                                 setIsDropdownOpen(false);
                               }}
-                              className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer text-left ${
+                              className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer text-left ${
                                 selectedCountryCode === r.code
                                   ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/15"
                                   : "text-muted-foreground hover:text-foreground hover:bg-white/5"
@@ -370,7 +370,7 @@ export function PacificAtAGlance({
                   <input
                     type="text"
                     placeholder="Search territories..."
-                    className="w-full bg-card/30 backdrop-blur-md border border-border/50 rounded-full pl-11 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 hover:bg-card/50 transition-all duration-300"
+                    className="w-full bg-card/30 backdrop-blur-md border border-border/50 rounded-lg pl-11 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 hover:bg-card/50 transition-all duration-300"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
@@ -378,7 +378,7 @@ export function PacificAtAGlance({
 
                 <button
                   onClick={() => sortedData.length && downloadCSV(sortedData)}
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded-full bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded-lg bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
