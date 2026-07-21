@@ -79,11 +79,10 @@ export function PatternsOverTime() {
               <button
                 key={key}
                 onClick={() => setSortKey(key)}
-                className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-all duration-200 cursor-pointer ${
-                  isActive
+                className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-all duration-200 cursor-pointer ${isActive
                     ? "bg-primary text-primary-foreground shadow-md shadow-primary/10"
                     : "text-muted-foreground hover:text-white"
-                }`}
+                  }`}
               >
                 {label}
               </button>
@@ -100,19 +99,9 @@ export function PatternsOverTime() {
             </div>
           ) : isInView ? (
             <div>
-              {/* Year header at 5-year intervals */}
-              <div className="flex mb-2">
-                <div className="w-36 flex-shrink-0" />
-                <div className="flex-1 flex justify-between text-[10px] text-muted-foreground/70">
-                  {heatmapData.years.filter((_, i) => i % 5 === 0).map((year) => (
-                    <span key={year}>{year}</span>
-                  ))}
-                </div>
-              </div>
-
               {/* Decade labels above */}
-              <div className="flex mb-2">
-                <div className="w-36 flex-shrink-0" />
+              <div className="flex mb-2 px-2">
+                <div className="w-44 flex-shrink-0" />
                 <div className="flex-1 flex relative h-4 select-none">
                   <span className="text-[9px] uppercase tracking-wider text-blue-400/70 font-semibold absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${d1Center}%` }}>Decade 1 (1993-2002)</span>
                   <span className="text-[9px] uppercase tracking-wider text-amber-400/70 font-semibold absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${d2Center}%` }}>Decade 2 (2003-2012)</span>
@@ -129,7 +118,7 @@ export function PatternsOverTime() {
                       key={country}
                       className="flex items-center group/row transition-all duration-200 hover:scale-[1.01] hover:bg-slate-800/30 px-2 py-0.5 rounded-md group-hover/heatmap:opacity-30 hover:!opacity-100"
                     >
-                      <div className="w-34 flex-shrink-0 text-[11px] font-semibold text-muted-foreground group-hover/row:text-white transition-colors truncate pr-2">
+                      <div className="w-44 flex-shrink-0 text-[11px] font-semibold text-muted-foreground group-hover/row:text-white transition-colors pr-2">
                         {country}
                       </div>
                       <div className="flex-1 flex h-[18px] relative">
