@@ -118,7 +118,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Performs comparison between the first year of records (1993) and the latest (2023).",
     category: "trends",
-    usedIn: ["ChapterDumbbellLeap"]
+    usedIn: []
   },
   {
     path: "/api/climate/annual-deviation",
