@@ -11,7 +11,6 @@ import { Chapter3ElNino } from "@/components/story/Chapter3ElNino";
 import { ChapterENSOSensitivity } from "@/components/story/ChapterENSOSensitivity";
 import { ChapterAcceleration } from "@/components/story/ChapterAcceleration";
 import { Chapter5Heatmap } from "@/components/story/Chapter5Heatmap";
-import { ChapterCumulativeRise } from "@/components/story/ChapterCumulativeRise";
 import { FutureOutlook } from "@/components/story/FutureOutlook";
 import { RiskAssessment } from "@/components/story/RiskAssessment";
 
@@ -44,7 +43,6 @@ export default function StoryPage() {
         <ChapterENSOSensitivity />
         <ChapterAcceleration />
         <Chapter5Heatmap />
-        <ChapterCumulativeRise />
         <FutureOutlook />
         <RiskAssessment />
 

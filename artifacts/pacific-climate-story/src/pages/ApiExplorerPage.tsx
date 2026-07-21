@@ -194,7 +194,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Generates time-series records of cumulative sea level rise indicators.",
     category: "visuals",
-    usedIn: ["ChapterCumulativeRise"]
+    usedIn: ["ApiExplorer"]
   },
   {
     path: "/api/climate/nations-rising-by-year",
