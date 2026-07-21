@@ -117,7 +117,7 @@ export function PatternsOverTime() {
                   return (
                     <div
                       key={country}
-                      className="flex items-center group/row transition-all duration-200 hover:scale-[1.01] hover:bg-slate-800/30 px-2 py-0.5 rounded-md group-hover/heatmap:opacity-30 hover:!opacity-100"
+                      className="flex items-center group/row transition-all duration-200 hover:relative hover:z-40 hover:scale-[1.01] hover:bg-slate-800/30 px-2 py-0.5 rounded-md group-hover/heatmap:opacity-30 hover:!opacity-100"
                     >
                       <div className="w-44 flex-shrink-0 text-[11px] font-semibold text-muted-foreground group-hover/row:text-white transition-colors pr-2">
                         {country}
@@ -140,6 +140,27 @@ export function PatternsOverTime() {
                           const isPositive = val !== null && val >= 0;
                           const cellBorderColor = isPositive ? "border-rose-500/40" : "border-sky-500/40";
                           const cellTextColor = isPositive ? "text-rose-400" : "text-sky-400";
+                          
+                          const isTopRow = sortedPos < 4;
+                          const isLeftCol = j < 5;
+                          const isRightCol = j > numYears - 6;
+
+                          let positionClasses = "absolute hidden group-hover/cell:block z-50 bg-[#0b1528] border p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] font-sans text-left ";
+                          
+                          if (isTopRow) {
+                            positionClasses += "top-full mt-2.5 ";
+                          } else {
+                            positionClasses += "bottom-full mb-3.5 ";
+                          }
+
+                          if (isLeftCol) {
+                            positionClasses += "left-0 -translate-x-2";
+                          } else if (isRightCol) {
+                            positionClasses += "right-0 left-auto translate-x-2";
+                          } else {
+                            positionClasses += "left-1/2 -translate-x-1/2";
+                          }
+
                           return (
                             <motion.div
                               key={`${country}-${heatmapData.years[j]}`}
@@ -150,14 +171,20 @@ export function PatternsOverTime() {
                               transition={{ delay: (sortedPos * 0.03) + (j * 0.006), duration: 0.25 }}
                             >
                               {/* Custom premium Tooltip matching The Ocean Is Rising */}
-                              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 hidden group-hover/cell:block z-50 bg-[#0b1528]/95 border ${isPositive ? "border-rose-500/30" : "border-cyan-500/30"} p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] font-sans text-left`}>
+                              <div className={`${positionClasses} ${isPositive ? "border-rose-500/30" : "border-cyan-500/30"}`}>
                                 <div className={`flex items-center justify-between border-b ${isPositive ? "border-rose-500/10" : "border-cyan-500/10"} pb-2 mb-2`}>
-                                  <span className="font-serif text-lg font-bold text-white truncate max-w-[130px]">{country}</span>
+                                  <span className="font-serif text-lg font-bold text-white">{heatmapData.years[j]}</span>
                                   <span className="text-[10px] font-mono px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-500/20 rounded-full uppercase">
-                                    {heatmapData.years[j]}
+                                    Annual Anomaly
                                   </span>
                                 </div>
                                 <div className="space-y-2 text-xs">
+                                  <div className="flex justify-between items-center gap-6">
+                                    <span className="text-slate-400/90 font-medium">Territory</span>
+                                    <span className="font-sans font-bold text-white text-right truncate max-w-[140px]">
+                                      {country}
+                                    </span>
+                                  </div>
                                   <div className="flex justify-between items-center gap-6">
                                     <span className={`${isPositive ? "text-rose-400/90" : "text-cyan-400/90"} font-medium`}>Anomaly</span>
                                     <span className={`font-mono font-bold text-sm ${isPositive ? "text-rose-400" : "text-cyan-400"}`}>
