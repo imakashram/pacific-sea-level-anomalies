@@ -97,7 +97,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Computes statistical volatility (standard deviations) of anomalies for each territory.",
     category: "trends",
-    usedIn: ["HeroSection", "ChapterVolatility"]
+    usedIn: ["HeroSection"]
   },
   {
     path: "/api/climate/acceleration",
