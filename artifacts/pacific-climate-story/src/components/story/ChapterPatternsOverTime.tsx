@@ -18,7 +18,7 @@ function peakOfRow(row: (number | null)[]): number {
   return Math.max(...row.filter((v): v is number => v !== null));
 }
 
-export function Chapter5Heatmap() {
+export function ChapterPatternsOverTime() {
   const { data: heatmapData, isLoading } = useGetClimateHeatmap();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });

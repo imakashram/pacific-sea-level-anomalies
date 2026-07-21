@@ -10,7 +10,7 @@ import { ChapterSubRegionalClusters } from "@/components/story/ChapterSubRegiona
 import { Chapter3ElNino } from "@/components/story/Chapter3ElNino";
 import { ChapterENSOSensitivity } from "@/components/story/ChapterENSOSensitivity";
 import { ChapterAcceleration } from "@/components/story/ChapterAcceleration";
-import { Chapter5Heatmap } from "@/components/story/Chapter5Heatmap";
+import { ChapterPatternsOverTime } from "@/components/story/ChapterPatternsOverTime";
 import { FutureOutlook } from "@/components/story/FutureOutlook";
 import { RiskAssessment } from "@/components/story/RiskAssessment";
 
@@ -42,7 +42,7 @@ export default function StoryPage() {
         <Chapter3ElNino />
         <ChapterENSOSensitivity />
         <ChapterAcceleration />
-        <Chapter5Heatmap />
+        <ChapterPatternsOverTime />
         <FutureOutlook />
         <RiskAssessment />
 
