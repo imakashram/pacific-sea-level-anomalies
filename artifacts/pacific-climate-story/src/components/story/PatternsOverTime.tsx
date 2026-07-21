@@ -70,21 +70,26 @@ export function PatternsOverTime() {
       </div>
 
       {/* Sort Controls */}
-      <div className="flex items-center gap-2 mb-4 flex-wrap">
-        <span className="text-xs text-muted-foreground uppercase tracking-wide mr-2">Sort by:</span>
-        {sortOptions.map(({ key, label }) => (
-          <button
-            key={key}
-            onClick={() => setSortKey(key)}
-            className={`text-xs px-3 py-1.5 rounded border transition-all ${
-              sortKey === key
-                ? "bg-primary/20 border-primary/60 text-primary"
-                : "bg-card/20 border-border/40 text-muted-foreground hover:border-border hover:text-foreground"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+      <div className="flex items-center gap-3 mx-auto mb-6 bg-slate-900/40 border border-white/5 rounded-xl px-4 py-2 w-fit select-none">
+        <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Sort by:</span>
+        <div className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5">
+          {sortOptions.map(({ key, label }) => {
+            const isActive = sortKey === key;
+            return (
+              <button
+                key={key}
+                onClick={() => setSortKey(key)}
+                className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/10"
+                    : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div ref={ref} className="w-full overflow-x-auto pb-6">
