@@ -240,11 +240,11 @@ export function RiskAssessment() {
 
   const radarData = selectedCountry
     ? [
-        { subject: "Rise", value: selectedCountry.components.riseScore, fullMark: 100 },
-        { subject: "Speed", value: selectedCountry.components.slopeScore, fullMark: 100 },
-        { subject: "Volatility", value: selectedCountry.components.volatilityScore, fullMark: 100 },
-        { subject: "Accel.", value: selectedCountry.components.accelerationScore, fullMark: 100 },
-      ]
+      { subject: "Rise", value: selectedCountry.components.riseScore, fullMark: 100 },
+      { subject: "Speed", value: selectedCountry.components.slopeScore, fullMark: 100 },
+      { subject: "Volatility", value: selectedCountry.components.volatilityScore, fullMark: 100 },
+      { subject: "Accel.", value: selectedCountry.components.accelerationScore, fullMark: 100 },
+    ]
     : [];
 
   return (
@@ -332,6 +332,16 @@ export function RiskAssessment() {
                 );
               })}
             </motion.div>
+
+            {/* Dashboard Chart Header */}
+            <div className="flex flex-col gap-1 mb-6 pb-4 border-b border-white/5 select-none text-left px-1">
+              <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
+                Pacific Nation Risk Landscape
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                Rankings of overall climate vulnerability mapped against cumulative sea level rise, acceleration velocity, anomaly volatility, and physical exposure.
+              </p>
+            </div>
 
             {/* Master-Detail Dashboard: Ranked Bar Chart + Radar/Spider Chart Side-by-Side */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
@@ -427,9 +437,8 @@ export function RiskAssessment() {
                                     ? RISK_COLORS[countryData?.riskLevel || "Low"]
                                     : "hsl(var(--muted-foreground))"
                                 }
-                                className={`text-xs font-mono transition-all duration-300 ${
-                                  isSelected ? "font-bold" : "font-normal"
-                                }`}
+                                className={`text-xs font-mono transition-all duration-300 ${isSelected ? "font-bold" : "font-normal"
+                                  }`}
                                 style={{ cursor: "pointer" }}
                                 onClick={() =>
                                   countryData &&
@@ -585,7 +594,7 @@ export function RiskAssessment() {
                   <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                     {selectedCountry
                       ? `${selectedCountry.country} (${selectedCountry.code})`
-                      : "Territory Detail Breakdown"}
+                      : "Nation Detail Breakdown"}
                   </h3>
 
                   {selectedCountry ? (
@@ -716,17 +725,21 @@ export function RiskAssessment() {
                         <AlertTriangle className="w-6 h-6 text-muted-foreground/50 animate-pulse" />
                       </div>
                       <p className="text-sm font-semibold text-foreground mb-1">
-                        No territory selected
+                        No nation selected
                       </p>
                       <p className="text-xs text-muted-foreground max-w-[240px] leading-relaxed">
-                        Click on a country label or anomaly bar to drill down into their specific
-                        climate vulnerability vectors.
+                        Click on any nation's bar or label to view its detailed climate vulnerability vectors and index scores on the radar chart.
                       </p>
                     </div>
                   )}
                 </div>
               </motion.div>
             </div>
+
+            {/* Interaction Helper Text */}
+            <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
+              Click on any nation's bar or label to view its detailed climate vulnerability vectors and index scores on the radar chart.
+            </p>
           </>
         )}
       </div>
