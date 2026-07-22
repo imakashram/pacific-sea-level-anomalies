@@ -237,17 +237,17 @@ export function TheOceanIsRising() {
         <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5 hover:-translate-y-1">
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-              El Niño
+              El Niño (1997-1998)
             </span>
             <div className="text-orange-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
               <Sun className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-serif font-bold tracking-tight text-orange-400">
+          <div className="text-2xl font-serif font-bold tracking-tight text-orange-400">
             Warm Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            A major warm event that temporarily lowered sea levels in the Western Pacific, briefly hiding the long-term rising trend.
+            A warm ocean event that usually lowers sea levels across much of the western Pacific for a short time, making the long-term rise less noticeable.
           </div>
         </div>
 
@@ -255,17 +255,17 @@ export function TheOceanIsRising() {
         <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-sky-500/40 hover:shadow-sky-500/5 hover:bg-sky-950/5 hover:-translate-y-1">
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-              La Niña
+              La Niña (2010-2011, 2020-2021)
             </span>
             <div className="text-sky-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
               <CloudRain className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-serif font-bold tracking-tight text-sky-400">
+          <div className="text-2xl font-serif font-bold tracking-tight text-sky-400">
             Cool Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            A strong cool event that temporarily raised sea levels and pushed more water onto local shorelines.
+            A cool ocean event that usually raises sea levels across much of the western Pacific by moving more warm water toward the region.
           </div>
         </div>
 
@@ -273,17 +273,17 @@ export function TheOceanIsRising() {
         <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-rose-500/40 hover:shadow-rose-500/5 hover:bg-rose-950/5 hover:-translate-y-1">
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-              El Niño
+              El Niño (2015-2016)
             </span>
             <div className="text-rose-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
               <Flame className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-serif font-bold tracking-tight text-rose-400">
-            Extreme Warm
+          <div className="text-2xl font-serif font-bold tracking-tight text-rose-400">
+            Extreme Warm Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            One of the strongest warm ocean events ever recorded, causing very high ocean temperatures across the region.
+            One of the strongest El Niño events ever recorded, causing unusually warm ocean temperatures and major sea-level changes across the Pacific.
           </div>
         </div>
       </div>
