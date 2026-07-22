@@ -84,11 +84,10 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
       <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5">
         <span className="font-serif text-base font-bold text-white">{label}</span>
         <span
-          className={`text-[10px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider ${
-            isProjected
+          className={`text-[10px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider ${isProjected
               ? "bg-orange-500/20 text-orange-400 border border-orange-500/30"
               : "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
-          }`}
+            }`}
         >
           {isProjected ? "Projection" : "Historical"}
         </span>
@@ -264,16 +263,16 @@ export function FutureOutlook() {
       // 2. Transition Point (2023 Baseline anchor)
       ...(lastHist
         ? [
-            {
-              year: lastHist.year,
-              historical: lastHistCm,
-              projected: lastHistCm,
-              lower: lastHistCm,
-              upper: lastHistCm,
-              band: [lastHistCm!, lastHistCm!] as [number, number],
-              baseline2023: lastHistCm,
-            },
-          ]
+          {
+            year: lastHist.year,
+            historical: lastHistCm,
+            projected: lastHistCm,
+            lower: lastHistCm,
+            upper: lastHistCm,
+            band: [lastHistCm!, lastHistCm!] as [number, number],
+            baseline2023: lastHistCm,
+          },
+        ]
         : []),
       // 3. Projected Data Points (2024 to 2033)
       ...projectedSeries.map((p) => ({
@@ -438,41 +437,48 @@ export function FutureOutlook() {
               </div>
             </motion.div>
 
+            {/* Chart Header with title, subtitle, and legend below */}
+            <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
+              <div className="max-w-xl">
+                <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
+                  Decadal Projection (Through 2033)
+                </h3>
+                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                  Linear trend projection of regional anomalies with a shaded ±2σ confidence interval.
+                </p>
+              </div>
+
+              {/* Legend Controls */}
+              <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 self-end">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3.5 h-0.5 bg-primary inline-block rounded" />
+                  Historical
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3.5 h-0.5 border-t border-dashed border-[#f97316] inline-block" />
+                  Projection
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3.5 h-2 bg-[#f97316]/15 border border-[#f97316]/30 inline-block rounded-[2px]" />
+                  ±2σ Band
+                </span>
+              </div>
+            </div>
+
             {/* Projection ComposedChart Container */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-2xl"
+              className="bg-card/10 border border-border/30 rounded-2xl pt-6 px-6 pb-2 shadow-2xl"
             >
-              {/* Chart Legend Bar */}
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
-                  Sea Level Anomaly (1993–2033)
-                </h3>
-                <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-4 h-0.5 bg-primary inline-block" />
-                    Historical
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-4 h-0.5 border-t border-dashed border-[#f97316] inline-block" />
-                    Projection
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-4 h-3 bg-[#f97316]/20 inline-block rounded-sm" />
-                    ±2σ Band
-                  </span>
-                </div>
-              </div>
-
               {/* Chart Body */}
               <div className="h-[380px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <ComposedChart
                     data={chartData}
-                    margin={{ top: 35, right: 35, left: 15, bottom: 25 }}
+                    margin={{ top: 35, right: 35, left: 15, bottom: 8 }}
                   >
                     <defs>
                       <linearGradient id="confidenceGrad" x1="0" y1="0" x2="0" y2="1">
@@ -632,7 +638,7 @@ export function FutureOutlook() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
-              className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-mono text-muted-foreground/75 bg-card/10 border border-border/20 px-5 py-2.5 rounded-xl text-center max-w-3xl mx-auto shadow-sm"
+              className="mt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] font-mono text-muted-foreground/55 text-center max-w-3xl mx-auto"
             >
               <span className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 inline-block" />
@@ -647,6 +653,11 @@ export function FutureOutlook() {
                 <span>R² Score: {(forecastData.r2 * 100).toFixed(1)}%</span>
               </span>
             </motion.div>
+
+            {/* Interaction Helper Text */}
+            <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
+              Hover over the line or shaded band to inspect historical anomalies and future projected values with confidence intervals.
+            </p>
           </>
         )}
       </div>
