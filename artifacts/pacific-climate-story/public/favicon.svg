@@ -1,14 +1,23 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <!-- Original Background Gradient -->
     <linearGradient id="bgGrad" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#023e8a" />
       <stop offset="100%" stop-color="#00b4d8" />
     </linearGradient>
+    <!-- Original Wave Gradient -->
     <linearGradient id="waveGrad" x1="0" y1="0" x2="0" y2="180" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#90e0ef" stop-opacity="0.8" />
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0.3" />
     </linearGradient>
+    <!-- Data Gradient: Cyan (D1 baseline) to Red (D3 critical) -->
+    <linearGradient id="dataGrad" x1="35" y1="135" x2="145" y2="45" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#fb923c" />
+      <stop offset="100%" stop-color="#ef4444" />
+    </linearGradient>
   </defs>
+  
   <!-- Rounded background card -->
   <rect width="180" height="180" rx="40" fill="url(#bgGrad)" />
   
@@ -20,4 +29,9 @@
   
   <!-- Wave 3 (Front, highlighted) -->
   <path d="M 0 90 C 45 70, 45 110, 90 90 C 135 70, 135 110, 180 90 L 180 180 L 0 180 Z" fill="url(#waveGrad)" />
+
+  <!-- Bold rising trend line overlay in data gradient (Cyan -> Red) -->
+  <path d="M 35 135 L 75 105 L 110 85 L 145 45" stroke="url(#dataGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Arrow Head in data gradient (Red at the end) -->
+  <path d="M 115 45 H 145 V 75" stroke="url(#dataGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
