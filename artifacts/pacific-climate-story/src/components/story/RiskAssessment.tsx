@@ -333,17 +333,7 @@ export function RiskAssessment() {
               })}
             </motion.div>
 
-            {/* Dashboard Chart Header */}
-            <div className="flex flex-col gap-1 mb-6 pb-4 border-b border-white/5 select-none text-left px-1">
-              <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
-                Pacific Nation Risk Landscape
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                Rankings of overall climate vulnerability mapped against cumulative sea level rise, acceleration velocity, anomaly volatility, and physical exposure.
-              </p>
-            </div>
-
-            {/* Master-Detail Dashboard: Ranked Bar Chart + Radar/Spider Chart Side-by-Side */}
+{/* Master-Detail Dashboard: Ranked Bar Chart + Radar/Spider Chart Side-by-Side */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
               {/* Left Column: Ranked Bar Chart (Master List) */}
               <motion.div
@@ -354,9 +344,14 @@ export function RiskAssessment() {
                 className="lg:col-span-7 bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between"
               >
                 <div>
-                  <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-                    Composite Risk Score by Nation
-                  </h3>
+                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
+                    <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                      Composite Risk Score by Nation
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                      Rankings based on cumulative rise, rate of change, volatility, and exposure.
+                    </p>
+                  </div>
                   <div className="h-[500px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
@@ -591,11 +586,16 @@ export function RiskAssessment() {
                 className="lg:col-span-5 bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between min-h-[560px]"
               >
                 <div>
-                  <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                    {selectedCountry
-                      ? `${selectedCountry.country} (${selectedCountry.code})`
-                      : "Nation Detail Breakdown"}
-                  </h3>
+                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
+                    <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                      {selectedCountry
+                        ? `${selectedCountry.country} (${selectedCountry.code})`
+                        : "Nation Detail Breakdown"}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                      Vulnerability vectors mapping localized exposure.
+                    </p>
+                  </div>
 
                   {selectedCountry ? (
                     <div className="flex flex-col gap-1">
