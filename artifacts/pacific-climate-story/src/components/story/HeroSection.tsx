@@ -49,7 +49,7 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="min-h-screen w-full flex flex-col justify-center relative overflow-hidden px-6 md:px-12 py-20"
+      className="min-h-screen w-full flex flex-col justify-between relative overflow-hidden px-6 md:px-12 pt-16 pb-6 md:pt-20 md:pb-8"
     >
       {/* Background ambient lighting effects */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -57,7 +57,7 @@ export function HeroSection() {
         <div className="absolute bottom-[20%] right-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-500/5 blur-[130px] animate-pulse" />
       </div>
 
-      <div className="max-w-6xl mx-auto w-full relative z-10 flex flex-col gap-16">
+      <div className="max-w-6xl mx-auto w-full relative z-10 flex flex-col justify-center flex-grow gap-8 md:gap-16">
         {/* Header Narrative */}
         <div className="text-center max-w-4xl mx-auto">
           <motion.div
@@ -138,7 +138,7 @@ export function HeroSection() {
 
       {/* Animated Scroll Prompt Indicator */}
       <motion.div
-        className="mt-20 flex flex-col items-center gap-2 opacity-45 z-10"
+        className="flex flex-col items-center gap-2 opacity-45 z-10 mt-auto pt-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.45 }}
         transition={{ duration: 1, delay: 1.0 }}
