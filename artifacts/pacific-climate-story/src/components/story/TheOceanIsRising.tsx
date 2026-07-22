@@ -430,86 +430,90 @@ export function TheOceanIsRising() {
                 />
                 <ReferenceLine y={0} stroke="rgba(148, 163, 184, 0.4)" strokeDasharray="3 3" />
 
-                {/* Milestone Reference Areas for ENSO events */}
+                 {/* Milestone Reference Areas for ENSO events */}
                 {/* 1997-1998 El Niño */}
-                {showEnso && (
-                  <ReferenceArea
-                    x1={1997}
-                    x2={1998}
-                    fill="#f97316"
-                    fillOpacity={0.06}
-                    stroke="#f97316"
-                    strokeOpacity={0.15}
-                    label={{
-                      position: "top",
-                      value: "El Niño (1997-1998)",
-                      fill: "#f97316",
-                      fontSize: 9,
-                      fontFamily: "monospace",
-                      fontWeight: "bold"
-                    }}
-                  />
-                )}
+                <ReferenceArea
+                  x1={1997}
+                  x2={1998}
+                  fill="#f97316"
+                  fillOpacity={showEnso ? 0.06 : 0}
+                  stroke="#f97316"
+                  strokeOpacity={showEnso ? 0.15 : 0}
+                  style={{ transition: "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out" }}
+                  label={{
+                    position: "top",
+                    value: "El Niño (1997-1998)",
+                    fill: "#f97316",
+                    fontSize: 9,
+                    fontFamily: "monospace",
+                    fontWeight: "bold",
+                    opacity: showEnso ? 1 : 0,
+                    style: { transition: "opacity 0.3s ease-in-out" }
+                  }}
+                />
 
                 {/* 2010-2011 La Niña */}
-                {showEnso && (
-                  <ReferenceArea
-                    x1={2010}
-                    x2={2011}
-                    fill="#38bdf8"
-                    fillOpacity={0.06}
-                    stroke="#38bdf8"
-                    strokeOpacity={0.15}
-                    label={{
-                      position: "top",
-                      value: "La Niña (2010-2011)",
-                      fill: "#38bdf8",
-                      fontSize: 9,
-                      fontFamily: "monospace",
-                      fontWeight: "bold"
-                    }}
-                  />
-                )}
+                <ReferenceArea
+                  x1={2010}
+                  x2={2011}
+                  fill="#38bdf8"
+                  fillOpacity={showEnso ? 0.06 : 0}
+                  stroke="#38bdf8"
+                  strokeOpacity={showEnso ? 0.15 : 0}
+                  style={{ transition: "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out" }}
+                  label={{
+                    position: "top",
+                    value: "La Niña (2010-2011)",
+                    fill: "#38bdf8",
+                    fontSize: 9,
+                    fontFamily: "monospace",
+                    fontWeight: "bold",
+                    opacity: showEnso ? 1 : 0,
+                    style: { transition: "opacity 0.3s ease-in-out" }
+                  }}
+                />
 
                 {/* 2015-2016 El Niño */}
-                {showEnso && (
-                  <ReferenceArea
-                    x1={2015}
-                    x2={2016}
-                    fill="#f43f5e"
-                    fillOpacity={0.06}
-                    stroke="#f43f5e"
-                    strokeOpacity={0.15}
-                    label={{
-                      position: "top",
-                      value: "El Niño (2015-2016)",
-                      fill: "#f43f5e",
-                      fontSize: 9,
-                      fontFamily: "monospace",
-                      fontWeight: "bold"
-                    }}
-                  />
-                )}
+                <ReferenceArea
+                  x1={2015}
+                  x2={2016}
+                  fill="#f43f5e"
+                  fillOpacity={showEnso ? 0.06 : 0}
+                  stroke="#f43f5e"
+                  strokeOpacity={showEnso ? 0.15 : 0}
+                  style={{ transition: "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out" }}
+                  label={{
+                    position: "top",
+                    value: "El Niño (2015-2016)",
+                    fill: "#f43f5e",
+                    fontSize: 9,
+                    fontFamily: "monospace",
+                    fontWeight: "bold",
+                    opacity: showEnso ? 1 : 0,
+                    style: { transition: "opacity 0.3s ease-in-out" }
+                  }}
+                />
 
                 {/* 2020-2021 La Niña */}
-                {showEnso && (
-                  <ReferenceArea
-                    x1={2020}
-                    x2={2021}
-                    fill="#06b6d4"
-                    fillOpacity={0.06}
-                    stroke="#06b6d4"
-                    strokeOpacity={0.15}
-                    label={{
-                      position: "top",
-                      value: "La Niña (2020-2021)",
-                      fill: "#06b6d4",
-                      fontSize: 9,
-                      fontFamily: "monospace",
-                      fontWeight: "bold"
-                    }}
-                  />
-                )}
+                <ReferenceArea
+                  x1={2020}
+                  x2={2021}
+                  fill="#06b6d4"
+                  fillOpacity={showEnso ? 0.06 : 0}
+                  stroke="#06b6d4"
+                  strokeOpacity={showEnso ? 0.15 : 0}
+                  style={{ transition: "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out" }}
+                  label={{
+                    position: "top",
+                    value: "La Niña (2020-2021)",
+                    fill: "#06b6d4",
+                    fontSize: 9,
+                    fontFamily: "monospace",
+                    fontWeight: "bold",
+                    opacity: showEnso ? 1 : 0,
+                    style: { transition: "opacity 0.3s ease-in-out" }
+                  }}
+                />
 
                 {/* Range Spread Fill */}
                 <Area
@@ -534,33 +538,33 @@ export function TheOceanIsRising() {
                 />
 
                 {/* 5-Year Moving Average Line */}
-                {showMovingAvg && (
-                  <Line
-                    type="monotone"
-                    dataKey="movingAvg"
-                    name="5-yr Avg"
-                    stroke="#f59e0b"
-                    strokeWidth={3}
-                    dot={false}
-                    isAnimationActive
-                    animationDuration={1500}
-                  />
-                )}
+                <Line
+                  type="monotone"
+                  dataKey="movingAvg"
+                  name="5-yr Avg"
+                  stroke="#f59e0b"
+                  strokeWidth={3}
+                  dot={false}
+                  isAnimationActive
+                  animationDuration={1500}
+                  opacity={showMovingAvg ? 1 : 0}
+                  style={{ transition: "opacity 0.4s ease-in-out" }}
+                />
 
                 {/* Linear Regression Trendline */}
-                {showRegression && (
-                  <Line
-                    type="monotone"
-                    dataKey="linearTrend"
-                    name="Linear Trend"
-                    stroke="#2dd4bf"
-                    strokeWidth={2}
-                    strokeDasharray="4 4"
-                    dot={false}
-                    isAnimationActive
-                    animationDuration={1500}
-                  />
-                )}
+                <Line
+                  type="monotone"
+                  dataKey="linearTrend"
+                  name="Linear Trend"
+                  stroke="#2dd4bf"
+                  strokeWidth={2}
+                  strokeDasharray="4 4"
+                  dot={false}
+                  isAnimationActive
+                  animationDuration={1500}
+                  opacity={showRegression ? 1 : 0}
+                  style={{ transition: "opacity 0.4s ease-in-out" }}
+                />
               </ComposedChart>
             </ResponsiveContainer>
           ) : null}
