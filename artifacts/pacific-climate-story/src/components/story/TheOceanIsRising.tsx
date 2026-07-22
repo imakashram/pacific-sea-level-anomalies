@@ -290,6 +290,16 @@ export function TheOceanIsRising() {
 
       {/* Interactive Main Composed Chart Container */}
       <div ref={ref} className="w-full h-[60vh] min-h-[460px] relative mb-12">
+        {/* Chart Title & Subtitle */}
+        <div className="mb-6 relative z-10 text-left">
+          <h3 className="text-xs font-mono font-bold text-slate-100">
+            30-Year Sea Level Anomaly & ENSO Events
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed max-w-3xl">
+            Historical annual variations relative to the 1993–2002 baseline average, overlaid with OLS regression and major El Niño/La Niña phases.
+          </p>
+        </div>
+
         {/* Analytics Summary Header & Layer Toggles */}
         <div className="flex flex-wrap items-center justify-between gap-6 border-b border-cyan-500/10 pb-6 mb-6 relative z-10">
           <div className="flex items-center gap-4 text-xs font-mono select-none">
@@ -321,7 +331,7 @@ export function TheOceanIsRising() {
               className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-orange-400 ${showEnso ? "opacity-100" : "opacity-40"
                 }`}
             >
-              <span className="w-3.5 h-2 bg-orange-400/20 border border-orange-400/50 inline-block rounded" />
+              <span className="w-3.5 h-2 bg-orange-400/20 border border-orange-400/50 inline-block" />
               <span className="font-semibold">ENSO Events</span>
             </button>
           </div>
@@ -555,6 +565,9 @@ export function TheOceanIsRising() {
             </ResponsiveContainer>
           ) : null}
         </div>
+        <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
+          Hover over the graph to inspect annual details. Click the legend toggles above to filter analytical layers.
+        </p>
       </div>
     </StorySection>
   );
