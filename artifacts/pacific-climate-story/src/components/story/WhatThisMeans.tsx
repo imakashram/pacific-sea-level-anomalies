@@ -233,7 +233,7 @@ export function WhatThisMeans() {
         >
           <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">What This Means</h2>
           <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
-            Over 30 years of observations across 21 Pacific territories reveal a persistent rise in
+            Over 30 years of observations across 21 Pacific nations reveal a persistent rise in
             sea level anomalies.
           </p>
         </motion.div>

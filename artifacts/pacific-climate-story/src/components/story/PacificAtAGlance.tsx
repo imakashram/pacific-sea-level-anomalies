@@ -73,7 +73,7 @@ function MiniSparkline({ data, color }: { data: { value: number }[]; color: stri
  */
 function downloadCSV(rows: RankingRow[]) {
   const headers = [
-    "Territory",
+    "Nation",
     "Code",
     "Mean Anomaly (m)",
     "Volatility (m)",
@@ -276,7 +276,7 @@ export function PacificAtAGlance({
                     <span>
                       {(() => {
                         const country = data.find((r) => r.code === selectedCountryCode);
-                        return country ? `${country.country} (${country.code})` : "Select Territory";
+                        return country ? `${country.country} (${country.code})` : "Select Nation";
                       })()}
                     </span>
                   </div>
@@ -369,7 +369,7 @@ export function PacificAtAGlance({
                   </div>
                   <input
                     type="text"
-                    placeholder="Search territories..."
+                    placeholder="Search nations..."
                     className="w-full bg-card/30 backdrop-blur-md border border-border/50 rounded-lg pl-11 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 hover:bg-card/50 transition-all duration-300"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -420,7 +420,7 @@ export function PacificAtAGlance({
                             className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors"
                             onClick={() => handleSort("country")}
                           >
-                            Territory <SortIcon field="country" />
+                            Nation <SortIcon field="country" />
                           </th>
                           <th className="px-4 py-3 font-semibold">Risk</th>
                           <th
