@@ -153,7 +153,6 @@ export function PatternsOverTime() {
                             />
                           )}
                           {row.map((val, j) => {
-                            const isZero = val === 0;
                             const isPositive = val !== null && val > 0;
                             const isNegative = val !== null && val < 0;
 
