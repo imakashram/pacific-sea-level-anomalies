@@ -287,7 +287,7 @@ export function PatternsOverTime() {
                 {/* The continuous color scale bar */}
                 <div className="relative max-w-md mx-auto w-full">
                   {/* The bar itself (sharp/unrounded with middle baseline tick) */}
-                  <div className="h-4 bg-gradient-to-r from-sky-400/80 via-slate-500/25 to-rose-400/80 border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] relative">
+                  <div className="h-4 bg-gradient-to-r from-cyan-400/80 via-slate-500/25 to-rose-400/80 border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] relative">
                     {/* Vertical line indicator for Baseline (middle) */}
                     <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-slate-200 z-10 -translate-x-1/2" />
                   </div>
