@@ -531,7 +531,7 @@ export function ExploreAnyNation({
           <div className="bg-card/10 animate-pulse rounded-2xl border border-border/20 h-[580px]" />
         ) : (
           <motion.div
-            key={profile.code}
+            key="profile-card-static"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -646,11 +646,21 @@ export function ExploreAnyNation({
             {/* Charts Grid: 30-Year Trajectory + Decadal Comparisons */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Left Column: 30-Year Anomaly Trajectory Chart */}
-              <div className="lg:col-span-2 bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
-                    30-Year Anomaly Trajectory
-                  </h4>
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="lg:col-span-2 bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm"
+              >
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 pb-3 border-b border-white/5 gap-3">
+                  <div className="flex flex-col gap-1">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
+                      30-Year Anomaly Trajectory
+                    </h4>
+                    <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">
+                      Annual sea level anomalies and moving average trends.
+                    </p>
+                  </div>
                   <div className="flex items-center gap-4 text-xs font-mono">
                     <span className="flex items-center gap-1.5 text-cyan-400">
                       <span className="w-3.5 h-0.5 bg-cyan-400 inline-block rounded" />
@@ -680,6 +690,7 @@ export function ExploreAnyNation({
                 <div className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
+                      key={profile.code}
                       data={timeSeriesCm}
                       margin={{ top: 35, right: 20, left: 20, bottom: 25 }}
                     >
@@ -779,6 +790,9 @@ export function ExploreAnyNation({
                         stroke="#38bdf8"
                         strokeWidth={1.8}
                         dot={false}
+                        isAnimationActive={true}
+                        animationDuration={1200}
+                        animationEasing="ease-in-out"
                       />
 
                       {/* 5-Year Moving Average Series */}
@@ -790,6 +804,9 @@ export function ExploreAnyNation({
                           stroke="#f59e0b"
                           strokeWidth={3}
                           dot={false}
+                          isAnimationActive={true}
+                          animationDuration={1200}
+                          animationEasing="ease-in-out"
                         />
                       )}
 
@@ -803,6 +820,9 @@ export function ExploreAnyNation({
                           strokeDasharray="4 4"
                           strokeWidth={2}
                           dot={false}
+                          isAnimationActive={true}
+                          animationDuration={1200}
+                          animationEasing="ease-in-out"
                         />
                       )}
 
@@ -827,17 +847,28 @@ export function ExploreAnyNation({
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Right Column: Decadal Comparisons Horizontal Bar Chart */}
-              <div className="bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm flex flex-col justify-start gap-3"
+              >
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-6 font-mono">
-                    Decadal Comparisons
-                  </h4>
+                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
+                      Decadal Comparisons
+                    </h4>
+                    <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">
+                      Decadal averages comparing D1, D2, and D3 epochs.
+                    </p>
+                  </div>
                   <div className="h-[180px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
+                        key={profile.code}
                         data={decadeBreakdownCm}
                         layout="vertical"
                         margin={{ top: 5, right: 48, left: 20, bottom: 25 }}
@@ -892,7 +923,15 @@ export function ExploreAnyNation({
                           }}
                         />
                         <ReferenceLine x={0} stroke="rgba(255,255,255,0.15)" />
-                        <Bar dataKey="avg" name="Avg Anomaly" radius={[0, 4, 4, 0]} barSize={12}>
+                        <Bar
+                          dataKey="avg"
+                          name="Avg Anomaly"
+                          radius={[0, 4, 4, 0]}
+                          barSize={12}
+                          isAnimationActive={true}
+                          animationDuration={1000}
+                          animationEasing="ease-in-out"
+                        >
                           <LabelList dataKey="avg" content={renderCustomBarLabel} />
                           {decadeBreakdownCm.map((entry, index) => {
                             const val = entry.avg;
@@ -916,7 +955,7 @@ export function ExploreAnyNation({
 
                 {/* Decade Shift Delta Callout */}
                 {profile.decadeBreakdown.length >= 3 && (
-                  <div className="mt-4 flex items-center justify-between text-xs font-mono">
+                  <div className="mt-8 flex items-center justify-between text-xs font-mono">
                     <div className="flex items-center gap-2">
                       <svg
                         className="w-4 h-4 text-sky-400 flex-shrink-0"
@@ -943,8 +982,13 @@ export function ExploreAnyNation({
                     </span>
                   </div>
                 )}
-              </div>
+              </motion.div>
             </div>
+
+            {/* Interaction Helper Text */}
+            <p className="text-center text-xs text-muted-foreground mt-6 font-sans select-none">
+              Hover over the charts to inspect anomalies. Use the controls above to toggle trendlines.
+            </p>
           </motion.div>
         )}
       </div>
