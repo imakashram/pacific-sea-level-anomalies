@@ -25,9 +25,15 @@ function Router() {
 }
 
 function App() {
-  // Force dark mode for the premium cinematic feel
+  // Force dark mode and reset scroll position on mount
   useEffect(() => {
     document.documentElement.classList.add("dark");
+
+    // Disable native scroll restoration and force scroll to top
+    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
   }, []);
 
   return (
