@@ -487,7 +487,7 @@ export function PaceOfChange() {
               {isLoading || !data ? "—" : `${acceleratingCount} / ${data.length}`}
             </div>
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-              Territories where sea level rise is speeding up
+              Nations where sea level rise is speeding up
             </div>
           </div>
 
@@ -619,7 +619,7 @@ export function PaceOfChange() {
                         <Label value="Pace of Sea Level Rise (mm/yr)" position="insideBottom" offset={-20} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
                       </XAxis>
                       <YAxis dataKey="code" type="category" stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} width={60} interval={0}>
-                        <Label value="Pacific Territory / Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
+                        <Label value="Pacific Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
                       </YAxis>
                       <Tooltip 
                         content={<BarChartTooltip />} 

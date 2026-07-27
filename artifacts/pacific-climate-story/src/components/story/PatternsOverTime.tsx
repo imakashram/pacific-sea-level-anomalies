@@ -99,7 +99,7 @@ export function PatternsOverTime() {
         {/* Chart Header */}
         <div className="mb-6 pb-4 border-b border-white/5 text-left select-none">
           <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
-            Decadal Heatmap: Sea Level Anomalies (1993–2023)
+            Sea Level Anomaly Heatmap (1993–2023)
           </h3>
           <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
             Visualizing yearly deviations in centimeters relative to the baseline. Cool blue tones represent below-baseline anomalies, while warm rose tones indicate above-baseline sea level rise.
