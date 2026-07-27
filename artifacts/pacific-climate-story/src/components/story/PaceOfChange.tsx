@@ -1,6 +1,6 @@
 import { useGetAcceleration } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, Label } from "recharts";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { TrendingUp, ArrowUpRight, Shield, Activity } from "lucide-react";
@@ -276,7 +276,7 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
 
               {/* Country label on left */}
               <text
-                x={shouldHighlight && Math.abs(resolvedY1 - y1) > 2 ? leftX - 22 : leftX - 8}
+                x={leftX - 22}
                 y={resolvedY1 + 3.5}
                 textAnchor="end"
                 fontSize={10}
@@ -290,7 +290,7 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
 
               {/* Arrow direction indicator on right */}
               <text
-                x={shouldHighlight && Math.abs(resolvedY2 - y2) > 2 ? rightX + 22 : rightX + 8}
+                x={rightX + 22}
                 y={resolvedY2 + 3.5}
                 textAnchor="start"
                 fontSize={10}
@@ -309,7 +309,7 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
       {/* High-Fidelity Custom Tooltip styled like FutureOutlook */}
       {hoveredData && (
         <div
-          className="absolute bg-[#0b1528]/95 border p-4 rounded-xl shadow-xl pointer-events-none text-left z-50 min-w-[245px] font-mono transition-all duration-75"
+          className="absolute bg-[#0b1528]/95 border p-4 rounded-xl shadow-xl pointer-events-none text-left z-50 min-w-[245px] w-max font-mono transition-all duration-75"
           style={{
             left: hoveredData.x + 15,
             top: hoveredData.y - 45,
@@ -319,8 +319,8 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
               : "0 10px 30px rgba(239,68,68,0.2)"
           }}
         >
-          <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5">
-            <span className="font-serif text-sm font-bold text-white truncate max-w-[130px]">{hoveredData.country}</span>
+          <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
+            <span className="font-serif text-sm font-bold text-white">{hoveredData.country}</span>
             <span
               className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
                 ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
@@ -366,26 +366,36 @@ function BarChartTooltip({ active, payload }: any) {
   if (!active || !payload || !payload.length) return null;
   const d = payload[0].payload;
   const val = payload[0].value * 1000;
-
+  const ratio = val / 3.3;
+  const isAboveAvg = val > 3.3;
+  
   return (
-    <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[220px] font-mono">
-      <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5">
-        <span className="font-serif text-sm font-bold text-white truncate max-w-[120px]">{d.country}</span>
+    <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] w-max font-mono">
+      <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
+        <span className="font-serif text-sm font-bold text-white">{d.country}</span>
         <span
-          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${d.accelerating
-            ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
-            : "bg-slate-500/20 text-slate-400 border-slate-500/30"
-            }`}
+          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${
+            d.accelerating
+              ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
+              : "bg-slate-500/20 text-slate-400 border-slate-500/30"
+          }`}
         >
           {d.accelerating ? "Accelerating" : "Stable"}
         </span>
       </div>
-      <div className="space-y-1.5 text-xs">
+      <div className="space-y-2 text-xs">
         <div className="flex justify-between items-center gap-4">
           <span className="text-slate-400/90 font-medium">30-Year Trend</span>
           <span className="font-bold text-slate-300 text-sm">
             {val >= 0 ? "+" : ""}
             {val.toFixed(2)} mm/yr
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center gap-4 pt-1.5 border-t border-white/5 mt-1">
+          <span className="text-slate-400/90 font-medium">Vs. Global Avg</span>
+          <span className={`font-bold ${isAboveAvg ? "text-rose-400" : "text-slate-400"}`}>
+            {ratio.toFixed(1)}x baseline
           </span>
         </div>
       </div>
@@ -395,6 +405,7 @@ function BarChartTooltip({ active, payload }: any) {
 
 export function PaceOfChange() {
   const { data, isLoading } = useGetAcceleration();
+  const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
 
   const sortedByFull = data?.slice().sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod) || [];
   const sortedByAccel = data?.slice().sort((a, b) => (b.slopeSecondHalf - b.slopeFirstHalf) - (a.slopeSecondHalf - a.slopeFirstHalf)) || [];
@@ -518,32 +529,103 @@ export function PaceOfChange() {
           >
             {/* Main: full period slope bar chart */}
             <div className="bg-card/10 border border-border/30 rounded-2xl p-6 mb-10 shadow-2xl">
-              <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
                 <div className="max-w-xl">
                   <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
-                    Full 30-Year Pace — All Nations
+                    30-Year Pace Comparison
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                     Linear regression slope (mm/yr) calculated over the entire 30-year observation period (1993–2023).
                   </p>
                 </div>
+                <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 md:mt-0 flex-shrink-0">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Accelerating
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
+                    Stable
+                  </span>
+                </div>
               </div>
               <div className="h-[520px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={sortedByFull} layout="vertical" margin={{ top: 5, right: 40, left: 160, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="hsl(var(--border))" />
-                    <XAxis type="number" stroke="hsl(var(--muted-foreground))" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} tickFormatter={(v) => `${(v * 1000).toFixed(1)}`} />
-                    <YAxis dataKey="country" type="category" stroke="hsl(var(--muted-foreground))" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} width={160} />
+                  <BarChart 
+                    data={sortedByFull} 
+                    layout="vertical" 
+                    margin={{ top: 5, right: 40, left: 60, bottom: 35 }}
+                    onMouseMove={(state) => {
+                      if (state && typeof state.activeTooltipIndex === "number") {
+                        setHoveredBarIndex(state.activeTooltipIndex);
+                      } else {
+                        setHoveredBarIndex(null);
+                      }
+                    }}
+                    onMouseLeave={() => setHoveredBarIndex(null)}
+                  >
+                    <defs>
+                      <linearGradient id="barAccelerating" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stopColor="hsl(var(--primary)/0.4)" />
+                        <stop offset="100%" stopColor="hsl(var(--primary))" />
+                      </linearGradient>
+                      <linearGradient id="barStable" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stopColor="rgba(148, 163, 184, 0.15)" />
+                        <stop offset="100%" stopColor="rgba(148, 163, 184, 0.45)" />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" horizontal={false} vertical={true} stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis type="number" domain={[0, "auto"]} stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} tickFormatter={(v) => `${(v * 1000).toFixed(1)}`}>
+                      <Label value="Pace of Sea Level Rise (mm/yr)" position="insideBottom" offset={-20} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
+                    </XAxis>
+                    <YAxis dataKey="code" type="category" stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} width={60}>
+                      <Label value="Pacific Territory / Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
+                    </YAxis>
                     <Tooltip content={<BarChartTooltip />} cursor={{ fill: "hsl(var(--muted)/0.15)" }} />
-                    <Bar dataKey="slopeFullPeriod" radius={[0, 4, 4, 0]}>
-                      {sortedByFull.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.accelerating ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))"} opacity={entry.accelerating ? 1 : 0.5} />
-                      ))}
+                    <Bar 
+                      dataKey="slopeFullPeriod" 
+                      radius={[0, 4, 4, 0]}
+                      barSize={12}
+                    >
+                      {sortedByFull.map((entry, index) => {
+                        const isHovered = hoveredBarIndex === index;
+                        const isAnyHovered = hoveredBarIndex !== null;
+                        const baseOpacity = entry.accelerating ? 1.0 : 0.45;
+                        const opacity = isHovered ? 1.0 : (isAnyHovered ? 0.15 : baseOpacity);
+                        return (
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={entry.accelerating ? "url(#barAccelerating)" : "url(#barStable)"} 
+                            opacity={opacity}
+                            className="transition-all duration-200 cursor-pointer"
+                          />
+                        );
+                      })}
                     </Bar>
+                    <ReferenceLine 
+                      x={0.0033} 
+                      stroke="rgba(239, 68, 68, 0.8)" 
+                      strokeWidth={1.5}
+                      strokeDasharray="4 4"
+                      label={{ 
+                        value: "Global Avg (3.3 mm/yr)", 
+                        position: "insideBottomRight", 
+                        fill: "#ffffff", 
+                        fontSize: 9, 
+                        fontFamily: "monospace",
+                        fontWeight: 600,
+                        offset: 8
+                      }} 
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
+
+            {/* Interaction Helper Text */}
+            <p className="text-center text-xs text-muted-foreground mt-4 mb-10 font-sans select-none">
+              Hover over any bar to inspect that nation's 30-year sea level rise pace and compare it to the global average.
+            </p>
 
             {/* Slope chart: first half vs second half */}
             <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-2xl">
