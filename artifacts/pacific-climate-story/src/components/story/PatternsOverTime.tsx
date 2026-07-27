@@ -3,7 +3,7 @@ import { useGetClimateHeatmap } from "@workspace/api-client-react";
 import { motion, useInView } from "framer-motion";
 import { useRef, useMemo, useState } from "react";
 
-type SortKey = "name" | "avg" | "totalRise" | "peak";
+type SortKey = "avg" | "totalRise" | "peak";
 
 function avgOfRow(row: (number | null)[]): number {
   const valid = row.filter((v): v is number => v !== null);
@@ -40,7 +40,6 @@ export function PatternsOverTime() {
     if (!heatmapData) return [];
     const indices = heatmapData.countries.map((_, i) => i);
     return indices.sort((a, b) => {
-      if (sortKey === "name") return heatmapData.countries[a].localeCompare(heatmapData.countries[b]);
       if (sortKey === "avg") return avgOfRow(heatmapData.matrix[b]) - avgOfRow(heatmapData.matrix[a]);
       if (sortKey === "totalRise") return totalRiseOfRow(heatmapData.matrix[b]) - totalRiseOfRow(heatmapData.matrix[a]);
       if (sortKey === "peak") return peakOfRow(heatmapData.matrix[b]) - peakOfRow(heatmapData.matrix[a]);
@@ -60,7 +59,6 @@ export function PatternsOverTime() {
     { key: "totalRise", label: "Total Rise" },
     { key: "avg", label: "Avg Anomaly" },
     { key: "peak", label: "Peak Value" },
-    { key: "name", label: "Country Name" },
   ];
 
   return (
@@ -304,7 +302,7 @@ export function PatternsOverTime() {
 
             {/* Interaction Helper Text */}
             <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-              Hover over any year block to inspect annual sea level anomalies. Use the sort controls above to arrange nations by average anomaly, peak deviation, total rise, or name.
+              Hover over any year block to inspect annual sea level anomalies. Use the sort controls above to arrange nations by average anomaly, peak deviation, or total rise.
             </p>
           </div>
         ) : (
