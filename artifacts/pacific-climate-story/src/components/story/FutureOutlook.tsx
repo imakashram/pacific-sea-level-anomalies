@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { useGetForecast } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import {
@@ -230,6 +231,9 @@ const FALLBACK_PROJECTED: ProjectedPoint[] = [
  */
 export function FutureOutlook() {
   const { data: apiData, isLoading } = useGetForecast();
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [isChartInView, setIsChartInView] = useState(false);
+  const [isAnimationActive, setIsAnimationActive] = useState(true);
 
   // Combine API data or fallback dataset seamlessly
   const forecastData = apiData ?? {
@@ -469,17 +473,25 @@ export function FutureOutlook() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: 0.3 }}
+              onViewportEnter={() => {
+                setIsChartInView(true);
+                // Turn off isAnimationActive after all sequential animations finish (1500ms historical + 1000ms projection + buffer)
+                setTimeout(() => {
+                  setIsAnimationActive(false);
+                }, 2700);
+              }}
               className="bg-card/10 border border-border/30 rounded-2xl pt-6 px-6 pb-2 shadow-2xl"
             >
               {/* Chart Body */}
-              <div className="h-[380px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart
-                    data={chartData}
-                    margin={{ top: 35, right: 35, left: 15, bottom: 8 }}
-                  >
+              <div ref={chartRef} className="h-[380px]">
+                {isChartInView ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart
+                      data={chartData}
+                      margin={{ top: 35, right: 35, left: 15, bottom: 8 }}
+                    >
                     <defs>
                       <linearGradient id="confidenceGrad" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#f97316" stopOpacity={0.28} />
@@ -530,20 +542,24 @@ export function FutureOutlook() {
                       }}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <ReferenceArea x1={2023} x2={2033} fill="#f97316" fillOpacity={0.03} />
-                    <ReferenceLine
-                      x={2023}
-                      stroke="rgba(255,255,255,0.3)"
-                      strokeDasharray="3 3"
-                      label={{
-                        value: "Now (2023)",
-                        position: "top",
-                        fill: "rgba(255,255,255,0.6)",
-                        fontSize: 10,
-                        fontWeight: "bold",
-                        fontFamily: "monospace",
-                      }}
-                    />
+                    {!isAnimationActive && (
+                      <ReferenceArea x1={2023} x2={2033} fill="#f97316" fillOpacity={0.03} />
+                    )}
+                    {!isAnimationActive && (
+                      <ReferenceLine
+                        x={2023}
+                        stroke="rgba(255,255,255,0.3)"
+                        strokeDasharray="3 3"
+                        label={{
+                          value: "Now (2023)",
+                          position: "top",
+                          fill: "rgba(255,255,255,0.6)",
+                          fontSize: 10,
+                          fontWeight: "bold",
+                          fontFamily: "monospace",
+                        }}
+                      />
+                    )}
                     <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
 
                     {/* ±2σ Confidence Interval Area */}
@@ -553,6 +569,10 @@ export function FutureOutlook() {
                       stroke="none"
                       fill="url(#confidenceGrad)"
                       connectNulls={true}
+                      isAnimationActive={isAnimationActive}
+                      animationDuration={1000}
+                      animationEasing="ease-out"
+                      animationBegin={1500}
                     />
 
                     {/* Historical Series Line */}
@@ -564,6 +584,10 @@ export function FutureOutlook() {
                       strokeWidth={3}
                       dot={false}
                       connectNulls={true}
+                      isAnimationActive={isAnimationActive}
+                      animationDuration={1500}
+                      animationEasing="ease-out"
+                      animationBegin={0}
                     />
 
                     {/* Projected Series Line */}
@@ -576,10 +600,14 @@ export function FutureOutlook() {
                       strokeDasharray="6 4"
                       dot={false}
                       connectNulls={true}
+                      isAnimationActive={isAnimationActive}
+                      animationDuration={1000}
+                      animationEasing="ease-out"
+                      animationBegin={1500}
                     />
 
                     {/* 2030 Milestone Reference Dot */}
-                    {(() => {
+                    {!isAnimationActive && (() => {
                       const pt2030 = chartData.find((d) => d.year === 2030 && d.projected != null);
                       const yVal = pt2030?.projected;
                       if (yVal == null) return null;
@@ -604,7 +632,7 @@ export function FutureOutlook() {
                     })()}
 
                     {/* 2033 Milestone Reference Dot */}
-                    {(() => {
+                    {!isAnimationActive && (() => {
                       const pt2033 = chartData.find((d) => d.year === 2033 && d.projected != null);
                       const yVal = pt2033?.projected;
                       if (yVal == null) return null;
@@ -629,6 +657,9 @@ export function FutureOutlook() {
                     })()}
                   </ComposedChart>
                 </ResponsiveContainer>
+                ) : (
+                  <div className="w-full h-full" />
+                )}
               </div>
             </motion.div>
 
