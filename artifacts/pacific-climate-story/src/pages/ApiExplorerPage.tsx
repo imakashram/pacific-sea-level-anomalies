@@ -83,7 +83,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Analyzes anomaly curves to calculate acceleration rates of rising water levels.",
     category: "trends",
-    usedIn: ["HeroSection", "ChapterAcceleration", "WhatThisMeans"]
+    usedIn: ["HeroSection", "PaceOfChange", "WhatThisMeans"]
   },
   {
     path: "/api/climate/annual-deviation",

@@ -9,7 +9,7 @@ import { ChapterDecadeAnalysis } from "@/components/story/ChapterDecadeAnalysis"
 import { ChapterSubRegionalClusters } from "@/components/story/ChapterSubRegionalClusters";
 import { Chapter3ElNino } from "@/components/story/Chapter3ElNino";
 import { ChapterENSOSensitivity } from "@/components/story/ChapterENSOSensitivity";
-import { ChapterAcceleration } from "@/components/story/ChapterAcceleration";
+import { PaceOfChange } from "@/components/story/PaceOfChange";
 import { PatternsOverTime } from "@/components/story/PatternsOverTime";
 import { FutureOutlook } from "@/components/story/FutureOutlook";
 import { RiskAssessment } from "@/components/story/RiskAssessment";
@@ -41,7 +41,7 @@ export default function StoryPage() {
         <ChapterSubRegionalClusters />
         <Chapter3ElNino />
         <ChapterENSOSensitivity />
-        <ChapterAcceleration />
+        <PaceOfChange />
         <PatternsOverTime />
         <FutureOutlook />
         <RiskAssessment />

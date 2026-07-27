@@ -3,6 +3,7 @@ import { StorySection } from "./StorySection";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
+import { TrendingUp, ArrowUpRight, Shield, Activity } from "lucide-react";
 
 function SlopeChart({ data }: { data: { country: string; code: string; slopeFirstHalf: number; slopeSecondHalf: number; accelerating: boolean }[] }) {
   const top14 = data.slice(0, 14);
@@ -66,7 +67,7 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
   );
 }
 
-export function ChapterAcceleration() {
+export function PaceOfChange() {
   const { data, isLoading } = useGetAcceleration();
 
   const sortedByFull = data?.slice().sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod) || [];
@@ -75,28 +76,107 @@ export function ChapterAcceleration() {
   const acceleratingCount = data?.filter((d) => d.accelerating).length ?? 0;
   const avgDelta = data ? data.reduce((s, d) => s + (d.slopeSecondHalf - d.slopeFirstHalf), 0) / data.length * 1000 : 0;
 
+  const mostAccel = sortedByAccel[0];
+  const mostStable = sortedByAccel[sortedByAccel.length - 1];
+
   return (
-    <StorySection id="chapter-acceleration">
-      <div className="max-w-4xl mx-auto">
+    <StorySection id="pace-of-change">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
+          className="text-center flex flex-col items-center justify-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Speed of Change</h2>
-          <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-            The tragedy of the ocean's rise is not just how much water has gathered, but how fast it is rushing in. 
-            By comparing the first 15 years to the last 15 years, we see the true acceleration — most nations are rising faster now than ever before.
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Pace of Change</h2>
+          <p className="text-xl text-muted-foreground leading-relaxed mb-4 max-w-3xl">
+            Sea levels are not only rising - they're rising faster. By comparing the first 15 years with the most recent 15 years, this analysis reveals how the rate of change has accelerated across Pacific nations.
           </p>
-          <div className="flex gap-8 mb-10">
-            <div className="border-l-2 border-primary pl-4">
-              <div className="text-3xl font-serif font-bold text-primary">{acceleratingCount} / {data?.length ?? 21}</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wide mt-1">Nations accelerating</div>
+        </motion.div>
+
+        {/* Metric Cards Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12 w-full text-left"
+        >
+          {/* Card 1: Nations accelerating */}
+          <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-red-500/40 hover:shadow-red-500/5 hover:bg-red-950/5 hover:-translate-y-1">
+            <div className="flex items-center justify-between text-muted-foreground mb-1">
+              <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                Nations accelerating
+              </span>
+              <div className="text-red-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                <TrendingUp className="w-4 h-4" />
+              </div>
             </div>
-            <div className="border-l-2 border-muted-foreground/40 pl-4">
-              <div className="text-3xl font-serif font-bold text-foreground">+{avgDelta.toFixed(2)} mm/yr</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wide mt-1">Average speed increase</div>
+            <div className="text-3xl font-serif font-bold tracking-tight text-red-400">
+              {isLoading || !data ? "—" : `${acceleratingCount} / ${data.length}`}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+              Territories where sea level rise is speeding up
+            </div>
+          </div>
+
+          {/* Card 2: Average speed increase */}
+          <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5 hover:-translate-y-1">
+            <div className="flex items-center justify-between text-muted-foreground mb-1">
+              <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                Avg Speed Increase
+              </span>
+              <div className="text-orange-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                <Activity className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-serif font-bold tracking-tight text-orange-400">
+              {isLoading || !data ? "—" : `${avgDelta >= 0 ? "+" : ""}${avgDelta.toFixed(2)}`}
+              <span className="text-sm font-sans text-muted-foreground ml-1">mm/yr</span>
+            </div>
+            <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+              Comparison between first and second 15 years
+            </div>
+          </div>
+
+          {/* Card 3: Most Accelerating */}
+          <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5 hover:-translate-y-1">
+            <div className="flex items-center justify-between text-muted-foreground mb-1">
+              <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                Most Accelerating
+              </span>
+              <div className="text-cyan-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                <ArrowUpRight className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl font-serif font-bold tracking-tight text-cyan-400 truncate">
+              {isLoading || !mostAccel ? "—" : mostAccel.country}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+              {isLoading || !mostAccel
+                ? "Checking territories..."
+                : `Pace jumped from ${(mostAccel.slopeFirstHalf * 1000).toFixed(2)} to ${(mostAccel.slopeSecondHalf * 1000).toFixed(2)} mm/yr — a ${((mostAccel.slopeSecondHalf - mostAccel.slopeFirstHalf) * 1000).toFixed(2)} mm/yr increase.`}
+            </div>
+          </div>
+
+          {/* Card 4: Most Stable Pace */}
+          <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-teal-500/40 hover:shadow-teal-500/5 hover:bg-teal-950/5 hover:-translate-y-1">
+            <div className="flex items-center justify-between text-muted-foreground mb-1">
+              <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                Most Stable Pace
+              </span>
+              <div className="text-teal-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                <Shield className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl font-serif font-bold tracking-tight text-teal-400 truncate">
+              {isLoading || !mostStable ? "—" : mostStable.country}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+              {isLoading || !mostStable
+                ? "Checking territories..."
+                : `Pace shifted from ${(mostStable.slopeFirstHalf * 1000).toFixed(2)} to ${(mostStable.slopeSecondHalf * 1000).toFixed(2)} mm/yr.`}
             </div>
           </div>
         </motion.div>
