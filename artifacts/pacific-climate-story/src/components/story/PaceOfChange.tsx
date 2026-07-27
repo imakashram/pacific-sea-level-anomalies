@@ -618,7 +618,7 @@ export function PaceOfChange() {
                       <XAxis type="number" domain={[0, "auto"]} stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} tickFormatter={(v) => `${(v * 1000).toFixed(1)}`}>
                         <Label value="Pace of Sea Level Rise (mm/yr)" position="insideBottom" offset={-20} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
                       </XAxis>
-                      <YAxis dataKey="code" type="category" stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} width={60}>
+                      <YAxis dataKey="code" type="category" stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} width={60} interval={0}>
                         <Label value="Pacific Territory / Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
                       </YAxis>
                       <Tooltip 
