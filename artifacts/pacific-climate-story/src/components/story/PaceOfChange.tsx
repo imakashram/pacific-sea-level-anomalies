@@ -150,13 +150,13 @@ export function PaceOfChange() {
                 <ArrowUpRight className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-2xl font-serif font-bold tracking-tight text-cyan-400 truncate">
+            <div className="text-xl font-serif font-bold tracking-tight text-cyan-400">
               {isLoading || !mostAccel ? "—" : mostAccel.country}
             </div>
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
               {isLoading || !mostAccel
                 ? "Checking territories..."
-                : `Pace jumped from ${(mostAccel.slopeFirstHalf * 1000).toFixed(2)} to ${(mostAccel.slopeSecondHalf * 1000).toFixed(2)} mm/yr — a ${((mostAccel.slopeSecondHalf - mostAccel.slopeFirstHalf) * 1000).toFixed(2)} mm/yr increase.`}
+                : `Pace jumped from ${(mostAccel.slopeFirstHalf * 1000).toFixed(2)} to ${(mostAccel.slopeSecondHalf * 1000).toFixed(2)} mm/yr - a ${((mostAccel.slopeSecondHalf - mostAccel.slopeFirstHalf) * 1000).toFixed(2)} mm/yr increase.`}
             </div>
           </div>
 
@@ -170,7 +170,7 @@ export function PaceOfChange() {
                 <Shield className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-2xl font-serif font-bold tracking-tight text-teal-400 truncate">
+            <div className="text-xl font-serif font-bold tracking-tight text-teal-400">
               {isLoading || !mostStable ? "—" : mostStable.country}
             </div>
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
@@ -216,7 +216,7 @@ export function PaceOfChange() {
             </div>
 
             {/* Slope chart: first half vs second half */}
-            <div className="bg-card/20 p-6 rounded-xl border border-border/30 mb-8">
+            <div className="bg-card/20 p-6 rounded-xl border border-border/30">
               <h3 className="text-lg font-serif font-bold text-foreground mb-1">Slope Chart: Before vs. After 2008</h3>
               <p className="text-sm text-muted-foreground mb-6">
                 Each line connects a nation's 1993–2007 rise rate (left) to its 2008–2023 rise rate (right).
@@ -224,24 +224,6 @@ export function PaceOfChange() {
                 <span className="text-destructive ml-2">Red = slowing.</span>
               </p>
               <SlopeChart data={sortedByAccel} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-5 bg-card/40 border border-primary/20 rounded-xl border-l-4 border-l-primary">
-                <h4 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Most Accelerating</h4>
-                <p className="text-2xl font-serif font-bold text-primary mb-1">{sortedByAccel[0]?.country}</p>
-                <p className="text-sm text-foreground">
-                  Pace jumped from {(sortedByAccel[0]?.slopeFirstHalf * 1000).toFixed(2)} to {(sortedByAccel[0]?.slopeSecondHalf * 1000).toFixed(2)} mm/yr
-                  — a {((sortedByAccel[0]?.slopeSecondHalf - sortedByAccel[0]?.slopeFirstHalf) * 1000).toFixed(2)} mm/yr increase.
-                </p>
-              </div>
-              <div className="p-5 bg-card/40 border border-muted-foreground/20 rounded-xl border-l-4 border-l-muted-foreground">
-                <h4 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Most Stable Pace</h4>
-                <p className="text-2xl font-serif font-bold text-foreground mb-1">{sortedByAccel[sortedByAccel.length - 1]?.country}</p>
-                <p className="text-sm text-foreground">
-                  Pace shifted from {(sortedByAccel[sortedByAccel.length - 1]?.slopeFirstHalf * 1000).toFixed(2)} to {(sortedByAccel[sortedByAccel.length - 1]?.slopeSecondHalf * 1000).toFixed(2)} mm/yr.
-                </p>
-              </div>
             </div>
           </motion.div>
         )}
