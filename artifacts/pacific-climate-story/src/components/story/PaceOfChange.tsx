@@ -1,6 +1,6 @@
 import { useGetAcceleration } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, Label } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, Label, LabelList } from "recharts";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { TrendingUp, ArrowUpRight, Shield, Activity } from "lucide-react";
@@ -434,6 +434,8 @@ function BarChartTooltip({ active, payload }: any) {
 export function PaceOfChange() {
   const { data, isLoading } = useGetAcceleration();
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
+  const [isInView, setIsInView] = useState(false);
+  const [isAnimationActive, setIsAnimationActive] = useState(true);
 
   // Sorting arrays for specific visualizations (Full Period desc and acceleration delta desc)
   const sortedByFull = data?.slice().sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod) || [];
@@ -557,6 +559,12 @@ export function PaceOfChange() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            onViewportEnter={() => {
+              setIsInView(true);
+              setTimeout(() => {
+                setIsAnimationActive(false);
+              }, 1500);
+            }}
           >
             {/* Visual 1: 30-Year Pace Comparison */}
             <div className="bg-card/10 border border-border/30 rounded-2xl p-6 mb-10 shadow-2xl">
@@ -581,75 +589,105 @@ export function PaceOfChange() {
                 </div>
               </div>
               <div className="h-[520px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
-                    data={sortedByFull} 
-                    layout="vertical" 
-                    margin={{ top: 5, right: 40, left: 60, bottom: 35 }}
-                    onMouseMove={(state) => {
-                      if (state && typeof state.activeTooltipIndex === "number") {
-                        setHoveredBarIndex(state.activeTooltipIndex);
-                      } else {
-                        setHoveredBarIndex(null);
-                      }
-                    }}
-                    onMouseLeave={() => setHoveredBarIndex(null)}
-                  >
-                    <defs>
-                      <linearGradient id="barAccelerating" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor="hsl(var(--primary)/0.4)" />
-                        <stop offset="100%" stopColor="hsl(var(--primary))" />
-                      </linearGradient>
-                      <linearGradient id="barStable" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor="rgba(148, 163, 184, 0.15)" />
-                        <stop offset="100%" stopColor="rgba(148, 163, 184, 0.45)" />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} vertical={true} stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis type="number" domain={[0, "auto"]} stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} tickFormatter={(v) => `${(v * 1000).toFixed(1)}`}>
-                      <Label value="Pace of Sea Level Rise (mm/yr)" position="insideBottom" offset={-20} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
-                    </XAxis>
-                    <YAxis dataKey="code" type="category" stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} width={60}>
-                      <Label value="Pacific Territory / Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
-                    </YAxis>
-                    <Tooltip content={<BarChartTooltip />} cursor={{ fill: "hsl(var(--muted)/0.15)" }} />
-                    <Bar 
-                      dataKey="slopeFullPeriod" 
-                      radius={[0, 4, 4, 0]}
-                      barSize={12}
+                {isInView ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart 
+                      data={sortedByFull} 
+                      layout="vertical" 
+                      margin={{ top: 25, right: 48, left: 60, bottom: 35 }}
+                      onMouseMove={(state) => {
+                        if (state && typeof state.activeTooltipIndex === "number") {
+                          setHoveredBarIndex(state.activeTooltipIndex);
+                        } else {
+                          setHoveredBarIndex(null);
+                        }
+                      }}
+                      onMouseLeave={() => setHoveredBarIndex(null)}
                     >
-                      {sortedByFull.map((entry, index) => {
-                        const isHovered = hoveredBarIndex === index;
-                        const isAnyHovered = hoveredBarIndex !== null;
-                        const baseOpacity = entry.accelerating ? 1.0 : 0.45;
-                        const opacity = isHovered ? 1.0 : (isAnyHovered ? 0.15 : baseOpacity);
-                        return (
-                          <Cell 
-                            key={`cell-${index}`} 
-                            fill={entry.accelerating ? "url(#barAccelerating)" : "url(#barStable)"} 
-                            opacity={opacity}
-                            className="transition-all duration-200 cursor-pointer"
-                          />
-                        );
-                      })}
-                    </Bar>
-                    <ReferenceLine 
-                      x={0.0033} 
-                      stroke="rgba(239, 68, 68, 0.8)" 
-                      strokeWidth={1.5}
-                      strokeDasharray="4 4"
-                      label={{ 
-                        value: "Global Avg (3.3 mm/yr)", 
-                        position: "insideRight", 
-                        fill: "#ffffff", 
-                        fontSize: 9, 
-                        fontFamily: "monospace",
-                        fontWeight: 600,
-                        offset: 10
-                      }} 
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
+                      <defs>
+                        <linearGradient id="barAccelerating" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor="hsl(var(--primary)/0.4)" />
+                          <stop offset="100%" stopColor="hsl(var(--primary))" />
+                        </linearGradient>
+                        <linearGradient id="barStable" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor="rgba(148, 163, 184, 0.15)" />
+                          <stop offset="100%" stopColor="rgba(148, 163, 184, 0.45)" />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" horizontal={false} vertical={true} stroke="hsl(var(--border))" opacity={0.3} />
+                      <XAxis type="number" domain={[0, "auto"]} stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} tickFormatter={(v) => `${(v * 1000).toFixed(1)}`}>
+                        <Label value="Pace of Sea Level Rise (mm/yr)" position="insideBottom" offset={-20} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
+                      </XAxis>
+                      <YAxis dataKey="code" type="category" stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} width={60}>
+                        <Label value="Pacific Territory / Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
+                      </YAxis>
+                      <Tooltip 
+                        content={<BarChartTooltip />} 
+                        cursor={{ fill: "hsl(var(--muted)/0.15)" }} 
+                        isAnimationActive={false}
+                      />
+                      <Bar 
+                        dataKey="slopeFullPeriod" 
+                        radius={[0, 4, 4, 0]}
+                        barSize={12}
+                        isAnimationActive={isAnimationActive}
+                        animationDuration={1200}
+                        animationEasing="ease-out"
+                      >
+                        <LabelList
+                          dataKey="slopeFullPeriod"
+                          position="right"
+                          formatter={(v: number) => (v * 1000).toFixed(1)}
+                          fill="hsl(var(--muted-foreground))"
+                          fontSize={10}
+                          fontWeight={600}
+                          fontFamily="monospace"
+                          dx={8}
+                        />
+                        {sortedByFull.map((entry, index) => {
+                          const isHovered = hoveredBarIndex === index;
+                          const isAnyHovered = hoveredBarIndex !== null;
+                          const baseOpacity = entry.accelerating ? 1.0 : 0.45;
+                          const opacity = isHovered ? 1.0 : (isAnyHovered ? 0.15 : baseOpacity);
+                          return (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={entry.accelerating ? "url(#barAccelerating)" : "url(#barStable)"} 
+                              opacity={opacity}
+                              className="transition-opacity duration-100 cursor-pointer"
+                            />
+                          );
+                        })}
+                      </Bar>
+                      <ReferenceLine 
+                        x={0.0033} 
+                        stroke="rgba(239, 68, 68, 0.8)" 
+                        strokeWidth={1.5}
+                        strokeDasharray="4 4"
+                        label={(refProps: any) => {
+                          const viewBox = refProps.viewBox;
+                          if (!viewBox) return <g />;
+                          const { x, y } = viewBox;
+                          return (
+                            <text
+                              x={x}
+                              y={y - 10}
+                              textAnchor="middle"
+                              fill="#ffffff"
+                              fontSize={9}
+                              fontFamily="monospace"
+                              fontWeight={600}
+                            >
+                              Global Avg (3.3 mm/yr)
+                            </text>
+                          );
+                        }}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="w-full h-full" />
+                )}
               </div>
             </div>
 
