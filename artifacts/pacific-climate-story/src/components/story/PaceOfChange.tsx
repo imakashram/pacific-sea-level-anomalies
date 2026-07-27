@@ -129,9 +129,9 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
 
   return (
     <div className="relative w-full">
-      <svg 
-        viewBox={`0 0 ${W} ${H}`} 
-        className="w-full h-auto select-none" 
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full h-auto select-none"
         style={{ maxHeight: 440 }}
         onMouseLeave={handleMouseLeave}
       >
@@ -368,17 +368,16 @@ function BarChartTooltip({ active, payload }: any) {
   const val = payload[0].value * 1000;
   const ratio = val / 3.3;
   const isAboveAvg = val > 3.3;
-  
+
   return (
     <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] w-max font-mono">
       <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
         <span className="font-serif text-sm font-bold text-white">{d.country}</span>
         <span
-          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${
-            d.accelerating
+          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${d.accelerating
               ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
               : "bg-slate-500/20 text-slate-400 border-slate-500/30"
-          }`}
+            }`}
         >
           {d.accelerating ? "Accelerating" : "Stable"}
         </span>
@@ -551,9 +550,9 @@ export function PaceOfChange() {
               </div>
               <div className="h-[520px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
-                    data={sortedByFull} 
-                    layout="vertical" 
+                  <BarChart
+                    data={sortedByFull}
+                    layout="vertical"
                     margin={{ top: 5, right: 40, left: 60, bottom: 35 }}
                     onMouseMove={(state) => {
                       if (state && typeof state.activeTooltipIndex === "number") {
@@ -582,8 +581,8 @@ export function PaceOfChange() {
                       <Label value="Pacific Territory / Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
                     </YAxis>
                     <Tooltip content={<BarChartTooltip />} cursor={{ fill: "hsl(var(--muted)/0.15)" }} />
-                    <Bar 
-                      dataKey="slopeFullPeriod" 
+                    <Bar
+                      dataKey="slopeFullPeriod"
                       radius={[0, 4, 4, 0]}
                       barSize={12}
                     >
@@ -593,29 +592,29 @@ export function PaceOfChange() {
                         const baseOpacity = entry.accelerating ? 1.0 : 0.45;
                         const opacity = isHovered ? 1.0 : (isAnyHovered ? 0.15 : baseOpacity);
                         return (
-                          <Cell 
-                            key={`cell-${index}`} 
-                            fill={entry.accelerating ? "url(#barAccelerating)" : "url(#barStable)"} 
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={entry.accelerating ? "url(#barAccelerating)" : "url(#barStable)"}
                             opacity={opacity}
                             className="transition-all duration-200 cursor-pointer"
                           />
                         );
                       })}
                     </Bar>
-                    <ReferenceLine 
-                      x={0.0033} 
-                      stroke="rgba(239, 68, 68, 0.8)" 
+                    <ReferenceLine
+                      x={0.0033}
+                      stroke="rgba(239, 68, 68, 0.8)"
                       strokeWidth={1.5}
                       strokeDasharray="4 4"
-                      label={{ 
-                        value: "Global Avg (3.3 mm/yr)", 
-                        position: "insideBottomRight", 
-                        fill: "#ffffff", 
-                        fontSize: 9, 
+                      label={{
+                        value: "Global Avg (3.3 mm/yr)",
+                        position: "insideBottomRight",
+                        fill: "#ffffff",
+                        fontSize: 9,
                         fontFamily: "monospace",
                         fontWeight: 600,
                         offset: 8
-                      }} 
+                      }}
                     />
                   </BarChart>
                 </ResponsiveContainer>
@@ -632,7 +631,7 @@ export function PaceOfChange() {
               <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
                 <div className="max-w-xl">
                   <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
-                    Rate Transition: Before vs. After 2008
+                    Acceleration Before & After 2008
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                     Each line connects a nation's 1993–2007 rise rate (left) to its 2008–2023 rise rate (right).
