@@ -149,9 +149,9 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
 
   return (
     <div className="relative w-full">
-      <svg 
-        viewBox={`0 0 ${W} ${H}`} 
-        className="w-full h-auto select-none" 
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full h-auto select-none"
         style={{ maxHeight: 440 }}
         onMouseLeave={handleMouseLeave}
       >
@@ -162,7 +162,7 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
         {/* Column epoch headers */}
         <text x={leftX} y={22} textAnchor="middle" fontSize={11} fill="hsl(var(--muted-foreground))" fontWeight="600" className="font-mono">1993–2007</text>
         <text x={rightX} y={22} textAnchor="middle" fontSize={11} fill="hsl(var(--muted-foreground))" fontWeight="600" className="font-mono">2008–2023</text>
-        
+
         {/* Horizontal grid lines and Y-axis scale values */}
         {ticks.map((val) => {
           const y = slopeToY(val);
@@ -173,14 +173,14 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
             </g>
           );
         })}
-        
+
         {/* Y Axis unit label */}
         <text x={leftX - 75} y={topPad + plotH / 2} fontSize={10} fill="hsl(var(--muted-foreground))" transform={`rotate(-90 ${leftX - 75} ${topPad + plotH / 2})`} textAnchor="middle" className="font-mono" letterSpacing="0.05em">mm/yr</text>
 
         {sortedLines.map((d) => {
           const y1 = slopeToY(d.slopeFirstHalf * 1000);
           const y2 = slopeToY(d.slopeSecondHalf * 1000);
-          
+
           const resolvedY1 = leftLabelsY[d.code] ?? y1;
           const resolvedY2 = rightLabelsY[d.code] ?? y2;
 
@@ -198,8 +198,8 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
           const textOpacity = shouldHighlight ? 1.0 : (isAnyHovered ? 0.1 : 0.4);
 
           return (
-            <g 
-              key={d.code} 
+            <g
+              key={d.code}
               className="cursor-pointer"
               onMouseMove={(e) => handleMouseMove(e, d)}
               onMouseLeave={handleMouseLeave}
@@ -208,34 +208,34 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
               <line x1={leftX} y1={y1} x2={rightX} y2={y2} stroke="transparent" strokeWidth={15} />
 
               {/* Vector slope line */}
-              <line 
-                x1={leftX} 
-                y1={y1} 
-                x2={rightX} 
-                y2={y2} 
-                stroke={lineColor} 
-                strokeWidth={strokeWidth} 
+              <line
+                x1={leftX}
+                y1={y1}
+                x2={rightX}
+                y2={y2}
+                stroke={lineColor}
+                strokeWidth={strokeWidth}
                 strokeOpacity={strokeOpacity}
                 className="transition-all duration-300"
               />
-              
+
               {/* Left coordinate dot */}
-              <circle 
-                cx={leftX} 
-                cy={y1} 
-                r={dotRadius} 
-                fill={shouldHighlight ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))"} 
+              <circle
+                cx={leftX}
+                cy={y1}
+                r={dotRadius}
+                fill={shouldHighlight ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))"}
                 fillOpacity={strokeOpacity}
                 className="transition-all duration-300"
               />
 
               {/* Pulsing indicator ring for active points */}
               {shouldHighlight && (
-                <circle 
-                  cx={leftX} 
-                  cy={y1} 
-                  r={dotRadius + 3} 
-                  fill="none" 
+                <circle
+                  cx={leftX}
+                  cy={y1}
+                  r={dotRadius + 3}
+                  fill="none"
                   stroke={shouldHighlight ? "hsl(var(--foreground))" : lineColor}
                   strokeWidth={0.8}
                   strokeDasharray="2 2"
@@ -243,24 +243,24 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
                   className="transition-all duration-300 animate-pulse"
                 />
               )}
-              
+
               {/* Right coordinate dot */}
-              <circle 
-                cx={rightX} 
-                cy={y2} 
-                r={dotRadius} 
-                fill={lineColor} 
+              <circle
+                cx={rightX}
+                cy={y2}
+                r={dotRadius}
+                fill={lineColor}
                 fillOpacity={strokeOpacity}
                 className="transition-all duration-300"
               />
 
               {/* Pulsing indicator ring for active points */}
               {shouldHighlight && (
-                <circle 
-                  cx={rightX} 
-                  cy={y2} 
-                  r={dotRadius + 3} 
-                  fill="none" 
+                <circle
+                  cx={rightX}
+                  cy={y2}
+                  r={dotRadius + 3}
+                  fill="none"
                   stroke={lineColor}
                   strokeWidth={0.8}
                   strokeDasharray="2 2"
@@ -293,28 +293,28 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
                   className="transition-all duration-300"
                 />
               )}
-              
+
               {/* Static left axis label */}
-              <text 
-                x={leftX - 22} 
-                y={resolvedY1 + 3.5} 
-                textAnchor="end" 
-                fontSize={10} 
-                fill="hsl(var(--muted-foreground))" 
+              <text
+                x={leftX - 22}
+                y={resolvedY1 + 3.5}
+                textAnchor="end"
+                fontSize={10}
+                fill="hsl(var(--muted-foreground))"
                 fontWeight={shouldHighlight ? "700" : "400"}
                 opacity={textOpacity}
                 className="transition-all duration-300 font-mono"
               >
                 {d.code}
               </text>
-              
+
               {/* Static right axis label and transition rate value */}
-              <text 
-                x={rightX + 22} 
-                y={resolvedY2 + 3.5} 
-                textAnchor="start" 
-                fontSize={10} 
-                fill={lineColor} 
+              <text
+                x={rightX + 22}
+                y={resolvedY2 + 3.5}
+                textAnchor="start"
+                fontSize={10}
+                fill={lineColor}
                 fontWeight={shouldHighlight ? "700" : "500"}
                 opacity={textOpacity}
                 className="transition-all duration-300 font-mono"
@@ -328,25 +328,24 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
 
       {/* High-Fidelity Custom Tooltip styled like FutureOutlook */}
       {hoveredData && (
-        <div 
+        <div
           className="absolute bg-[#0b1528]/95 border p-4 rounded-xl shadow-xl pointer-events-none text-left z-50 min-w-[245px] w-max font-mono transition-all duration-75"
-          style={{ 
-            left: hoveredData.x + 15, 
+          style={{
+            left: hoveredData.x + 15,
             top: hoveredData.y - 45,
             borderColor: hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "rgba(34,211,238,0.3)" : "rgba(239,68,68,0.3)",
-            boxShadow: hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf 
-              ? "0 10px 30px rgba(34,211,238,0.2)" 
+            boxShadow: hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+              ? "0 10px 30px rgba(34,211,238,0.2)"
               : "0 10px 30px rgba(239,68,68,0.2)"
           }}
         >
           <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
             <span className="font-serif text-sm font-bold text-white">{hoveredData.country}</span>
             <span
-              className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${
-                hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+              className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
                   ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
                   : "bg-red-500/20 text-red-400 border-red-500/30"
-              }`}
+                }`}
             >
               {hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "Accelerating" : "Slowing"}
             </span>
@@ -392,17 +391,16 @@ function BarChartTooltip({ active, payload }: any) {
   const val = payload[0].value * 1000;
   const ratio = val / 3.3;
   const isAboveAvg = val > 3.3;
-  
+
   return (
     <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] w-max font-mono">
       <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
         <span className="font-serif text-sm font-bold text-white">{d.country}</span>
         <span
-          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${
-            d.accelerating
+          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${d.accelerating
               ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
               : "bg-slate-500/20 text-slate-400 border-slate-500/30"
-          }`}
+            }`}
         >
           {d.accelerating ? "Accelerating" : "Stable"}
         </span>
@@ -459,7 +457,7 @@ export function PaceOfChange() {
           transition={{ duration: 0.8 }}
           className="text-center flex flex-col items-center justify-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Pace of Change</h2>
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Pace Of Change</h2>
           <p className="text-xl text-muted-foreground leading-relaxed mb-4 max-w-3xl">
             Sea levels are not only rising - they're rising faster. By comparing the first 15 years with the most recent 15 years, this analysis reveals how the rate of change has accelerated across Pacific nations.
           </p>
@@ -591,9 +589,9 @@ export function PaceOfChange() {
               <div className="h-[520px] w-full">
                 {isInView ? (
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart 
-                      data={sortedByFull} 
-                      layout="vertical" 
+                    <BarChart
+                      data={sortedByFull}
+                      layout="vertical"
                       margin={{ top: 25, right: 48, left: 60, bottom: 35 }}
                       onMouseMove={(state) => {
                         if (state && typeof state.activeTooltipIndex === "number") {
@@ -621,13 +619,13 @@ export function PaceOfChange() {
                       <YAxis dataKey="code" type="category" stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} width={60} interval={0}>
                         <Label value="Pacific Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
                       </YAxis>
-                      <Tooltip 
-                        content={<BarChartTooltip />} 
-                        cursor={{ fill: "hsl(var(--muted)/0.15)" }} 
+                      <Tooltip
+                        content={<BarChartTooltip />}
+                        cursor={{ fill: "hsl(var(--muted)/0.15)" }}
                         isAnimationActive={false}
                       />
-                      <Bar 
-                        dataKey="slopeFullPeriod" 
+                      <Bar
+                        dataKey="slopeFullPeriod"
                         radius={[0, 4, 4, 0]}
                         barSize={12}
                         isAnimationActive={isAnimationActive}
@@ -650,18 +648,18 @@ export function PaceOfChange() {
                           const baseOpacity = entry.accelerating ? 1.0 : 0.45;
                           const opacity = isHovered ? 1.0 : (isAnyHovered ? 0.15 : baseOpacity);
                           return (
-                            <Cell 
-                              key={`cell-${index}`} 
-                              fill={entry.accelerating ? "url(#barAccelerating)" : "url(#barStable)"} 
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={entry.accelerating ? "url(#barAccelerating)" : "url(#barStable)"}
                               opacity={opacity}
                               className="transition-opacity duration-100 cursor-pointer"
                             />
                           );
                         })}
                       </Bar>
-                      <ReferenceLine 
-                        x={0.0033} 
-                        stroke="rgba(239, 68, 68, 0.8)" 
+                      <ReferenceLine
+                        x={0.0033}
+                        stroke="rgba(239, 68, 68, 0.8)"
                         strokeWidth={1.5}
                         strokeDasharray="4 4"
                         label={(refProps: any) => {

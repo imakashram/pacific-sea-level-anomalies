@@ -302,6 +302,31 @@ export function TheOceanIsRising() {
 
         {/* Analytics Summary Header & Layer Toggles */}
         <div className="flex flex-wrap items-center justify-between gap-6 border-b border-cyan-500/10 pb-6 mb-6 relative z-10">
+          <div className="flex flex-wrap items-center gap-5 sm:gap-6 bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-2">
+            <div className="flex flex-col">
+              <span className="text-[9px] text-teal-400/80 font-mono uppercase">Linear Trend Rate</span>
+              <span className="text-sm font-mono font-bold text-teal-400">
+                +{(reg.slope * 1000).toFixed(2)} mm/yr
+              </span>
+            </div>
+            <div className="w-px h-7 bg-slate-700/50 self-stretch" />
+
+            <div className="flex flex-col">
+              <span className="text-[9px] text-cyan-400/80 font-mono uppercase">30y Net Rise</span>
+              <span className="text-sm font-mono font-bold text-cyan-400">
+                +{(totalRiseCm).toFixed(1)} cm
+              </span>
+            </div>
+            <div className="w-px h-7 bg-slate-700/50 self-stretch" />
+
+            <div className="flex flex-col">
+              <span className="text-[9px] text-orange-400/80 font-mono uppercase">Decadal Shift</span>
+              <span className="text-sm font-mono font-bold text-orange-400">
+                +{(shiftCm).toFixed(1)} cm
+              </span>
+            </div>
+          </div>
+
           <div className="flex items-center gap-4 text-xs font-mono select-none">
             <span className="flex items-center gap-1.5 text-cyan-400">
               <span className="w-3.5 h-0.5 bg-cyan-400 inline-block rounded" />
@@ -334,31 +359,6 @@ export function TheOceanIsRising() {
               <span className="w-3.5 h-2 bg-orange-400/20 border border-orange-400/50 inline-block" />
               <span className="font-semibold">ENSO Events</span>
             </button>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-5 sm:gap-6 bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-2">
-            <div className="flex flex-col">
-              <span className="text-[9px] text-teal-400/80 font-mono uppercase">Linear Trend Rate</span>
-              <span className="text-sm font-mono font-bold text-teal-400">
-                +{(reg.slope * 1000).toFixed(2)} mm/yr
-              </span>
-            </div>
-            <div className="w-px h-7 bg-slate-700/50 self-stretch" />
-
-            <div className="flex flex-col">
-              <span className="text-[9px] text-cyan-400/80 font-mono uppercase">30y Net Rise</span>
-              <span className="text-sm font-mono font-bold text-cyan-400">
-                +{(totalRiseCm).toFixed(1)} cm
-              </span>
-            </div>
-            <div className="w-px h-7 bg-slate-700/50 self-stretch" />
-
-            <div className="flex flex-col">
-              <span className="text-[9px] text-orange-400/80 font-mono uppercase">Decadal Shift</span>
-              <span className="text-sm font-mono font-bold text-orange-400">
-                +{(shiftCm).toFixed(1)} cm
-              </span>
-            </div>
           </div>
         </div>
 
