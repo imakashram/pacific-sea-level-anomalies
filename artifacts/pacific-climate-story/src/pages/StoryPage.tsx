@@ -35,9 +35,9 @@ export default function StoryPage() {
         <HeroSection />
         <TheDataLandscape />
         <TheOceanIsRising />
+        <PaceOfChange />
         <ChapterSubRegionalClusters />
         <ChapterENSOSensitivity />
-        <PaceOfChange />
         <PatternsOverTime />
         <FutureOutlook />
         <RiskAssessment />
