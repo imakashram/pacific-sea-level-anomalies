@@ -5,7 +5,6 @@ import { Terminal } from "lucide-react";
 import { HeroSection } from "@/components/story/HeroSection";
 import { TheDataLandscape } from "@/components/story/TheDataLandscape";
 import { TheOceanIsRising } from "@/components/story/TheOceanIsRising";
-import { ChapterDecadeAnalysis } from "@/components/story/ChapterDecadeAnalysis";
 import { ChapterSubRegionalClusters } from "@/components/story/ChapterSubRegionalClusters";
 import { ChapterENSOSensitivity } from "@/components/story/ChapterENSOSensitivity";
 import { PaceOfChange } from "@/components/story/PaceOfChange";
@@ -36,7 +35,6 @@ export default function StoryPage() {
         <HeroSection />
         <TheDataLandscape />
         <TheOceanIsRising />
-        <ChapterDecadeAnalysis />
         <ChapterSubRegionalClusters />
         <ChapterENSOSensitivity />
         <PaceOfChange />

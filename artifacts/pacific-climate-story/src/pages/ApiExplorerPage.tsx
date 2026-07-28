@@ -69,7 +69,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Divides observations into Decade 1 (1993-2002), Decade 2 (2003-2012), and Decade 3 (2013-2023) to compute baseline shifts and regional changes.",
     category: "trends",
-    usedIn: ["HeroSection", "ChapterDecadeAnalysis", "WhatThisMeans"]
+    usedIn: ["HeroSection", "WhatThisMeans"]
   },
   {
     path: "/api/climate/volatility",
