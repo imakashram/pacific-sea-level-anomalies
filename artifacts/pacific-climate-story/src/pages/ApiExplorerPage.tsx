@@ -99,7 +99,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Aggregates anomalies specifically during historical extreme ENSO years (1997-1998, 2015-2016) to show direct impacts.",
     category: "enso",
-    usedIn: ["Chapter3ElNino"]
+    usedIn: []
   },
   {
     path: "/api/climate/enso-sensitivity",

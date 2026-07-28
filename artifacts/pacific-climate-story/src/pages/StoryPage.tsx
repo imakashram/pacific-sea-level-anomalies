@@ -7,7 +7,6 @@ import { TheDataLandscape } from "@/components/story/TheDataLandscape";
 import { TheOceanIsRising } from "@/components/story/TheOceanIsRising";
 import { ChapterDecadeAnalysis } from "@/components/story/ChapterDecadeAnalysis";
 import { ChapterSubRegionalClusters } from "@/components/story/ChapterSubRegionalClusters";
-import { Chapter3ElNino } from "@/components/story/Chapter3ElNino";
 import { ChapterENSOSensitivity } from "@/components/story/ChapterENSOSensitivity";
 import { PaceOfChange } from "@/components/story/PaceOfChange";
 import { PatternsOverTime } from "@/components/story/PatternsOverTime";
@@ -39,7 +38,6 @@ export default function StoryPage() {
         <TheOceanIsRising />
         <ChapterDecadeAnalysis />
         <ChapterSubRegionalClusters />
-        <Chapter3ElNino />
         <ChapterENSOSensitivity />
         <PaceOfChange />
         <PatternsOverTime />
