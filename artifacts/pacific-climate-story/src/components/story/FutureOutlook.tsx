@@ -15,7 +15,7 @@ import {
   ReferenceArea,
 } from "recharts";
 import { motion } from "framer-motion";
-import { Gauge, Activity, Calendar, ShieldAlert } from "lucide-react";
+import { Gauge, Activity, Calendar, ShieldAlert, History } from "lucide-react";
 
 /**
  * Historical sea level observation entry.
@@ -299,10 +299,11 @@ export function FutureOutlook() {
     return CARD_THEMES.teal;
   };
 
-  const getR2Theme = (r2: number) => {
-    if (r2 >= 0.7) return CARD_THEMES.teal;
-    if (r2 >= 0.5) return CARD_THEMES.cyan;
-    return CARD_THEMES.orange;
+  const getRiseTheme = (riseCm: number) => {
+    if (riseCm >= 12.0) return CARD_THEMES.red;
+    if (riseCm >= 8.0) return CARD_THEMES.orange;
+    if (riseCm >= 4.0) return CARD_THEMES.cyan;
+    return CARD_THEMES.teal;
   };
 
   const getProjectedTheme = (valMm: number) => {
@@ -312,8 +313,14 @@ export function FutureOutlook() {
     return CARD_THEMES.teal;
   };
 
+  const historicalSeries = forecastData.historical;
+  const totalHistRiseM = historicalSeries.length > 1
+    ? (historicalSeries[historicalSeries.length - 1].avgAnomaly - historicalSeries[0].avgAnomaly)
+    : 0;
+  const totalHistRiseCm = totalHistRiseM * 100;
+
   const trendTheme = getTrendTheme(forecastData.slopeMmPerYear);
-  const r2Theme = getR2Theme(forecastData.r2);
+  const riseTheme = getRiseTheme(totalHistRiseCm);
   const p2030Theme = getProjectedTheme(forecastData.projectedRise2030 * 1000);
   const p2033Theme = getProjectedTheme(forecastData.projectedRise2033 * 1000);
 
@@ -371,26 +378,26 @@ export function FutureOutlook() {
                 </div>
               </div>
 
-              {/* Card 2: Model Fit R² Score */}
+              {/* Card 2: Historical Net Rise */}
               <div
-                className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${r2Theme.glow} hover:-translate-y-1`}
+                className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${riseTheme.glow} hover:-translate-y-1`}
               >
                 <div className="flex items-center justify-between text-muted-foreground mb-1">
                   <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                    Model Fit R²
+                    Historical Net Rise
                   </span>
                   <div
-                    className={`${r2Theme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
+                    className={`${riseTheme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
                   >
-                    <Activity className="w-4 h-4" />
+                    <History className="w-4 h-4" />
                   </div>
                 </div>
-                <div className={`text-3xl font-serif font-bold tracking-tight ${r2Theme.text}`}>
-                  {(forecastData.r2 * 100).toFixed(1)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">%</span>
+                <div className={`text-3xl font-serif font-bold tracking-tight ${riseTheme.text}`}>
+                  +{totalHistRiseCm.toFixed(1)}
+                  <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
                 </div>
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                  Goodness of fit index
+                  Net rise observed (1993–2023)
                 </div>
               </div>
 
