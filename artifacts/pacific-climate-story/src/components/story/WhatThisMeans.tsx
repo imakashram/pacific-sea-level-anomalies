@@ -154,14 +154,14 @@ export function WhatThisMeans() {
   const d1Avg =
     apiDecadeData?.globalDecades.find((d) => d.key === "d1")?.avg ?? 0.0;
   const d3Avg =
-    apiDecadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.0852;
-  const shift = apiDecadeData ? d3Avg - d1Avg : 0.0852;
+    apiDecadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.0835;
+  const shift = apiDecadeData ? d3Avg - d1Avg : 0.0835;
 
   const crossedZero = apiThresholdData?.summary.crossedZero ?? 21;
   const crossedTenth = apiThresholdData?.summary.crossedTenth ?? 21;
 
   const maxRiseVal = apiOverview?.maxRiseValue ?? 0.2;
-  const maxRiseCountry = apiOverview?.maxRiseCountry ?? "Papua New Guinea";
+  const maxRiseCountry = apiOverview?.maxRiseCountry ?? "Palau";
 
   const highestSlope = apiRankings
     ? apiRankings.slice().sort((a, b) => b.slope - a.slope)[0]

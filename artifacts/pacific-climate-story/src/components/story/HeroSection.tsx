@@ -29,11 +29,11 @@ export function HeroSection() {
   });
 
   // Calculate stats with 100% verified dataset fallback values (from 1993–2023 Pacific SLA records)
-  const avgRiseMeters = overview?.avgRiseMeters ?? 0.045;
+  const avgRiseMeters = overview?.avgRiseMeters ?? 0.124;
   const d1Avg =
-    decadeData?.globalDecades.find((d) => d.key === "d1")?.avg ?? 0.004;
+    decadeData?.globalDecades.find((d) => d.key === "d1")?.avg ?? 0.0;
   const d3Avg =
-    decadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.088;
+    decadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.0835;
   const shift = d3Avg - d1Avg;
 
   const fastest = accelData

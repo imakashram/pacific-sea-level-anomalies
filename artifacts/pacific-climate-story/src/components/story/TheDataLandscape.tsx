@@ -25,7 +25,7 @@ export function TheDataLandscape() {
   const endYear = overview?.yearRange?.end ?? 2023;
   const totalObservations = overview?.totalObservations ?? 651;
   const baselineVal = overview?.baselineDecadeAvg ?? 0;
-  const recentVal = overview?.recentDecadeAvg ?? 0.0852;
+  const recentVal = overview?.recentDecadeAvg ?? 0.085;
 
   return (
     <StorySection id="the-data-landscape">
