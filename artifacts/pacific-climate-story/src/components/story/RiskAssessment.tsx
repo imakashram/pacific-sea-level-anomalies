@@ -231,6 +231,8 @@ const FALLBACK_RISK_DATA = {
 export function RiskAssessment() {
   const { data: apiData, isLoading } = useGetRiskScores();
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
+  const [isChartInView, setIsChartInView] = useState(false);
+  const [isAnimationActive, setIsAnimationActive] = useState(true);
 
   const data = apiData ?? FALLBACK_RISK_DATA;
 
@@ -339,8 +341,14 @@ export function RiskAssessment() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.7, delay: 0.15 }}
+                onViewportEnter={() => {
+                  setIsChartInView(true);
+                  setTimeout(() => {
+                    setIsAnimationActive(false);
+                  }, 1800);
+                }}
                 className="lg:col-span-7 bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between"
               >
                 <div>
@@ -352,14 +360,15 @@ export function RiskAssessment() {
                       Rankings based on cumulative rise, rate of change, volatility, and exposure.
                     </p>
                   </div>
-                  <div className="h-[500px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={data.countries}
-                        layout="vertical"
-                        margin={{ top: 25, right: 40, left: 15, bottom: 28 }}
-                        barCategoryGap="20%"
-                      >
+                  <div className="h-[500px] flex items-center justify-center">
+                    {isChartInView ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={data.countries}
+                          layout="vertical"
+                          margin={{ top: 25, right: 40, left: 15, bottom: 28 }}
+                          barCategoryGap="20%"
+                        >
                         <defs>
                           <linearGradient id="grad-Critical" x1="0" y1="0" x2="1" y2="0">
                             <stop offset="0%" stopColor="#f87171" />
@@ -543,6 +552,9 @@ export function RiskAssessment() {
                             setSelectedCode(item.code === selectedCode ? null : item.code);
                           }}
                           cursor="pointer"
+                          isAnimationActive={isAnimationActive}
+                          animationDuration={1500}
+                          animationEasing="ease-out"
                         >
                           <LabelList
                             dataKey="riskScore"
@@ -573,6 +585,11 @@ export function RiskAssessment() {
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
+                    ) : (
+                      <div className="text-muted-foreground/35 text-xs font-mono animate-pulse">
+                        Loading risk profile visualization...
+                      </div>
+                    )}
                   </div>
                 </div>
               </motion.div>
