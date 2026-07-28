@@ -7,7 +7,7 @@ const ELNINO_COLOR = "#f97316";
 const LANINA_COLOR = "#38bdf8";
 const NEUTRAL_COLOR = "#94a3b8";
 
-export function ChapterENSOSensitivity() {
+export function ENSOEffect() {
   // Hook: ENSO Sensitivity
   const { data: ensoData, isLoading } = useGetENSOSensitivity();
   const [displayCount, setDisplayCount] = useState<10 | 21>(10);
@@ -43,26 +43,21 @@ export function ChapterENSOSensitivity() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/5 via-background to-background pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto w-full">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="mb-10"
+          className="mb-10 text-center flex flex-col items-center"
         >
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6">
-            <div className="flex-grow max-w-3xl">
-              <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">
-                ENSO Fingerprint
-              </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                The Pacific Ocean breathes with ENSO cycles. While these natural swings temporarily 
-                mask the long-term trend of rising sea levels, they also create dramatic anomalies. 
-                Discover how the region fluctuates between phases and how these cycles shape the 
-                overall vulnerability profile of different nations.
-              </p>
-            </div>
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">
+              The ENSO Effect
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              El Niño and La Niña create natural swings in Pacific sea levels. Explore how these 
+              climate cycles influence short-term anomalies alongside the long-term trend of rising seas.
+            </p>
           </div>
         </motion.div>
 

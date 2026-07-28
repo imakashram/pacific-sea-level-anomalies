@@ -106,7 +106,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     method: "GET",
     description: "Correlates annual sea level anomalies with Southern Oscillation Index (SOI) datasets to measure ENSO susceptibility.",
     category: "enso",
-    usedIn: ["ChapterENSOSensitivity"]
+    usedIn: ["ENSOEffect"]
   },
 
   // Risk & Forecast

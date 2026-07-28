@@ -6,7 +6,7 @@ import { HeroSection } from "@/components/story/HeroSection";
 import { TheDataLandscape } from "@/components/story/TheDataLandscape";
 import { TheOceanIsRising } from "@/components/story/TheOceanIsRising";
 import { ChapterSubRegionalClusters } from "@/components/story/ChapterSubRegionalClusters";
-import { ChapterENSOSensitivity } from "@/components/story/ChapterENSOSensitivity";
+import { ENSOEffect } from "@/components/story/ENSOEffect";
 import { PaceOfChange } from "@/components/story/PaceOfChange";
 import { PatternsOverTime } from "@/components/story/PatternsOverTime";
 import { FutureOutlook } from "@/components/story/FutureOutlook";
@@ -37,7 +37,7 @@ export default function StoryPage() {
         <TheOceanIsRising />
         <PaceOfChange />
         <ChapterSubRegionalClusters />
-        <ChapterENSOSensitivity />
+        <ENSOEffect />
         <PatternsOverTime />
         <FutureOutlook />
         <RiskAssessment />
