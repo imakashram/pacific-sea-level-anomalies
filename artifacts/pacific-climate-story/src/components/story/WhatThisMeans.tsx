@@ -8,7 +8,15 @@ import {
   useGetRankings,
 } from "@workspace/api-client-react";
 import { useEffect, useRef, useState } from "react";
-import { ChevronsUp, Waves, AlertCircle, AlertTriangle, ArrowUpCircle, Gauge, type LucideIcon } from "lucide-react";
+import {
+  ChevronsUp,
+  Waves,
+  AlertCircle,
+  AlertTriangle,
+  ArrowUpCircle,
+  Gauge,
+  type LucideIcon,
+} from "lucide-react";
 
 /**
  * Props definition for the AnimatedCount component.
@@ -23,7 +31,12 @@ interface AnimatedCountProps {
 /**
  * Utility component that smoothly animates numeric counters when scrolled into view.
  */
-function AnimatedCount({ target, decimals = 0, prefix = "", suffix = "" }: AnimatedCountProps) {
+function AnimatedCount({
+  target,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+}: AnimatedCountProps) {
   const [value, setValue] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
@@ -133,11 +146,15 @@ export function WhatThisMeans() {
   const { data: apiRankings } = useGetRankings();
 
   // Extract verified metric parameters or fallback defaults
-  const acceleratingCount = apiAccelData ? apiAccelData.filter((a) => a.accelerating).length : 21;
+  const acceleratingCount = apiAccelData
+    ? apiAccelData.filter((a) => a.accelerating).length
+    : 21;
   const totalCount = apiAccelData ? apiAccelData.length : 21;
 
-  const d1Avg = apiDecadeData?.globalDecades.find((d) => d.key === "d1")?.avg ?? 0.0;
-  const d3Avg = apiDecadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.0852;
+  const d1Avg =
+    apiDecadeData?.globalDecades.find((d) => d.key === "d1")?.avg ?? 0.0;
+  const d3Avg =
+    apiDecadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.0852;
   const shift = apiDecadeData ? d3Avg - d1Avg : 0.0852;
 
   const crossedZero = apiThresholdData?.summary.crossedZero ?? 21;
@@ -231,10 +248,12 @@ export function WhatThisMeans() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">What This Means</h2>
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+            What This Means
+          </h2>
           <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
-            Over 30 years of observations across 21 Pacific nations reveal a persistent rise in
-            sea level anomalies.
+            Over 30 years of observations across 21 Pacific nations reveal a
+            persistent rise in sea level anomalies.
           </p>
         </motion.div>
 
@@ -242,8 +261,18 @@ export function WhatThisMeans() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-16">
           {takeaways.map(
             (
-              { value, of, label, color, desc, decimals, prefix, suffix, icon: Icon },
-              i
+              {
+                value,
+                of,
+                label,
+                color,
+                desc,
+                decimals,
+                prefix,
+                suffix,
+                icon: Icon,
+              },
+              i,
             ) => {
               const theme = CARD_THEMES[color] || {
                 text: color,
@@ -269,7 +298,9 @@ export function WhatThisMeans() {
                       className={`w-4 h-4 ${theme.text} opacity-60 group-hover:opacity-100 transition-all duration-300`}
                     />
                   </div>
-                  <div className={`text-3xl font-serif font-bold tracking-tight ${theme.text}`}>
+                  <div
+                    className={`text-3xl font-serif font-bold tracking-tight ${theme.text}`}
+                  >
                     <AnimatedCount
                       target={value}
                       decimals={decimals}
@@ -287,7 +318,7 @@ export function WhatThisMeans() {
                   </span>
                 </motion.div>
               );
-            }
+            },
           )}
         </div>
 
@@ -300,8 +331,8 @@ export function WhatThisMeans() {
           transition={{ delay: 0.6 }}
         >
           <p className="text-muted-foreground text-sm mb-6">
-            Data sourced from the Pacific Community (SPC) Climate Change Indicators Database. Indicator:
-            SEA_LVL (Sea Level Anomaly).
+            Data sourced from the Pacific Community (SPC) Climate Change
+            Indicators Database. Indicator: SEA_LVL (Sea Level Anomaly).
           </p>
           <div className="font-serif italic text-primary text-2xl">
             "The ocean is speaking. The question is whether we are listening."

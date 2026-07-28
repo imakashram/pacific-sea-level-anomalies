@@ -106,7 +106,9 @@ function TrendTooltip({
 
         {/* Min - Max Regional Range */}
         <div className="flex justify-between items-center gap-6 pt-1 border-t border-cyan-500/10">
-          <span className="text-muted-foreground font-medium">Min – Max Range</span>
+          <span className="text-muted-foreground font-medium">
+            Min – Max Range
+          </span>
           <span className="font-mono text-slate-300">
             {(Number(dataPoint.minAnomaly) * 100).toFixed(1)} cm →{" "}
             {(Number(dataPoint.maxAnomaly) * 100).toFixed(1)} cm
@@ -150,21 +152,21 @@ export function TheOceanIsRising() {
   const reg =
     data.length > 0
       ? (() => {
-        const n = data.length;
-        let sumX = 0,
-          sumY = 0,
-          sumXY = 0,
-          sumXX = 0;
-        for (let i = 0; i < n; i++) {
-          sumX += data[i].year;
-          sumY += data[i].avgAnomaly;
-          sumXY += data[i].year * data[i].avgAnomaly;
-          sumXX += data[i].year * data[i].year;
-        }
-        const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-        const intercept = (sumY - slope * sumX) / n;
-        return { slope, intercept };
-      })()
+          const n = data.length;
+          let sumX = 0,
+            sumY = 0,
+            sumXY = 0,
+            sumXX = 0;
+          for (let i = 0; i < n; i++) {
+            sumX += data[i].year;
+            sumY += data[i].avgAnomaly;
+            sumXY += data[i].year * data[i].avgAnomaly;
+            sumXX += data[i].year * data[i].year;
+          }
+          const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+          const intercept = (sumY - slope * sumX) / n;
+          return { slope, intercept };
+        })()
       : { slope: 0.00428, intercept: 0 };
 
   // Calculate Net 30y Rise & Decadal Shift
@@ -200,7 +202,10 @@ export function TheOceanIsRising() {
     const windowSize = 5;
     formattedData = formattedData.map((d, i) => {
       const start = Math.max(0, i - Math.floor(windowSize / 2));
-      const end = Math.min(formattedData.length - 1, i + Math.floor(windowSize / 2));
+      const end = Math.min(
+        formattedData.length - 1,
+        i + Math.floor(windowSize / 2),
+      );
       let sum = 0;
       let count = 0;
       for (let j = start; j <= end; j++) {
@@ -217,17 +222,23 @@ export function TheOceanIsRising() {
   }
 
   return (
-    <StorySection id="the-ocean-is-rising" className="relative overflow-visible">
+    <StorySection
+      id="the-ocean-is-rising"
+      className="relative overflow-visible"
+    >
       {/* Decorative ambient background lighting */}
       <div className="absolute right-0 top-1/4 w-96 h-96 rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none" />
       <div className="absolute left-10 bottom-10 w-80 h-80 rounded-full bg-blue-500/5 blur-[100px] pointer-events-none" />
 
       {/* Section Header */}
       <div className="mb-12 text-center flex flex-col items-center justify-center relative z-10">
-        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Ocean Is Rising</h2>
+        <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+          The Ocean Is Rising
+        </h2>
         <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
-          Across 21 Pacific nations, sea levels have risen steadily over the past 30 years.
-          Short-term climate cycles create temporary ups and downs, but the overall trend is still upward.
+          Across 21 Pacific nations, sea levels have risen steadily over the
+          past 30 years. Short-term climate cycles create temporary ups and
+          downs, but the overall trend is still upward.
         </p>
       </div>
 
@@ -247,7 +258,9 @@ export function TheOceanIsRising() {
             Warm Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            A warm ocean event that usually lowers sea levels across much of the western Pacific for a short time, making the long-term rise less noticeable.
+            A warm ocean event that usually lowers sea levels across much of the
+            western Pacific for a short time, making the long-term rise less
+            noticeable.
           </div>
         </div>
 
@@ -265,7 +278,8 @@ export function TheOceanIsRising() {
             Cool Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            A cool ocean event that usually raises sea levels across much of the western Pacific by moving more warm water toward the region.
+            A cool ocean event that usually raises sea levels across much of the
+            western Pacific by moving more warm water toward the region.
           </div>
         </div>
 
@@ -283,7 +297,9 @@ export function TheOceanIsRising() {
             Extreme Warm Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            One of the strongest El Niño events ever recorded, causing unusually warm ocean temperatures and major sea-level changes across the Pacific.
+            One of the strongest El Niño events ever recorded, causing unusually
+            warm ocean temperatures and major sea-level changes across the
+            Pacific.
           </div>
         </div>
       </div>
@@ -296,7 +312,9 @@ export function TheOceanIsRising() {
             30-Year Sea Level Anomaly & ENSO Events
           </h3>
           <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed max-w-3xl">
-            Historical annual variations relative to the 1993–2002 baseline average, overlaid with OLS regression and major El Niño/La Niña phases.
+            Historical annual variations relative to the 1993–2002 baseline
+            average, overlaid with OLS regression and major El Niño/La Niña
+            phases.
           </p>
         </div>
 
@@ -304,7 +322,9 @@ export function TheOceanIsRising() {
         <div className="flex flex-wrap items-center justify-between gap-6 border-b border-cyan-500/10 pb-6 mb-6 relative z-10">
           <div className="flex flex-wrap items-center gap-5 sm:gap-6 bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-2">
             <div className="flex flex-col">
-              <span className="text-[9px] text-teal-400/80 font-mono uppercase">Linear Trend Rate</span>
+              <span className="text-[9px] text-teal-400/80 font-mono uppercase">
+                Linear Trend Rate
+              </span>
               <span className="text-sm font-mono font-bold text-teal-400">
                 +{(reg.slope * 1000).toFixed(2)} mm/yr
               </span>
@@ -312,17 +332,21 @@ export function TheOceanIsRising() {
             <div className="w-px h-7 bg-slate-700/50 self-stretch" />
 
             <div className="flex flex-col">
-              <span className="text-[9px] text-cyan-400/80 font-mono uppercase">30y Net Rise</span>
+              <span className="text-[9px] text-cyan-400/80 font-mono uppercase">
+                30y Net Rise
+              </span>
               <span className="text-sm font-mono font-bold text-cyan-400">
-                +{(totalRiseCm).toFixed(1)} cm
+                +{totalRiseCm.toFixed(1)} cm
               </span>
             </div>
             <div className="w-px h-7 bg-slate-700/50 self-stretch" />
 
             <div className="flex flex-col">
-              <span className="text-[9px] text-orange-400/80 font-mono uppercase">Decadal Shift</span>
+              <span className="text-[9px] text-orange-400/80 font-mono uppercase">
+                Decadal Shift
+              </span>
               <span className="text-sm font-mono font-bold text-orange-400">
-                +{(shiftCm).toFixed(1)} cm
+                +{shiftCm.toFixed(1)} cm
               </span>
             </div>
           </div>
@@ -335,8 +359,9 @@ export function TheOceanIsRising() {
 
             <button
               onClick={() => setShowMovingAvg(!showMovingAvg)}
-              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${showMovingAvg ? "opacity-100" : "opacity-40"
-                }`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${
+                showMovingAvg ? "opacity-100" : "opacity-40"
+              }`}
             >
               <span className="w-3.5 h-0.5 bg-amber-400 inline-block rounded" />
               <span className="font-semibold">5-yr Avg</span>
@@ -344,8 +369,9 @@ export function TheOceanIsRising() {
 
             <button
               onClick={() => setShowRegression(!showRegression)}
-              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${showRegression ? "opacity-100" : "opacity-40"
-                }`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${
+                showRegression ? "opacity-100" : "opacity-40"
+              }`}
             >
               <span className="w-4 h-0 border-t-2 border-dotted border-teal-400 inline-block shrink-0" />
               <span className="font-semibold">Linear Trend</span>
@@ -353,8 +379,9 @@ export function TheOceanIsRising() {
 
             <button
               onClick={() => setShowEnso(!showEnso)}
-              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-orange-400 ${showEnso ? "opacity-100" : "opacity-40"
-                }`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-orange-400 ${
+                showEnso ? "opacity-100" : "opacity-40"
+              }`}
             >
               <span className="w-3.5 h-2 bg-orange-400/20 border border-orange-400/50 inline-block" />
               <span className="font-semibold">ENSO Events</span>
@@ -377,15 +404,31 @@ export function TheOceanIsRising() {
               >
                 <defs>
                   <linearGradient id="rangeGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.15} />
-                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.01} />
+                    <stop
+                      offset="5%"
+                      stopColor="hsl(var(--primary))"
+                      stopOpacity={0.15}
+                    />
+                    <stop
+                      offset="95%"
+                      stopColor="hsl(var(--primary))"
+                      stopOpacity={0.01}
+                    />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.08)" vertical={false} />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="rgba(148, 163, 184, 0.08)"
+                  vertical={false}
+                />
                 <XAxis
                   dataKey="year"
                   stroke="rgba(148, 163, 184, 0.3)"
-                  tick={{ fill: "rgba(148, 163, 184, 0.7)", fontSize: 11, fontFamily: "monospace" }}
+                  tick={{
+                    fill: "rgba(148, 163, 184, 0.7)",
+                    fontSize: 11,
+                    fontFamily: "monospace",
+                  }}
                   tickLine={{ stroke: "rgba(148, 163, 184, 0.3)" }}
                   tickMargin={6}
                   label={{
@@ -395,13 +438,19 @@ export function TheOceanIsRising() {
                     fill: "rgba(148, 163, 184, 0.5)",
                     fontSize: 11,
                     fontFamily: "monospace",
-                    style: { textAnchor: "middle" }
+                    style: { textAnchor: "middle" },
                   }}
                 />
                 <YAxis
                   stroke="rgba(148, 163, 184, 0.3)"
-                  tick={{ fill: "rgba(148, 163, 184, 0.7)", fontSize: 11, fontFamily: "monospace" }}
-                  tickFormatter={(v) => `${v > 0 ? "+" : ""}${(v * 100).toFixed(0)}`}
+                  tick={{
+                    fill: "rgba(148, 163, 184, 0.7)",
+                    fontSize: 11,
+                    fontFamily: "monospace",
+                  }}
+                  tickFormatter={(v) =>
+                    `${v > 0 ? "+" : ""}${(v * 100).toFixed(0)}`
+                  }
                   tickLine={{ stroke: "rgba(148, 163, 184, 0.3)" }}
                   width={60}
                   label={{
@@ -412,7 +461,7 @@ export function TheOceanIsRising() {
                     fill: "rgba(148, 163, 184, 0.5)",
                     fontSize: 11,
                     fontFamily: "monospace",
-                    style: { textAnchor: "middle" }
+                    style: { textAnchor: "middle" },
                   }}
                 />
                 <Tooltip
@@ -425,12 +474,16 @@ export function TheOceanIsRising() {
                   cursor={{
                     stroke: "rgba(34, 211, 238, 0.25)",
                     strokeWidth: 1.5,
-                    strokeDasharray: "4 4"
+                    strokeDasharray: "4 4",
                   }}
                 />
-                <ReferenceLine y={0} stroke="rgba(148, 163, 184, 0.4)" strokeDasharray="3 3" />
+                <ReferenceLine
+                  y={0}
+                  stroke="rgba(148, 163, 184, 0.4)"
+                  strokeDasharray="3 3"
+                />
 
-                 {/* Milestone Reference Areas for ENSO events */}
+                {/* Milestone Reference Areas for ENSO events */}
                 {/* 1997-1998 El Niño */}
                 <ReferenceArea
                   x1={1997}
@@ -439,7 +492,10 @@ export function TheOceanIsRising() {
                   fillOpacity={showEnso ? 0.06 : 0}
                   stroke="#f97316"
                   strokeOpacity={showEnso ? 0.15 : 0}
-                  style={{ transition: "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out" }}
+                  style={{
+                    transition:
+                      "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out",
+                  }}
                   label={{
                     position: "top",
                     value: "El Niño (1997-1998)",
@@ -448,7 +504,7 @@ export function TheOceanIsRising() {
                     fontFamily: "monospace",
                     fontWeight: "bold",
                     opacity: showEnso ? 1 : 0,
-                    style: { transition: "opacity 0.3s ease-in-out" }
+                    style: { transition: "opacity 0.3s ease-in-out" },
                   }}
                 />
 
@@ -460,7 +516,10 @@ export function TheOceanIsRising() {
                   fillOpacity={showEnso ? 0.06 : 0}
                   stroke="#38bdf8"
                   strokeOpacity={showEnso ? 0.15 : 0}
-                  style={{ transition: "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out" }}
+                  style={{
+                    transition:
+                      "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out",
+                  }}
                   label={{
                     position: "top",
                     value: "La Niña (2010-2011)",
@@ -469,7 +528,7 @@ export function TheOceanIsRising() {
                     fontFamily: "monospace",
                     fontWeight: "bold",
                     opacity: showEnso ? 1 : 0,
-                    style: { transition: "opacity 0.3s ease-in-out" }
+                    style: { transition: "opacity 0.3s ease-in-out" },
                   }}
                 />
 
@@ -481,7 +540,10 @@ export function TheOceanIsRising() {
                   fillOpacity={showEnso ? 0.06 : 0}
                   stroke="#f43f5e"
                   strokeOpacity={showEnso ? 0.15 : 0}
-                  style={{ transition: "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out" }}
+                  style={{
+                    transition:
+                      "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out",
+                  }}
                   label={{
                     position: "top",
                     value: "El Niño (2015-2016)",
@@ -490,7 +552,7 @@ export function TheOceanIsRising() {
                     fontFamily: "monospace",
                     fontWeight: "bold",
                     opacity: showEnso ? 1 : 0,
-                    style: { transition: "opacity 0.3s ease-in-out" }
+                    style: { transition: "opacity 0.3s ease-in-out" },
                   }}
                 />
 
@@ -502,7 +564,10 @@ export function TheOceanIsRising() {
                   fillOpacity={showEnso ? 0.06 : 0}
                   stroke="#06b6d4"
                   strokeOpacity={showEnso ? 0.15 : 0}
-                  style={{ transition: "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out" }}
+                  style={{
+                    transition:
+                      "fill-opacity 0.3s ease-in-out, stroke-opacity 0.3s ease-in-out",
+                  }}
                   label={{
                     position: "top",
                     value: "La Niña (2020-2021)",
@@ -511,7 +576,7 @@ export function TheOceanIsRising() {
                     fontFamily: "monospace",
                     fontWeight: "bold",
                     opacity: showEnso ? 1 : 0,
-                    style: { transition: "opacity 0.3s ease-in-out" }
+                    style: { transition: "opacity 0.3s ease-in-out" },
                   }}
                 />
 
@@ -532,7 +597,12 @@ export function TheOceanIsRising() {
                   stroke="#38bdf8"
                   strokeWidth={2}
                   dot={false}
-                  activeDot={{ r: 5, fill: "#38bdf8", stroke: "#ffffff", strokeWidth: 1.5 }}
+                  activeDot={{
+                    r: 5,
+                    fill: "#38bdf8",
+                    stroke: "#ffffff",
+                    strokeWidth: 1.5,
+                  }}
                   isAnimationActive
                   animationDuration={1500}
                 />
@@ -570,7 +640,8 @@ export function TheOceanIsRising() {
           ) : null}
         </div>
         <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-          Hover over the graph to inspect annual details. Click the legend toggles above to filter analytical layers.
+          Hover over the graph to inspect annual details. Click the legend
+          toggles above to filter analytical layers.
         </p>
       </div>
     </StorySection>

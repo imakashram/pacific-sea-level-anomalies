@@ -5,8 +5,8 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { ENSOGlobal } from './eNSOGlobal';
-import type { ENSONation } from './eNSONation';
+import type { ENSOGlobal } from "./eNSOGlobal";
+import type { ENSONation } from "./eNSONation";
 
 export interface ENSOSensitivityData {
   nations: ENSONation[];

@@ -29,7 +29,10 @@ interface DataPoint {
 function loadData(): DataPoint[] {
   const csvPath = join(__dirname, "../data/climate_change.csv");
   const raw = readFileSync(csvPath, "utf-8");
-  const result = Papa.parse<RawRow>(raw, { header: true, skipEmptyLines: true });
+  const result = Papa.parse<RawRow>(raw, {
+    header: true,
+    skipEmptyLines: true,
+  });
   return result.data
     .filter((row) => row.OBS_VALUE !== "" && row.OBS_VALUE != null)
     .map((row) => ({
@@ -51,7 +54,8 @@ function getData(): DataPoint[] {
 function stdDev(values: number[]): number {
   if (values.length === 0) return 0;
   const mean = values.reduce((s, v) => s + v, 0) / values.length;
-  const variance = values.reduce((s, v) => s + Math.pow(v - mean, 2), 0) / values.length;
+  const variance =
+    values.reduce((s, v) => s + Math.pow(v - mean, 2), 0) / values.length;
   return Math.sqrt(variance);
 }
 
@@ -76,8 +80,12 @@ router.get("/climate/overview", (_req, res): void => {
 
   const countryTotals = countries.map((c) => {
     const vals = seaLevel.filter((d) => d.country === c);
-    const first = vals.find((d) => d.year === Math.min(...vals.map((v) => v.year)));
-    const last = vals.find((d) => d.year === Math.max(...vals.map((v) => v.year)));
+    const first = vals.find(
+      (d) => d.year === Math.min(...vals.map((v) => v.year)),
+    );
+    const last = vals.find(
+      (d) => d.year === Math.max(...vals.map((v) => v.year)),
+    );
     return {
       country: c,
       rise: (last?.value ?? 0) - (first?.value ?? 0),
@@ -86,13 +94,18 @@ router.get("/climate/overview", (_req, res): void => {
   });
 
   const maxCountry = countryTotals.reduce((a, b) => (a.rise > b.rise ? a : b));
-  const overallAvgRise = countryTotals.reduce((s, c) => s + c.rise, 0) / countryTotals.length;
-  const countriesAboveAvg = countryTotals.filter((c) => c.rise > overallAvgRise).length;
+  const overallAvgRise =
+    countryTotals.reduce((s, c) => s + c.rise, 0) / countryTotals.length;
+  const countriesAboveAvg = countryTotals.filter(
+    (c) => c.rise > overallAvgRise,
+  ).length;
 
   const baseline = seaLevel.filter((d) => d.year >= 1993 && d.year <= 2002);
   const recent = seaLevel.filter((d) => d.year >= 2014 && d.year <= 2023);
-  const baselineAvg = baseline.reduce((s, d) => s + d.value, 0) / (baseline.length || 1);
-  const recentAvg = recent.reduce((s, d) => s + d.value, 0) / (recent.length || 1);
+  const baselineAvg =
+    baseline.reduce((s, d) => s + d.value, 0) / (baseline.length || 1);
+  const recentAvg =
+    recent.reduce((s, d) => s + d.value, 0) / (recent.length || 1);
 
   res.json({
     totalCountries: countries.length,
@@ -144,14 +157,17 @@ router.get("/climate/sea-level-by-country", (_req, res): void => {
     const cumRise = lastVal - firstVal;
 
     const midpoint = Math.floor(values.length / 2);
-    const firstHalfAvg = values.slice(0, midpoint).reduce((s, v) => s + v, 0) / midpoint;
-    const secondHalfAvg = values.slice(midpoint).reduce((s, v) => s + v, 0) / (values.length - midpoint);
+    const firstHalfAvg =
+      values.slice(0, midpoint).reduce((s, v) => s + v, 0) / midpoint;
+    const secondHalfAvg =
+      values.slice(midpoint).reduce((s, v) => s + v, 0) /
+      (values.length - midpoint);
     const trend: "rising" | "stable" | "variable" =
       secondHalfAvg - firstHalfAvg > 0.03
         ? "rising"
         : Math.abs(secondHalfAvg - firstHalfAvg) < 0.01
-        ? "stable"
-        : "variable";
+          ? "stable"
+          : "variable";
 
     return {
       country,
@@ -173,9 +189,11 @@ router.get("/climate/heatmap", (_req, res): void => {
 
   const matrix = countries.map((country) =>
     years.map((year) => {
-      const point = seaLevel.find((d) => d.country === country && d.year === year);
+      const point = seaLevel.find(
+        (d) => d.country === country && d.year === year,
+      );
       return point?.value ?? 0;
-    })
+    }),
   );
 
   const allValues = matrix.flat();
@@ -213,13 +231,19 @@ router.get("/climate/decade-analysis", (_req, res): void => {
     const decadeAvgs: Record<string, number> = {};
 
     for (const decade of DECADES) {
-      const slice = countryData.filter((d) => d.year >= decade.start && d.year <= decade.end);
+      const slice = countryData.filter(
+        (d) => d.year >= decade.start && d.year <= decade.end,
+      );
       decadeAvgs[decade.key] = slice.length
-        ? parseFloat((slice.reduce((s, d) => s + d.value, 0) / slice.length).toFixed(4))
+        ? parseFloat(
+            (slice.reduce((s, d) => s + d.value, 0) / slice.length).toFixed(4),
+          )
         : 0;
     }
 
-    const acceleration = parseFloat((decadeAvgs["d3"] - decadeAvgs["d1"]).toFixed(4));
+    const acceleration = parseFloat(
+      (decadeAvgs["d3"] - decadeAvgs["d1"]).toFixed(4),
+    );
 
     return {
       country,
@@ -233,12 +257,16 @@ router.get("/climate/decade-analysis", (_req, res): void => {
 
   // Global averages per decade
   const globalDecades = DECADES.map((decade) => {
-    const slice = seaLevel.filter((d) => d.year >= decade.start && d.year <= decade.end);
+    const slice = seaLevel.filter(
+      (d) => d.year >= decade.start && d.year <= decade.end,
+    );
     return {
       key: decade.key,
       label: decade.label,
       avg: slice.length
-        ? parseFloat((slice.reduce((s, d) => s + d.value, 0) / slice.length).toFixed(4))
+        ? parseFloat(
+            (slice.reduce((s, d) => s + d.value, 0) / slice.length).toFixed(4),
+          )
         : 0,
     };
   });
@@ -258,7 +286,9 @@ router.get("/climate/volatility", (_req, res): void => {
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
 
   const countryStats = countries.map((country) => {
-    const vals = seaLevel.filter((d) => d.country === country).map((d) => d.value);
+    const vals = seaLevel
+      .filter((d) => d.country === country)
+      .map((d) => d.value);
     const code = seaLevel.find((d) => d.country === country)?.code ?? "";
     const mean = vals.reduce((s, v) => s + v, 0) / (vals.length || 1);
     const sd = stdDev(vals);
@@ -296,15 +326,21 @@ router.get("/climate/acceleration", (_req, res): void => {
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
 
   const result = countries.map((country) => {
-    const pts = seaLevel.filter((d) => d.country === country).sort((a, b) => a.year - b.year);
+    const pts = seaLevel
+      .filter((d) => d.country === country)
+      .sort((a, b) => a.year - b.year);
     const code = pts[0]?.code ?? "";
     const xs = pts.map((p) => p.year);
     const ys = pts.map((p) => p.value);
 
     const mid = Math.floor(pts.length / 2);
     const slopeFullPeriod = parseFloat(linearSlope(xs, ys).toFixed(5));
-    const slopeFirstHalf = parseFloat(linearSlope(xs.slice(0, mid), ys.slice(0, mid)).toFixed(5));
-    const slopeSecondHalf = parseFloat(linearSlope(xs.slice(mid), ys.slice(mid)).toFixed(5));
+    const slopeFirstHalf = parseFloat(
+      linearSlope(xs.slice(0, mid), ys.slice(0, mid)).toFixed(5),
+    );
+    const slopeSecondHalf = parseFloat(
+      linearSlope(xs.slice(mid), ys.slice(mid)).toFixed(5),
+    );
     const accelerating = slopeSecondHalf > slopeFirstHalf;
 
     return {
@@ -333,7 +369,9 @@ router.get("/climate/rankings", (_req, res): void => {
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
 
   const result = countries.map((country) => {
-    const pts = seaLevel.filter((d) => d.country === country).sort((a, b) => a.year - b.year);
+    const pts = seaLevel
+      .filter((d) => d.country === country)
+      .sort((a, b) => a.year - b.year);
     const code = pts[0]?.code ?? "";
     const vals = pts.map((p) => p.value);
     const years = pts.map((p) => p.year);
@@ -350,8 +388,12 @@ router.get("/climate/rankings", (_req, res): void => {
     // Decade averages
     const d1 = pts.filter((p) => p.year >= 1993 && p.year <= 2002);
     const d3 = pts.filter((p) => p.year >= 2013 && p.year <= 2023);
-    const d1Avg = d1.length ? d1.reduce((s, p) => s + p.value, 0) / d1.length : 0;
-    const d3Avg = d3.length ? d3.reduce((s, p) => s + p.value, 0) / d3.length : 0;
+    const d1Avg = d1.length
+      ? d1.reduce((s, p) => s + p.value, 0) / d1.length
+      : 0;
+    const d3Avg = d3.length
+      ? d3.reduce((s, p) => s + p.value, 0) / d3.length
+      : 0;
 
     return {
       country,
@@ -411,7 +453,9 @@ router.get("/climate/country-profile/:code", (req, res): void => {
     return {
       label: d.label,
       avg: slice.length
-        ? parseFloat((slice.reduce((s, p) => s + p.value, 0) / slice.length).toFixed(4))
+        ? parseFloat(
+            (slice.reduce((s, p) => s + p.value, 0) / slice.length).toFixed(4),
+          )
         : 0,
       count: slice.length,
     };
@@ -421,7 +465,10 @@ router.get("/climate/country-profile/:code", (req, res): void => {
   const window = 5;
   const timeSeries = pts.map((pt, i) => {
     const half = Math.floor(window / 2);
-    const slice = vals.slice(Math.max(0, i - half), Math.min(vals.length, i + half + 1));
+    const slice = vals.slice(
+      Math.max(0, i - half),
+      Math.min(vals.length, i + half + 1),
+    );
     const rolling = slice.reduce((s, v) => s + v, 0) / slice.length;
     return {
       year: pt.year,
@@ -434,7 +481,9 @@ router.get("/climate/country-profile/:code", (req, res): void => {
   const allCountries = [...new Set(seaLevel.map((d) => d.country))];
   const cumulativeRise = (vals[vals.length - 1] ?? 0) - (vals[0] ?? 0);
   const allRises = allCountries.map((c) => {
-    const cVals = seaLevel.filter((d) => d.country === c).sort((a, b) => a.year - b.year);
+    const cVals = seaLevel
+      .filter((d) => d.country === c)
+      .sort((a, b) => a.year - b.year);
     const cv = cVals.map((p) => p.value);
     return (cv[cv.length - 1] ?? 0) - (cv[0] ?? 0);
   });
@@ -487,7 +536,9 @@ router.get("/climate/forecast", (_req, res): void => {
 
   // RMSE of residuals for confidence intervals
   const residuals = ys.map((y, i) => y - (slope * xs[i] + intercept));
-  const rmse = Math.sqrt(residuals.reduce((s, r) => s + r * r, 0) / residuals.length);
+  const rmse = Math.sqrt(
+    residuals.reduce((s, r) => s + r * r, 0) / residuals.length,
+  );
 
   // R² coefficient of determination
   const ssTot = ys.reduce((s, y) => s + Math.pow(y - yMean, 2), 0);
@@ -500,7 +551,9 @@ router.get("/climate/forecast", (_req, res): void => {
   }));
 
   // Project 2024–2033
-  const projectionYears = [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033];
+  const projectionYears = [
+    2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,
+  ];
   const projected = projectionYears.map((year) => {
     const proj = slope * year + intercept;
     const sigma = rmse * 2;
@@ -543,7 +596,9 @@ router.get("/climate/risk-scores", (_req, res): void => {
 
   // Collect raw metrics per country
   const rawMetrics = countries.map((country) => {
-    const pts = seaLevel.filter((d) => d.country === country).sort((a, b) => a.year - b.year);
+    const pts = seaLevel
+      .filter((d) => d.country === country)
+      .sort((a, b) => a.year - b.year);
     const code = pts[0]?.code ?? "";
     const vals = pts.map((p) => p.value);
     const years = pts.map((p) => p.year);
@@ -554,11 +609,22 @@ router.get("/climate/risk-scores", (_req, res): void => {
 
     const d1 = pts.filter((p) => p.year >= 1993 && p.year <= 2002);
     const d3 = pts.filter((p) => p.year >= 2013 && p.year <= 2023);
-    const d1Avg = d1.length ? d1.reduce((s, p) => s + p.value, 0) / d1.length : 0;
-    const d3Avg = d3.length ? d3.reduce((s, p) => s + p.value, 0) / d3.length : 0;
+    const d1Avg = d1.length
+      ? d1.reduce((s, p) => s + p.value, 0) / d1.length
+      : 0;
+    const d3Avg = d3.length
+      ? d3.reduce((s, p) => s + p.value, 0) / d3.length
+      : 0;
     const decadeAcceleration = d3Avg - d1Avg;
 
-    return { country, code, cumulativeRise, slope, volatility, decadeAcceleration };
+    return {
+      country,
+      code,
+      cumulativeRise,
+      slope,
+      volatility,
+      decadeAcceleration,
+    };
   });
 
   // Normalize each metric to 0–100 range
@@ -580,10 +646,21 @@ router.get("/climate/risk-scores", (_req, res): void => {
     const accelerationScore = parseFloat(accels[i].toFixed(1));
 
     const riskScore = parseFloat(
-      (riseScore * 0.4 + slopeScore * 0.3 + volatilityScore * 0.15 + accelerationScore * 0.15).toFixed(1)
+      (
+        riseScore * 0.4 +
+        slopeScore * 0.3 +
+        volatilityScore * 0.15 +
+        accelerationScore * 0.15
+      ).toFixed(1),
     );
     const riskLevel: "Critical" | "High" | "Medium" | "Low" =
-      riskScore >= 80 ? "Critical" : riskScore >= 60 ? "High" : riskScore >= 40 ? "Medium" : "Low";
+      riskScore >= 80
+        ? "Critical"
+        : riskScore >= 60
+          ? "High"
+          : riskScore >= 40
+            ? "Medium"
+            : "Low";
 
     return {
       country: m.country,
@@ -601,7 +678,9 @@ router.get("/climate/risk-scores", (_req, res): void => {
   scored.sort((a, b) => b.riskScore - a.riskScore);
 
   const avgRiskScore = parseFloat(
-    (scored.reduce((s, c) => s + c.riskScore, 0) / (scored.length || 1)).toFixed(1)
+    (
+      scored.reduce((s, c) => s + c.riskScore, 0) / (scored.length || 1)
+    ).toFixed(1),
   );
 
   res.json({
@@ -617,13 +696,29 @@ router.get("/climate/risk-scores", (_req, res): void => {
 // ── Geographic regional clusters ─────────────────────────────────────────────
 const REGION_MAP: Record<string, string> = {
   // Micronesia
-  FM: "Micronesia", GU: "Micronesia", KI: "Micronesia",
-  MH: "Micronesia", NR: "Micronesia", MP: "Micronesia", PW: "Micronesia",
+  FM: "Micronesia",
+  GU: "Micronesia",
+  KI: "Micronesia",
+  MH: "Micronesia",
+  NR: "Micronesia",
+  MP: "Micronesia",
+  PW: "Micronesia",
   // Melanesia
-  FJ: "Melanesia", NC: "Melanesia", PG: "Melanesia", SB: "Melanesia", VU: "Melanesia",
+  FJ: "Melanesia",
+  NC: "Melanesia",
+  PG: "Melanesia",
+  SB: "Melanesia",
+  VU: "Melanesia",
   // Polynesia
-  AS: "Polynesia", CK: "Polynesia", PF: "Polynesia", NU: "Polynesia",
-  WS: "Polynesia", TK: "Polynesia", TO: "Polynesia", TV: "Polynesia", WF: "Polynesia",
+  AS: "Polynesia",
+  CK: "Polynesia",
+  PF: "Polynesia",
+  NU: "Polynesia",
+  WS: "Polynesia",
+  TK: "Polynesia",
+  TO: "Polynesia",
+  TV: "Polynesia",
+  WF: "Polynesia",
 };
 
 router.get("/climate/geographic-clusters", (_req, res): void => {
@@ -643,28 +738,52 @@ router.get("/climate/geographic-clusters", (_req, res): void => {
     // Year-by-year regional averages
     const yearlyAvg = years.map((year) => {
       const pts = regionPts.filter((d) => d.year === year);
-      const avg = pts.length ? pts.reduce((s, d) => s + d.value, 0) / pts.length : 0;
+      const avg = pts.length
+        ? pts.reduce((s, d) => s + d.value, 0) / pts.length
+        : 0;
       return { year, avgAnomaly: parseFloat(avg.toFixed(4)) };
     });
 
     // Per-nation stats
     const nationStats = regionCodes.map((code) => {
-      const pts = seaLevel.filter((d) => d.code === code).sort((a, b) => a.year - b.year);
+      const pts = seaLevel
+        .filter((d) => d.code === code)
+        .sort((a, b) => a.year - b.year);
       const vals = pts.map((p) => p.value);
       const country = pts[0]?.country ?? code;
       const cumulativeRise = (vals[vals.length - 1] ?? 0) - (vals[0] ?? 0);
-      const slope = linearSlope(pts.map((p) => p.year), vals);
+      const slope = linearSlope(
+        pts.map((p) => p.year),
+        vals,
+      );
       const d1 = pts.filter((p) => p.year >= 1993 && p.year <= 2002);
       const d3 = pts.filter((p) => p.year >= 2013 && p.year <= 2023);
-      const d1Avg = d1.length ? d1.reduce((s, p) => s + p.value, 0) / d1.length : 0;
-      const d3Avg = d3.length ? d3.reduce((s, p) => s + p.value, 0) / d3.length : 0;
-      return { code, country, cumulativeRise, slope, acceleration: d3Avg - d1Avg };
+      const d1Avg = d1.length
+        ? d1.reduce((s, p) => s + p.value, 0) / d1.length
+        : 0;
+      const d3Avg = d3.length
+        ? d3.reduce((s, p) => s + p.value, 0) / d3.length
+        : 0;
+      return {
+        code,
+        country,
+        cumulativeRise,
+        slope,
+        acceleration: d3Avg - d1Avg,
+      };
     });
 
-    const avgCumRise = nationStats.reduce((s, n) => s + n.cumulativeRise, 0) / (nationStats.length || 1);
-    const avgSlope = nationStats.reduce((s, n) => s + n.slope, 0) / (nationStats.length || 1);
-    const avgAccel = nationStats.reduce((s, n) => s + n.acceleration, 0) / (nationStats.length || 1);
-    const topNation = [...nationStats].sort((a, b) => b.cumulativeRise - a.cumulativeRise)[0];
+    const avgCumRise =
+      nationStats.reduce((s, n) => s + n.cumulativeRise, 0) /
+      (nationStats.length || 1);
+    const avgSlope =
+      nationStats.reduce((s, n) => s + n.slope, 0) / (nationStats.length || 1);
+    const avgAccel =
+      nationStats.reduce((s, n) => s + n.acceleration, 0) /
+      (nationStats.length || 1);
+    const topNation = [...nationStats].sort(
+      (a, b) => b.cumulativeRise - a.cumulativeRise,
+    )[0];
 
     const allVals = regionPts.map((d) => d.value);
     const sd = stdDev(allVals);
@@ -686,7 +805,9 @@ router.get("/climate/geographic-clusters", (_req, res): void => {
   });
 
   // Sort by avgCumulativeRise descending
-  regionData.sort((a, b) => b.stats.avgCumulativeRise - a.stats.avgCumulativeRise);
+  regionData.sort(
+    (a, b) => b.stats.avgCumulativeRise - a.stats.avgCumulativeRise,
+  );
 
   res.json({ years, regions: regionData });
 });
@@ -698,18 +819,22 @@ router.get("/climate/threshold-crossings", (_req, res): void => {
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
 
   const nations = countries.map((country) => {
-    const pts = seaLevel.filter((d) => d.country === country).sort((a, b) => a.year - b.year);
+    const pts = seaLevel
+      .filter((d) => d.country === country)
+      .sort((a, b) => a.year - b.year);
     const code = pts[0]?.code ?? "";
     const vals = pts.map((p) => p.value);
 
     const firstCrossing = (threshold: number): number | null => {
       for (let i = 0; i < pts.length; i++) {
-        if ((pts[i]?.value ?? -Infinity) >= threshold) return pts[i]?.year ?? null;
+        if ((pts[i]?.value ?? -Infinity) >= threshold)
+          return pts[i]?.year ?? null;
       }
       return null;
     };
 
-    const countAbove = (threshold: number) => vals.filter((v) => v >= threshold).length;
+    const countAbove = (threshold: number) =>
+      vals.filter((v) => v >= threshold).length;
 
     const latestValue = vals[vals.length - 1] ?? 0;
     const cumulativeRise = latestValue - (vals[0] ?? 0);
@@ -750,9 +875,10 @@ router.get("/climate/threshold-crossings", (_req, res): void => {
   const crossedZero = nations.filter((n) => n.firstPositive != null).length;
   const crossedTenth = nations.filter((n) => n.firstTenth != null).length;
   const crossedFifth = nations.filter((n) => n.firstFifth != null).length;
-  const avgFirstPositive = nations
-    .filter((n) => n.firstPositive != null)
-    .reduce((s, n) => s + n.firstPositive!, 0) / (crossedZero || 1);
+  const avgFirstPositive =
+    nations
+      .filter((n) => n.firstPositive != null)
+      .reduce((s, n) => s + n.firstPositive!, 0) / (crossedZero || 1);
 
   res.json({
     nations,
@@ -782,9 +908,11 @@ router.get("/climate/el-nino-impact", (_req, res): void => {
     const v1999 = get(1999);
     const v2000 = get(2000);
 
-    const preAvg = [v1997].filter((v) => v != null).reduce((s, v) => s + v!, 0) /
+    const preAvg =
+      [v1997].filter((v) => v != null).reduce((s, v) => s + v!, 0) /
       ([v1997].filter((v) => v != null).length || 1);
-    const postAvg = [v1999, v2000].filter((v) => v != null).reduce((s, v) => s + v!, 0) /
+    const postAvg =
+      [v1999, v2000].filter((v) => v != null).reduce((s, v) => s + v!, 0) /
       ([v1999, v2000].filter((v) => v != null).length || 1);
 
     return {
@@ -795,7 +923,10 @@ router.get("/climate/el-nino-impact", (_req, res): void => {
       v1999: v1999 != null ? parseFloat(v1999.toFixed(3)) : null,
       v2000: v2000 != null ? parseFloat(v2000.toFixed(3)) : null,
       drop: v1998 != null ? parseFloat((v1998 - preAvg).toFixed(3)) : null,
-      recovery: v1998 != null && postAvg != null ? parseFloat((postAvg - v1998).toFixed(3)) : null,
+      recovery:
+        v1998 != null && postAvg != null
+          ? parseFloat((postAvg - v1998).toFixed(3))
+          : null,
     };
   });
 
@@ -806,7 +937,10 @@ router.get("/climate/el-nino-impact", (_req, res): void => {
   const v1998All = nations.filter((n) => n.v1998 != null).map((n) => n.v1998!);
   const v1999All = nations.filter((n) => n.v1999 != null).map((n) => n.v1999!);
 
-  const avg = (arr: number[]) => arr.length ? parseFloat((arr.reduce((s, v) => s + v, 0) / arr.length).toFixed(4)) : 0;
+  const avg = (arr: number[]) =>
+    arr.length
+      ? parseFloat((arr.reduce((s, v) => s + v, 0) / arr.length).toFixed(4))
+      : 0;
 
   res.json({
     nations,
@@ -839,8 +973,12 @@ router.get("/climate/enso-sensitivity", (_req, res): void => {
     const pts = seaLevel.filter((d) => d.country === country);
     const code = pts[0]?.code ?? "";
 
-    const elNinoVals = pts.filter((d) => ELNINO_YEARS.has(d.year)).map((d) => d.value);
-    const laNinaVals = pts.filter((d) => LANINA_YEARS.has(d.year)).map((d) => d.value);
+    const elNinoVals = pts
+      .filter((d) => ELNINO_YEARS.has(d.year))
+      .map((d) => d.value);
+    const laNinaVals = pts
+      .filter((d) => LANINA_YEARS.has(d.year))
+      .map((d) => d.value);
     const neutralVals = pts
       .filter((d) => !ELNINO_YEARS.has(d.year) && !LANINA_YEARS.has(d.year))
       .map((d) => d.value);
@@ -855,8 +993,12 @@ router.get("/climate/enso-sensitivity", (_req, res): void => {
 
   nations.sort((a, b) => b.sensitivity - a.sensitivity);
 
-  const allElNino = seaLevel.filter((d) => ELNINO_YEARS.has(d.year)).map((d) => d.value);
-  const allLaNina = seaLevel.filter((d) => LANINA_YEARS.has(d.year)).map((d) => d.value);
+  const allElNino = seaLevel
+    .filter((d) => ELNINO_YEARS.has(d.year))
+    .map((d) => d.value);
+  const allLaNina = seaLevel
+    .filter((d) => LANINA_YEARS.has(d.year))
+    .map((d) => d.value);
   const allNeutral = seaLevel
     .filter((d) => !ELNINO_YEARS.has(d.year) && !LANINA_YEARS.has(d.year))
     .map((d) => d.value);
@@ -887,28 +1029,36 @@ router.get("/climate/annual-deviation", (_req, res): void => {
   const years = [...new Set(seaLevel.map((d) => d.year))].sort((a, b) => a - b);
   const annualAvgs = years.map((year) => {
     const vals = seaLevel.filter((d) => d.year === year).map((d) => d.value);
-    return { year, avg: vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0 };
+    return {
+      year,
+      avg: vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0,
+    };
   });
 
-  const mean30yr = annualAvgs.reduce((s, d) => s + d.avg, 0) / (annualAvgs.length || 1);
+  const mean30yr =
+    annualAvgs.reduce((s, d) => s + d.avg, 0) / (annualAvgs.length || 1);
 
   const deviations = annualAvgs.map((d) => ({
     year: d.year,
     avg: parseFloat(d.avg.toFixed(4)),
     deviation: parseFloat((d.avg - mean30yr).toFixed(4)),
-    enso: EL_NINO.has(d.year) ? "el-nino" : LA_NINA.has(d.year) ? "la-nina" : "neutral",
+    enso: EL_NINO.has(d.year)
+      ? "el-nino"
+      : LA_NINA.has(d.year)
+        ? "la-nina"
+        : "neutral",
   }));
 
   res.json({
     deviations,
     mean30yr: parseFloat(mean30yr.toFixed(4)),
-    maxDeviation: parseFloat(Math.max(...deviations.map((d) => d.deviation)).toFixed(4)),
-    minDeviation: parseFloat(Math.min(...deviations.map((d) => d.deviation)).toFixed(4)),
+    maxDeviation: parseFloat(
+      Math.max(...deviations.map((d) => d.deviation)).toFixed(4),
+    ),
+    minDeviation: parseFloat(
+      Math.min(...deviations.map((d) => d.deviation)).toFixed(4),
+    ),
   });
 });
 
 export default router;
-
-
-
-

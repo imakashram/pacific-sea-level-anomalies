@@ -5,7 +5,7 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { AnnualDeviationEntry } from './annualDeviationEntry';
+import type { AnnualDeviationEntry } from "./annualDeviationEntry";
 
 export interface AnnualDeviationData {
   deviations: AnnualDeviationEntry[];

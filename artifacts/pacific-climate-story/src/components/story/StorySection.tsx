@@ -8,7 +8,12 @@ interface StorySectionProps {
   innerClassName?: string;
 }
 
-export function StorySection({ children, id, className = "", innerClassName = "max-w-5xl mx-auto w-full px-6 md:px-12" }: StorySectionProps) {
+export function StorySection({
+  children,
+  id,
+  className = "",
+  innerClassName = "max-w-5xl mx-auto w-full px-6 md:px-12",
+}: StorySectionProps) {
   return (
     <motion.section
       id={id}
@@ -18,9 +23,7 @@ export function StorySection({ children, id, className = "", innerClassName = "m
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className={innerClassName}>
-        {children}
-      </div>
+      <div className={innerClassName}>{children}</div>
     </motion.section>
   );
 }

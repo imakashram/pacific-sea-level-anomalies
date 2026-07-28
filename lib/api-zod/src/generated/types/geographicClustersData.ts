@@ -5,7 +5,7 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { GeographicClusterRegion } from './geographicClusterRegion';
+import type { GeographicClusterRegion } from "./geographicClusterRegion";
 
 export interface GeographicClustersData {
   years: number[];

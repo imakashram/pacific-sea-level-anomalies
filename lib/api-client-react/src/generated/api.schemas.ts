@@ -40,13 +40,13 @@ export type CountryTimeSeriesDataItem = {
   value: number;
 };
 
-export type CountryTimeSeriesTrend = typeof CountryTimeSeriesTrend[keyof typeof CountryTimeSeriesTrend];
-
+export type CountryTimeSeriesTrend =
+  (typeof CountryTimeSeriesTrend)[keyof typeof CountryTimeSeriesTrend];
 
 export const CountryTimeSeriesTrend = {
-  rising: 'rising',
-  stable: 'stable',
-  variable: 'variable',
+  rising: "rising",
+  stable: "stable",
+  variable: "variable",
 } as const;
 
 export interface CountryTimeSeries {
@@ -168,14 +168,14 @@ export interface RiskScoreComponents {
   accelerationScore: number;
 }
 
-export type RiskScoreRiskLevel = typeof RiskScoreRiskLevel[keyof typeof RiskScoreRiskLevel];
-
+export type RiskScoreRiskLevel =
+  (typeof RiskScoreRiskLevel)[keyof typeof RiskScoreRiskLevel];
 
 export const RiskScoreRiskLevel = {
-  Critical: 'Critical',
-  High: 'High',
-  Medium: 'Medium',
-  Low: 'Low',
+  Critical: "Critical",
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
 } as const;
 
 export interface RiskScore {
@@ -357,4 +357,3 @@ export interface AnnualDeviationData {
   maxDeviation: number;
   minDeviation: number;
 }
-

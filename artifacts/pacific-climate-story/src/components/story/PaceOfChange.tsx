@@ -1,6 +1,18 @@
 import { useGetAcceleration } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, Label, LabelList } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  ReferenceLine,
+  Label,
+  LabelList,
+} from "recharts";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { TrendingUp, ArrowUpRight, Shield, Activity } from "lucide-react";
@@ -8,7 +20,7 @@ import { TrendingUp, ArrowUpRight, Shield, Activity } from "lucide-react";
 /**
  * Iterative relaxation algorithm to resolve label overlaps along the Y-axis.
  * Prevents SVG text overlaps on tight datasets by shifting coordinates vertically.
- * 
+ *
  * @param yPositions Array of items with their initial Y coordinates.
  * @param labelHeight The height boundary assigned to each label to prevent overlap.
  * @param minBound Minimum Y coordinate limit.
@@ -18,7 +30,7 @@ function solveLabelOverlap(
   yPositions: { id: string; y: number }[],
   labelHeight: number,
   minBound: number,
-  maxBound: number
+  maxBound: number,
 ) {
   // Sort positions sequentially along the Y axis
   const items = [...yPositions].sort((a, b) => a.y - b.y);
@@ -72,7 +84,17 @@ function solveLabelOverlap(
  * Interactive Slope Chart comparing sea level rise rates across two 15-year epochs.
  * Taps into root SVG offsets for stable coordinates and prevents text collisions.
  */
-function SlopeChart({ data }: { data: { country: string; code: string; slopeFirstHalf: number; slopeSecondHalf: number; accelerating: boolean }[] }) {
+function SlopeChart({
+  data,
+}: {
+  data: {
+    country: string;
+    code: string;
+    slopeFirstHalf: number;
+    slopeSecondHalf: number;
+    accelerating: boolean;
+  }[];
+}) {
   const [hoveredCode, setHoveredCode] = useState<string | null>(null);
   const [hoveredData, setHoveredData] = useState<{
     country: string;
@@ -99,20 +121,27 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
   const plotH = H - topPad - botPad;
 
   // Convert a slope value (mm/yr) into its absolute SVG Y coordinate
-  const slopeToY = (s: number) => topPad + plotH - ((s - minSlope) / range) * plotH;
+  const slopeToY = (s: number) =>
+    topPad + plotH - ((s - minSlope) / range) * plotH;
 
   // Standardized Y axis ticks
   const ticks = [10.0, 7.0, 4.0, 1.0, -2.0];
 
   // Resolve overlaps along the left axis (1993-2007)
   const leftLabelsY = useMemo(() => {
-    const raw = countries.map((d) => ({ id: d.code, y: slopeToY(d.slopeFirstHalf * 1000) }));
+    const raw = countries.map((d) => ({
+      id: d.code,
+      y: slopeToY(d.slopeFirstHalf * 1000),
+    }));
     return solveLabelOverlap(raw, 13, topPad, topPad + plotH);
   }, [countries, topPad, plotH]);
 
   // Resolve overlaps along the right axis (2008-2023)
   const rightLabelsY = useMemo(() => {
-    const raw = countries.map((d) => ({ id: d.code, y: slopeToY(d.slopeSecondHalf * 1000) }));
+    const raw = countries.map((d) => ({
+      id: d.code,
+      y: slopeToY(d.slopeSecondHalf * 1000),
+    }));
     return solveLabelOverlap(raw, 13, topPad, topPad + plotH);
   }, [countries, topPad, plotH]);
 
@@ -125,12 +154,18 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
       const bKey = b.code === "PF" || b.code === "VU" || b.code === "NC";
       if (aKey && !bKey) return 1;
       if (!aKey && bKey) return -1;
-      return countries.findIndex((x) => x.code === b.code) - countries.findIndex((x) => x.code === a.code);
+      return (
+        countries.findIndex((x) => x.code === b.code) -
+        countries.findIndex((x) => x.code === a.code)
+      );
     });
   }, [countries, hoveredCode]);
 
   // Measure mouse offsets relative to the parent SVG container to prevent tooltip jumps
-  const handleMouseMove = (e: React.MouseEvent<SVGElement>, countryData: typeof countries[0]) => {
+  const handleMouseMove = (
+    e: React.MouseEvent<SVGElement>,
+    countryData: (typeof countries)[0],
+  ) => {
     const svg = e.currentTarget.closest("svg");
     if (!svg) return;
     const rect = svg.getBoundingClientRect();
@@ -156,26 +191,90 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
         onMouseLeave={handleMouseLeave}
       >
         {/* Vertical baseline axis track lines */}
-        <line x1={leftX} y1={topPad - 15} x2={leftX} y2={topPad + plotH + 15} stroke="rgba(255,255,255,0.08)" strokeWidth={1.5} />
-        <line x1={rightX} y1={topPad - 15} x2={rightX} y2={topPad + plotH + 15} stroke="rgba(255,255,255,0.08)" strokeWidth={1.5} />
+        <line
+          x1={leftX}
+          y1={topPad - 15}
+          x2={leftX}
+          y2={topPad + plotH + 15}
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth={1.5}
+        />
+        <line
+          x1={rightX}
+          y1={topPad - 15}
+          x2={rightX}
+          y2={topPad + plotH + 15}
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth={1.5}
+        />
 
         {/* Column epoch headers */}
-        <text x={leftX} y={22} textAnchor="middle" fontSize={11} fill="hsl(var(--muted-foreground))" fontWeight="600" className="font-mono">1993–2007</text>
-        <text x={rightX} y={22} textAnchor="middle" fontSize={11} fill="hsl(var(--muted-foreground))" fontWeight="600" className="font-mono">2008–2023</text>
+        <text
+          x={leftX}
+          y={22}
+          textAnchor="middle"
+          fontSize={11}
+          fill="hsl(var(--muted-foreground))"
+          fontWeight="600"
+          className="font-mono"
+        >
+          1993–2007
+        </text>
+        <text
+          x={rightX}
+          y={22}
+          textAnchor="middle"
+          fontSize={11}
+          fill="hsl(var(--muted-foreground))"
+          fontWeight="600"
+          className="font-mono"
+        >
+          2008–2023
+        </text>
 
         {/* Horizontal grid lines and Y-axis scale values */}
         {ticks.map((val) => {
           const y = slopeToY(val);
           return (
             <g key={val} className="transition-opacity duration-300">
-              <line x1={leftX - 20} y1={y} x2={rightX + 20} y2={y} stroke="hsl(var(--border))" strokeWidth={0.5} strokeDasharray="3 3" opacity={0.6} />
-              <text x={leftX - 45} y={y + 3.5} textAnchor="end" fontSize={10} fill="hsl(var(--muted-foreground))" className="font-mono" fontWeight="500">{val.toFixed(1)}</text>
+              <line
+                x1={leftX - 20}
+                y1={y}
+                x2={rightX + 20}
+                y2={y}
+                stroke="hsl(var(--border))"
+                strokeWidth={0.5}
+                strokeDasharray="3 3"
+                opacity={0.6}
+              />
+              <text
+                x={leftX - 45}
+                y={y + 3.5}
+                textAnchor="end"
+                fontSize={10}
+                fill="hsl(var(--muted-foreground))"
+                className="font-mono"
+                fontWeight="500"
+              >
+                {val.toFixed(1)}
+              </text>
             </g>
           );
         })}
 
         {/* Y Axis unit label */}
-        <text x={leftX - 75} y={topPad + plotH / 2} fontSize={10} fill="hsl(var(--muted-foreground))" transform={`rotate(-90 ${leftX - 75} ${topPad + plotH / 2})`} textAnchor="middle" className="font-mono" letterSpacing="0.05em">mm/yr</text>
+        <text
+          x={leftX - 75}
+          y={topPad + plotH / 2}
+          fontSize={10}
+          fill="hsl(var(--muted-foreground))"
+          transform={`rotate(-90 ${leftX - 75} ${topPad + plotH / 2})`}
+          textAnchor="middle"
+          className="font-mono"
+          letterSpacing="0.05em"
+        >
+          mm/yr
+        </text>
 
         {sortedLines.map((d) => {
           const y1 = slopeToY(d.slopeFirstHalf * 1000);
@@ -184,18 +283,27 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
           const resolvedY1 = leftLabelsY[d.code] ?? y1;
           const resolvedY2 = rightLabelsY[d.code] ?? y2;
 
-          const isKeyCountry = d.code === "PF" || d.code === "VU" || d.code === "NC";
+          const isKeyCountry =
+            d.code === "PF" || d.code === "VU" || d.code === "NC";
           const isHovered = hoveredCode === d.code;
           const isAnyHovered = hoveredCode !== null;
           const shouldHighlight = isHovered || (!isAnyHovered && isKeyCountry);
 
           // Path styling
           const accel = d.slopeSecondHalf > d.slopeFirstHalf;
-          const lineColor = accel ? "hsl(var(--primary))" : "hsl(var(--destructive))";
+          const lineColor = accel
+            ? "hsl(var(--primary))"
+            : "hsl(var(--destructive))";
           const strokeWidth = shouldHighlight ? 2.5 : 1.0;
-          const strokeOpacity = isHovered ? 1.0 : (isAnyHovered ? 0.08 : (isKeyCountry ? 0.85 : 0.15));
+          const strokeOpacity = isHovered
+            ? 1.0
+            : isAnyHovered
+              ? 0.08
+              : isKeyCountry
+                ? 0.85
+                : 0.15;
           const dotRadius = shouldHighlight ? 5.5 : 3.5;
-          const textOpacity = shouldHighlight ? 1.0 : (isAnyHovered ? 0.1 : 0.4);
+          const textOpacity = shouldHighlight ? 1.0 : isAnyHovered ? 0.1 : 0.4;
 
           return (
             <g
@@ -205,7 +313,14 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
               onMouseLeave={handleMouseLeave}
             >
               {/* Thick transparent line to expand hover buffer area */}
-              <line x1={leftX} y1={y1} x2={rightX} y2={y2} stroke="transparent" strokeWidth={15} />
+              <line
+                x1={leftX}
+                y1={y1}
+                x2={rightX}
+                y2={y2}
+                stroke="transparent"
+                strokeWidth={15}
+              />
 
               {/* Vector slope line */}
               <line
@@ -224,7 +339,11 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
                 cx={leftX}
                 cy={y1}
                 r={dotRadius}
-                fill={shouldHighlight ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))"}
+                fill={
+                  shouldHighlight
+                    ? "hsl(var(--foreground))"
+                    : "hsl(var(--muted-foreground))"
+                }
                 fillOpacity={strokeOpacity}
                 className="transition-all duration-300"
               />
@@ -236,7 +355,9 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
                   cy={y1}
                   r={dotRadius + 3}
                   fill="none"
-                  stroke={shouldHighlight ? "hsl(var(--foreground))" : lineColor}
+                  stroke={
+                    shouldHighlight ? "hsl(var(--foreground))" : lineColor
+                  }
                   strokeWidth={0.8}
                   strokeDasharray="2 2"
                   opacity={strokeOpacity * 0.6}
@@ -319,7 +440,10 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
                 opacity={textOpacity}
                 className="transition-all duration-300 font-mono"
               >
-                {d.code} {accel ? "↑" : "↓"}{Math.abs((d.slopeSecondHalf - d.slopeFirstHalf) * 1000).toFixed(1)}
+                {d.code} {accel ? "↑" : "↓"}
+                {Math.abs(
+                  (d.slopeSecondHalf - d.slopeFirstHalf) * 1000,
+                ).toFixed(1)}
               </text>
             </g>
           );
@@ -333,46 +457,73 @@ function SlopeChart({ data }: { data: { country: string; code: string; slopeFirs
           style={{
             left: hoveredData.x + 15,
             top: hoveredData.y - 45,
-            borderColor: hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "rgba(34,211,238,0.3)" : "rgba(239,68,68,0.3)",
-            boxShadow: hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
-              ? "0 10px 30px rgba(34,211,238,0.2)"
-              : "0 10px 30px rgba(239,68,68,0.2)"
+            borderColor:
+              hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+                ? "rgba(34,211,238,0.3)"
+                : "rgba(239,68,68,0.3)",
+            boxShadow:
+              hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+                ? "0 10px 30px rgba(34,211,238,0.2)"
+                : "0 10px 30px rgba(239,68,68,0.2)",
           }}
         >
           <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
-            <span className="font-serif text-sm font-bold text-white">{hoveredData.country}</span>
+            <span className="font-serif text-sm font-bold text-white">
+              {hoveredData.country}
+            </span>
             <span
-              className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+              className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${
+                hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
                   ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
                   : "bg-red-500/20 text-red-400 border-red-500/30"
-                }`}
+              }`}
             >
-              {hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "Accelerating" : "Slowing"}
+              {hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+                ? "Accelerating"
+                : "Slowing"}
             </span>
           </div>
 
           <div className="space-y-2 text-xs">
             <div className="flex justify-between items-center gap-4">
-              <span className="text-slate-400/90 font-medium">1993–2007 (Before)</span>
+              <span className="text-slate-400/90 font-medium">
+                1993–2007 (Before)
+              </span>
               <span className="font-bold text-slate-300 text-sm">
                 {(hoveredData.slopeFirstHalf * 1000).toFixed(2)} mm/yr
               </span>
             </div>
 
             <div className="flex justify-between items-center gap-4">
-              <span className="text-slate-400/90 font-medium">2008–2023 (After)</span>
+              <span className="text-slate-400/90 font-medium">
+                2008–2023 (After)
+              </span>
               <span className="font-bold text-slate-300 text-sm">
                 {(hoveredData.slopeSecondHalf * 1000).toFixed(2)} mm/yr
               </span>
             </div>
 
             <div className="flex justify-between items-center gap-4 pt-1.5 border-t border-white/5 mt-1">
-              <span className={hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "text-cyan-300/90 font-medium" : "text-red-300/90 font-medium"}>
+              <span
+                className={
+                  hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+                    ? "text-cyan-300/90 font-medium"
+                    : "text-red-300/90 font-medium"
+                }
+              >
                 Pace Acceleration
               </span>
-              <span className={`font-bold text-sm ${hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "text-cyan-300" : "text-red-300"}`}>
-                {hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "+" : ""}
-                {((hoveredData.slopeSecondHalf - hoveredData.slopeFirstHalf) * 1000).toFixed(2)} mm/yr
+              <span
+                className={`font-bold text-sm ${hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "text-cyan-300" : "text-red-300"}`}
+              >
+                {hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+                  ? "+"
+                  : ""}
+                {(
+                  (hoveredData.slopeSecondHalf - hoveredData.slopeFirstHalf) *
+                  1000
+                ).toFixed(2)}{" "}
+                mm/yr
               </span>
             </div>
           </div>
@@ -395,12 +546,15 @@ function BarChartTooltip({ active, payload }: any) {
   return (
     <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] w-max font-mono">
       <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
-        <span className="font-serif text-sm font-bold text-white">{d.country}</span>
+        <span className="font-serif text-sm font-bold text-white">
+          {d.country}
+        </span>
         <span
-          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${d.accelerating
+          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${
+            d.accelerating
               ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
               : "bg-slate-500/20 text-slate-400 border-slate-500/30"
-            }`}
+          }`}
         >
           {d.accelerating ? "Accelerating" : "Stable"}
         </span>
@@ -416,7 +570,9 @@ function BarChartTooltip({ active, payload }: any) {
 
         <div className="flex justify-between items-center gap-4 pt-1.5 border-t border-white/5 mt-1">
           <span className="text-slate-400/90 font-medium">Vs. Global Avg</span>
-          <span className={`font-bold ${isAboveAvg ? "text-rose-400" : "text-slate-400"}`}>
+          <span
+            className={`font-bold ${isAboveAvg ? "text-rose-400" : "text-slate-400"}`}
+          >
             {ratio.toFixed(1)}x baseline
           </span>
         </div>
@@ -436,12 +592,25 @@ export function PaceOfChange() {
   const [isAnimationActive, setIsAnimationActive] = useState(true);
 
   // Sorting arrays for specific visualizations (Full Period desc and acceleration delta desc)
-  const sortedByFull = data?.slice().sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod) || [];
-  const sortedByAccel = data?.slice().sort((a, b) => (b.slopeSecondHalf - b.slopeFirstHalf) - (a.slopeSecondHalf - a.slopeFirstHalf)) || [];
+  const sortedByFull =
+    data?.slice().sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod) || [];
+  const sortedByAccel =
+    data
+      ?.slice()
+      .sort(
+        (a, b) =>
+          b.slopeSecondHalf -
+          b.slopeFirstHalf -
+          (a.slopeSecondHalf - a.slopeFirstHalf),
+      ) || [];
 
   // Metrics aggregates (converts meters/yr data items directly to mm/yr using * 1000 multiplier)
   const acceleratingCount = data?.filter((d) => d.accelerating).length ?? 0;
-  const avgDelta = data ? data.reduce((s, d) => s + (d.slopeSecondHalf - d.slopeFirstHalf), 0) / data.length * 1000 : 0;
+  const avgDelta = data
+    ? (data.reduce((s, d) => s + (d.slopeSecondHalf - d.slopeFirstHalf), 0) /
+        data.length) *
+      1000
+    : 0;
 
   const mostAccel = sortedByAccel[0];
   const mostStable = sortedByAccel[sortedByAccel.length - 1];
@@ -457,9 +626,14 @@ export function PaceOfChange() {
           transition={{ duration: 0.8 }}
           className="text-center flex flex-col items-center justify-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">The Pace Of Change</h2>
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+            The Pace Of Change
+          </h2>
           <p className="text-xl text-muted-foreground leading-relaxed mb-4 max-w-3xl">
-            Sea levels are not only rising - they're rising faster. By comparing the first 15 years with the most recent 15 years, this analysis reveals how the rate of change has accelerated across Pacific nations.
+            Sea levels are not only rising - they're rising faster. By comparing
+            the first 15 years with the most recent 15 years, this analysis
+            reveals how the rate of change has accelerated across Pacific
+            nations.
           </p>
         </motion.div>
 
@@ -482,7 +656,9 @@ export function PaceOfChange() {
               </div>
             </div>
             <div className="text-3xl font-serif font-bold tracking-tight text-red-400">
-              {isLoading || !data ? "—" : `${acceleratingCount} / ${data.length}`}
+              {isLoading || !data
+                ? "—"
+                : `${acceleratingCount} / ${data.length}`}
             </div>
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
               Nations where sea level rise is speeding up
@@ -500,8 +676,12 @@ export function PaceOfChange() {
               </div>
             </div>
             <div className="text-3xl font-serif font-bold tracking-tight text-orange-400">
-              {isLoading || !data ? "—" : `${avgDelta >= 0 ? "+" : ""}${avgDelta.toFixed(2)}`}
-              <span className="text-sm font-sans text-muted-foreground ml-1">mm/yr</span>
+              {isLoading || !data
+                ? "—"
+                : `${avgDelta >= 0 ? "+" : ""}${avgDelta.toFixed(2)}`}
+              <span className="text-sm font-sans text-muted-foreground ml-1">
+                mm/yr
+              </span>
             </div>
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
               Comparison between first and second 15 years
@@ -572,7 +752,8 @@ export function PaceOfChange() {
                     30-Year Pace Comparison
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                    Linear regression slope (mm/yr) calculated over the entire 30-year observation period (1993–2023).
+                    Linear regression slope (mm/yr) calculated over the entire
+                    30-year observation period (1993–2023).
                   </p>
                 </div>
                 <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 md:mt-0 flex-shrink-0">
@@ -594,7 +775,10 @@ export function PaceOfChange() {
                       layout="vertical"
                       margin={{ top: 25, right: 48, left: 60, bottom: 35 }}
                       onMouseMove={(state) => {
-                        if (state && typeof state.activeTooltipIndex === "number") {
+                        if (
+                          state &&
+                          typeof state.activeTooltipIndex === "number"
+                        ) {
                           setHoveredBarIndex(state.activeTooltipIndex);
                         } else {
                           setHoveredBarIndex(null);
@@ -603,21 +787,94 @@ export function PaceOfChange() {
                       onMouseLeave={() => setHoveredBarIndex(null)}
                     >
                       <defs>
-                        <linearGradient id="barAccelerating" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="hsl(var(--primary)/0.4)" />
+                        <linearGradient
+                          id="barAccelerating"
+                          x1="0"
+                          y1="0"
+                          x2="1"
+                          y2="0"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="hsl(var(--primary)/0.4)"
+                          />
                           <stop offset="100%" stopColor="hsl(var(--primary))" />
                         </linearGradient>
-                        <linearGradient id="barStable" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="rgba(148, 163, 184, 0.15)" />
-                          <stop offset="100%" stopColor="rgba(148, 163, 184, 0.45)" />
+                        <linearGradient
+                          id="barStable"
+                          x1="0"
+                          y1="0"
+                          x2="1"
+                          y2="0"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="rgba(148, 163, 184, 0.15)"
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="rgba(148, 163, 184, 0.45)"
+                          />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" horizontal={false} vertical={true} stroke="hsl(var(--border))" opacity={0.3} />
-                      <XAxis type="number" domain={[0, "auto"]} stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} tickFormatter={(v) => `${(v * 1000).toFixed(1)}`}>
-                        <Label value="Pace of Sea Level Rise (mm/yr)" position="insideBottom" offset={-20} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        horizontal={false}
+                        vertical={true}
+                        stroke="hsl(var(--border))"
+                        opacity={0.3}
+                      />
+                      <XAxis
+                        type="number"
+                        domain={[0, "auto"]}
+                        stroke="hsl(var(--muted-foreground))"
+                        axisLine={false}
+                        tick={{
+                          fill: "hsl(var(--muted-foreground))",
+                          fontSize: 10,
+                          fontFamily: "monospace",
+                        }}
+                        tickFormatter={(v) => `${(v * 1000).toFixed(1)}`}
+                      >
+                        <Label
+                          value="Pace of Sea Level Rise (mm/yr)"
+                          position="insideBottom"
+                          offset={-20}
+                          style={{
+                            textAnchor: "middle",
+                            fill: "hsl(var(--muted-foreground))",
+                            fontSize: 10,
+                            fontFamily: "monospace",
+                            fontWeight: 600,
+                          }}
+                        />
                       </XAxis>
-                      <YAxis dataKey="code" type="category" stroke="hsl(var(--muted-foreground))" axisLine={false} tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace" }} width={60} interval={0}>
-                        <Label value="Pacific Nation" angle={-90} position="insideLeft" offset={10} style={{ textAnchor: "middle", fill: "hsl(var(--muted-foreground))", fontSize: 10, fontFamily: "monospace", fontWeight: 600 }} />
+                      <YAxis
+                        dataKey="code"
+                        type="category"
+                        stroke="hsl(var(--muted-foreground))"
+                        axisLine={false}
+                        tick={{
+                          fill: "hsl(var(--muted-foreground))",
+                          fontSize: 10,
+                          fontFamily: "monospace",
+                        }}
+                        width={60}
+                        interval={0}
+                      >
+                        <Label
+                          value="Pacific Nation"
+                          angle={-90}
+                          position="insideLeft"
+                          offset={10}
+                          style={{
+                            textAnchor: "middle",
+                            fill: "hsl(var(--muted-foreground))",
+                            fontSize: 10,
+                            fontFamily: "monospace",
+                            fontWeight: 600,
+                          }}
+                        />
                       </YAxis>
                       <Tooltip
                         content={<BarChartTooltip />}
@@ -646,11 +903,19 @@ export function PaceOfChange() {
                           const isHovered = hoveredBarIndex === index;
                           const isAnyHovered = hoveredBarIndex !== null;
                           const baseOpacity = entry.accelerating ? 1.0 : 0.45;
-                          const opacity = isHovered ? 1.0 : (isAnyHovered ? 0.15 : baseOpacity);
+                          const opacity = isHovered
+                            ? 1.0
+                            : isAnyHovered
+                              ? 0.15
+                              : baseOpacity;
                           return (
                             <Cell
                               key={`cell-${index}`}
-                              fill={entry.accelerating ? "url(#barAccelerating)" : "url(#barStable)"}
+                              fill={
+                                entry.accelerating
+                                  ? "url(#barAccelerating)"
+                                  : "url(#barStable)"
+                              }
                               opacity={opacity}
                               className="transition-opacity duration-100 cursor-pointer"
                             />
@@ -691,7 +956,8 @@ export function PaceOfChange() {
 
             {/* Interaction Helper Text */}
             <p className="text-center text-xs text-muted-foreground mt-4 mb-10 font-sans select-none">
-              Hover over any bar to inspect that nation's 30-year sea level rise pace and compare it to the global average.
+              Hover over any bar to inspect that nation's 30-year sea level rise
+              pace and compare it to the global average.
             </p>
 
             {/* Visual 2: Acceleration Before & After 2008 */}
@@ -702,7 +968,8 @@ export function PaceOfChange() {
                     Acceleration Before & After 2008
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                    Each line connects a nation's 1993–2007 rise rate (left) to its 2008–2023 rise rate (right).
+                    Each line connects a nation's 1993–2007 rise rate (left) to
+                    its 2008–2023 rise rate (right).
                   </p>
                 </div>
                 <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 self-end">
@@ -721,7 +988,9 @@ export function PaceOfChange() {
 
             {/* Interaction Helper Text */}
             <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-              Hover over any line or label to isolate its trajectory and trace how that nation's rate of rise accelerated or slowed between epochs.
+              Hover over any line or label to isolate its trajectory and trace
+              how that nation's rate of rise accelerated or slowed between
+              epochs.
             </p>
           </motion.div>
         )}

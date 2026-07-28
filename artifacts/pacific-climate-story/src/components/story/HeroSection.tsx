@@ -25,26 +25,30 @@ export function HeroSection() {
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   // Calculate stats with 100% verified dataset fallback values (from 1993–2023 Pacific SLA records)
   const avgRiseMeters = overview?.avgRiseMeters ?? 0.045;
-  const d1Avg = decadeData?.globalDecades.find((d) => d.key === "d1")?.avg ?? 0.004;
-  const d3Avg = decadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.088;
+  const d1Avg =
+    decadeData?.globalDecades.find((d) => d.key === "d1")?.avg ?? 0.004;
+  const d3Avg =
+    decadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.088;
   const shift = d3Avg - d1Avg;
 
-  const fastest =
-    accelData?.slice().sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod)[0] ?? {
-      country: "Papua New Guinea",
-      slopeFullPeriod: 0.0054
-    };
+  const fastest = accelData
+    ?.slice()
+    .sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod)[0] ?? {
+    country: "Papua New Guinea",
+    slopeFullPeriod: 0.0054,
+  };
 
-  const mostVolatile =
-    volData?.countries.slice().sort((a, b) => b.volatility - a.volatility)[0] ?? {
-      country: "Palau",
-      volatility: 0.087
-    };
+  const mostVolatile = volData?.countries
+    .slice()
+    .sort((a, b) => b.volatility - a.volatility)[0] ?? {
+    country: "Palau",
+    volatility: 0.087,
+  };
 
   return (
     <section
@@ -72,15 +76,23 @@ export function HeroSection() {
               The Ocean Is <br />
               <motion.span
                 className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-400 to-blue-500"
-                animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                animate={{
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 style={{ backgroundSize: "200% 200%" }}
               >
                 Swallowing Pacific Islands
               </motion.span>
             </h1>
             <p className="text-base md:text-xl text-muted-foreground leading-relaxed">
-              30 years of sea-level records reveal a clear and persistent rise across the Pacific, bringing growing challenges for many low-lying island nations.
+              30 years of sea-level records reveal a clear and persistent rise
+              across the Pacific, bringing growing challenges for many low-lying
+              island nations.
             </p>
           </motion.div>
         </div>
@@ -115,17 +127,24 @@ export function HeroSection() {
 
             {/* Metric 3: Fastest Rising Pacific Island Nation */}
             <div className="border-l-2 border-rose-500 pl-4 py-1">
-              <div className="text-2xl font-serif font-bold text-foreground truncate" title={fastest.country}>
+              <div
+                className="text-2xl font-serif font-bold text-foreground truncate"
+                title={fastest.country}
+              >
                 {fastest.country}
               </div>
               <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                Fastest Rising (+{(fastest.slopeFullPeriod * 1000).toFixed(1)} mm/yr)
+                Fastest Rising (+{(fastest.slopeFullPeriod * 1000).toFixed(1)}{" "}
+                mm/yr)
               </div>
             </div>
 
             {/* Metric 4: Most Volatile Pacific Island Nation */}
             <div className="border-l-2 border-purple-500 pl-4 py-1">
-              <div className="text-2xl font-serif font-bold text-foreground truncate" title={mostVolatile.country}>
+              <div
+                className="text-2xl font-serif font-bold text-foreground truncate"
+                title={mostVolatile.country}
+              >
                 {mostVolatile.country}
               </div>
               <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
@@ -151,12 +170,12 @@ export function HeroSection() {
             className="w-1.5 h-1.5 bg-primary rounded-full"
             animate={{
               y: [0, 12, 0],
-              opacity: [1, 0.2, 1]
+              opacity: [1, 0.2, 1],
             }}
             transition={{
               duration: 1.8,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
           />
         </div>

@@ -5,8 +5,8 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { ThresholdCrossingNation } from './thresholdCrossingNation';
-import type { ThresholdCrossingSummary } from './thresholdCrossingSummary';
+import type { ThresholdCrossingNation } from "./thresholdCrossingNation";
+import type { ThresholdCrossingSummary } from "./thresholdCrossingSummary";
 
 export interface ThresholdCrossingsData {
   nations: ThresholdCrossingNation[];

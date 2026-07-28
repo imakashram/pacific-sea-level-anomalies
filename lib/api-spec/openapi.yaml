@@ -463,7 +463,15 @@ components:
         accelerating:
           type: boolean
           description: True if second-half slope exceeds first-half slope
-      required: [country, code, slopeFullPeriod, slopeFirstHalf, slopeSecondHalf, accelerating]
+      required:
+        [
+          country,
+          code,
+          slopeFullPeriod,
+          slopeFirstHalf,
+          slopeSecondHalf,
+          accelerating,
+        ]
 
     CountryRanking:
       type: object
@@ -560,7 +568,15 @@ components:
         projectedRise2033:
           type: number
           description: Projected cumulative anomaly increase by 2033
-      required: [historical, projected, slopeMmPerYear, r2, projectedRise2030, projectedRise2033]
+      required:
+        [
+          historical,
+          projected,
+          slopeMmPerYear,
+          r2,
+          projectedRise2030,
+          projectedRise2033,
+        ]
 
     RiskScoreComponents:
       type: object
@@ -598,7 +614,18 @@ components:
           type: number
         decadeAcceleration:
           type: number
-      required: [country, code, riskScore, riskLevel, components, cumulativeRise, slope, volatility, decadeAcceleration]
+      required:
+        [
+          country,
+          code,
+          riskScore,
+          riskLevel,
+          components,
+          cumulativeRise,
+          slope,
+          volatility,
+          decadeAcceleration,
+        ]
 
     RiskScoreData:
       type: object
@@ -617,7 +644,15 @@ components:
           type: integer
         lowCount:
           type: integer
-      required: [countries, avgRiskScore, criticalCount, highCount, mediumCount, lowCount]
+      required:
+        [
+          countries,
+          avgRiskScore,
+          criticalCount,
+          highCount,
+          mediumCount,
+          lowCount,
+        ]
 
     CountryProfileTimeSeries:
       type: object
@@ -744,7 +779,15 @@ components:
           type: integer
         avgDrop:
           type: number
-      required: [nations, globalAvg1997, globalAvg1998, globalAvg1999, totalNegative1998, avgDrop]
+      required:
+        [
+          nations,
+          globalAvg1997,
+          globalAvg1998,
+          globalAvg1999,
+          totalNegative1998,
+          avgDrop,
+        ]
 
     RegionYearlyAvg:
       type: object
@@ -785,7 +828,15 @@ components:
           type: string
         topNationRise:
           type: number
-      required: [avgCumulativeRise, avgSlopeMmPerYear, avgDecadeAcceleration, avgVolatility, topNation, topNationRise]
+      required:
+        [
+          avgCumulativeRise,
+          avgSlopeMmPerYear,
+          avgDecadeAcceleration,
+          avgVolatility,
+          topNation,
+          topNationRise,
+        ]
 
     GeographicClusterRegion:
       type: object
@@ -847,7 +898,20 @@ components:
           type: number
         cumulativeRise:
           type: number
-      required: [country, code, firstPositive, firstTenth, firstFifth, yearsPositive, yearsAboveTenth, yearsAboveFifth, streakAboveZero, latestValue, cumulativeRise]
+      required:
+        [
+          country,
+          code,
+          firstPositive,
+          firstTenth,
+          firstFifth,
+          yearsPositive,
+          yearsAboveTenth,
+          yearsAboveFifth,
+          streakAboveZero,
+          latestValue,
+          cumulativeRise,
+        ]
 
     ThresholdCrossingSummary:
       type: object
@@ -862,7 +926,8 @@ components:
           type: integer
         avgFirstPositiveYear:
           type: number
-      required: [crossedZero, crossedTenth, crossedFifth, total, avgFirstPositiveYear]
+      required:
+        [crossedZero, crossedTenth, crossedFifth, total, avgFirstPositiveYear]
 
     ThresholdCrossingsData:
       type: object

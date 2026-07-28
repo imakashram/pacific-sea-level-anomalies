@@ -5,7 +5,7 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { ClimateOverviewYearRange } from './climateOverviewYearRange';
+import type { ClimateOverviewYearRange } from "./climateOverviewYearRange";
 
 export interface ClimateOverview {
   totalCountries: number;

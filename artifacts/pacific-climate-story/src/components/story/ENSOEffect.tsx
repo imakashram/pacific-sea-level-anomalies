@@ -13,7 +13,10 @@ export function ENSOEffect() {
   const { data: ensoData, isLoading } = useGetENSOSensitivity();
   const [displayCount, setDisplayCount] = useState<10 | 21>(10);
   const [hoveredNation, setHoveredNation] = useState<string | null>(null);
-  const [hoverCoords, setHoverCoords] = useState<{ x: number; y: number } | null>(null);
+  const [hoverCoords, setHoverCoords] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   // ENSO tab processing
   const nationsList = ensoData?.nations ?? [];
@@ -22,14 +25,19 @@ export function ENSOEffect() {
   let minCm = -10;
   let maxCm = 25;
   if (nationsList.length > 0) {
-    const allVals = nationsList.flatMap((n) => [n.elNinoAvg * 100, n.neutralAvg * 100, n.laNinaAvg * 100]);
+    const allVals = nationsList.flatMap((n) => [
+      n.elNinoAvg * 100,
+      n.neutralAvg * 100,
+      n.laNinaAvg * 100,
+    ]);
     const minVal = Math.min(...allVals);
     const maxVal = Math.max(...allVals);
     minCm = Math.floor(minVal - 2);
     maxCm = Math.ceil(maxVal + 2);
   }
   const range = maxCm - minCm;
-  const getPct = (valCm: number) => Math.max(0, Math.min(100, ((valCm - minCm) / range) * 100));
+  const getPct = (valCm: number) =>
+    Math.max(0, Math.min(100, ((valCm - minCm) / range) * 100));
   const zeroPct = getPct(0);
 
   const ticks: number[] = [];
@@ -56,8 +64,9 @@ export function ENSOEffect() {
               The ENSO Effect
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              El Niño and La Niña create natural swings in Pacific sea levels. Explore how these 
-              climate cycles influence short-term anomalies alongside the long-term trend of rising seas.
+              El Niño and La Niña create natural swings in Pacific sea levels.
+              Explore how these climate cycles influence short-term anomalies
+              alongside the long-term trend of rising seas.
             </p>
           </div>
         </motion.div>
@@ -85,7 +94,9 @@ export function ENSOEffect() {
                   </div>
                   <div className="text-3xl font-serif font-bold tracking-tight text-cyan-400">
                     +{(ensoData.nations[0]?.sensitivity * 100).toFixed(1)}
-                    <span className="text-sm font-sans text-muted-foreground ml-1">cm swing</span>
+                    <span className="text-sm font-sans text-muted-foreground ml-1">
+                      cm swing
+                    </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     Guam & Palau lead with highest variations
@@ -103,8 +114,13 @@ export function ENSOEffect() {
                     </div>
                   </div>
                   <div className="text-3xl font-serif font-bold tracking-tight text-teal-400">
-                    {(ensoData.nations[ensoData.nations.length - 1]?.sensitivity * 100).toFixed(1)}
-                    <span className="text-sm font-sans text-muted-foreground ml-1">cm swing</span>
+                    {(
+                      ensoData.nations[ensoData.nations.length - 1]
+                        ?.sensitivity * 100
+                    ).toFixed(1)}
+                    <span className="text-sm font-sans text-muted-foreground ml-1">
+                      cm swing
+                    </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     New Caledonia & French Polynesia decoupled
@@ -123,7 +139,9 @@ export function ENSOEffect() {
                   </div>
                   <div className="text-3xl font-serif font-bold tracking-tight text-orange-400">
                     {(ensoData.global.elNinoAvg * 100).toFixed(1)}
-                    <span className="text-sm font-sans text-muted-foreground ml-1">cm avg dip</span>
+                    <span className="text-sm font-sans text-muted-foreground ml-1">
+                      cm avg dip
+                    </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     Temporary dip fails to offset rising baseline
@@ -142,7 +160,9 @@ export function ENSOEffect() {
                   </div>
                   <div className="text-3xl font-serif font-bold tracking-tight text-sky-400">
                     +{(ensoData.global.laNinaAvg * 100).toFixed(1)}
-                    <span className="text-sm font-sans text-muted-foreground ml-1">cm avg surge</span>
+                    <span className="text-sm font-sans text-muted-foreground ml-1">
+                      cm avg surge
+                    </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     Surges amplify and accelerate coastal risks
@@ -186,7 +206,10 @@ export function ENSOEffect() {
                     ENSO Deviation Range (1993–2023)
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed max-w-2xl">
-                    Comparing average sea level anomalies during El Niño (orange), Neutral (grey), and La Niña (blue) phases. The connecting lines illustrate the total short-term volatility range in centimeters.
+                    Comparing average sea level anomalies during El Niño
+                    (orange), Neutral (grey), and La Niña (blue) phases. The
+                    connecting lines illustrate the total short-term volatility
+                    range in centimeters.
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-sky-400 font-mono text-[10px] sm:mb-1 flex-shrink-0 self-end sm:self-auto">
@@ -199,7 +222,7 @@ export function ENSOEffect() {
               <div className="flex items-center w-full h-8 border-b border-border/30 mb-4 text-xs font-mono text-muted-foreground select-none">
                 {/* Left spacer matching row label width */}
                 <div className="w-[170px] flex-shrink-0" />
-                
+
                 {/* Ticks container matching track area */}
                 <div className="relative flex-1 h-full">
                   {ticks.map((t) => {
@@ -210,10 +233,14 @@ export function ENSOEffect() {
                         className="absolute transform -translate-x-1/2 flex flex-col items-center top-0"
                         style={{ left: `${leftPct}%` }}
                       >
-                        <span className={t === 0 ? "font-bold text-primary" : ""}>
+                        <span
+                          className={t === 0 ? "font-bold text-primary" : ""}
+                        >
                           {t > 0 ? `+${t}` : t}cm
                         </span>
-                        <div className={`w-px h-2 mt-1 ${t === 0 ? "bg-primary" : "bg-border/60"}`} />
+                        <div
+                          className={`w-px h-2 mt-1 ${t === 0 ? "bg-primary" : "bg-border/60"}`}
+                        />
                       </div>
                     );
                   })}
@@ -228,7 +255,9 @@ export function ENSOEffect() {
                 {/* Zero reference vertical guide line */}
                 <div
                   className="absolute top-0 bottom-0 w-px bg-primary/25 border-r border-dashed border-primary/40 pointer-events-none z-0"
-                  style={{ left: `calc(170px + (100% - 260px) * ${zeroPct / 100})` }}
+                  style={{
+                    left: `calc(170px + (100% - 260px) * ${zeroPct / 100})`,
+                  }}
                 />
 
                 {displayedNations.map((n, idx) => {
@@ -251,7 +280,8 @@ export function ENSOEffect() {
                       key={n.code}
                       onMouseEnter={() => setHoveredNation(n.code)}
                       onMouseMove={(e) => {
-                        const rect = e.currentTarget.parentElement?.getBoundingClientRect();
+                        const rect =
+                          e.currentTarget.parentElement?.getBoundingClientRect();
                         if (rect) {
                           setHoverCoords({
                             x: e.clientX - rect.left,
@@ -264,7 +294,9 @@ export function ENSOEffect() {
                         setHoverCoords(null);
                       }}
                       className={`relative flex items-center h-10 px-3 rounded-xl transition-all duration-300 group ${
-                        isHovered ? "bg-card/60 border border-primary/30 shadow-md scale-[1.01]" : "hover:bg-card/30"
+                        isHovered
+                          ? "bg-card/60 border border-primary/30 shadow-md scale-[1.01]"
+                          : "hover:bg-card/30"
                       }`}
                     >
                       {/* Country Name & Code */}
@@ -344,9 +376,12 @@ export function ENSOEffect() {
 
                 {/* Floating Detailed Hover Tooltip (rendered outside rows loop) */}
                 <AnimatePresence>
-                  {hoveredNation && hoverCoords && (
+                  {hoveredNation &&
+                    hoverCoords &&
                     (() => {
-                      const n = nationsList.find((nat) => nat.code === hoveredNation);
+                      const n = nationsList.find(
+                        (nat) => nat.code === hoveredNation,
+                      );
                       if (!n) return null;
 
                       const elCm = n.elNinoAvg * 100;
@@ -356,7 +391,7 @@ export function ENSOEffect() {
 
                       const tooltipWidth = 250;
                       const tooltipHeight = 150;
-                      
+
                       let tooltipX = hoverCoords.x + 15;
                       let tooltipY = hoverCoords.y - tooltipHeight - 10;
 
@@ -369,7 +404,7 @@ export function ENSOEffect() {
                       if (hoverCoords.x > 350) {
                         tooltipX = hoverCoords.x - tooltipWidth - 15;
                       }
-                      
+
                       // Clamp X so it doesn't bleed off the left side
                       if (tooltipX < 10) {
                         tooltipX = 10;
@@ -389,7 +424,10 @@ export function ENSOEffect() {
                           }}
                         >
                           <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
-                            <span className="font-serif text-sm font-bold text-white truncate max-w-[140px]" title={`${n.country} (${n.code})`}>
+                            <span
+                              className="font-serif text-sm font-bold text-white truncate max-w-[140px]"
+                              title={`${n.country} (${n.code})`}
+                            >
                               {n.country}
                             </span>
                             <span className="text-[10px] text-sky-400 font-semibold tracking-wider flex-shrink-0">
@@ -403,7 +441,8 @@ export function ENSOEffect() {
                                 El Niño (Dip)
                               </span>
                               <span className="font-bold text-white text-sm">
-                                {elCm >= 0 ? "+" : ""}{elCm.toFixed(1)} cm
+                                {elCm >= 0 ? "+" : ""}
+                                {elCm.toFixed(1)} cm
                               </span>
                             </div>
                             <div className="flex justify-between items-center gap-6">
@@ -412,7 +451,8 @@ export function ENSOEffect() {
                                 Neutral Average
                               </span>
                               <span className="font-bold text-white text-sm">
-                                {neuCm >= 0 ? "+" : ""}{neuCm.toFixed(1)} cm
+                                {neuCm >= 0 ? "+" : ""}
+                                {neuCm.toFixed(1)} cm
                               </span>
                             </div>
                             <div className="flex justify-between items-center gap-6">
@@ -421,14 +461,14 @@ export function ENSOEffect() {
                                 La Niña (Surge)
                               </span>
                               <span className="font-bold text-white text-sm">
-                                {laCm >= 0 ? "+" : ""}{laCm.toFixed(1)} cm
+                                {laCm >= 0 ? "+" : ""}
+                                {laCm.toFixed(1)} cm
                               </span>
                             </div>
                           </div>
                         </motion.div>
                       );
-                    })()
-                  )}
+                    })()}
                 </AnimatePresence>
               </div>
 
@@ -462,11 +502,12 @@ export function ENSOEffect() {
 
               {/* Interaction Helper Text */}
               <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-                Hover over any country to highlight its range. The width of the gradient bar shows the total sea level swing between climate phases. Larger bars indicate higher vulnerability to El Niño and La Niña cycles.
+                Hover over any country to highlight its range. The width of the
+                gradient bar shows the total sea level swing between climate
+                phases. Larger bars indicate higher vulnerability to El Niño and
+                La Niña cycles.
               </p>
             </div>
-
-
           </motion.div>
         )}
       </div>

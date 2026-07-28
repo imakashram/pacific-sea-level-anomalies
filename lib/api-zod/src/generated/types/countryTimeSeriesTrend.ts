@@ -6,11 +6,11 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type CountryTimeSeriesTrend = typeof CountryTimeSeriesTrend[keyof typeof CountryTimeSeriesTrend];
-
+export type CountryTimeSeriesTrend =
+  (typeof CountryTimeSeriesTrend)[keyof typeof CountryTimeSeriesTrend];
 
 export const CountryTimeSeriesTrend = {
-  rising: 'rising',
-  stable: 'stable',
-  variable: 'variable',
+  rising: "rising",
+  stable: "stable",
+  variable: "variable",
 } as const;

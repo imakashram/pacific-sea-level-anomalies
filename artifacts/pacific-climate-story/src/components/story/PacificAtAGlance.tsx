@@ -49,7 +49,13 @@ const RISK_COLORS: Record<string, string> = {
 /**
  * Sub-component rendering a micro sparkline chart for a territory's 30-year sea level trend.
  */
-function MiniSparkline({ data, color }: { data: { value: number }[]; color: string }) {
+function MiniSparkline({
+  data,
+  color,
+}: {
+  data: { value: number }[];
+  color: string;
+}) {
   return (
     <div className="w-24 h-10 opacity-80 hover:opacity-100 transition-opacity duration-300">
       <ResponsiveContainer width="100%" height="100%">
@@ -97,7 +103,7 @@ function downloadCSV(rows: RankingRow[]) {
       r.peakYear,
       r.decadeAcceleration.toFixed(4),
       r.slope > 0 ? "Yes" : "No",
-    ].join(",")
+    ].join(","),
   );
 
   const csv = [headers.join(","), ...lines].join("\n");
@@ -115,27 +121,237 @@ function downloadCSV(rows: RankingRow[]) {
  * derived directly from climate_change.csv observations.
  */
 const FALLBACK_RANKINGS: RankingRow[] = [
-  { code: "PG", country: "Papua New Guinea", mean: 0.045, volatility: 0.075, cumulativeRise: 0.2, slope: 0.0054, peakValue: 0.2, peakYear: 2022, decadeAcceleration: 0.112 },
-  { code: "SB", country: "Solomon Islands", mean: 0.044, volatility: 0.072, cumulativeRise: 0.2, slope: 0.00512, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.108 },
-  { code: "VU", country: "Vanuatu", mean: 0.043, volatility: 0.074, cumulativeRise: 0.2, slope: 0.0046, peakValue: 0.2, peakYear: 2022, decadeAcceleration: 0.095 },
-  { code: "FM", country: "Micronesia", mean: 0.043, volatility: 0.081, cumulativeRise: 0.2, slope: 0.00464, peakValue: 0.2, peakYear: 2022, decadeAcceleration: 0.098 },
-  { code: "PW", country: "Palau", mean: 0.042, volatility: 0.087, cumulativeRise: 0.2, slope: 0.00484, peakValue: 0.2, peakYear: 2008, decadeAcceleration: 0.105 },
-  { code: "NR", country: "Nauru", mean: 0.042, volatility: 0.068, cumulativeRise: 0.2, slope: 0.0043, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.091 },
-  { code: "MH", country: "Marshall Islands", mean: 0.041, volatility: 0.071, cumulativeRise: 0.2, slope: 0.0042, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.088 },
-  { code: "FJ", country: "Fiji", mean: 0.041, volatility: 0.069, cumulativeRise: 0.2, slope: 0.0041, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.086 },
-  { code: "TV", country: "Tuvalu", mean: 0.04, volatility: 0.067, cumulativeRise: 0.2, slope: 0.004, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.085 },
-  { code: "KI", country: "Kiribati", mean: 0.04, volatility: 0.066, cumulativeRise: 0.2, slope: 0.0039, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.083 },
-  { code: "WS", country: "Samoa", mean: 0.039, volatility: 0.064, cumulativeRise: 0.2, slope: 0.0039, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.082 },
-  { code: "TO", country: "Tonga", mean: 0.039, volatility: 0.063, cumulativeRise: 0.2, slope: 0.0038, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.080 },
-  { code: "NC", country: "New Caledonia", mean: 0.038, volatility: 0.062, cumulativeRise: 0.2, slope: 0.0037, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.079 },
-  { code: "PF", country: "French Polynesia", mean: 0.038, volatility: 0.061, cumulativeRise: 0.2, slope: 0.0036, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.077 },
-  { code: "CK", country: "Cook Islands", mean: 0.037, volatility: 0.060, cumulativeRise: 0.2, slope: 0.0036, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.076 },
-  { code: "NU", country: "Niue", mean: 0.036, volatility: 0.059, cumulativeRise: 0.2, slope: 0.0035, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.074 },
-  { code: "TK", country: "Tokelau", mean: 0.036, volatility: 0.058, cumulativeRise: 0.2, slope: 0.0034, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.073 },
-  { code: "WF", country: "Wallis & Futuna", mean: 0.035, volatility: 0.057, cumulativeRise: 0.2, slope: 0.0034, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.071 },
-  { code: "AS", country: "American Samoa", mean: 0.034, volatility: 0.056, cumulativeRise: 0.2, slope: 0.0033, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.070 },
-  { code: "MP", country: "Northern Mariana", mean: 0.033, volatility: 0.055, cumulativeRise: 0.2, slope: 0.0032, peakValue: 0.2, peakYear: 2021, decadeAcceleration: 0.068 },
-  { code: "GU", country: "Guam", mean: 0.030, volatility: 0.050, cumulativeRise: 0.18, slope: 0.0029, peakValue: 0.18, peakYear: 2021, decadeAcceleration: 0.060 }
+  {
+    code: "PG",
+    country: "Papua New Guinea",
+    mean: 0.045,
+    volatility: 0.075,
+    cumulativeRise: 0.2,
+    slope: 0.0054,
+    peakValue: 0.2,
+    peakYear: 2022,
+    decadeAcceleration: 0.112,
+  },
+  {
+    code: "SB",
+    country: "Solomon Islands",
+    mean: 0.044,
+    volatility: 0.072,
+    cumulativeRise: 0.2,
+    slope: 0.00512,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.108,
+  },
+  {
+    code: "VU",
+    country: "Vanuatu",
+    mean: 0.043,
+    volatility: 0.074,
+    cumulativeRise: 0.2,
+    slope: 0.0046,
+    peakValue: 0.2,
+    peakYear: 2022,
+    decadeAcceleration: 0.095,
+  },
+  {
+    code: "FM",
+    country: "Micronesia",
+    mean: 0.043,
+    volatility: 0.081,
+    cumulativeRise: 0.2,
+    slope: 0.00464,
+    peakValue: 0.2,
+    peakYear: 2022,
+    decadeAcceleration: 0.098,
+  },
+  {
+    code: "PW",
+    country: "Palau",
+    mean: 0.042,
+    volatility: 0.087,
+    cumulativeRise: 0.2,
+    slope: 0.00484,
+    peakValue: 0.2,
+    peakYear: 2008,
+    decadeAcceleration: 0.105,
+  },
+  {
+    code: "NR",
+    country: "Nauru",
+    mean: 0.042,
+    volatility: 0.068,
+    cumulativeRise: 0.2,
+    slope: 0.0043,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.091,
+  },
+  {
+    code: "MH",
+    country: "Marshall Islands",
+    mean: 0.041,
+    volatility: 0.071,
+    cumulativeRise: 0.2,
+    slope: 0.0042,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.088,
+  },
+  {
+    code: "FJ",
+    country: "Fiji",
+    mean: 0.041,
+    volatility: 0.069,
+    cumulativeRise: 0.2,
+    slope: 0.0041,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.086,
+  },
+  {
+    code: "TV",
+    country: "Tuvalu",
+    mean: 0.04,
+    volatility: 0.067,
+    cumulativeRise: 0.2,
+    slope: 0.004,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.085,
+  },
+  {
+    code: "KI",
+    country: "Kiribati",
+    mean: 0.04,
+    volatility: 0.066,
+    cumulativeRise: 0.2,
+    slope: 0.0039,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.083,
+  },
+  {
+    code: "WS",
+    country: "Samoa",
+    mean: 0.039,
+    volatility: 0.064,
+    cumulativeRise: 0.2,
+    slope: 0.0039,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.082,
+  },
+  {
+    code: "TO",
+    country: "Tonga",
+    mean: 0.039,
+    volatility: 0.063,
+    cumulativeRise: 0.2,
+    slope: 0.0038,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.08,
+  },
+  {
+    code: "NC",
+    country: "New Caledonia",
+    mean: 0.038,
+    volatility: 0.062,
+    cumulativeRise: 0.2,
+    slope: 0.0037,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.079,
+  },
+  {
+    code: "PF",
+    country: "French Polynesia",
+    mean: 0.038,
+    volatility: 0.061,
+    cumulativeRise: 0.2,
+    slope: 0.0036,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.077,
+  },
+  {
+    code: "CK",
+    country: "Cook Islands",
+    mean: 0.037,
+    volatility: 0.06,
+    cumulativeRise: 0.2,
+    slope: 0.0036,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.076,
+  },
+  {
+    code: "NU",
+    country: "Niue",
+    mean: 0.036,
+    volatility: 0.059,
+    cumulativeRise: 0.2,
+    slope: 0.0035,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.074,
+  },
+  {
+    code: "TK",
+    country: "Tokelau",
+    mean: 0.036,
+    volatility: 0.058,
+    cumulativeRise: 0.2,
+    slope: 0.0034,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.073,
+  },
+  {
+    code: "WF",
+    country: "Wallis & Futuna",
+    mean: 0.035,
+    volatility: 0.057,
+    cumulativeRise: 0.2,
+    slope: 0.0034,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.071,
+  },
+  {
+    code: "AS",
+    country: "American Samoa",
+    mean: 0.034,
+    volatility: 0.056,
+    cumulativeRise: 0.2,
+    slope: 0.0033,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.07,
+  },
+  {
+    code: "MP",
+    country: "Northern Mariana",
+    mean: 0.033,
+    volatility: 0.055,
+    cumulativeRise: 0.2,
+    slope: 0.0032,
+    peakValue: 0.2,
+    peakYear: 2021,
+    decadeAcceleration: 0.068,
+  },
+  {
+    code: "GU",
+    country: "Guam",
+    mean: 0.03,
+    volatility: 0.05,
+    cumulativeRise: 0.18,
+    slope: 0.0029,
+    peakValue: 0.18,
+    peakYear: 2021,
+    decadeAcceleration: 0.06,
+  },
 ];
 
 /**
@@ -165,7 +381,9 @@ export function PacificAtAGlance({
 
   useEffect(() => {
     if (data && data.length > 0 && !selectedCountryCode) {
-      const topCountry = data.slice().sort((a, b) => b.cumulativeRise - a.cumulativeRise)[0];
+      const topCountry = data
+        .slice()
+        .sort((a, b) => b.cumulativeRise - a.cumulativeRise)[0];
       setSelectedCountryCode(topCountry.code);
     }
   }, [data, selectedCountryCode]);
@@ -182,20 +400,27 @@ export function PacificAtAGlance({
 
   // Filter & sort data rows
   const filteredData = data.filter((d) =>
-    d.country.toLowerCase().includes(search.toLowerCase())
+    d.country.toLowerCase().includes(search.toLowerCase()),
   );
 
   const sortedData = [...filteredData].sort((a, b) => {
     const valA = a[sortField];
     const valB = b[sortField];
     if (typeof valA === "string" && typeof valB === "string") {
-      return sortDir === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      return sortDir === "asc"
+        ? valA.localeCompare(valB)
+        : valB.localeCompare(valA);
     }
-    return sortDir === "asc" ? (valA as number) - (valB as number) : (valB as number) - (valA as number);
+    return sortDir === "asc"
+      ? (valA as number) - (valB as number)
+      : (valB as number) - (valA as number);
   });
 
   const sparklineMap = new Map(
-    timeSeriesData?.map((c) => [c.code, c.data.map((d) => ({ value: d.value }))]) ?? []
+    timeSeriesData?.map((c) => [
+      c.code,
+      c.data.map((d) => ({ value: d.value })),
+    ]) ?? [],
   );
 
   const riskMap = new Map(riskData?.countries.map((c) => [c.code, c]) ?? []);
@@ -203,7 +428,9 @@ export function PacificAtAGlance({
   // Sort direction indicator arrow component
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) return <span className="ml-1 opacity-20">↕</span>;
-    return <span className="ml-1 text-primary">{sortDir === "asc" ? "↑" : "↓"}</span>;
+    return (
+      <span className="ml-1 text-primary">{sortDir === "asc" ? "↑" : "↓"}</span>
+    );
   };
 
   return (
@@ -222,7 +449,9 @@ export function PacificAtAGlance({
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center justify-center text-center mx-auto"
           >
-            <h2 className="text-5xl md:text-6xl font-serif font-bold mb-3">The Pacific at a Glance</h2>
+            <h2 className="text-5xl md:text-6xl font-serif font-bold mb-3">
+              The Pacific at a Glance
+            </h2>
             <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
               Explore the complete Pacific record.
             </p>
@@ -275,8 +504,12 @@ export function PacificAtAGlance({
                     <Globe className="w-4 h-4 text-primary flex-shrink-0" />
                     <span>
                       {(() => {
-                        const country = data.find((r) => r.code === selectedCountryCode);
-                        return country ? `${country.country} (${country.code})` : "Select Nation";
+                        const country = data.find(
+                          (r) => r.code === selectedCountryCode,
+                        );
+                        return country
+                          ? `${country.country} (${country.code})`
+                          : "Select Nation";
                       })()}
                     </span>
                   </div>
@@ -288,14 +521,22 @@ export function PacificAtAGlance({
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
 
                 <AnimatePresence>
                   {isDropdownOpen && (
                     <>
-                      <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setIsDropdownOpen(false)}
+                      />
                       <motion.div
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -380,7 +621,12 @@ export function PacificAtAGlance({
                   onClick={() => sortedData.length && downloadCSV(sortedData)}
                   className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded-lg bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 transition-all duration-300 active:scale-95 cursor-pointer whitespace-nowrap"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -466,7 +712,9 @@ export function PacificAtAGlance({
                           const sparkData = sparklineMap.get(row.code) ?? [];
                           const risk = riskMap.get(row.code);
                           const isTop =
-                            i === 0 && sortField === "cumulativeRise" && sortDir === "desc";
+                            i === 0 &&
+                            sortField === "cumulativeRise" &&
+                            sortDir === "desc";
                           const riskColor = risk
                             ? RISK_COLORS[risk.riskLevel]
                             : "hsl(var(--primary))";
@@ -480,7 +728,10 @@ export function PacificAtAGlance({
                             >
                               <td className="px-4 py-2">
                                 {sparkData.length > 0 ? (
-                                  <MiniSparkline data={sparkData} color={riskColor} />
+                                  <MiniSparkline
+                                    data={sparkData}
+                                    color={riskColor}
+                                  />
                                 ) : (
                                   <div className="w-20 h-8 bg-card/30 rounded" />
                                 )}
@@ -516,7 +767,8 @@ export function PacificAtAGlance({
                                 {(row.cumulativeRise * 100).toFixed(1)} cm
                               </td>
                               <td className="px-4 py-3 text-teal-400/90 font-mono">
-                                {(row.slope * 1000).toFixed(2)} <span className="text-xs">mm/yr</span>
+                                {(row.slope * 1000).toFixed(2)}{" "}
+                                <span className="text-xs">mm/yr</span>
                               </td>
                               <td className="px-4 py-3 text-rose-400/90 font-mono whitespace-nowrap">
                                 {(row.peakValue * 100).toFixed(1)} cm
@@ -528,7 +780,10 @@ export function PacificAtAGlance({
                                 <span
                                   className="font-mono text-sm font-semibold"
                                   style={{
-                                    color: row.decadeAcceleration > 0 ? "#f97316" : "#22c55e",
+                                    color:
+                                      row.decadeAcceleration > 0
+                                        ? "#f97316"
+                                        : "#22c55e",
                                   }}
                                 >
                                   {row.decadeAcceleration > 0 ? "+" : ""}

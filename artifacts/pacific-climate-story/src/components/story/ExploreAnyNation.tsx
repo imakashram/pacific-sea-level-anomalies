@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { useGetCountryProfile, useGetRankings } from "@workspace/api-client-react";
+import {
+  useGetCountryProfile,
+  useGetRankings,
+} from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import {
   ComposedChart,
@@ -87,13 +90,17 @@ function StatCard({
           </div>
         )}
       </div>
-      <div className={`text-3xl font-serif font-bold tracking-tight ${currentTheme.text}`}>
+      <div
+        className={`text-3xl font-serif font-bold tracking-tight ${currentTheme.text}`}
+      >
         {value}
       </div>
       {(sub || vs) && (
         <div className="text-xs text-muted-foreground mt-1 leading-relaxed flex flex-col gap-0.5">
           {sub && <div>{sub}</div>}
-          {vs && <div className="font-medium">{vs.replace(/[✓⚠]/g, "").trim()}</div>}
+          {vs && (
+            <div className="font-medium">{vs.replace(/[✓⚠]/g, "").trim()}</div>
+          )}
         </div>
       )}
     </div>
@@ -143,7 +150,9 @@ function CustomTrajectoryTooltip({
   return (
     <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px]">
       <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2.5">
-        <span className="font-serif text-lg font-bold text-white">{data.year}</span>
+        <span className="font-serif text-lg font-bold text-white">
+          {data.year}
+        </span>
         <span className="text-[10px] font-mono px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-500/20 rounded-full uppercase font-semibold">
           SLA Record
         </span>
@@ -225,7 +234,11 @@ function renderCustomBarLabel(props: {
 /**
  * Custom Y-Axis tick renderer for decadal comparison chart.
  */
-function CustomYAxisTick(props: { x?: number; y?: number; payload?: { value?: string } }) {
+function CustomYAxisTick(props: {
+  x?: number;
+  y?: number;
+  payload?: { value?: string };
+}) {
   const { x, y, payload } = props;
   const val = payload?.value;
   if (x == null || y == null || !val) return null;
@@ -354,7 +367,9 @@ export function ExploreAnyNation({
 
   useEffect(() => {
     if (rankings && rankings.length > 0 && !localSelectedCode) {
-      const topCountry = rankings.slice().sort((a, b) => b.cumulativeRise - a.cumulativeRise)[0];
+      const topCountry = rankings
+        .slice()
+        .sort((a, b) => b.cumulativeRise - a.cumulativeRise)[0];
       localSetSelectedCode(topCountry.code);
     }
   }, [rankings, localSelectedCode]);
@@ -363,7 +378,10 @@ export function ExploreAnyNation({
   const setSelectedCode = propsSetSelectedCode || localSetSelectedCode;
 
   const { data: apiProfile, isLoading } = useGetCountryProfile(selectedCode, {
-    query: { queryKey: ["countryProfile", selectedCode], enabled: !!selectedCode },
+    query: {
+      queryKey: ["countryProfile", selectedCode],
+      enabled: !!selectedCode,
+    },
   });
 
   const profile = apiProfile ?? FALLBACK_PROFILE;
@@ -371,9 +389,11 @@ export function ExploreAnyNation({
   // Regional averages computed across all 21 territories
   const regionalAvg = rankings
     ? {
-        cumulativeRise: rankings.reduce((s, r) => s + r.cumulativeRise, 0) / rankings.length,
+        cumulativeRise:
+          rankings.reduce((s, r) => s + r.cumulativeRise, 0) / rankings.length,
         slope: rankings.reduce((s, r) => s + r.slope, 0) / rankings.length,
-        volatility: rankings.reduce((s, r) => s + r.volatility, 0) / rankings.length,
+        volatility:
+          rankings.reduce((s, r) => s + r.volatility, 0) / rankings.length,
         mean: rankings.reduce((s, r) => s + r.mean, 0) / rankings.length,
       }
     : null;
@@ -402,13 +422,15 @@ export function ExploreAnyNation({
           sumXX += x * x;
         }
 
-        const slope = n > 0 ? (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) : 0;
+        const slope =
+          n > 0 ? (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) : 0;
         const intercept = n > 0 ? (sumY - slope * sumX) / n : 0;
 
         return pts.map((d) => ({
           ...d,
           value: d.value * 100,
-          rollingAvg: d.rollingAvg !== undefined ? d.rollingAvg * 100 : undefined,
+          rollingAvg:
+            d.rollingAvg !== undefined ? d.rollingAvg * 100 : undefined,
           linearTrend: parseFloat((slope * d.year + intercept).toFixed(2)),
         }));
       })()
@@ -420,7 +442,12 @@ export function ExploreAnyNation({
       avg: d.avg * 100,
     })) || [];
 
-  const vsStr = (val: number, avg: number, unit: string, higherIsBad = true) => {
+  const vsStr = (
+    val: number,
+    avg: number,
+    unit: string,
+    higherIsBad = true,
+  ) => {
     const diff = val - avg;
     const pct = Math.abs(diff / avg) * 100;
     const dir = diff > 0 ? "above" : "below";
@@ -439,10 +466,12 @@ export function ExploreAnyNation({
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">Explore Any Nation</h2>
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">
+            Explore Any Nation
+          </h2>
           <p className="text-xl text-muted-foreground">
-            Every island, its own story. Select a territory to see its full 30-year profile compared
-            to the regional average.
+            Every island, its own story. Select a territory to see its full
+            30-year profile compared to the regional average.
           </p>
         </motion.div>
       )}
@@ -458,7 +487,8 @@ export function ExploreAnyNation({
               <div className="flex items-center gap-3 text-left">
                 <Globe className="w-4 h-4 text-primary flex-shrink-0" />
                 <span>
-                  {rankings.find((r) => r.code === selectedCode)?.country || "Select Territory"}
+                  {rankings.find((r) => r.code === selectedCode)?.country ||
+                    "Select Territory"}
                 </span>
               </div>
               <svg
@@ -469,14 +499,22 @@ export function ExploreAnyNation({
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
 
             <AnimatePresence>
               {isOpen && (
                 <>
-                  <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsOpen(false)}
+                  />
                   <motion.div
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -565,7 +603,12 @@ export function ExploreAnyNation({
                 value={`+${(profile.stats.cumulativeRise * 100).toFixed(1)} cm`}
                 themeClass="primary"
                 icon={
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -579,7 +622,7 @@ export function ExploreAnyNation({
                     ? vsStr(
                         profile.stats.cumulativeRise * 100,
                         regionalAvg.cumulativeRise * 100,
-                        " cm"
+                        " cm",
                       )
                     : undefined
                 }
@@ -589,7 +632,12 @@ export function ExploreAnyNation({
                 value={`${(profile.stats.slope * 1000).toFixed(2)} mm/yr`}
                 themeClass="emerald"
                 icon={
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -600,7 +648,11 @@ export function ExploreAnyNation({
                 }
                 vs={
                   regionalAvg
-                    ? vsStr(profile.stats.slope * 1000, regionalAvg.slope * 1000, " mm/yr")
+                    ? vsStr(
+                        profile.stats.slope * 1000,
+                        regionalAvg.slope * 1000,
+                        " mm/yr",
+                      )
                     : undefined
                 }
               />
@@ -609,7 +661,12 @@ export function ExploreAnyNation({
                 value={`±${(profile.stats.volatility * 100).toFixed(1)} cm`}
                 themeClass="purple"
                 icon={
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -620,7 +677,11 @@ export function ExploreAnyNation({
                 }
                 vs={
                   regionalAvg
-                    ? vsStr(profile.stats.volatility * 100, regionalAvg.volatility * 100, " cm")
+                    ? vsStr(
+                        profile.stats.volatility * 100,
+                        regionalAvg.volatility * 100,
+                        " cm",
+                      )
                     : undefined
                 }
               />
@@ -629,7 +690,12 @@ export function ExploreAnyNation({
                 value={`${profile.stats.peakYear}`}
                 themeClass="orange"
                 icon={
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -695,21 +761,77 @@ export function ExploreAnyNation({
                       margin={{ top: 35, right: 20, left: 20, bottom: 25 }}
                     >
                       <defs>
-                        <linearGradient id="barColorCyan" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3} />
-                          <stop offset="100%" stopColor="#38bdf8" stopOpacity={0.85} />
+                        <linearGradient
+                          id="barColorCyan"
+                          x1="0"
+                          y1="0"
+                          x2="1"
+                          y2="0"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="#06b6d4"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#38bdf8"
+                            stopOpacity={0.85}
+                          />
                         </linearGradient>
-                        <linearGradient id="barColorAmber" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="#eab308" stopOpacity={0.3} />
-                          <stop offset="100%" stopColor="#fef08a" stopOpacity={0.85} />
+                        <linearGradient
+                          id="barColorAmber"
+                          x1="0"
+                          y1="0"
+                          x2="1"
+                          y2="0"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="#eab308"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#fef08a"
+                            stopOpacity={0.85}
+                          />
                         </linearGradient>
-                        <linearGradient id="barColorOrange" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="#f97316" stopOpacity={0.3} />
-                          <stop offset="100%" stopColor="#fdba74" stopOpacity={0.85} />
+                        <linearGradient
+                          id="barColorOrange"
+                          x1="0"
+                          y1="0"
+                          x2="1"
+                          y2="0"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="#f97316"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#fdba74"
+                            stopOpacity={0.85}
+                          />
                         </linearGradient>
-                        <linearGradient id="barColorRed" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="#ef4444" stopOpacity={0.3} />
-                          <stop offset="100%" stopColor="#f87171" stopOpacity={0.9} />
+                        <linearGradient
+                          id="barColorRed"
+                          x1="0"
+                          y1="0"
+                          x2="1"
+                          y2="0"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="#ef4444"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#f87171"
+                            stopOpacity={0.9}
+                          />
                         </linearGradient>
                       </defs>
                       <CartesianGrid
@@ -720,7 +842,11 @@ export function ExploreAnyNation({
                       <XAxis
                         dataKey="year"
                         stroke="rgba(255,255,255,0.3)"
-                        tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
+                        tick={{
+                          fontSize: 10,
+                          fill: "rgba(255,255,255,0.5)",
+                          fontFamily: "monospace",
+                        }}
                         tickLine={false}
                         label={{
                           value: "Year",
@@ -737,7 +863,11 @@ export function ExploreAnyNation({
                       />
                       <YAxis
                         stroke="rgba(255,255,255,0.3)"
-                        tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
+                        tick={{
+                          fontSize: 10,
+                          fill: "rgba(255,255,255,0.5)",
+                          fontFamily: "monospace",
+                        }}
                         tickFormatter={(val: number) => val.toFixed(1)}
                         tickLine={false}
                         width={55}
@@ -762,9 +892,16 @@ export function ExploreAnyNation({
                             showTrendline={showTrendline}
                           />
                         }
-                        cursor={{ stroke: "rgba(255, 255, 255, 0.1)", strokeWidth: 1 }}
+                        cursor={{
+                          stroke: "rgba(255, 255, 255, 0.1)",
+                          strokeWidth: 1,
+                        }}
                       />
-                      <ReferenceLine y={0} stroke="rgba(255,255,255,0.2)" strokeDasharray="3 3" />
+                      <ReferenceLine
+                        y={0}
+                        stroke="rgba(255,255,255,0.2)"
+                        strokeDasharray="3 3"
+                      />
 
                       {/* Regional Average Line */}
                       {regionalAvg && (
@@ -883,7 +1020,11 @@ export function ExploreAnyNation({
                           type="number"
                           domain={[-6, "auto"]}
                           stroke="rgba(255,255,255,0.3)"
-                          tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
+                          tick={{
+                            fontSize: 10,
+                            fill: "rgba(255,255,255,0.5)",
+                            fontFamily: "monospace",
+                          }}
                           tickLine={false}
                           axisLine={false}
                           tickFormatter={(v: number) => v.toFixed(1)}
@@ -932,7 +1073,10 @@ export function ExploreAnyNation({
                           animationDuration={1000}
                           animationEasing="ease-in-out"
                         >
-                          <LabelList dataKey="avg" content={renderCustomBarLabel} />
+                          <LabelList
+                            dataKey="avg"
+                            content={renderCustomBarLabel}
+                          />
                           {decadeBreakdownCm.map((entry, index) => {
                             const val = entry.avg;
                             let fill = "url(#barColorCyan)";
@@ -970,7 +1114,9 @@ export function ExploreAnyNation({
                           d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
                         />
                       </svg>
-                      <span className="text-muted-foreground font-semibold">D1 → D3 Shift:</span>
+                      <span className="text-muted-foreground font-semibold">
+                        D1 → D3 Shift:
+                      </span>
                     </div>
                     <span className="font-bold text-sky-400">
                       {(() => {
@@ -987,7 +1133,8 @@ export function ExploreAnyNation({
 
             {/* Interaction Helper Text */}
             <p className="text-center text-xs text-muted-foreground mt-6 font-sans select-none">
-              Hover over the charts to inspect anomalies. Use the controls above to toggle trendlines.
+              Hover over the charts to inspect anomalies. Use the controls above
+              to toggle trendlines.
             </p>
           </motion.div>
         )}

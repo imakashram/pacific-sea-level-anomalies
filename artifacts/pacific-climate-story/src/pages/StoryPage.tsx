@@ -15,16 +15,17 @@ import { WhatThisMeans } from "@/components/story/WhatThisMeans";
 import { OceanDecorations } from "@/components/story/OceanDecorations";
 
 export default function StoryPage() {
-  const [activeTab, setActiveTab] = useState<'explorer' | 'table'>('explorer');
+  const [activeTab, setActiveTab] = useState<"explorer" | "table">("explorer");
   const sectionRef = useRef<HTMLDivElement>(null);
   const isSectionInView = useInView(sectionRef, { amount: 0.1 });
 
   useEffect(() => {
-    document.documentElement.classList.add('dark');
-    document.title = "Pacific Sea Level Anomalies | Interactive Climate Data Story";
+    document.documentElement.classList.add("dark");
+    document.title =
+      "Pacific Sea Level Anomalies | Interactive Climate Data Story";
   }, []);
 
-  const hideDecorations = activeTab === 'table' && isSectionInView;
+  const hideDecorations = activeTab === "table" && isSectionInView;
 
   return (
     <div className="bg-background min-h-screen text-foreground font-sans relative">

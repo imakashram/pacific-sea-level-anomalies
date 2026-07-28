@@ -5,8 +5,8 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { DecadeCountryRow } from './decadeCountryRow';
-import type { GlobalDecadeAvg } from './globalDecadeAvg';
+import type { DecadeCountryRow } from "./decadeCountryRow";
+import type { GlobalDecadeAvg } from "./globalDecadeAvg";
 
 export interface DecadeAnalysis {
   countries: DecadeCountryRow[];

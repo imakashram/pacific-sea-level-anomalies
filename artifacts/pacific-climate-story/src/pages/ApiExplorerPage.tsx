@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { 
-  ArrowLeft, 
-  Play, 
-  Copy, 
-  Check, 
-  Search, 
-  Terminal, 
+import {
+  ArrowLeft,
+  Play,
+  Copy,
+  Check,
+  Search,
+  Terminal,
   Layout,
-  Calculator
+  Calculator,
 } from "lucide-react";
 
 interface ApiEndpoint {
@@ -30,137 +30,177 @@ const ENDPOINTS: ApiEndpoint[] = [
   {
     path: "/api/climate/overview",
     method: "GET",
-    description: "Returns high-level statistics and metadata summaries for the complete climate anomalies dataset.",
+    description:
+      "Returns high-level statistics and metadata summaries for the complete climate anomalies dataset.",
     category: "core",
-    usedIn: ["HeroSection", "TheDataLandscape", "WhatThisMeans"]
+    usedIn: ["HeroSection", "TheDataLandscape", "WhatThisMeans"],
   },
   {
     path: "/api/climate/sea-level-by-country",
     method: "GET",
-    description: "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
+    description:
+      "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
     category: "core",
-    usedIn: ["TheOceanIsRising", "PacificAtAGlance"]
+    usedIn: ["TheOceanIsRising", "PacificAtAGlance"],
   },
   {
     path: "/api/climate/country-profile/:code",
     method: "GET",
-    description: "Returns a comprehensive data profile for a single nation, including annual anomaly records, decadal shift benchmarks, ranking statistics, and local trends.",
+    description:
+      "Returns a comprehensive data profile for a single nation, including annual anomaly records, decadal shift benchmarks, ranking statistics, and local trends.",
     category: "core",
     usedIn: ["ExploreAnyNation"],
     params: [
-      { 
-        name: "code", 
-        placeholder: "Country Code (e.g. PW, PG, TV)", 
+      {
+        name: "code",
+        placeholder: "Country Code (e.g. PW, PG, TV)",
         type: "dropdown",
-        options: ["PW", "PG", "TV", "MH", "FM", "KI", "FJ", "SB", "VU", "TO", "WS", "CK", "NU", "TK", "WF", "PF", "NC", "GU", "MP", "AS", "NR"]
-      }
-    ]
+        options: [
+          "PW",
+          "PG",
+          "TV",
+          "MH",
+          "FM",
+          "KI",
+          "FJ",
+          "SB",
+          "VU",
+          "TO",
+          "WS",
+          "CK",
+          "NU",
+          "TK",
+          "WF",
+          "PF",
+          "NC",
+          "GU",
+          "MP",
+          "AS",
+          "NR",
+        ],
+      },
+    ],
   },
 
   // Trends
   {
     path: "/api/climate/decade-analysis",
     method: "GET",
-    description: "Divides observations into Decade 1 (1993-2002), Decade 2 (2003-2012), and Decade 3 (2013-2023) to compute baseline shifts and regional changes.",
+    description:
+      "Divides observations into Decade 1 (1993-2002), Decade 2 (2003-2012), and Decade 3 (2013-2023) to compute baseline shifts and regional changes.",
     category: "trends",
-    usedIn: ["HeroSection", "WhatThisMeans"]
+    usedIn: ["HeroSection", "WhatThisMeans"],
   },
   {
     path: "/api/climate/volatility",
     method: "GET",
-    description: "Computes statistical volatility (standard deviations) of anomalies for each territory.",
+    description:
+      "Computes statistical volatility (standard deviations) of anomalies for each territory.",
     category: "trends",
-    usedIn: ["HeroSection"]
+    usedIn: ["HeroSection"],
   },
   {
     path: "/api/climate/acceleration",
     method: "GET",
-    description: "Analyzes anomaly curves to calculate acceleration rates of rising water levels.",
+    description:
+      "Analyzes anomaly curves to calculate acceleration rates of rising water levels.",
     category: "trends",
-    usedIn: ["HeroSection", "PaceOfChange", "WhatThisMeans"]
+    usedIn: ["HeroSection", "PaceOfChange", "WhatThisMeans"],
   },
   {
     path: "/api/climate/annual-deviation",
     method: "GET",
-    description: "Computes standard deviation variances of annual anomalies on a year-by-year scale.",
+    description:
+      "Computes standard deviation variances of annual anomalies on a year-by-year scale.",
     category: "trends",
-    usedIn: ["OceanDecorations"]
+    usedIn: ["OceanDecorations"],
   },
 
   // ENSO
   {
     path: "/api/climate/el-nino-impact",
     method: "GET",
-    description: "Aggregates anomalies specifically during historical extreme ENSO years (1997-1998, 2015-2016) to show direct impacts.",
+    description:
+      "Aggregates anomalies specifically during historical extreme ENSO years (1997-1998, 2015-2016) to show direct impacts.",
     category: "enso",
-    usedIn: []
+    usedIn: [],
   },
   {
     path: "/api/climate/enso-sensitivity",
     method: "GET",
-    description: "Correlates annual sea level anomalies with Southern Oscillation Index (SOI) datasets to measure ENSO susceptibility.",
+    description:
+      "Correlates annual sea level anomalies with Southern Oscillation Index (SOI) datasets to measure ENSO susceptibility.",
     category: "enso",
-    usedIn: ["ENSOEffect"]
+    usedIn: ["ENSOEffect"],
   },
 
   // Risk & Forecast
   {
     path: "/api/climate/forecast",
     method: "GET",
-    description: "Uses 30-year trend slopes and volatility ranges to model regional projection trajectories (2024-2050).",
+    description:
+      "Uses 30-year trend slopes and volatility ranges to model regional projection trajectories (2024-2050).",
     category: "risk",
-    usedIn: ["FutureOutlook"]
+    usedIn: ["FutureOutlook"],
   },
   {
     path: "/api/climate/risk-scores",
     method: "GET",
-    description: "Evaluates risk categories (Critical, High, Medium, Low) for all nations based on acceleration, rise, and elevation factors.",
+    description:
+      "Evaluates risk categories (Critical, High, Medium, Low) for all nations based on acceleration, rise, and elevation factors.",
     category: "risk",
-    usedIn: ["RiskAssessment", "PacificAtAGlance"]
+    usedIn: ["RiskAssessment", "PacificAtAGlance"],
   },
   {
     path: "/api/climate/geographic-clusters",
     method: "GET",
-    description: "Groups territories geographically (Melanesia, Micronesia, Polynesia) to compile sub-regional summaries.",
+    description:
+      "Groups territories geographically (Melanesia, Micronesia, Polynesia) to compile sub-regional summaries.",
     category: "risk",
-    usedIn: ["ChapterSubRegionalClusters"]
+    usedIn: ["ChapterSubRegionalClusters"],
   },
   {
     path: "/api/climate/threshold-crossings",
     method: "GET",
-    description: "Computes indicators mapping when territories first crossed anomaly thresholds (+0.0m, +0.1m, +0.2m).",
+    description:
+      "Computes indicators mapping when territories first crossed anomaly thresholds (+0.0m, +0.1m, +0.2m).",
     category: "risk",
-    usedIn: ["WhatThisMeans"]
+    usedIn: ["WhatThisMeans"],
   },
 
   // Visuals
   {
     path: "/api/climate/heatmap",
     method: "GET",
-    description: "Prepares pivoted and ordered grids to feed the multi-nation decadal heatmap.",
+    description:
+      "Prepares pivoted and ordered grids to feed the multi-nation decadal heatmap.",
     category: "visuals",
-    usedIn: ["PatternsOverTime"]
+    usedIn: ["PatternsOverTime"],
   },
   {
     path: "/api/climate/sea-level-trend",
     method: "GET",
-    description: "Returns annual global sea level trend values across the Pacific.",
+    description:
+      "Returns annual global sea level trend values across the Pacific.",
     category: "visuals",
-    usedIn: ["TheOceanIsRising", "OceanDecorations"]
+    usedIn: ["TheOceanIsRising", "OceanDecorations"],
   },
   {
     path: "/api/climate/rankings",
     method: "GET",
-    description: "Generates detailed rankings of countries by rise, volatility, and linear slope.",
+    description:
+      "Generates detailed rankings of countries by rise, volatility, and linear slope.",
     category: "visuals",
-    usedIn: ["PacificAtAGlance", "ExploreAnyNation", "WhatThisMeans"]
-  }
+    usedIn: ["PacificAtAGlance", "ExploreAnyNation", "WhatThisMeans"],
+  },
 ];
 
 export default function ApiExplorerPage() {
   const [, setLocation] = useLocation();
   const [selectedApi, setSelectedApi] = useState<ApiEndpoint>(ENDPOINTS[0]);
-  const [paramValues, setParamValues] = useState<Record<string, string>>({ code: "PW" });
+  const [paramValues, setParamValues] = useState<Record<string, string>>({
+    code: "PW",
+  });
   const categoryFilter = "all";
   const [searchQuery, setSearchQuery] = useState("");
   const [apiResponse, setApiResponse] = useState<any>(null);
@@ -172,7 +212,7 @@ export default function ApiExplorerPage() {
 
   const getTargetUrl = () => {
     let url = selectedApi.path;
-    selectedApi.params?.forEach(p => {
+    selectedApi.params?.forEach((p) => {
       url = url.replace(`:${p.name}`, paramValues[p.name] || "");
     });
     return url;
@@ -183,12 +223,12 @@ export default function ApiExplorerPage() {
     setApiResponse(null);
     setStatusCode(null);
     setResponseTime(null);
-    
+
     const start = performance.now();
     try {
       const response = await fetch(getTargetUrl());
       const end = performance.now();
-      
+
       setStatusCode(response.status);
       setResponseTime(Math.round(end - start));
 
@@ -220,11 +260,15 @@ export default function ApiExplorerPage() {
     handleFetch();
   }, [selectedApi, paramValues]);
 
-  const filteredEndpoints = ENDPOINTS.filter(ep => {
-    const matchesCategory = categoryFilter === "all" || ep.category === categoryFilter;
-    const matchesSearch = ep.path.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          ep.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          ep.usedIn?.some(u => u.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredEndpoints = ENDPOINTS.filter((ep) => {
+    const matchesCategory =
+      categoryFilter === "all" || ep.category === categoryFilter;
+    const matchesSearch =
+      ep.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ep.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ep.usedIn?.some((u) =>
+        u.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
     return matchesCategory && matchesSearch;
   });
 
@@ -234,24 +278,31 @@ export default function ApiExplorerPage() {
     if (!jsonSearchQuery.trim()) return apiResponse;
 
     const query = jsonSearchQuery.toLowerCase();
-    
+
     if (Array.isArray(apiResponse)) {
       return apiResponse.filter((item: any) => {
         if (typeof item === "string" || typeof item === "number") {
           return String(item).toLowerCase().includes(query);
         }
-        return Object.keys(item).some(k => 
-          String(k).toLowerCase().includes(query) || 
-          String(item[k]).toLowerCase().includes(query)
+        return Object.keys(item).some(
+          (k) =>
+            String(k).toLowerCase().includes(query) ||
+            String(item[k]).toLowerCase().includes(query),
         );
       });
     }
 
     const filtered: Record<string, any> = {};
-    Object.keys(apiResponse).forEach(k => {
-      if (k.toLowerCase().includes(query) || String(apiResponse[k]).toLowerCase().includes(query)) {
+    Object.keys(apiResponse).forEach((k) => {
+      if (
+        k.toLowerCase().includes(query) ||
+        String(apiResponse[k]).toLowerCase().includes(query)
+      ) {
         filtered[k] = apiResponse[k];
-      } else if (typeof apiResponse[k] === "object" && apiResponse[k] !== null) {
+      } else if (
+        typeof apiResponse[k] === "object" &&
+        apiResponse[k] !== null
+      ) {
         filtered[k] = apiResponse[k]; // simplified fallback
       }
     });
@@ -262,7 +313,6 @@ export default function ApiExplorerPage() {
 
   return (
     <div className="min-h-screen bg-[#070913] text-[#f8fafc] font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200">
-      
       {/* Background Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] rounded-full bg-blue-500/5 blur-[150px] pointer-events-none" />
@@ -270,7 +320,7 @@ export default function ApiExplorerPage() {
       {/* Header Bar */}
       <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={() => setLocation("/")}
             className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
             title="Return to Climate Story"
@@ -300,16 +350,14 @@ export default function ApiExplorerPage() {
       </header>
 
       <main className="max-w-[1600px] mx-auto p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100vh-80px)] overflow-hidden">
-        
         {/* Left Column: API Catalog List */}
         <section className="lg:col-span-4 flex flex-col gap-4 h-full overflow-hidden bg-slate-900/10 border border-slate-900/80 p-4 rounded-2xl">
-          
           {/* Search bar */}
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-            <input 
-              type="text" 
-              placeholder="Search endpoints or components..." 
+            <input
+              type="text"
+              placeholder="Search endpoints or components..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-slate-900/60 border border-slate-800/80 rounded-xl pl-10 pr-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500/40 hover:bg-slate-900 transition"
@@ -333,13 +381,15 @@ export default function ApiExplorerPage() {
                       setJsonSearchQuery("");
                     }}
                     className={`p-3.5 rounded-xl border text-left flex flex-col gap-2 transition cursor-pointer ${
-                      isSelected 
-                        ? "bg-slate-900 border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.02)]" 
+                      isSelected
+                        ? "bg-slate-900 border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.02)]"
                         : "bg-slate-900/20 border-slate-800/60 hover:bg-slate-900/40 hover:border-slate-800"
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className={`font-mono text-xs font-semibold overflow-hidden text-ellipsis whitespace-nowrap ${isSelected ? "text-cyan-400" : "text-slate-300"}`}>
+                      <span
+                        className={`font-mono text-xs font-semibold overflow-hidden text-ellipsis whitespace-nowrap ${isSelected ? "text-cyan-400" : "text-slate-300"}`}
+                      >
                         {ep.path}
                       </span>
                     </div>
@@ -348,9 +398,14 @@ export default function ApiExplorerPage() {
                     </p>
                     {ep.usedIn && ep.usedIn.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-1 pt-1.5 border-t border-slate-800/40">
-                        <span className="text-[9px] text-slate-500 font-mono self-center mr-1">Used In:</span>
+                        <span className="text-[9px] text-slate-500 font-mono self-center mr-1">
+                          Used In:
+                        </span>
                         {ep.usedIn.map((comp) => (
-                          <span key={comp} className="px-1.5 py-0.5 rounded bg-slate-900 text-[9px] font-mono text-cyan-400/90 border border-slate-800">
+                          <span
+                            key={comp}
+                            className="px-1.5 py-0.5 rounded bg-slate-900 text-[9px] font-mono text-cyan-400/90 border border-slate-800"
+                          >
                             {comp}
                           </span>
                         ))}
@@ -365,13 +420,14 @@ export default function ApiExplorerPage() {
 
         {/* Right Column: API Console Panel */}
         <section className="lg:col-span-8 flex flex-col gap-6 h-full overflow-hidden">
-          
           {/* Header Dashboard of API Panel */}
           <div className="bg-slate-900/30 border border-slate-800/60 p-6 rounded-2xl flex flex-col gap-4 shadow-sm">
             <div className="flex justify-between items-start gap-4">
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-3">
-                  <span className="font-mono text-base font-bold text-cyan-400">{getTargetUrl()}</span>
+                  <span className="font-mono text-base font-bold text-cyan-400">
+                    {getTargetUrl()}
+                  </span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
                   {selectedApi.description}
@@ -381,10 +437,15 @@ export default function ApiExplorerPage() {
                 {selectedApi.usedIn && selectedApi.usedIn.length > 0 && (
                   <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-800/40">
                     <Layout className="w-3.5 h-3.5 text-slate-500" />
-                    <span className="text-[10px] uppercase font-mono text-slate-500 font-semibold">Active Component Usage:</span>
+                    <span className="text-[10px] uppercase font-mono text-slate-500 font-semibold">
+                      Active Component Usage:
+                    </span>
                     <div className="flex flex-wrap gap-1.5">
                       {selectedApi.usedIn.map((comp) => (
-                        <span key={comp} className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-mono text-[10px] font-medium">
+                        <span
+                          key={comp}
+                          className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-mono text-[10px] font-medium"
+                        >
                           {comp}
                         </span>
                       ))}
@@ -409,19 +470,30 @@ export default function ApiExplorerPage() {
             {/* Dynamic Params Panel */}
             {selectedApi.params && selectedApi.params.length > 0 && (
               <div className="bg-slate-950/40 border border-slate-800/40 rounded-xl p-4 flex flex-col gap-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Path Parameters</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Path Parameters
+                </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {selectedApi.params.map(p => (
+                  {selectedApi.params.map((p) => (
                     <div key={p.name} className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-semibold text-slate-400">{p.name}</label>
+                      <label className="text-[10px] font-semibold text-slate-400">
+                        {p.name}
+                      </label>
                       {p.type === "dropdown" && p.options ? (
                         <select
                           value={paramValues[p.name] || ""}
-                          onChange={(e) => setParamValues(prev => ({ ...prev, [p.name]: e.target.value }))}
+                          onChange={(e) =>
+                            setParamValues((prev) => ({
+                              ...prev,
+                              [p.name]: e.target.value,
+                            }))
+                          }
                           className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-cyan-500/30"
                         >
-                          {p.options.map(opt => (
-                            <option key={opt} value={opt}>{opt}</option>
+                          {p.options.map((opt) => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
                           ))}
                         </select>
                       ) : (
@@ -429,7 +501,12 @@ export default function ApiExplorerPage() {
                           type="text"
                           placeholder={p.placeholder}
                           value={paramValues[p.name] || ""}
-                          onChange={(e) => setParamValues(prev => ({ ...prev, [p.name]: e.target.value }))}
+                          onChange={(e) =>
+                            setParamValues((prev) => ({
+                              ...prev,
+                              [p.name]: e.target.value,
+                            }))
+                          }
                           className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-cyan-500/30"
                         />
                       )}
@@ -442,22 +519,27 @@ export default function ApiExplorerPage() {
 
           {/* Response Console */}
           <div className="flex-1 flex flex-col overflow-hidden bg-slate-950/60 border border-slate-900 rounded-2xl relative shadow-2xl">
-            
             {/* Console Toolbar */}
             <div className="px-5 py-3 border-b border-slate-900 flex items-center justify-between text-xs bg-slate-950">
               <div className="flex items-center gap-4">
-                <span className="font-semibold text-slate-400 font-mono">Response Payload</span>
+                <span className="font-semibold text-slate-400 font-mono">
+                  Response Payload
+                </span>
                 {statusCode !== null && (
                   <div className="flex items-center gap-3">
-                    <span className={`px-2 py-0.5 rounded font-mono font-bold text-[10px] uppercase tracking-wider ${
-                      statusCode >= 200 && statusCode < 300 
-                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
-                        : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                    }`}>
+                    <span
+                      className={`px-2 py-0.5 rounded font-mono font-bold text-[10px] uppercase tracking-wider ${
+                        statusCode >= 200 && statusCode < 300
+                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                          : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                      }`}
+                    >
                       {statusCode} {statusCode === 200 ? "OK" : ""}
                     </span>
                     {responseTime !== null && (
-                      <span className="text-[10px] text-slate-400 font-mono">{responseTime}ms</span>
+                      <span className="text-[10px] text-slate-400 font-mono">
+                        {responseTime}ms
+                      </span>
                     )}
                   </div>
                 )}
@@ -502,7 +584,9 @@ export default function ApiExplorerPage() {
               {isFetching ? (
                 <div className="h-full flex flex-col justify-center items-center gap-3 text-slate-500">
                   <span className="w-6 h-6 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
-                  <span className="text-xs">Fetching response from database...</span>
+                  <span className="text-xs">
+                    Fetching response from database...
+                  </span>
                 </div>
               ) : apiResponse ? (
                 <pre className="text-slate-300 whitespace-pre overflow-x-auto selection:bg-cyan-500/20 selection:text-cyan-200">
@@ -517,7 +601,6 @@ export default function ApiExplorerPage() {
             </div>
           </div>
         </section>
-
       </main>
     </div>
   );

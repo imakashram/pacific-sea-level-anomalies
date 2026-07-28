@@ -5,7 +5,7 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { RiskScore } from './riskScore';
+import type { RiskScore } from "./riskScore";
 
 export interface RiskScoreData {
   countries: RiskScore[];

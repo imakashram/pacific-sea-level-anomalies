@@ -78,17 +78,22 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 
   const projVal = typeof projItem?.value === "number" ? projItem.value : null;
   const netRiseFrom2023 =
-    projVal != null && isProjected && baseline2023 != null ? projVal - baseline2023 : null;
+    projVal != null && isProjected && baseline2023 != null
+      ? projVal - baseline2023
+      : null;
 
   return (
     <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px] font-mono">
       <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5">
-        <span className="font-serif text-base font-bold text-white">{label}</span>
+        <span className="font-serif text-base font-bold text-white">
+          {label}
+        </span>
         <span
-          className={`text-[10px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider ${isProjected
+          className={`text-[10px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider ${
+            isProjected
               ? "bg-orange-500/20 text-orange-400 border border-orange-500/30"
               : "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
-            }`}
+          }`}
         >
           {isProjected ? "Projection" : "Historical"}
         </span>
@@ -109,7 +114,9 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
         {/* Projected Anomaly readout */}
         {projVal != null && (
           <div className="flex justify-between items-center gap-4">
-            <span className="text-orange-400/90 font-medium">Total Anomaly</span>
+            <span className="text-orange-400/90 font-medium">
+              Total Anomaly
+            </span>
             <span className="font-bold text-orange-400 text-sm">
               {projVal >= 0 ? "+" : ""}
               {projVal.toFixed(2)} cm
@@ -133,7 +140,8 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
           <div className="flex justify-between items-center gap-4 text-[11px] text-muted-foreground pt-1.5 border-t border-white/5">
             <span>±2σ Confidence</span>
             <span className="font-bold text-amber-400/90">
-              [{bandItem.value[0].toFixed(1)} to {bandItem.value[1].toFixed(1)}] cm
+              [{bandItem.value[0].toFixed(1)} to {bandItem.value[1].toFixed(1)}]
+              cm
             </span>
           </div>
         )}
@@ -145,7 +153,10 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 /**
  * Card theme color dictionary for dynamic metric card highlights.
  */
-const CARD_THEMES: Record<string, { text: string; bg: string; border: string; glow: string }> = {
+const CARD_THEMES: Record<
+  string,
+  { text: string; bg: string; border: string; glow: string }
+> = {
   teal: {
     text: "text-teal-400",
     bg: "bg-teal-500/10",
@@ -267,16 +278,16 @@ export function FutureOutlook() {
       // 2. Transition Point (2023 Baseline anchor)
       ...(lastHist
         ? [
-          {
-            year: lastHist.year,
-            historical: lastHistCm,
-            projected: lastHistCm,
-            lower: lastHistCm,
-            upper: lastHistCm,
-            band: [lastHistCm!, lastHistCm!] as [number, number],
-            baseline2023: lastHistCm,
-          },
-        ]
+            {
+              year: lastHist.year,
+              historical: lastHistCm,
+              projected: lastHistCm,
+              lower: lastHistCm,
+              upper: lastHistCm,
+              band: [lastHistCm!, lastHistCm!] as [number, number],
+              baseline2023: lastHistCm,
+            },
+          ]
         : []),
       // 3. Projected Data Points (2024 to 2033)
       ...projectedSeries.map((p) => ({
@@ -314,9 +325,11 @@ export function FutureOutlook() {
   };
 
   const historicalSeries = forecastData.historical;
-  const totalHistRiseM = historicalSeries.length > 1
-    ? (historicalSeries[historicalSeries.length - 1].avgAnomaly - historicalSeries[0].avgAnomaly)
-    : 0;
+  const totalHistRiseM =
+    historicalSeries.length > 1
+      ? historicalSeries[historicalSeries.length - 1].avgAnomaly -
+        historicalSeries[0].avgAnomaly
+      : 0;
   const totalHistRiseCm = totalHistRiseM * 100;
 
   const trendTheme = getTrendTheme(forecastData.slopeMmPerYear);
@@ -335,11 +348,13 @@ export function FutureOutlook() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">Future Outlook</h2>
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+            Future Outlook
+          </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Based on current trends, sea levels are projected to continue rising through 2033. The
-            shaded band represents the ±2σ confidence interval, illustrating the range of expected
-            outcomes.
+            Based on current trends, sea levels are projected to continue rising
+            through 2033. The shaded band represents the ±2σ confidence
+            interval, illustrating the range of expected outcomes.
           </p>
         </motion.div>
 
@@ -369,9 +384,13 @@ export function FutureOutlook() {
                     <Gauge className="w-4 h-4" />
                   </div>
                 </div>
-                <div className={`text-3xl font-serif font-bold tracking-tight ${trendTheme.text}`}>
+                <div
+                  className={`text-3xl font-serif font-bold tracking-tight ${trendTheme.text}`}
+                >
                   +{forecastData.slopeMmPerYear.toFixed(2)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">mm/yr</span>
+                  <span className="text-sm font-sans text-muted-foreground ml-1">
+                    mm/yr
+                  </span>
                 </div>
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   Historical trend line slope
@@ -392,9 +411,13 @@ export function FutureOutlook() {
                     <History className="w-4 h-4" />
                   </div>
                 </div>
-                <div className={`text-3xl font-serif font-bold tracking-tight ${riseTheme.text}`}>
+                <div
+                  className={`text-3xl font-serif font-bold tracking-tight ${riseTheme.text}`}
+                >
                   +{totalHistRiseCm.toFixed(1)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
+                  <span className="text-sm font-sans text-muted-foreground ml-1">
+                    cm
+                  </span>
                 </div>
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   Net rise observed (1993–2023)
@@ -415,9 +438,13 @@ export function FutureOutlook() {
                     <Calendar className="w-4 h-4" />
                   </div>
                 </div>
-                <div className={`text-3xl font-serif font-bold tracking-tight ${p2030Theme.text}`}>
+                <div
+                  className={`text-3xl font-serif font-bold tracking-tight ${p2030Theme.text}`}
+                >
                   +{(forecastData.projectedRise2030 * 100).toFixed(1)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
+                  <span className="text-sm font-sans text-muted-foreground ml-1">
+                    cm
+                  </span>
                 </div>
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   Net increase from 2023 baseline
@@ -438,9 +465,13 @@ export function FutureOutlook() {
                     <ShieldAlert className="w-4 h-4" />
                   </div>
                 </div>
-                <div className={`text-3xl font-serif font-bold tracking-tight ${p2033Theme.text}`}>
+                <div
+                  className={`text-3xl font-serif font-bold tracking-tight ${p2033Theme.text}`}
+                >
                   +{(forecastData.projectedRise2033 * 100).toFixed(1)}
-                  <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
+                  <span className="text-sm font-sans text-muted-foreground ml-1">
+                    cm
+                  </span>
                 </div>
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   Net 10-year increase (2023–2033)
@@ -455,7 +486,8 @@ export function FutureOutlook() {
                   Decadal Projection (Through 2033)
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                  Linear trend projection of regional anomalies with a shaded ±2σ confidence interval.
+                  Linear trend projection of regional anomalies with a shaded
+                  ±2σ confidence interval.
                 </p>
               </div>
 
@@ -499,171 +531,213 @@ export function FutureOutlook() {
                       data={chartData}
                       margin={{ top: 35, right: 35, left: 15, bottom: 8 }}
                     >
-                    <defs>
-                      <linearGradient id="confidenceGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.28} />
-                        <stop offset="95%" stopColor="#f97316" stopOpacity={0.04} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                    <XAxis
-                      dataKey="year"
-                      height={45}
-                      stroke="rgba(255,255,255,0.3)"
-                      tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
-                      tickLine={false}
-                      axisLine={false}
-                      label={{
-                        value: "Year",
-                        position: "insideBottom",
-                        offset: 0,
-                        style: {
-                          textAnchor: "middle",
-                          fill: "rgba(255, 255, 255, 0.4)",
-                          fontSize: 10,
-                          fontWeight: "bold",
-                          fontFamily: "monospace",
-                        },
-                      }}
-                    />
-                    <YAxis
-                      width={75}
-                      domain={["auto", (dataMax: number) => Math.ceil(dataMax + 3)]}
-                      stroke="rgba(255,255,255,0.3)"
-                      tick={{ fontSize: 11, fill: "rgba(255,255,255,0.5)", fontFamily: "monospace" }}
-                      tickFormatter={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)}`}
-                      tickLine={false}
-                      axisLine={false}
-                      label={{
-                        value: "Sea Level Anomaly (cm)",
-                        angle: -90,
-                        position: "insideLeft",
-                        offset: 20,
-                        style: {
-                          textAnchor: "middle",
-                          fill: "rgba(255, 255, 255, 0.4)",
-                          fontSize: 10,
-                          fontWeight: "bold",
-                          fontFamily: "monospace",
-                        },
-                      }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    {!isAnimationActive && (
-                      <ReferenceArea x1={2023} x2={2033} fill="#f97316" fillOpacity={0.03} />
-                    )}
-                    {!isAnimationActive && (
-                      <ReferenceLine
-                        x={2023}
-                        stroke="rgba(255,255,255,0.3)"
+                      <defs>
+                        <linearGradient
+                          id="confidenceGrad"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="5%"
+                            stopColor="#f97316"
+                            stopOpacity={0.28}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="#f97316"
+                            stopOpacity={0.04}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid
                         strokeDasharray="3 3"
-                        label={{
-                          value: "Now (2023)",
-                          position: "top",
-                          fill: "rgba(255,255,255,0.6)",
-                          fontSize: 10,
-                          fontWeight: "bold",
+                        vertical={false}
+                        stroke="rgba(255,255,255,0.05)"
+                      />
+                      <XAxis
+                        dataKey="year"
+                        height={45}
+                        stroke="rgba(255,255,255,0.3)"
+                        tick={{
+                          fontSize: 11,
+                          fill: "rgba(255,255,255,0.5)",
                           fontFamily: "monospace",
                         }}
-                      />
-                    )}
-                    <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
-
-                    {/* ±2σ Confidence Interval Area */}
-                    <Area
-                      type="monotone"
-                      dataKey="band"
-                      stroke="none"
-                      fill="url(#confidenceGrad)"
-                      connectNulls={true}
-                      isAnimationActive={isAnimationActive}
-                      animationDuration={1000}
-                      animationEasing="ease-out"
-                      animationBegin={1500}
-                    />
-
-                    {/* Historical Series Line */}
-                    <Line
-                      type="monotone"
-                      dataKey="historical"
-                      name="Historical avg"
-                      stroke="hsl(var(--primary))"
-                      strokeWidth={3}
-                      dot={false}
-                      connectNulls={true}
-                      isAnimationActive={isAnimationActive}
-                      animationDuration={1500}
-                      animationEasing="ease-out"
-                      animationBegin={0}
-                    />
-
-                    {/* Projected Series Line */}
-                    <Line
-                      type="monotone"
-                      dataKey="projected"
-                      name="Projected avg"
-                      stroke="#f97316"
-                      strokeWidth={3}
-                      strokeDasharray="6 4"
-                      dot={false}
-                      connectNulls={true}
-                      isAnimationActive={isAnimationActive}
-                      animationDuration={1000}
-                      animationEasing="ease-out"
-                      animationBegin={1500}
-                    />
-
-                    {/* 2030 Milestone Reference Dot */}
-                    {!isAnimationActive && (() => {
-                      const pt2030 = chartData.find((d) => d.year === 2030 && d.projected != null);
-                      const yVal = pt2030?.projected;
-                      if (yVal == null) return null;
-                      return (
-                        <ReferenceDot
-                          x={2030}
-                          y={yVal}
-                          r={4.5}
-                          fill="#f97316"
-                          stroke="#ffffff"
-                          strokeWidth={1.5}
-                          label={{
-                            value: `2030: +${yVal.toFixed(1)} cm`,
-                            position: "top",
-                            fill: "#f97316",
-                            fontSize: 9,
+                        tickLine={false}
+                        axisLine={false}
+                        label={{
+                          value: "Year",
+                          position: "insideBottom",
+                          offset: 0,
+                          style: {
+                            textAnchor: "middle",
+                            fill: "rgba(255, 255, 255, 0.4)",
+                            fontSize: 10,
                             fontWeight: "bold",
                             fontFamily: "monospace",
-                          }}
-                        />
-                      );
-                    })()}
-
-                    {/* 2033 Milestone Reference Dot */}
-                    {!isAnimationActive && (() => {
-                      const pt2033 = chartData.find((d) => d.year === 2033 && d.projected != null);
-                      const yVal = pt2033?.projected;
-                      if (yVal == null) return null;
-                      return (
-                        <ReferenceDot
-                          x={2033}
-                          y={yVal}
-                          r={5.5}
+                          },
+                        }}
+                      />
+                      <YAxis
+                        width={75}
+                        domain={[
+                          "auto",
+                          (dataMax: number) => Math.ceil(dataMax + 3),
+                        ]}
+                        stroke="rgba(255,255,255,0.3)"
+                        tick={{
+                          fontSize: 11,
+                          fill: "rgba(255,255,255,0.5)",
+                          fontFamily: "monospace",
+                        }}
+                        tickFormatter={(v) =>
+                          `${v > 0 ? "+" : ""}${v.toFixed(1)}`
+                        }
+                        tickLine={false}
+                        axisLine={false}
+                        label={{
+                          value: "Sea Level Anomaly (cm)",
+                          angle: -90,
+                          position: "insideLeft",
+                          offset: 20,
+                          style: {
+                            textAnchor: "middle",
+                            fill: "rgba(255, 255, 255, 0.4)",
+                            fontSize: 10,
+                            fontWeight: "bold",
+                            fontFamily: "monospace",
+                          },
+                        }}
+                      />
+                      <Tooltip content={<CustomTooltip />} />
+                      {!isAnimationActive && (
+                        <ReferenceArea
+                          x1={2023}
+                          x2={2033}
                           fill="#f97316"
-                          stroke="#ffffff"
-                          strokeWidth={2}
+                          fillOpacity={0.03}
+                        />
+                      )}
+                      {!isAnimationActive && (
+                        <ReferenceLine
+                          x={2023}
+                          stroke="rgba(255,255,255,0.3)"
+                          strokeDasharray="3 3"
                           label={{
-                            value: `2033: +${yVal.toFixed(1)} cm`,
+                            value: "Now (2023)",
                             position: "top",
-                            fill: "#f97316",
+                            fill: "rgba(255,255,255,0.6)",
                             fontSize: 10,
                             fontWeight: "bold",
                             fontFamily: "monospace",
                           }}
                         />
-                      );
-                    })()}
-                  </ComposedChart>
-                </ResponsiveContainer>
+                      )}
+                      <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
+
+                      {/* ±2σ Confidence Interval Area */}
+                      <Area
+                        type="monotone"
+                        dataKey="band"
+                        stroke="none"
+                        fill="url(#confidenceGrad)"
+                        connectNulls={true}
+                        isAnimationActive={isAnimationActive}
+                        animationDuration={1000}
+                        animationEasing="ease-out"
+                        animationBegin={1500}
+                      />
+
+                      {/* Historical Series Line */}
+                      <Line
+                        type="monotone"
+                        dataKey="historical"
+                        name="Historical avg"
+                        stroke="hsl(var(--primary))"
+                        strokeWidth={3}
+                        dot={false}
+                        connectNulls={true}
+                        isAnimationActive={isAnimationActive}
+                        animationDuration={1500}
+                        animationEasing="ease-out"
+                        animationBegin={0}
+                      />
+
+                      {/* Projected Series Line */}
+                      <Line
+                        type="monotone"
+                        dataKey="projected"
+                        name="Projected avg"
+                        stroke="#f97316"
+                        strokeWidth={3}
+                        strokeDasharray="6 4"
+                        dot={false}
+                        connectNulls={true}
+                        isAnimationActive={isAnimationActive}
+                        animationDuration={1000}
+                        animationEasing="ease-out"
+                        animationBegin={1500}
+                      />
+
+                      {/* 2030 Milestone Reference Dot */}
+                      {!isAnimationActive &&
+                        (() => {
+                          const pt2030 = chartData.find(
+                            (d) => d.year === 2030 && d.projected != null,
+                          );
+                          const yVal = pt2030?.projected;
+                          if (yVal == null) return null;
+                          return (
+                            <ReferenceDot
+                              x={2030}
+                              y={yVal}
+                              r={4.5}
+                              fill="#f97316"
+                              stroke="#ffffff"
+                              strokeWidth={1.5}
+                              label={{
+                                value: `2030: +${yVal.toFixed(1)} cm`,
+                                position: "top",
+                                fill: "#f97316",
+                                fontSize: 9,
+                                fontWeight: "bold",
+                                fontFamily: "monospace",
+                              }}
+                            />
+                          );
+                        })()}
+
+                      {/* 2033 Milestone Reference Dot */}
+                      {!isAnimationActive &&
+                        (() => {
+                          const pt2033 = chartData.find(
+                            (d) => d.year === 2033 && d.projected != null,
+                          );
+                          const yVal = pt2033?.projected;
+                          if (yVal == null) return null;
+                          return (
+                            <ReferenceDot
+                              x={2033}
+                              y={yVal}
+                              r={5.5}
+                              fill="#f97316"
+                              stroke="#ffffff"
+                              strokeWidth={2}
+                              label={{
+                                value: `2033: +${yVal.toFixed(1)} cm`,
+                                position: "top",
+                                fill: "#f97316",
+                                fontSize: 10,
+                                fontWeight: "bold",
+                                fontFamily: "monospace",
+                              }}
+                            />
+                          );
+                        })()}
+                    </ComposedChart>
+                  </ResponsiveContainer>
                 ) : (
                   <div className="w-full h-full" />
                 )}
@@ -694,7 +768,8 @@ export function FutureOutlook() {
 
             {/* Interaction Helper Text */}
             <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-              Hover over the line or shaded band to inspect historical anomalies and future projected values with confidence intervals.
+              Hover over the line or shaded band to inspect historical anomalies
+              and future projected values with confidence intervals.
             </p>
           </>
         )}

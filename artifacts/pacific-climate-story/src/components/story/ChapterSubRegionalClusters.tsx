@@ -81,7 +81,8 @@ const CLUSTER_DATA: RegionalCluster[] = [
       { code: "FJ", name: "Fiji" },
       { code: "NC", name: "New Caledonia" },
     ],
-    description: "Volcanic high islands experiencing the highest average linear trend rate (+4.72 mm/yr) and extreme surge amplitudes.",
+    description:
+      "Volcanic high islands experiencing the highest average linear trend rate (+4.72 mm/yr) and extreme surge amplitudes.",
   },
   {
     region: "Micronesia",
@@ -101,7 +102,8 @@ const CLUSTER_DATA: RegionalCluster[] = [
       { code: "GU", name: "Guam" },
       { code: "MP", name: "Northern Mariana" },
     ],
-    description: "Low-lying coral atolls exceptionally susceptible to ENSO volatility and saltwater intrusion even at moderate sea level rises.",
+    description:
+      "Low-lying coral atolls exceptionally susceptible to ENSO volatility and saltwater intrusion even at moderate sea level rises.",
   },
   {
     region: "Polynesia",
@@ -123,7 +125,8 @@ const CLUSTER_DATA: RegionalCluster[] = [
       { code: "WF", name: "Wallis & Futuna" },
       { code: "AS", name: "American Samoa" },
     ],
-    description: "Widespread archipelago cluster showing the largest net decadal shift (+8.8 cm) from baseline levels.",
+    description:
+      "Widespread archipelago cluster showing the largest net decadal shift (+8.8 cm) from baseline levels.",
   },
 ];
 
@@ -134,9 +137,12 @@ const CLUSTER_DATA: RegionalCluster[] = [
  * comparing decadal climate shifts (D1 → D2 → D3) across Melanesia, Micronesia, and Polynesia.
  */
 export function ChapterSubRegionalClusters() {
-  const [selectedRegion, setSelectedRegion] = useState<"Melanesia" | "Micronesia" | "Polynesia">("Melanesia");
+  const [selectedRegion, setSelectedRegion] = useState<
+    "Melanesia" | "Micronesia" | "Polynesia"
+  >("Melanesia");
 
-  const selectedCluster = CLUSTER_DATA.find((c) => c.region === selectedRegion) || CLUSTER_DATA[0];
+  const selectedCluster =
+    CLUSTER_DATA.find((c) => c.region === selectedRegion) || CLUSTER_DATA[0];
 
   // SVG Dimension Constants
   const SVG_WIDTH = 680;
@@ -177,10 +183,20 @@ export function ChapterSubRegionalClusters() {
             Sub-Regional Clusters
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Comparing climate vulnerability across the three geographic realms of the Pacific:
-            <span className="text-emerald-400 font-semibold ml-1.5">Melanesia</span>,
-            <span className="text-cyan-400 font-semibold ml-1.5">Micronesia</span>, and
-            <span className="text-purple-400 font-semibold ml-1.5">Polynesia</span>.
+            Comparing climate vulnerability across the three geographic realms
+            of the Pacific:
+            <span className="text-emerald-400 font-semibold ml-1.5">
+              Melanesia
+            </span>
+            ,
+            <span className="text-cyan-400 font-semibold ml-1.5">
+              Micronesia
+            </span>
+            , and
+            <span className="text-purple-400 font-semibold ml-1.5">
+              Polynesia
+            </span>
+            .
           </p>
         </motion.div>
 
@@ -208,7 +224,9 @@ export function ChapterSubRegionalClusters() {
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className={`text-xs uppercase tracking-wider font-semibold ${theme.text}`}>
+                    <span
+                      className={`text-xs uppercase tracking-wider font-semibold ${theme.text}`}
+                    >
                       {cluster.region} Realm
                     </span>
                     <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-muted-foreground font-semibold">
@@ -216,9 +234,13 @@ export function ChapterSubRegionalClusters() {
                     </span>
                   </div>
 
-                  <div className={`text-4xl font-serif font-bold tracking-tight mb-2 ${theme.text}`}>
+                  <div
+                    className={`text-4xl font-serif font-bold tracking-tight mb-2 ${theme.text}`}
+                  >
                     +{cluster.avgSlopeMmYr.toFixed(2)}
-                    <span className="text-sm font-sans text-muted-foreground ml-1">mm/yr</span>
+                    <span className="text-sm font-sans text-muted-foreground ml-1">
+                      mm/yr
+                    </span>
                   </div>
 
                   <p className="text-xs text-muted-foreground leading-relaxed mb-4">
@@ -228,7 +250,9 @@ export function ChapterSubRegionalClusters() {
 
                 <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono">
                   <span className="text-muted-foreground">Decadal Shift:</span>
-                  <span className={`font-bold ${theme.text}`}>+{cluster.shiftCm.toFixed(1)} cm</span>
+                  <span className={`font-bold ${theme.text}`}>
+                    +{cluster.shiftCm.toFixed(1)} cm
+                  </span>
                 </div>
               </div>
             );
@@ -275,8 +299,16 @@ export function ChapterSubRegionalClusters() {
                           x2="0"
                           y2="0"
                         >
-                          <stop offset="0%" stopColor={theme.gradientFrom} stopOpacity="0.2" />
-                          <stop offset="100%" stopColor={theme.gradientFrom} stopOpacity="0.9" />
+                          <stop
+                            offset="0%"
+                            stopColor={theme.gradientFrom}
+                            stopOpacity="0.2"
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor={theme.gradientFrom}
+                            stopOpacity="0.9"
+                          />
                         </linearGradient>
                       );
                     })}
@@ -292,7 +324,11 @@ export function ChapterSubRegionalClusters() {
                           y1={y}
                           x2={SVG_WIDTH - 20}
                           y2={y}
-                          stroke={val === 0 ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.05)"}
+                          stroke={
+                            val === 0
+                              ? "rgba(255,255,255,0.25)"
+                              : "rgba(255,255,255,0.05)"
+                          }
                           strokeDasharray={val === 0 ? "4 4" : "2 2"}
                         />
                         <text
@@ -354,7 +390,6 @@ export function ChapterSubRegionalClusters() {
                           fill="#0f172a"
                           stroke={theme.hex}
                           strokeWidth="2.5"
-
                         />
                         <text
                           x={cx - 12}
@@ -364,7 +399,9 @@ export function ChapterSubRegionalClusters() {
                           fontFamily="monospace"
                           textAnchor="end"
                         >
-                          {cluster.d1AvgCm >= 0 ? `+${cluster.d1AvgCm}` : cluster.d1AvgCm}
+                          {cluster.d1AvgCm >= 0
+                            ? `+${cluster.d1AvgCm}`
+                            : cluster.d1AvgCm}
                         </text>
 
                         {/* Node 2: D2 (2003-2012) */}
@@ -375,7 +412,6 @@ export function ChapterSubRegionalClusters() {
                           fill="#0f172a"
                           stroke={theme.hex}
                           strokeWidth="2.5"
-
                         />
                         <text
                           x={cx - 12}
@@ -396,7 +432,6 @@ export function ChapterSubRegionalClusters() {
                           fill={theme.hex}
                           stroke="#ffffff"
                           strokeWidth="2"
-
                         />
                         {/* Endpoint Milestone Badge */}
                         <rect
@@ -425,7 +460,9 @@ export function ChapterSubRegionalClusters() {
                         <text
                           x={cx}
                           y={SVG_HEIGHT - 20}
-                          fill={isSelected ? theme.hex : "rgba(255,255,255,0.6)"}
+                          fill={
+                            isSelected ? theme.hex : "rgba(255,255,255,0.6)"
+                          }
                           fontSize="13"
                           fontFamily="serif"
                           fontWeight="bold"
@@ -478,12 +515,17 @@ export function ChapterSubRegionalClusters() {
             <div>
               <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2">
-                  <MapPin className={`w-4 h-4 ${REGION_THEMES[selectedCluster.region].text}`} />
+                  <MapPin
+                    className={`w-4 h-4 ${REGION_THEMES[selectedCluster.region].text}`}
+                  />
                   <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-foreground">
-                    {selectedCluster.region} Nations ({selectedCluster.nationsCount})
+                    {selectedCluster.region} Nations (
+                    {selectedCluster.nationsCount})
                   </h3>
                 </div>
-                <span className={`text-xs font-mono font-bold ${REGION_THEMES[selectedCluster.region].text}`}>
+                <span
+                  className={`text-xs font-mono font-bold ${REGION_THEMES[selectedCluster.region].text}`}
+                >
                   +{selectedCluster.latest2023AvgCm.toFixed(1)} cm (2023 Avg)
                 </span>
               </div>
@@ -494,7 +536,9 @@ export function ChapterSubRegionalClusters() {
                     key={n.code}
                     className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-card/30 border border-border/20 text-xs font-mono"
                   >
-                    <span className="font-semibold text-foreground">{n.name}</span>
+                    <span className="font-semibold text-foreground">
+                      {n.name}
+                    </span>
                     <span className="text-muted-foreground/60">({n.code})</span>
                   </div>
                 ))}

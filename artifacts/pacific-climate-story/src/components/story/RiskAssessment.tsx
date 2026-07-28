@@ -19,7 +19,13 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { AlertOctagon, AlertTriangle, Shield, Activity, type LucideIcon } from "lucide-react";
+import {
+  AlertOctagon,
+  AlertTriangle,
+  Shield,
+  Activity,
+  type LucideIcon,
+} from "lucide-react";
 
 /**
  * Risk Level color mapping.
@@ -129,7 +135,9 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
     <div className="bg-[#0b1528]/95 border border-cyan-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.15)] backdrop-blur-md min-w-[240px]">
       {/* Header Row */}
       <div className="flex items-center justify-between border-b border-cyan-500/10 pb-2 mb-2 gap-3">
-        <span className="font-serif text-lg font-bold text-white">{d.country}</span>
+        <span className="font-serif text-lg font-bold text-white">
+          {d.country}
+        </span>
         <span
           className="text-[10px] font-mono px-2 py-0.5 rounded-full uppercase border font-semibold"
           style={{
@@ -147,7 +155,10 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
         <div className="flex justify-between items-center gap-6">
           <span className="text-muted-foreground font-medium">Risk Index</span>
           <span className="font-mono font-bold text-sm" style={{ color }}>
-            {d.riskScore} <span className="text-xs text-muted-foreground font-normal">/ 100</span>
+            {d.riskScore}{" "}
+            <span className="text-xs text-muted-foreground font-normal">
+              / 100
+            </span>
           </span>
         </div>
 
@@ -167,7 +178,9 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
         </div>
 
         <div className="flex justify-between items-center gap-6">
-          <span className="text-purple-400/90 font-medium">Volatility Spread</span>
+          <span className="text-purple-400/90 font-medium">
+            Volatility Spread
+          </span>
           <span className="font-mono font-bold text-purple-400">
             ±{(d.volatility * 100).toFixed(1)} cm
           </span>
@@ -189,27 +202,342 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
  * derived directly from climate_change.csv observations.
  */
 const FALLBACK_COUNTRIES: RiskCountry[] = [
-  { code: "PG", country: "Papua New Guinea", riskScore: 95, riskLevel: "Critical", cumulativeRise: 0.165, slope: 5.4, volatility: 0.075, decadeAcceleration: 0.112, components: { riseScore: 100, slopeScore: 100, volatilityScore: 86, accelerationScore: 92 } },
-  { code: "SB", country: "Solomon Islands", riskScore: 93, riskLevel: "Critical", cumulativeRise: 0.158, slope: 5.2, volatility: 0.072, decadeAcceleration: 0.108, components: { riseScore: 96, slopeScore: 96, volatilityScore: 83, accelerationScore: 89 } },
-  { code: "PW", country: "Palau", riskScore: 92, riskLevel: "Critical", cumulativeRise: 0.142, slope: 4.8, volatility: 0.087, decadeAcceleration: 0.105, components: { riseScore: 86, slopeScore: 89, volatilityScore: 100, accelerationScore: 86 } },
-  { code: "FM", country: "Micronesia", riskScore: 87, riskLevel: "Critical", cumulativeRise: 0.138, slope: 4.6, volatility: 0.081, decadeAcceleration: 0.098, components: { riseScore: 84, slopeScore: 85, volatilityScore: 93, accelerationScore: 80 } },
-  { code: "VU", country: "Vanuatu", riskScore: 85, riskLevel: "Critical", cumulativeRise: 0.135, slope: 4.5, volatility: 0.074, decadeAcceleration: 0.095, components: { riseScore: 82, slopeScore: 83, volatilityScore: 85, accelerationScore: 78 } },
-  { code: "NR", country: "Nauru", riskScore: 78, riskLevel: "High", cumulativeRise: 0.128, slope: 4.3, volatility: 0.068, decadeAcceleration: 0.091, components: { riseScore: 78, slopeScore: 80, volatilityScore: 78, accelerationScore: 75 } },
-  { code: "MH", country: "Marshall Islands", riskScore: 77, riskLevel: "High", cumulativeRise: 0.125, slope: 4.2, volatility: 0.071, decadeAcceleration: 0.088, components: { riseScore: 76, slopeScore: 78, volatilityScore: 82, accelerationScore: 72 } },
-  { code: "FJ", country: "Fiji", riskScore: 76, riskLevel: "High", cumulativeRise: 0.124, slope: 4.1, volatility: 0.069, decadeAcceleration: 0.086, components: { riseScore: 75, slopeScore: 76, volatilityScore: 79, accelerationScore: 70 } },
-  { code: "TV", country: "Tuvalu", riskScore: 75, riskLevel: "High", cumulativeRise: 0.122, slope: 4.0, volatility: 0.067, decadeAcceleration: 0.085, components: { riseScore: 74, slopeScore: 74, volatilityScore: 77, accelerationScore: 70 } },
-  { code: "KI", country: "Kiribati", riskScore: 74, riskLevel: "High", cumulativeRise: 0.120, slope: 3.9, volatility: 0.066, decadeAcceleration: 0.083, components: { riseScore: 73, slopeScore: 72, volatilityScore: 76, accelerationScore: 68 } },
-  { code: "WS", country: "Samoa", riskScore: 73, riskLevel: "High", cumulativeRise: 0.118, slope: 3.9, volatility: 0.064, decadeAcceleration: 0.082, components: { riseScore: 72, slopeScore: 72, volatilityScore: 74, accelerationScore: 67 } },
-  { code: "TO", country: "Tonga", riskScore: 72, riskLevel: "High", cumulativeRise: 0.116, slope: 3.8, volatility: 0.063, decadeAcceleration: 0.080, components: { riseScore: 70, slopeScore: 70, volatilityScore: 72, accelerationScore: 66 } },
-  { code: "NC", country: "New Caledonia", riskScore: 71, riskLevel: "High", cumulativeRise: 0.114, slope: 3.7, volatility: 0.062, decadeAcceleration: 0.079, components: { riseScore: 69, slopeScore: 69, volatilityScore: 71, accelerationScore: 65 } },
-  { code: "PF", country: "French Polynesia", riskScore: 70, riskLevel: "High", cumulativeRise: 0.112, slope: 3.6, volatility: 0.061, decadeAcceleration: 0.077, components: { riseScore: 68, slopeScore: 67, volatilityScore: 70, accelerationScore: 63 } },
-  { code: "CK", country: "Cook Islands", riskScore: 69, riskLevel: "High", cumulativeRise: 0.110, slope: 3.6, volatility: 0.060, decadeAcceleration: 0.076, components: { riseScore: 67, slopeScore: 67, volatilityScore: 69, accelerationScore: 62 } },
-  { code: "NU", country: "Niue", riskScore: 68, riskLevel: "High", cumulativeRise: 0.108, slope: 3.5, volatility: 0.059, decadeAcceleration: 0.074, components: { riseScore: 65, slopeScore: 65, volatilityScore: 68, accelerationScore: 61 } },
-  { code: "TK", country: "Tokelau", riskScore: 67, riskLevel: "High", cumulativeRise: 0.106, slope: 3.4, volatility: 0.058, decadeAcceleration: 0.073, components: { riseScore: 64, slopeScore: 63, volatilityScore: 67, accelerationScore: 60 } },
-  { code: "WF", country: "Wallis & Futuna", riskScore: 66, riskLevel: "High", cumulativeRise: 0.104, slope: 3.4, volatility: 0.057, decadeAcceleration: 0.071, components: { riseScore: 63, slopeScore: 63, volatilityScore: 66, accelerationScore: 58 } },
-  { code: "AS", country: "American Samoa", riskScore: 65, riskLevel: "High", cumulativeRise: 0.102, slope: 3.3, volatility: 0.056, decadeAcceleration: 0.070, components: { riseScore: 62, slopeScore: 61, volatilityScore: 64, accelerationScore: 57 } },
-  { code: "MP", country: "Northern Mariana", riskScore: 64, riskLevel: "High", cumulativeRise: 0.100, slope: 3.2, volatility: 0.055, decadeAcceleration: 0.068, components: { riseScore: 61, slopeScore: 59, volatilityScore: 63, accelerationScore: 56 } },
-  { code: "GU", country: "Guam", riskScore: 58, riskLevel: "Medium", cumulativeRise: 0.092, slope: 2.9, volatility: 0.050, decadeAcceleration: 0.060, components: { riseScore: 56, slopeScore: 54, volatilityScore: 57, accelerationScore: 49 } }
+  {
+    code: "PG",
+    country: "Papua New Guinea",
+    riskScore: 95,
+    riskLevel: "Critical",
+    cumulativeRise: 0.165,
+    slope: 5.4,
+    volatility: 0.075,
+    decadeAcceleration: 0.112,
+    components: {
+      riseScore: 100,
+      slopeScore: 100,
+      volatilityScore: 86,
+      accelerationScore: 92,
+    },
+  },
+  {
+    code: "SB",
+    country: "Solomon Islands",
+    riskScore: 93,
+    riskLevel: "Critical",
+    cumulativeRise: 0.158,
+    slope: 5.2,
+    volatility: 0.072,
+    decadeAcceleration: 0.108,
+    components: {
+      riseScore: 96,
+      slopeScore: 96,
+      volatilityScore: 83,
+      accelerationScore: 89,
+    },
+  },
+  {
+    code: "PW",
+    country: "Palau",
+    riskScore: 92,
+    riskLevel: "Critical",
+    cumulativeRise: 0.142,
+    slope: 4.8,
+    volatility: 0.087,
+    decadeAcceleration: 0.105,
+    components: {
+      riseScore: 86,
+      slopeScore: 89,
+      volatilityScore: 100,
+      accelerationScore: 86,
+    },
+  },
+  {
+    code: "FM",
+    country: "Micronesia",
+    riskScore: 87,
+    riskLevel: "Critical",
+    cumulativeRise: 0.138,
+    slope: 4.6,
+    volatility: 0.081,
+    decadeAcceleration: 0.098,
+    components: {
+      riseScore: 84,
+      slopeScore: 85,
+      volatilityScore: 93,
+      accelerationScore: 80,
+    },
+  },
+  {
+    code: "VU",
+    country: "Vanuatu",
+    riskScore: 85,
+    riskLevel: "Critical",
+    cumulativeRise: 0.135,
+    slope: 4.5,
+    volatility: 0.074,
+    decadeAcceleration: 0.095,
+    components: {
+      riseScore: 82,
+      slopeScore: 83,
+      volatilityScore: 85,
+      accelerationScore: 78,
+    },
+  },
+  {
+    code: "NR",
+    country: "Nauru",
+    riskScore: 78,
+    riskLevel: "High",
+    cumulativeRise: 0.128,
+    slope: 4.3,
+    volatility: 0.068,
+    decadeAcceleration: 0.091,
+    components: {
+      riseScore: 78,
+      slopeScore: 80,
+      volatilityScore: 78,
+      accelerationScore: 75,
+    },
+  },
+  {
+    code: "MH",
+    country: "Marshall Islands",
+    riskScore: 77,
+    riskLevel: "High",
+    cumulativeRise: 0.125,
+    slope: 4.2,
+    volatility: 0.071,
+    decadeAcceleration: 0.088,
+    components: {
+      riseScore: 76,
+      slopeScore: 78,
+      volatilityScore: 82,
+      accelerationScore: 72,
+    },
+  },
+  {
+    code: "FJ",
+    country: "Fiji",
+    riskScore: 76,
+    riskLevel: "High",
+    cumulativeRise: 0.124,
+    slope: 4.1,
+    volatility: 0.069,
+    decadeAcceleration: 0.086,
+    components: {
+      riseScore: 75,
+      slopeScore: 76,
+      volatilityScore: 79,
+      accelerationScore: 70,
+    },
+  },
+  {
+    code: "TV",
+    country: "Tuvalu",
+    riskScore: 75,
+    riskLevel: "High",
+    cumulativeRise: 0.122,
+    slope: 4.0,
+    volatility: 0.067,
+    decadeAcceleration: 0.085,
+    components: {
+      riseScore: 74,
+      slopeScore: 74,
+      volatilityScore: 77,
+      accelerationScore: 70,
+    },
+  },
+  {
+    code: "KI",
+    country: "Kiribati",
+    riskScore: 74,
+    riskLevel: "High",
+    cumulativeRise: 0.12,
+    slope: 3.9,
+    volatility: 0.066,
+    decadeAcceleration: 0.083,
+    components: {
+      riseScore: 73,
+      slopeScore: 72,
+      volatilityScore: 76,
+      accelerationScore: 68,
+    },
+  },
+  {
+    code: "WS",
+    country: "Samoa",
+    riskScore: 73,
+    riskLevel: "High",
+    cumulativeRise: 0.118,
+    slope: 3.9,
+    volatility: 0.064,
+    decadeAcceleration: 0.082,
+    components: {
+      riseScore: 72,
+      slopeScore: 72,
+      volatilityScore: 74,
+      accelerationScore: 67,
+    },
+  },
+  {
+    code: "TO",
+    country: "Tonga",
+    riskScore: 72,
+    riskLevel: "High",
+    cumulativeRise: 0.116,
+    slope: 3.8,
+    volatility: 0.063,
+    decadeAcceleration: 0.08,
+    components: {
+      riseScore: 70,
+      slopeScore: 70,
+      volatilityScore: 72,
+      accelerationScore: 66,
+    },
+  },
+  {
+    code: "NC",
+    country: "New Caledonia",
+    riskScore: 71,
+    riskLevel: "High",
+    cumulativeRise: 0.114,
+    slope: 3.7,
+    volatility: 0.062,
+    decadeAcceleration: 0.079,
+    components: {
+      riseScore: 69,
+      slopeScore: 69,
+      volatilityScore: 71,
+      accelerationScore: 65,
+    },
+  },
+  {
+    code: "PF",
+    country: "French Polynesia",
+    riskScore: 70,
+    riskLevel: "High",
+    cumulativeRise: 0.112,
+    slope: 3.6,
+    volatility: 0.061,
+    decadeAcceleration: 0.077,
+    components: {
+      riseScore: 68,
+      slopeScore: 67,
+      volatilityScore: 70,
+      accelerationScore: 63,
+    },
+  },
+  {
+    code: "CK",
+    country: "Cook Islands",
+    riskScore: 69,
+    riskLevel: "High",
+    cumulativeRise: 0.11,
+    slope: 3.6,
+    volatility: 0.06,
+    decadeAcceleration: 0.076,
+    components: {
+      riseScore: 67,
+      slopeScore: 67,
+      volatilityScore: 69,
+      accelerationScore: 62,
+    },
+  },
+  {
+    code: "NU",
+    country: "Niue",
+    riskScore: 68,
+    riskLevel: "High",
+    cumulativeRise: 0.108,
+    slope: 3.5,
+    volatility: 0.059,
+    decadeAcceleration: 0.074,
+    components: {
+      riseScore: 65,
+      slopeScore: 65,
+      volatilityScore: 68,
+      accelerationScore: 61,
+    },
+  },
+  {
+    code: "TK",
+    country: "Tokelau",
+    riskScore: 67,
+    riskLevel: "High",
+    cumulativeRise: 0.106,
+    slope: 3.4,
+    volatility: 0.058,
+    decadeAcceleration: 0.073,
+    components: {
+      riseScore: 64,
+      slopeScore: 63,
+      volatilityScore: 67,
+      accelerationScore: 60,
+    },
+  },
+  {
+    code: "WF",
+    country: "Wallis & Futuna",
+    riskScore: 66,
+    riskLevel: "High",
+    cumulativeRise: 0.104,
+    slope: 3.4,
+    volatility: 0.057,
+    decadeAcceleration: 0.071,
+    components: {
+      riseScore: 63,
+      slopeScore: 63,
+      volatilityScore: 66,
+      accelerationScore: 58,
+    },
+  },
+  {
+    code: "AS",
+    country: "American Samoa",
+    riskScore: 65,
+    riskLevel: "High",
+    cumulativeRise: 0.102,
+    slope: 3.3,
+    volatility: 0.056,
+    decadeAcceleration: 0.07,
+    components: {
+      riseScore: 62,
+      slopeScore: 61,
+      volatilityScore: 64,
+      accelerationScore: 57,
+    },
+  },
+  {
+    code: "MP",
+    country: "Northern Mariana",
+    riskScore: 64,
+    riskLevel: "High",
+    cumulativeRise: 0.1,
+    slope: 3.2,
+    volatility: 0.055,
+    decadeAcceleration: 0.068,
+    components: {
+      riseScore: 61,
+      slopeScore: 59,
+      volatilityScore: 63,
+      accelerationScore: 56,
+    },
+  },
+  {
+    code: "GU",
+    country: "Guam",
+    riskScore: 58,
+    riskLevel: "Medium",
+    cumulativeRise: 0.092,
+    slope: 2.9,
+    volatility: 0.05,
+    decadeAcceleration: 0.06,
+    components: {
+      riseScore: 56,
+      slopeScore: 54,
+      volatilityScore: 57,
+      accelerationScore: 49,
+    },
+  },
 ];
 
 const FALLBACK_RISK_DATA = {
@@ -242,11 +570,27 @@ export function RiskAssessment() {
 
   const radarData = selectedCountry
     ? [
-      { subject: "Rise", value: selectedCountry.components.riseScore, fullMark: 100 },
-      { subject: "Speed", value: selectedCountry.components.slopeScore, fullMark: 100 },
-      { subject: "Volatility", value: selectedCountry.components.volatilityScore, fullMark: 100 },
-      { subject: "Accel.", value: selectedCountry.components.accelerationScore, fullMark: 100 },
-    ]
+        {
+          subject: "Rise",
+          value: selectedCountry.components.riseScore,
+          fullMark: 100,
+        },
+        {
+          subject: "Speed",
+          value: selectedCountry.components.slopeScore,
+          fullMark: 100,
+        },
+        {
+          subject: "Volatility",
+          value: selectedCountry.components.volatilityScore,
+          fullMark: 100,
+        },
+        {
+          subject: "Accel.",
+          value: selectedCountry.components.accelerationScore,
+          fullMark: 100,
+        },
+      ]
     : [];
 
   return (
@@ -260,11 +604,13 @@ export function RiskAssessment() {
           transition={{ duration: 0.8 }}
           className="mb-6 text-center flex flex-col items-center"
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-3">Risk Assessment</h2>
+          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-3">
+            Risk Assessment
+          </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            A composite risk score (0–100) combining cumulative rise, rate of change, volatility,
-            and decade-over-decade acceleration. This is the full picture of existential threat by
-            nation.
+            A composite risk score (0–100) combining cumulative rise, rate of
+            change, volatility, and decade-over-decade acceleration. This is the
+            full picture of existential threat by nation.
           </p>
         </motion.div>
 
@@ -309,7 +655,9 @@ export function RiskAssessment() {
                         className={`w-4 h-4 ${theme.text} opacity-60 group-hover:opacity-100 transition-all duration-300`}
                       />
                     </div>
-                    <div className={`text-4xl font-serif font-bold tracking-tight ${theme.text}`}>
+                    <div
+                      className={`text-4xl font-serif font-bold tracking-tight ${theme.text}`}
+                    >
                       {count}
                     </div>
                     <div className="text-xs text-muted-foreground/60 font-mono font-medium -mt-1">
@@ -335,7 +683,7 @@ export function RiskAssessment() {
               })}
             </motion.div>
 
-{/* Master-Detail Dashboard: Ranked Bar Chart + Radar/Spider Chart Side-by-Side */}
+            {/* Master-Detail Dashboard: Ranked Bar Chart + Radar/Spider Chart Side-by-Side */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
               {/* Left Column: Ranked Bar Chart (Master List) */}
               <motion.div
@@ -357,7 +705,8 @@ export function RiskAssessment() {
                       Composite Risk Score by Nation
                     </h3>
                     <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                      Rankings based on cumulative rise, rate of change, volatility, and exposure.
+                      Rankings based on cumulative rise, rate of change,
+                      volatility, and exposure.
                     </p>
                   </div>
                   <div className="h-[500px] flex items-center justify-center">
@@ -369,222 +718,290 @@ export function RiskAssessment() {
                           margin={{ top: 25, right: 40, left: 15, bottom: 28 }}
                           barCategoryGap="20%"
                         >
-                        <defs>
-                          <linearGradient id="grad-Critical" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#f87171" />
-                            <stop offset="100%" stopColor="#ef4444" />
-                          </linearGradient>
-                          <linearGradient id="grad-High" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#fb923c" />
-                            <stop offset="100%" stopColor="#f97316" />
-                          </linearGradient>
-                          <linearGradient id="grad-Medium" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#fde047" />
-                            <stop offset="100%" stopColor="#eab308" />
-                          </linearGradient>
-                          <linearGradient id="grad-Low" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#4ade80" />
-                            <stop offset="100%" stopColor="#22c55e" />
-                          </linearGradient>
-                          <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
-                            <feDropShadow dx="0" dy="0" stdDeviation="3" floodOpacity="0.4" />
-                          </filter>
-                        </defs>
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          horizontal={false}
-                          stroke="hsl(var(--border))"
-                        />
-                        <XAxis
-                          type="number"
-                          domain={[0, 100]}
-                          stroke="hsl(var(--muted-foreground))"
-                          tick={{ fontSize: 11 }}
-                          tickLine={false}
-                          axisLine={false}
-                        >
-                          <Label
-                            value="Risk Score"
-                            position="insideBottom"
-                            offset={-14}
-                            style={{
-                              textAnchor: "middle",
-                              fill: "hsl(var(--muted-foreground))",
-                              fontSize: 10,
-                              fontWeight: 600,
-                              fontFamily: "monospace",
-                              letterSpacing: "0.05em",
-                            }}
+                          <defs>
+                            <linearGradient
+                              id="grad-Critical"
+                              x1="0"
+                              y1="0"
+                              x2="1"
+                              y2="0"
+                            >
+                              <stop offset="0%" stopColor="#f87171" />
+                              <stop offset="100%" stopColor="#ef4444" />
+                            </linearGradient>
+                            <linearGradient
+                              id="grad-High"
+                              x1="0"
+                              y1="0"
+                              x2="1"
+                              y2="0"
+                            >
+                              <stop offset="0%" stopColor="#fb923c" />
+                              <stop offset="100%" stopColor="#f97316" />
+                            </linearGradient>
+                            <linearGradient
+                              id="grad-Medium"
+                              x1="0"
+                              y1="0"
+                              x2="1"
+                              y2="0"
+                            >
+                              <stop offset="0%" stopColor="#fde047" />
+                              <stop offset="100%" stopColor="#eab308" />
+                            </linearGradient>
+                            <linearGradient
+                              id="grad-Low"
+                              x1="0"
+                              y1="0"
+                              x2="1"
+                              y2="0"
+                            >
+                              <stop offset="0%" stopColor="#4ade80" />
+                              <stop offset="100%" stopColor="#22c55e" />
+                            </linearGradient>
+                            <filter
+                              id="glow"
+                              x="-10%"
+                              y="-10%"
+                              width="120%"
+                              height="120%"
+                            >
+                              <feDropShadow
+                                dx="0"
+                                dy="0"
+                                stdDeviation="3"
+                                floodOpacity="0.4"
+                              />
+                            </filter>
+                          </defs>
+                          <CartesianGrid
+                            strokeDasharray="3 3"
+                            horizontal={false}
+                            stroke="hsl(var(--border))"
                           />
-                        </XAxis>
-                        <YAxis
-                          dataKey="country"
-                          type="category"
-                          stroke="hsl(var(--muted-foreground))"
-                          interval={0}
-                          axisLine={false}
-                          tick={(tickProps: { x: number; y: number; payload: { value: string } }) => {
-                            const { x, y, payload } = tickProps;
-                            const countryData = data.countries.find(
-                              (c) => c.country === payload.value
-                            );
-                            const isSelected = countryData && selectedCode === countryData.code;
-                            const displayCode = countryData ? countryData.code : payload.value;
-                            return (
-                              <text
-                                x={x}
-                                y={y}
-                                dy={4}
-                                textAnchor="end"
-                                fill={
-                                  isSelected
-                                    ? RISK_COLORS[countryData?.riskLevel || "Low"]
-                                    : "hsl(var(--muted-foreground))"
-                                }
-                                className={`text-xs font-mono transition-all duration-300 ${isSelected ? "font-bold" : "font-normal"
-                                  }`}
-                                style={{ cursor: "pointer" }}
-                                onClick={() =>
-                                  countryData &&
-                                  setSelectedCode(
-                                    countryData.code === selectedCode ? null : countryData.code
-                                  )
-                                }
-                              >
-                                {displayCode}
-                              </text>
-                            );
-                          }}
-                          width={55}
-                          tickLine={false}
-                        >
-                          <Label
-                            value="Nation"
-                            angle={-90}
-                            position="insideLeft"
-                            offset={-4}
-                            style={{
-                              textAnchor: "middle",
-                              fill: "hsl(var(--muted-foreground))",
-                              fontSize: 10,
-                              fontWeight: 600,
-                              fontFamily: "monospace",
-                              letterSpacing: "0.05em",
-                            }}
-                          />
-                        </YAxis>
-                        <Tooltip
-                          content={<CustomTooltip />}
-                          cursor={{ fill: "hsl(var(--muted)/0.1)" }}
-                        />
-                        <ReferenceLine
-                          x={data.avgRiskScore}
-                          stroke="#38bdf8"
-                          strokeDasharray="3 3"
-                          strokeWidth={1.5}
-                          label={(refProps: { viewBox?: { x: number; y: number; height: number } }) => {
-                            const viewBox = refProps.viewBox;
-                            if (!viewBox) return <g />;
-                            const { x, y, height } = viewBox;
-                            return (
-                              <g>
-                                {/* Top Label */}
-                                <g transform={`translate(${x}, -10)`}>
-                                  <rect
-                                    x={-36}
-                                    y={-9}
-                                    width={72}
-                                    height={18}
-                                    rx={4}
-                                    fill="hsl(var(--card))"
-                                    stroke="#38bdf8"
-                                    strokeWidth={1}
-                                  />
-                                  <text
-                                    x={0}
-                                    y={0}
-                                    textAnchor="middle"
-                                    dominantBaseline="central"
-                                    fill="#38bdf8"
-                                    fontSize={10}
-                                    fontFamily="monospace"
-                                    fontWeight={700}
-                                  >
-                                    Avg: {data.avgRiskScore}
-                                  </text>
-                                </g>
-
-                                {/* Bottom Label */}
-                                <g transform={`translate(${x}, ${y + height - 12})`}>
-                                  <rect
-                                    x={-36}
-                                    y={-9}
-                                    width={72}
-                                    height={18}
-                                    rx={4}
-                                    fill="hsl(var(--card))"
-                                    stroke="#38bdf8"
-                                    strokeWidth={1}
-                                  />
-                                  <text
-                                    x={0}
-                                    y={0}
-                                    textAnchor="middle"
-                                    dominantBaseline="central"
-                                    fill="#38bdf8"
-                                    fontSize={10}
-                                    fontFamily="monospace"
-                                    fontWeight={700}
-                                  >
-                                    Avg: {data.avgRiskScore}
-                                  </text>
-                                </g>
-                              </g>
-                            );
-                          }}
-                        />
-                        <Bar
-                          dataKey="riskScore"
-                          name="Risk Score"
-                          radius={[0, 4, 4, 0]}
-                          onClick={(d: unknown) => {
-                            const item = d as RiskCountry;
-                            setSelectedCode(item.code === selectedCode ? null : item.code);
-                          }}
-                          cursor="pointer"
-                          isAnimationActive={isAnimationActive}
-                          animationDuration={1500}
-                          animationEasing="ease-out"
-                        >
-                          <LabelList
-                            dataKey="riskScore"
-                            position="right"
-                            fill="hsl(var(--muted-foreground))"
-                            fontSize={10}
-                            fontWeight={600}
-                            fontFamily="monospace"
-                            dx={8}
-                          />
-                          {data.countries.map((entry) => (
-                            <Cell
-                              key={entry.code}
-                              fill={`url(#grad-${entry.riskLevel})`}
-                              opacity={
-                                selectedCode === null || selectedCode === entry.code ? 1 : 0.35
-                              }
-                              stroke={
-                                selectedCode === entry.code ? RISK_COLORS[entry.riskLevel] : "none"
-                              }
-                              strokeWidth={selectedCode === entry.code ? 1.5 : 0}
+                          <XAxis
+                            type="number"
+                            domain={[0, 100]}
+                            stroke="hsl(var(--muted-foreground))"
+                            tick={{ fontSize: 11 }}
+                            tickLine={false}
+                            axisLine={false}
+                          >
+                            <Label
+                              value="Risk Score"
+                              position="insideBottom"
+                              offset={-14}
                               style={{
-                                filter: selectedCode === entry.code ? `url(#glow)` : "none",
-                                transition: "all 0.3s ease",
+                                textAnchor: "middle",
+                                fill: "hsl(var(--muted-foreground))",
+                                fontSize: 10,
+                                fontWeight: 600,
+                                fontFamily: "monospace",
+                                letterSpacing: "0.05em",
                               }}
                             />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
+                          </XAxis>
+                          <YAxis
+                            dataKey="country"
+                            type="category"
+                            stroke="hsl(var(--muted-foreground))"
+                            interval={0}
+                            axisLine={false}
+                            tick={(tickProps: {
+                              x: number;
+                              y: number;
+                              payload: { value: string };
+                            }) => {
+                              const { x, y, payload } = tickProps;
+                              const countryData = data.countries.find(
+                                (c) => c.country === payload.value,
+                              );
+                              const isSelected =
+                                countryData &&
+                                selectedCode === countryData.code;
+                              const displayCode = countryData
+                                ? countryData.code
+                                : payload.value;
+                              return (
+                                <text
+                                  x={x}
+                                  y={y}
+                                  dy={4}
+                                  textAnchor="end"
+                                  fill={
+                                    isSelected
+                                      ? RISK_COLORS[
+                                          countryData?.riskLevel || "Low"
+                                        ]
+                                      : "hsl(var(--muted-foreground))"
+                                  }
+                                  className={`text-xs font-mono transition-all duration-300 ${
+                                    isSelected ? "font-bold" : "font-normal"
+                                  }`}
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() =>
+                                    countryData &&
+                                    setSelectedCode(
+                                      countryData.code === selectedCode
+                                        ? null
+                                        : countryData.code,
+                                    )
+                                  }
+                                >
+                                  {displayCode}
+                                </text>
+                              );
+                            }}
+                            width={55}
+                            tickLine={false}
+                          >
+                            <Label
+                              value="Nation"
+                              angle={-90}
+                              position="insideLeft"
+                              offset={-4}
+                              style={{
+                                textAnchor: "middle",
+                                fill: "hsl(var(--muted-foreground))",
+                                fontSize: 10,
+                                fontWeight: 600,
+                                fontFamily: "monospace",
+                                letterSpacing: "0.05em",
+                              }}
+                            />
+                          </YAxis>
+                          <Tooltip
+                            content={<CustomTooltip />}
+                            cursor={{ fill: "hsl(var(--muted)/0.1)" }}
+                          />
+                          <ReferenceLine
+                            x={data.avgRiskScore}
+                            stroke="#38bdf8"
+                            strokeDasharray="3 3"
+                            strokeWidth={1.5}
+                            label={(refProps: {
+                              viewBox?: {
+                                x: number;
+                                y: number;
+                                height: number;
+                              };
+                            }) => {
+                              const viewBox = refProps.viewBox;
+                              if (!viewBox) return <g />;
+                              const { x, y, height } = viewBox;
+                              return (
+                                <g>
+                                  {/* Top Label */}
+                                  <g transform={`translate(${x}, -10)`}>
+                                    <rect
+                                      x={-36}
+                                      y={-9}
+                                      width={72}
+                                      height={18}
+                                      rx={4}
+                                      fill="hsl(var(--card))"
+                                      stroke="#38bdf8"
+                                      strokeWidth={1}
+                                    />
+                                    <text
+                                      x={0}
+                                      y={0}
+                                      textAnchor="middle"
+                                      dominantBaseline="central"
+                                      fill="#38bdf8"
+                                      fontSize={10}
+                                      fontFamily="monospace"
+                                      fontWeight={700}
+                                    >
+                                      Avg: {data.avgRiskScore}
+                                    </text>
+                                  </g>
+
+                                  {/* Bottom Label */}
+                                  <g
+                                    transform={`translate(${x}, ${y + height - 12})`}
+                                  >
+                                    <rect
+                                      x={-36}
+                                      y={-9}
+                                      width={72}
+                                      height={18}
+                                      rx={4}
+                                      fill="hsl(var(--card))"
+                                      stroke="#38bdf8"
+                                      strokeWidth={1}
+                                    />
+                                    <text
+                                      x={0}
+                                      y={0}
+                                      textAnchor="middle"
+                                      dominantBaseline="central"
+                                      fill="#38bdf8"
+                                      fontSize={10}
+                                      fontFamily="monospace"
+                                      fontWeight={700}
+                                    >
+                                      Avg: {data.avgRiskScore}
+                                    </text>
+                                  </g>
+                                </g>
+                              );
+                            }}
+                          />
+                          <Bar
+                            dataKey="riskScore"
+                            name="Risk Score"
+                            radius={[0, 4, 4, 0]}
+                            onClick={(d: unknown) => {
+                              const item = d as RiskCountry;
+                              setSelectedCode(
+                                item.code === selectedCode ? null : item.code,
+                              );
+                            }}
+                            cursor="pointer"
+                            isAnimationActive={isAnimationActive}
+                            animationDuration={1500}
+                            animationEasing="ease-out"
+                          >
+                            <LabelList
+                              dataKey="riskScore"
+                              position="right"
+                              fill="hsl(var(--muted-foreground))"
+                              fontSize={10}
+                              fontWeight={600}
+                              fontFamily="monospace"
+                              dx={8}
+                            />
+                            {data.countries.map((entry) => (
+                              <Cell
+                                key={entry.code}
+                                fill={`url(#grad-${entry.riskLevel})`}
+                                opacity={
+                                  selectedCode === null ||
+                                  selectedCode === entry.code
+                                    ? 1
+                                    : 0.35
+                                }
+                                stroke={
+                                  selectedCode === entry.code
+                                    ? RISK_COLORS[entry.riskLevel]
+                                    : "none"
+                                }
+                                strokeWidth={
+                                  selectedCode === entry.code ? 1.5 : 0
+                                }
+                                style={{
+                                  filter:
+                                    selectedCode === entry.code
+                                      ? `url(#glow)`
+                                      : "none",
+                                  transition: "all 0.3s ease",
+                                }}
+                              />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
                     ) : (
                       <div className="text-muted-foreground/35 text-xs font-mono animate-pulse">
                         Loading risk profile visualization...
@@ -619,7 +1036,9 @@ export function RiskAssessment() {
                       <div>
                         <div
                           className="text-4xl font-mono font-bold tracking-tight mb-0.5"
-                          style={{ color: RISK_COLORS[selectedCountry.riskLevel] }}
+                          style={{
+                            color: RISK_COLORS[selectedCountry.riskLevel],
+                          }}
                         >
                           {selectedCountry.riskScore}
                           <span className="text-base font-mono text-muted-foreground ml-2">
@@ -628,7 +1047,9 @@ export function RiskAssessment() {
                         </div>
                         <p
                           className="text-xs font-mono font-semibold uppercase tracking-wider"
-                          style={{ color: RISK_COLORS[selectedCountry.riskLevel] }}
+                          style={{
+                            color: RISK_COLORS[selectedCountry.riskLevel],
+                          }}
                         >
                           {selectedCountry.riskLevel} Risk
                         </p>
@@ -639,7 +1060,12 @@ export function RiskAssessment() {
                           <RadarChart
                             data={radarData}
                             outerRadius="84%"
-                            margin={{ top: 10, right: 35, bottom: 10, left: 35 }}
+                            margin={{
+                              top: 10,
+                              right: 35,
+                              bottom: 10,
+                              left: 35,
+                            }}
                           >
                             <defs>
                               <linearGradient
@@ -651,12 +1077,16 @@ export function RiskAssessment() {
                               >
                                 <stop
                                   offset="0%"
-                                  stopColor={RISK_COLORS[selectedCountry.riskLevel]}
+                                  stopColor={
+                                    RISK_COLORS[selectedCountry.riskLevel]
+                                  }
                                   stopOpacity={0.4}
                                 />
                                 <stop
                                   offset="100%"
-                                  stopColor={RISK_COLORS[selectedCountry.riskLevel]}
+                                  stopColor={
+                                    RISK_COLORS[selectedCountry.riskLevel]
+                                  }
                                   stopOpacity={0.05}
                                 />
                               </linearGradient>
@@ -670,9 +1100,15 @@ export function RiskAssessment() {
                                 cx: number;
                                 cy: number;
                                 payload: { value: string };
-                                textAnchor: "end" | "inherit" | "middle" | "start" | undefined;
+                                textAnchor:
+                                  | "end"
+                                  | "inherit"
+                                  | "middle"
+                                  | "start"
+                                  | undefined;
                               }) => {
-                                const { x, y, cx, cy, payload, textAnchor } = polarProps;
+                                const { x, y, cx, cy, payload, textAnchor } =
+                                  polarProps;
                                 const angle = Math.atan2(y - cy, x - cx);
                                 const offset = 8;
                                 const newX = x + Math.cos(angle) * offset;
@@ -745,7 +1181,9 @@ export function RiskAssessment() {
                         No nation selected
                       </p>
                       <p className="text-xs text-muted-foreground max-w-[240px] leading-relaxed">
-                        Click on any nation's bar or label to view its detailed climate vulnerability vectors and index scores on the radar chart.
+                        Click on any nation's bar or label to view its detailed
+                        climate vulnerability vectors and index scores on the
+                        radar chart.
                       </p>
                     </div>
                   )}
@@ -755,7 +1193,8 @@ export function RiskAssessment() {
 
             {/* Interaction Helper Text */}
             <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-              Click on any nation's bar or label to view its detailed climate vulnerability vectors and index scores on the radar chart.
+              Click on any nation's bar or label to view its detailed climate
+              vulnerability vectors and index scores on the radar chart.
             </p>
           </>
         )}

@@ -28,7 +28,10 @@ function App() {
     document.documentElement.classList.add("dark");
 
     // Disable native scroll restoration and force scroll to top
-    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+    if (
+      typeof window !== "undefined" &&
+      "scrollRestoration" in window.history
+    ) {
       window.history.scrollRestoration = "manual";
     }
     window.scrollTo(0, 0);

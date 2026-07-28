@@ -5,7 +5,7 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { ElNinoNation } from './elNinoNation';
+import type { ElNinoNation } from "./elNinoNation";
 
 export interface ElNinoImpactData {
   nations: ElNinoNation[];
