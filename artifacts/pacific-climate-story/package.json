@@ -10,9 +10,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@radix-ui/react-toast": "^1.2.7",
-    "@radix-ui/react-tooltip": "^1.2.0",
-    "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/react-query": "catalog:",
     "@types/node": "catalog:",
