@@ -177,13 +177,13 @@ export function PatternsOverTime() {
                               shadowColor = "rgba(6, 182, 212, 0.15)";
                             }
                             
-                            const isTopRow = sortedPos < 4;
+                            const isTopHalf = sortedPos < sortedIndices.length / 2;
                             const isLeftCol = j < 5;
                             const isRightCol = j > numYears - 6;
 
                             let positionClasses = `absolute hidden group-hover/cell:block z-50 bg-[#0b1528] border p-4 rounded-xl shadow-[0_10px_30px_${shadowColor}] backdrop-blur-md min-w-[240px] font-sans text-left `;
                             
-                            if (isTopRow) {
+                            if (isTopHalf) {
                               positionClasses += "top-full mt-2.5 ";
                             } else {
                               positionClasses += "bottom-full mb-3.5 ";
