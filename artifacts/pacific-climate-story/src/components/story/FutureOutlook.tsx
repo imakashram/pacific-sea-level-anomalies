@@ -15,7 +15,7 @@ import {
   ReferenceArea,
 } from "recharts";
 import { motion } from "framer-motion";
-import { Gauge, Activity, Calendar, ShieldAlert, History } from "lucide-react";
+import { Gauge, Calendar, ShieldAlert, History } from "lucide-react";
 
 /**
  * Historical sea level observation entry.

@@ -1,7 +1,7 @@
 import { StorySection } from "./StorySection";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
-import { MapPin, TrendingUp, Gauge, ArrowUpRight, ShieldAlert } from "lucide-react";
+import { MapPin, Gauge } from "lucide-react";
 
 /**
  * Data structure representing a sub-regional cluster analysis summary.
@@ -135,7 +135,6 @@ const CLUSTER_DATA: RegionalCluster[] = [
  */
 export function ChapterSubRegionalClusters() {
   const [selectedRegion, setSelectedRegion] = useState<"Melanesia" | "Micronesia" | "Polynesia">("Melanesia");
-  const [hoveredDecade, setHoveredDecade] = useState<{ region: string; decade: string; val: number } | null>(null);
 
   const selectedCluster = CLUSTER_DATA.find((c) => c.region === selectedRegion) || CLUSTER_DATA[0];
 
@@ -355,10 +354,7 @@ export function ChapterSubRegionalClusters() {
                           fill="#0f172a"
                           stroke={theme.hex}
                           strokeWidth="2.5"
-                          onMouseEnter={() =>
-                            setHoveredDecade({ region: cluster.region, decade: "D1 (1993–2002)", val: cluster.d1AvgCm })
-                          }
-                          onMouseLeave={() => setHoveredDecade(null)}
+
                         />
                         <text
                           x={cx - 12}
@@ -379,10 +375,7 @@ export function ChapterSubRegionalClusters() {
                           fill="#0f172a"
                           stroke={theme.hex}
                           strokeWidth="2.5"
-                          onMouseEnter={() =>
-                            setHoveredDecade({ region: cluster.region, decade: "D2 (2003–2012)", val: cluster.d2AvgCm })
-                          }
-                          onMouseLeave={() => setHoveredDecade(null)}
+
                         />
                         <text
                           x={cx - 12}
@@ -403,10 +396,7 @@ export function ChapterSubRegionalClusters() {
                           fill={theme.hex}
                           stroke="#ffffff"
                           strokeWidth="2"
-                          onMouseEnter={() =>
-                            setHoveredDecade({ region: cluster.region, decade: "D3 (2013–2023)", val: cluster.d3AvgCm })
-                          }
-                          onMouseLeave={() => setHoveredDecade(null)}
+
                         />
                         {/* Endpoint Milestone Badge */}
                         <rect

@@ -9,7 +9,6 @@ import {
   Terminal,
   HelpCircle,
   CheckCircle2,
-  Lightbulb,
   Scale,
   Activity,
   Search

@@ -7,12 +7,6 @@ import {
   Check, 
   Search, 
   Terminal, 
-  Cpu, 
-  Database, 
-  TrendingUp, 
-  AlertTriangle, 
-  Layers,
-  Code,
   Layout,
   Calculator
 } from "lucide-react";
@@ -167,10 +161,9 @@ export default function ApiExplorerPage() {
   const [, setLocation] = useLocation();
   const [selectedApi, setSelectedApi] = useState<ApiEndpoint>(ENDPOINTS[0]);
   const [paramValues, setParamValues] = useState<Record<string, string>>({ code: "PW" });
-  const [categoryFilter, setCategoryFilter] = useState<"all" | "core" | "trends" | "enso" | "risk" | "visuals">("all");
+  const categoryFilter = "all";
   const [searchQuery, setSearchQuery] = useState("");
   const [apiResponse, setApiResponse] = useState<any>(null);
-  const [responseHeaders, setResponseHeaders] = useState<Record<string, string>>({});
   const [statusCode, setStatusCode] = useState<number | null>(null);
   const [responseTime, setResponseTime] = useState<number | null>(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -190,7 +183,6 @@ export default function ApiExplorerPage() {
     setApiResponse(null);
     setStatusCode(null);
     setResponseTime(null);
-    setResponseHeaders({});
     
     const start = performance.now();
     try {
@@ -199,12 +191,6 @@ export default function ApiExplorerPage() {
       
       setStatusCode(response.status);
       setResponseTime(Math.round(end - start));
-      
-      const headersObj: Record<string, string> = {};
-      response.headers.forEach((value, key) => {
-        headersObj[key] = value;
-      });
-      setResponseHeaders(headersObj);
 
       const text = await response.text();
       try {
@@ -273,15 +259,6 @@ export default function ApiExplorerPage() {
   };
 
   const formattedJson = JSON.stringify(getFilteredJsonResponse(), null, 2);
-
-  const categoryIcons = {
-    all: <Terminal className="w-3.5 h-3.5" />,
-    core: <Database className="w-3.5 h-3.5" />,
-    trends: <TrendingUp className="w-3.5 h-3.5" />,
-    enso: <Layers className="w-3.5 h-3.5" />,
-    risk: <AlertTriangle className="w-3.5 h-3.5" />,
-    visuals: <Code className="w-3.5 h-3.5" />
-  };
 
   return (
     <div className="min-h-screen bg-[#070913] text-[#f8fafc] font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200">
