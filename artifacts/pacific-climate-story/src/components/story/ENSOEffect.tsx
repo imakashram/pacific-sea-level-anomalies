@@ -38,7 +38,6 @@ export function ENSOEffect() {
   for (let t = startTick; t <= maxCm; t += step) {
     ticks.push(t);
   }
-  const bottom3 = ensoData?.nations.slice(-3).reverse() ?? [];
 
   return (
     <StorySection id="chapter-enso" className="bg-background relative">
