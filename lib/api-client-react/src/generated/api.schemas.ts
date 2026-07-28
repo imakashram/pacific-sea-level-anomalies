@@ -57,34 +57,6 @@ export interface CountryTimeSeries {
   trend: CountryTimeSeriesTrend;
 }
 
-export interface CountryComparison {
-  country: string;
-  code: string;
-  latestAnomaly: number;
-  cumulativeRise: number;
-  averageAnomaly: number;
-  peakYear: number;
-  peakValue: number;
-}
-
-export type ClimateAnomalyType = typeof ClimateAnomalyType[keyof typeof ClimateAnomalyType];
-
-
-export const ClimateAnomalyType = {
-  peak: 'peak',
-  trough: 'trough',
-  shift: 'shift',
-} as const;
-
-export interface ClimateAnomaly {
-  year: number;
-  country: string;
-  code: string;
-  value: number;
-  type: ClimateAnomalyType;
-  description: string;
-}
-
 export interface HeatmapData {
   years: number[];
   countries: string[];
@@ -115,15 +87,6 @@ export interface GlobalDecadeAvg {
 export interface DecadeAnalysis {
   countries: DecadeCountryRow[];
   globalDecades: GlobalDecadeAvg[];
-}
-
-export interface RateOfChangePoint {
-  year: number;
-  avgAnomaly: number;
-  /** Year-over-year change in global average (null for first year) */
-  yoyDelta?: number | null;
-  /** 5-year centered rolling average */
-  rollingAvg: number;
 }
 
 export interface VolatilityCountry {
@@ -271,32 +234,6 @@ export interface CountryProfile {
   stats: CountryProfileStats;
 }
 
-export type CumulativeRiseCountryDataItem = {
-  year: number;
-  cumulative: number;
-  raw: number;
-};
-
-export interface CumulativeRiseCountry {
-  country: string;
-  code: string;
-  totalRise: number;
-  data: CumulativeRiseCountryDataItem[];
-}
-
-export interface CumulativeRiseData {
-  years: number[];
-  countries: CumulativeRiseCountry[];
-}
-
-export interface NationsRisingPoint {
-  year: number;
-  count: number;
-  total: number;
-  pct: number;
-  avgAnomaly: number;
-}
-
 export interface ElNinoNation {
   country: string;
   code: string;
@@ -407,161 +344,6 @@ export interface ENSOSensitivityData {
   laNinaYears: number[];
 }
 
-export interface CorrelationPair {
-  countryA: string;
-  codeA: string;
-  countryB: string;
-  codeB: string;
-  r: number;
-}
-
-export interface CorrelationAvgEntry {
-  country: string;
-  code: string;
-  avgCorrelation: number;
-}
-
-export interface CorrelationMatrixData {
-  countries: string[];
-  codes: string[];
-  /** N×N Pearson correlation matrix */
-  matrix: number[][];
-  mostCorrelated: CorrelationPair;
-  leastCorrelated: CorrelationPair;
-  avgCorrelation: CorrelationAvgEntry[];
-}
-
-export interface NationRankEntry {
-  code: string;
-  country: string;
-  ranks: (number | null)[];
-  anomalies: (number | null)[];
-  finalRank: number | null;
-  rankVolatility: number;
-}
-
-export interface NationRankingsData {
-  years: number[];
-  nations: NationRankEntry[];
-}
-
-export interface DecadeStats {
-  decade: string;
-  min: number;
-  q1: number;
-  median: number;
-  q3: number;
-  max: number;
-  mean: number;
-  count?: number;
-}
-
-export interface NationDecadeStats {
-  decade: string;
-  min: number;
-  q1: number;
-  median: number;
-  q3: number;
-  max: number;
-  mean: number;
-}
-
-export interface NationDecadeEntry {
-  code: string;
-  country: string;
-  decades: NationDecadeStats[];
-}
-
-export interface DecadeDistributionsData {
-  decades: string[];
-  global: DecadeStats[];
-  nations: NationDecadeEntry[];
-}
-
-export interface TreemapNation {
-  code: string;
-  country: string;
-  totalRise: number;
-  firstQuintAvg: number;
-  lastQuintAvg: number;
-  acceleration: number;
-  volatility: number;
-  avgYoYChange: number;
-}
-
-export interface NationTreemapData {
-  nations: TreemapNation[];
-}
-
-export interface YoyBudgetEntry {
-  year: number;
-  avgAnomaly: number;
-  yoyChange: number;
-  spacer: number;
-  absChange: number;
-  positive: boolean;
-  runningTotal: number;
-}
-
-export interface YoyBudgetData {
-  entries: YoyBudgetEntry[];
-  totalRise: number;
-  positiveYears: number;
-  negativeYears: number;
-  biggestGain: YoyBudgetEntry;
-  biggestLoss: YoyBudgetEntry;
-}
-
-export interface AnomalyProfileNation {
-  code: string;
-  country: string;
-  region: string;
-  values: number[];
-  mean: number;
-  std: number;
-  min: number;
-  max: number;
-  median: number;
-}
-
-export interface AnomalyProfilesData {
-  nations: AnomalyProfileNation[];
-}
-
-export interface ThresholdHistoricalPoint {
-  year: number;
-  count: number;
-}
-
-export interface ThresholdFunnelStep {
-  threshold: number;
-  label: string;
-  desc: string;
-  count: number;
-  total: number;
-  pct: number;
-  nations: string[];
-  historical: ThresholdHistoricalPoint[];
-}
-
-export interface ThresholdFunnelData {
-  funnel: ThresholdFunnelStep[];
-  totalNations: number;
-}
-
-export interface RegionalStreamEntry {
-  year: number;
-  Micronesia: number;
-  Polynesia: number;
-  Melanesia: number;
-  total: number;
-}
-
-export interface RegionalStreamsData {
-  streams: RegionalStreamEntry[];
-  years: number[];
-}
-
 export interface AnnualDeviationEntry {
   year: number;
   avg: number;
@@ -574,69 +356,5 @@ export interface AnnualDeviationData {
   mean30yr: number;
   maxDeviation: number;
   minDeviation: number;
-}
-
-export interface StartEndNation {
-  code: string;
-  country: string;
-  region: string;
-  val1993: number;
-  val2023: number;
-  change: number;
-  pctChange: number;
-}
-
-export interface StartEndComparisonData {
-  nations: StartEndNation[];
-  avgChange: number;
-}
-
-export interface RegionalDecadeSlice {
-  region: string;
-  mean: number;
-  total: number;
-  count: number;
-  share: number;
-}
-
-export interface RegionalDecade {
-  decade: string;
-  slices: RegionalDecadeSlice[];
-}
-
-export interface RegionalDecadeSharesData {
-  decades: RegionalDecade[];
-}
-
-export interface NationMetricsNormalized {
-  totalRise: number;
-  ensoSensitivity: number;
-  volatility: number;
-  acceleration: number;
-  finalRank: number;
-}
-
-export interface NationMetricsEntry {
-  code: string;
-  country: string;
-  region: string;
-  totalRise: number;
-  ensoSensitivity: number;
-  volatility: number;
-  acceleration: number;
-  finalRank: number;
-  normalized: NationMetricsNormalized;
-}
-
-export interface NationMetricsAxis {
-  key: string;
-  label: string;
-  min: number;
-  max: number;
-}
-
-export interface NationMetricsData {
-  nations: NationMetricsEntry[];
-  axes: NationMetricsAxis[];
 }
 
