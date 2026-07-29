@@ -375,6 +375,42 @@ export function ExploreAnyNation({
     }
   }, [rankings, localSelectedCode]);
 
+  const handleDropdownKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setIsOpen(false);
+      document.getElementById("territory-select-button")?.focus();
+      return;
+    }
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const listbox = document.getElementById("territory-listbox");
+      if (!listbox) return;
+      const buttons = Array.from(listbox.querySelectorAll("button[role='option']")) as HTMLButtonElement[];
+      if (buttons.length === 0) return;
+      const activeEl = document.activeElement as HTMLButtonElement;
+      const currentIndex = buttons.indexOf(activeEl);
+      let nextIndex = currentIndex;
+      if (e.key === "ArrowDown") {
+        nextIndex = currentIndex === -1 || currentIndex === buttons.length - 1 ? 0 : currentIndex + 1;
+      } else {
+        nextIndex = currentIndex === -1 || currentIndex === 0 ? buttons.length - 1 : currentIndex - 1;
+      }
+      buttons[nextIndex]?.focus();
+    }
+  };
+
+  const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Space" || e.key === "Enter") {
+      e.preventDefault();
+      setIsOpen(true);
+      setTimeout(() => {
+        const listbox = document.getElementById("territory-listbox");
+        const activeOption = listbox?.querySelector("button[aria-selected='true']") as HTMLButtonElement || listbox?.querySelector("button[role='option']") as HTMLButtonElement;
+        activeOption?.focus();
+      }, 50);
+    }
+  };
+
   const selectedCode = propsSelectedCode || localSelectedCode;
   const setSelectedCode = propsSetSelectedCode || localSetSelectedCode;
 
@@ -482,14 +518,20 @@ export function ExploreAnyNation({
         <div className="flex justify-end w-full mb-6 z-50 relative">
           <div className="relative w-full max-w-xs z-50">
             <button
+              id="territory-select-button"
+              aria-haspopup="listbox"
+              aria-expanded={isOpen}
+              aria-controls="territory-listbox"
+              aria-label="Select territory"
               onClick={() => setIsOpen(!isOpen)}
+              onKeyDown={handleTriggerKeyDown}
               className="flex items-center justify-between w-full px-5 py-3 rounded-2xl bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
             >
               <div className="flex items-center gap-3 text-left">
                 <Globe className="w-4 h-4 text-primary flex-shrink-0" />
                 <span>
                   {rankings.find((r) => r.code === selectedCode)?.country ||
-                    "Select Territory"}
+                     "Select Territory"}
                 </span>
               </div>
               <svg
@@ -499,6 +541,7 @@ export function ExploreAnyNation({
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -517,6 +560,10 @@ export function ExploreAnyNation({
                     onClick={() => setIsOpen(false)}
                   />
                   <motion.div
+                    id="territory-listbox"
+                    role="listbox"
+                    aria-labelledby="territory-select-button"
+                    onKeyDown={handleDropdownKeyDown}
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -527,6 +574,8 @@ export function ExploreAnyNation({
                       {rankings.map((r) => (
                         <button
                           key={r.code}
+                          role="option"
+                          aria-selected={selectedCode === r.code}
                           onClick={() => {
                             setSelectedCode(r.code);
                             setIsOpen(false);
@@ -544,6 +593,7 @@ export function ExploreAnyNation({
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
+                              aria-hidden="true"
                             >
                               <path
                                 strokeLinecap="round"
@@ -735,6 +785,7 @@ export function ExploreAnyNation({
                     </span>
                     <button
                       onClick={() => setShowMovingAvg(!showMovingAvg)}
+                      aria-pressed={showMovingAvg}
                       className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${
                         showMovingAvg ? "opacity-100" : "opacity-40"
                       }`}
@@ -744,6 +795,7 @@ export function ExploreAnyNation({
                     </button>
                     <button
                       onClick={() => setShowTrendline(!showTrendline)}
+                      aria-pressed={showTrendline}
                       className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${
                         showTrendline ? "opacity-100" : "opacity-40"
                       }`}

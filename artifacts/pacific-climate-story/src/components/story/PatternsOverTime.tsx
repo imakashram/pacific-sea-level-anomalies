@@ -24,6 +24,24 @@ export function PatternsOverTime() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [sortKey, setSortKey] = useState<SortKey>("totalRise");
 
+  const handleTablistKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      const currentIndex = sortOptions.findIndex((o) => o.key === sortKey);
+      let nextIndex = currentIndex;
+      if (e.key === "ArrowRight") {
+        nextIndex = currentIndex === sortOptions.length - 1 ? 0 : currentIndex + 1;
+      } else {
+        nextIndex = currentIndex === 0 ? sortOptions.length - 1 : currentIndex - 1;
+      }
+      const nextKey = sortOptions[nextIndex].key;
+      setSortKey(nextKey);
+      setTimeout(() => {
+        document.getElementById(`tab-${nextKey}`)?.focus();
+      }, 50);
+    }
+  };
+
   const getColor = (value: number, min: number, max: number) => {
     if (value === 0) {
       return "rgba(148, 163, 184, 0.25)"; // Zero deviation represented in grey
@@ -94,12 +112,21 @@ export function PatternsOverTime() {
         <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
           Sort by:
         </span>
-        <div className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5">
+        <div
+          className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5"
+          role="tablist"
+          aria-label="Sort heatmaps"
+          onKeyDown={handleTablistKeyDown}
+        >
           {sortOptions.map(({ key, label }) => {
             const isActive = sortKey === key;
             return (
               <button
                 key={key}
+                id={`tab-${key}`}
+                role="tab"
+                aria-selected={isActive}
+                aria-controls="heatmap-grid"
                 onClick={() => setSortKey(key)}
                 className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-all duration-200 cursor-pointer ${
                   isActive
@@ -114,9 +141,25 @@ export function PatternsOverTime() {
         </div>
       </div>
 
+      <div className="sr-only">
+        This heatmap visualizes annual sea level anomalies from 1993 to 2023 for 21 Pacific nations.
+        The grid is currently sorted by {sortOptions.find((o) => o.key === sortKey)?.label || sortKey}.
+        To skip this keyboard-heavy grid of 651 data points, use the skip link below.
+      </div>
+
+      <a
+        href="#heatmap-end"
+        className="sr-only focus:not-sr-only focus:block focus:text-center focus:py-2 focus:bg-slate-900 focus:text-primary focus:rounded-xl focus:border focus:border-primary/30 mb-4 transition-all"
+      >
+        Skip heatmap grid to summary statistics
+      </a>
+
       {/* Static Card Container */}
       <div
         ref={ref}
+        id="heatmap-grid"
+        role="tabpanel"
+        aria-labelledby={`tab-${sortKey}`}
         className="max-w-5xl mx-auto w-full border border-border/30 rounded-xl p-6 bg-card/30 backdrop-blur-md relative z-10"
       >
         {/* Chart Header */}
@@ -402,6 +445,7 @@ export function PatternsOverTime() {
           <div className="h-[420px]" />
         )}
       </div>
+      <div id="heatmap-end" />
     </StorySection>
   );
 }

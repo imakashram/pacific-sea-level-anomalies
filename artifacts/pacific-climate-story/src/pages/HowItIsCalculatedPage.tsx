@@ -423,14 +423,13 @@ export default function HowItIsCalculatedPage() {
       {/* Header Bar */}
       <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/">
-            <button
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
-              title="Return to Climate Story"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Story</span>
-            </button>
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
+            title="Return to Climate Story"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Story</span>
           </Link>
           <div className="h-5 w-px bg-slate-800" />
           <div className="flex items-center gap-2.5">
@@ -444,18 +443,17 @@ export default function HowItIsCalculatedPage() {
         </div>
 
         {/* Navigation Link to API Explorer */}
-        <Link href="/explorer">
-          <button
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
-          >
-            <Terminal className="w-4 h-4 text-cyan-400" />
-            <span>API Explorer</span>
-          </button>
+        <Link
+          href="/explorer"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
+        >
+          <Terminal className="w-4 h-4 text-cyan-400" />
+          <span>API Explorer</span>
         </Link>
       </header>
 
       {/* Main Container */}
-      <main className="max-w-[1300px] mx-auto p-6 lg:p-10 flex flex-col gap-8">
+      <main id="main-content" className="max-w-[1300px] mx-auto p-6 lg:p-10 flex flex-col gap-8" tabIndex={-1}>
         {/* Introduction Header */}
         <div className="bg-slate-900/40 border border-slate-800 p-8 rounded-3xl flex flex-col gap-6 shadow-md">
           <div>
@@ -531,6 +529,7 @@ export default function HowItIsCalculatedPage() {
           <input
             type="text"
             placeholder="Search calculation metrics (e.g. speed, volatility, risk)..."
+            aria-label="Search calculation metrics"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-slate-900/60 border border-slate-800 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500/40 transition shadow-inner"

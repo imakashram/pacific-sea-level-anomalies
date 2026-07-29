@@ -176,6 +176,7 @@ export function ENSOEffect() {
               <div className="flex bg-card/30 p-1 rounded-lg border border-border/50 flex-shrink-0">
                 <button
                   onClick={() => setDisplayCount(10)}
+                  aria-pressed={displayCount === 10}
                   className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer ${
                     displayCount === 10
                       ? "bg-primary text-primary-foreground shadow-sm"
@@ -186,6 +187,7 @@ export function ENSOEffect() {
                 </button>
                 <button
                   onClick={() => setDisplayCount(21)}
+                  aria-pressed={displayCount === 21}
                   className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer ${
                     displayCount === 21
                       ? "bg-primary text-primary-foreground shadow-sm"

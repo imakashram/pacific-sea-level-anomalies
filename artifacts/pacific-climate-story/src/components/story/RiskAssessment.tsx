@@ -828,6 +828,22 @@ export function RiskAssessment() {
                                   y={y}
                                   dy={4}
                                   textAnchor="end"
+                                  tabIndex={0}
+                                  role="button"
+                                  aria-label={`Select ${countryData?.country || displayCode}`}
+                                  aria-pressed={isSelected}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                      e.preventDefault();
+                                      if (countryData) {
+                                        setSelectedCode(
+                                          countryData.code === selectedCode
+                                            ? null
+                                            : countryData.code,
+                                        );
+                                      }
+                                    }
+                                  }}
                                   fill={
                                     isSelected
                                       ? RISK_COLORS[
@@ -835,7 +851,7 @@ export function RiskAssessment() {
                                         ]
                                       : "hsl(var(--muted-foreground))"
                                   }
-                                  className={`text-xs font-mono transition-all duration-300 ${
+                                  className={`text-xs font-mono transition-all duration-300 focus:outline-none focus:fill-primary focus:underline ${
                                     isSelected ? "font-bold" : "font-normal"
                                   }`}
                                   style={{ cursor: "pointer" }}

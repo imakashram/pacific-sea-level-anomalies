@@ -28,11 +28,12 @@ export default function NotFoundPage() {
             The page you are looking for doesn't exist or has been moved.
           </p>
 
-          <Link href="/">
-            <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-slate-100 text-xs font-semibold transition cursor-pointer">
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Story</span>
-            </button>
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-slate-100 text-xs font-semibold transition cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Story</span>
           </Link>
         </CardContent>
       </Card>

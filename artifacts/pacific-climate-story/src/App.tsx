@@ -40,6 +40,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <Router />
       </WouterRouter>
     </QueryClientProvider>

@@ -388,6 +388,53 @@ export function PacificAtAGlance({
     }
   }, [data, selectedCountryCode]);
 
+  const handleDropdownKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setIsDropdownOpen(false);
+      document.getElementById("nation-select-button")?.focus();
+      return;
+    }
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const listbox = document.getElementById("nation-listbox");
+      if (!listbox) return;
+      const buttons = Array.from(listbox.querySelectorAll("button[role='option']")) as HTMLButtonElement[];
+      if (buttons.length === 0) return;
+      const activeEl = document.activeElement as HTMLButtonElement;
+      const currentIndex = buttons.indexOf(activeEl);
+      let nextIndex = currentIndex;
+      if (e.key === "ArrowDown") {
+        nextIndex = currentIndex === -1 || currentIndex === buttons.length - 1 ? 0 : currentIndex + 1;
+      } else {
+        nextIndex = currentIndex === -1 || currentIndex === 0 ? buttons.length - 1 : currentIndex - 1;
+      }
+      buttons[nextIndex]?.focus();
+    }
+  };
+
+  const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Space" || e.key === "Enter") {
+      e.preventDefault();
+      setIsDropdownOpen(true);
+      setTimeout(() => {
+        const listbox = document.getElementById("nation-listbox");
+        const activeOption = listbox?.querySelector("button[aria-selected='true']") as HTMLButtonElement || listbox?.querySelector("button[role='option']") as HTMLButtonElement;
+        activeOption?.focus();
+      }, 50);
+    }
+  };
+
+  const handleTablistKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      const targetTab = activeTab === "explorer" ? "table" : "explorer";
+      setActiveTab(targetTab);
+      setTimeout(() => {
+        document.getElementById(`tab-viewmode-${targetTab}`)?.focus();
+      }, 50);
+    }
+  };
+
   // Handle table column header click for sorting
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -468,8 +515,17 @@ export function PacificAtAGlance({
             className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full"
           >
             {/* View Mode Switcher Pills */}
-            <div className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5 mb-2 max-w-[200px] w-full shadow-inner flex-shrink-0 select-none">
+            <div
+              className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5 mb-2 max-w-[200px] w-full shadow-inner flex-shrink-0 select-none"
+              role="tablist"
+              aria-label="View mode"
+              onKeyDown={handleTablistKeyDown}
+            >
               <button
+                id="tab-viewmode-explorer"
+                role="tab"
+                aria-selected={activeTab === "explorer"}
+                aria-controls="view-mode-content"
                 onClick={() => setActiveTab("explorer")}
                 className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   activeTab === "explorer"
@@ -477,10 +533,14 @@ export function PacificAtAGlance({
                     : "text-muted-foreground hover:text-white"
                 }`}
               >
-                <Globe className="w-3.5 h-3.5 flex-shrink-0" />
+                <Globe className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
                 Visual
               </button>
               <button
+                id="tab-viewmode-table"
+                role="tab"
+                aria-selected={activeTab === "table"}
+                aria-controls="view-mode-content"
                 onClick={() => setActiveTab("table")}
                 className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   activeTab === "table"
@@ -488,7 +548,7 @@ export function PacificAtAGlance({
                     : "text-muted-foreground hover:text-white"
                 }`}
               >
-                <Table className="w-3.5 h-3.5 flex-shrink-0" />
+                <Table className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
                 Table
               </button>
             </div>
@@ -497,7 +557,13 @@ export function PacificAtAGlance({
             {activeTab === "explorer" && data && (
               <div className="relative w-full max-w-xs z-50 self-start sm:self-center">
                 <button
+                  id="nation-select-button"
+                  aria-haspopup="listbox"
+                  aria-expanded={isDropdownOpen}
+                  aria-controls="nation-listbox"
+                  aria-label="Select nation"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  onKeyDown={handleTriggerKeyDown}
                   className="flex items-center justify-between w-full px-5 py-2 rounded-lg bg-card/45 backdrop-blur-md border border-border/80 text-foreground text-sm font-semibold shadow-lg hover:bg-card hover:border-border transition-all duration-300 active:scale-[0.98] cursor-pointer"
                 >
                   <div className="flex items-center gap-3 text-left">
@@ -520,6 +586,7 @@ export function PacificAtAGlance({
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -538,6 +605,10 @@ export function PacificAtAGlance({
                         onClick={() => setIsDropdownOpen(false)}
                       />
                       <motion.div
+                        id="nation-listbox"
+                        role="listbox"
+                        aria-labelledby="nation-select-button"
+                        onKeyDown={handleDropdownKeyDown}
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -548,6 +619,8 @@ export function PacificAtAGlance({
                           {data.map((r) => (
                             <button
                               key={r.code}
+                              role="option"
+                              aria-selected={selectedCountryCode === r.code}
                               onClick={() => {
                                 setSelectedCountryCode(r.code);
                                 setIsDropdownOpen(false);
@@ -570,6 +643,7 @@ export function PacificAtAGlance({
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"
+                                  aria-hidden="true"
                                 >
                                   <path
                                     strokeLinecap="round"
@@ -611,6 +685,7 @@ export function PacificAtAGlance({
                   <input
                     type="text"
                     placeholder="Search nations..."
+                    aria-label="Search nations"
                     className="w-full bg-card/30 backdrop-blur-md border border-border/50 rounded-lg pl-11 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 hover:bg-card/50 transition-all duration-300"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -642,11 +717,12 @@ export function PacificAtAGlance({
         </div>
 
         {/* Tab Content Display Area */}
-        {isLoading && !apiRankings ? (
-          <div className="h-[400px] bg-card/20 animate-pulse rounded-xl" />
-        ) : (
-          <AnimatePresence mode="wait">
-            {activeTab === "table" ? (
+        <div id="view-mode-content" role="tabpanel" className="w-full">
+          {isLoading && !apiRankings ? (
+            <div className="h-[400px] bg-card/20 animate-pulse rounded-xl" />
+          ) : (
+            <AnimatePresence mode="wait">
+              {activeTab === "table" ? (
               <motion.div
                 key="table-view"
                 initial={{ opacity: 0, y: 20 }}
@@ -659,51 +735,103 @@ export function PacificAtAGlance({
                 <div className="bg-card/20 rounded-xl border border-border/50 overflow-hidden shadow-2xl">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left border-collapse">
+                      <caption className="sr-only">
+                        Comparison of Pacific nations across multiple sea level anomaly metrics, including average anomaly, volatility, cumulative rise, linear trend speed, peak anomaly, and decadal acceleration.
+                      </caption>
                       <thead className="sticky top-0 z-20 text-xs uppercase bg-background/95 backdrop-blur-xl text-muted-foreground border-b border-border/50 shadow-sm">
                         <tr>
-                          <th className="px-4 py-3 font-semibold">Trend</th>
+                          <th scope="col" className="px-4 py-3 font-semibold">Trend</th>
                           <th
-                            className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors"
-                            onClick={() => handleSort("country")}
+                            scope="col"
+                            className="px-4 py-3 font-semibold text-left"
+                            aria-sort={sortField === "country" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                           >
-                            Nation <SortIcon field="country" />
+                            <button
+                              type="button"
+                              onClick={() => handleSort("country")}
+                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                            >
+                              Nation <SortIcon field="country" />
+                            </button>
                           </th>
-                          <th className="px-4 py-3 font-semibold">Risk</th>
+                          <th scope="col" className="px-4 py-3 font-semibold">Risk</th>
                           <th
-                            className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors"
-                            onClick={() => handleSort("mean")}
+                            scope="col"
+                            className="px-4 py-3 font-semibold text-left"
+                            aria-sort={sortField === "mean" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                           >
-                            Avg Anomaly <SortIcon field="mean" />
-                          </th>
-                          <th
-                            className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors"
-                            onClick={() => handleSort("volatility")}
-                          >
-                            Volatility <SortIcon field="volatility" />
-                          </th>
-                          <th
-                            className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors"
-                            onClick={() => handleSort("cumulativeRise")}
-                          >
-                            Cumul. Rise <SortIcon field="cumulativeRise" />
-                          </th>
-                          <th
-                            className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors"
-                            onClick={() => handleSort("slope")}
-                          >
-                            Speed <SortIcon field="slope" />
+                            <button
+                              type="button"
+                              onClick={() => handleSort("mean")}
+                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                            >
+                              Avg Anomaly <SortIcon field="mean" />
+                            </button>
                           </th>
                           <th
-                            className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors"
-                            onClick={() => handleSort("peakValue")}
+                            scope="col"
+                            className="px-4 py-3 font-semibold text-left"
+                            aria-sort={sortField === "volatility" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                           >
-                            Peak <SortIcon field="peakValue" />
+                            <button
+                              type="button"
+                              onClick={() => handleSort("volatility")}
+                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                            >
+                              Volatility <SortIcon field="volatility" />
+                            </button>
                           </th>
                           <th
-                            className="px-4 py-3 font-semibold cursor-pointer hover:text-foreground transition-colors"
-                            onClick={() => handleSort("decadeAcceleration")}
+                            scope="col"
+                            className="px-4 py-3 font-semibold text-left"
+                            aria-sort={sortField === "cumulativeRise" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                           >
-                            D1→D3 <SortIcon field="decadeAcceleration" />
+                            <button
+                              type="button"
+                              onClick={() => handleSort("cumulativeRise")}
+                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                            >
+                              Cumul. Rise <SortIcon field="cumulativeRise" />
+                            </button>
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-4 py-3 font-semibold text-left"
+                            aria-sort={sortField === "slope" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
+                          >
+                            <button
+                              type="button"
+                              onClick={() => handleSort("slope")}
+                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                            >
+                              Speed <SortIcon field="slope" />
+                            </button>
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-4 py-3 font-semibold text-left"
+                            aria-sort={sortField === "peakValue" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
+                          >
+                            <button
+                              type="button"
+                              onClick={() => handleSort("peakValue")}
+                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                            >
+                              Peak <SortIcon field="peakValue" />
+                            </button>
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-4 py-3 font-semibold text-left"
+                            aria-sort={sortField === "decadeAcceleration" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
+                          >
+                            <button
+                              type="button"
+                              onClick={() => handleSort("decadeAcceleration")}
+                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                            >
+                              D1→D3 <SortIcon field="decadeAcceleration" />
+                            </button>
                           </th>
                         </tr>
                       </thead>
@@ -736,12 +864,12 @@ export function PacificAtAGlance({
                                   <div className="w-20 h-8 bg-card/30 rounded" />
                                 )}
                               </td>
-                              <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
+                              <th scope="row" className="px-4 py-3 font-medium text-foreground text-left whitespace-nowrap">
                                 {row.country}
                                 <span className="ml-2 text-xs text-muted-foreground/50 font-mono">
                                   {row.code}
                                 </span>
-                              </td>
+                              </th>
                               <td className="px-4 py-3">
                                 {risk && (
                                   <span
@@ -821,6 +949,7 @@ export function PacificAtAGlance({
             )}
           </AnimatePresence>
         )}
+        </div>
       </div>
     </StorySection>
   );

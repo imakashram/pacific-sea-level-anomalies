@@ -287,6 +287,25 @@ export default function ApiExplorerPage() {
 
   const formattedJson = JSON.stringify(getFilteredJsonResponse(), null, 2);
 
+  const handleTablistKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      const categories: ("all" | "core" | "story")[] = ["all", "core", "story"];
+      const currentIndex = categories.indexOf(categoryFilter);
+      let nextIndex = currentIndex;
+      if (e.key === "ArrowRight") {
+        nextIndex = currentIndex === categories.length - 1 ? 0 : currentIndex + 1;
+      } else {
+        nextIndex = currentIndex === 0 ? categories.length - 1 : currentIndex - 1;
+      }
+      const nextCat = categories[nextIndex];
+      setCategoryFilter(nextCat);
+      setTimeout(() => {
+        document.getElementById(`tab-category-${nextCat}`)?.focus();
+      }, 50);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#070913] text-[#f8fafc] font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200">
       {/* Background Glows */}
@@ -296,14 +315,13 @@ export default function ApiExplorerPage() {
       {/* Header Bar */}
       <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/">
-            <button
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
-              title="Return to Climate Story"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Story</span>
-            </button>
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
+            title="Return to Climate Story"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Story</span>
           </Link>
           <div className="h-5 w-px bg-slate-800" />
           <div className="flex items-center gap-2.5">
@@ -317,17 +335,16 @@ export default function ApiExplorerPage() {
         </div>
 
         {/* Navigation Link to Methodology Guide */}
-        <Link href="/how-it-is-calculated">
-          <button
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
-          >
-            <Calculator className="w-4 h-4 text-cyan-400" />
-            <span>How It's Calculated</span>
-          </button>
+        <Link
+          href="/how-it-is-calculated"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
+        >
+          <Calculator className="w-4 h-4 text-cyan-400" />
+          <span>How It's Calculated</span>
         </Link>
       </header>
 
-      <main className="max-w-[1600px] mx-auto p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100vh-80px)] overflow-hidden">
+      <main id="main-content" className="max-w-[1600px] mx-auto p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100vh-80px)] overflow-hidden" tabIndex={-1}>
         {/* Left Column: API Catalog List */}
         <section className="lg:col-span-4 flex flex-col gap-4 h-full overflow-hidden bg-slate-900/10 border border-slate-900/80 p-4 rounded-2xl">
           {/* Search bar */}
@@ -336,6 +353,7 @@ export default function ApiExplorerPage() {
             <input
               type="text"
               placeholder="Search endpoints or components..."
+              aria-label="Search endpoints or components"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-slate-900/60 border border-slate-800/80 rounded-xl pl-10 pr-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500/40 hover:bg-slate-900 transition"
@@ -343,10 +361,19 @@ export default function ApiExplorerPage() {
           </div>
 
           {/* Category Filter Tabs */}
-          <div className="flex gap-1.5 p-1 bg-slate-950/60 rounded-xl border border-slate-900/80">
+          <div
+            className="flex gap-1.5 p-1 bg-slate-950/60 rounded-xl border border-slate-900/80"
+            role="tablist"
+            aria-label="Endpoint categories"
+            onKeyDown={handleTablistKeyDown}
+          >
             {(["all", "core", "story"] as const).map((cat) => (
               <button
                 key={cat}
+                id={`tab-category-${cat}`}
+                role="tab"
+                aria-selected={categoryFilter === cat}
+                aria-controls="endpoint-list"
                 onClick={() => setCategoryFilter(cat)}
                 className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${
                   categoryFilter === cat
@@ -360,7 +387,7 @@ export default function ApiExplorerPage() {
           </div>
 
           {/* Endpoint List scroll box */}
-          <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-2 scrollbar-thin">
+          <div id="endpoint-list" role="tabpanel" className="flex-1 overflow-y-auto pr-1 flex flex-col gap-2 scrollbar-thin">
             {filteredEndpoints.length === 0 ? (
               <div className="py-12 text-center text-slate-500 italic text-xs">
                 No endpoints found matching search.
@@ -478,11 +505,12 @@ export default function ApiExplorerPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {selectedApi.params.map((p) => (
                     <div key={p.name} className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-semibold text-slate-400">
+                      <label htmlFor={`param-${p.name}`} className="text-[10px] font-semibold text-slate-400">
                         {p.name}
                       </label>
                       {p.type === "dropdown" && p.options ? (
                         <select
+                          id={`param-${p.name}`}
                           value={paramValues[p.name] || ""}
                           onChange={(e) =>
                             setParamValues((prev) => ({
@@ -501,6 +529,7 @@ export default function ApiExplorerPage() {
                       ) : (
                         <input
                           type="text"
+                          id={`param-${p.name}`}
                           placeholder={p.placeholder}
                           value={paramValues[p.name] || ""}
                           onChange={(e) =>
@@ -555,6 +584,7 @@ export default function ApiExplorerPage() {
                     <input
                       type="text"
                       placeholder="Filter JSON keys..."
+                      aria-label="Filter JSON keys"
                       value={jsonSearchQuery}
                       onChange={(e) => setJsonSearchQuery(e.target.value)}
                       className="bg-slate-900/60 border border-slate-800 rounded-lg pl-8 pr-3 py-1 text-[10px] focus:outline-none focus:border-cyan-500/40 w-36 focus:w-48 transition-all"

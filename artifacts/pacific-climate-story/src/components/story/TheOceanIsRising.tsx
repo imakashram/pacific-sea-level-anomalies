@@ -359,6 +359,7 @@ export function TheOceanIsRising() {
 
             <button
               onClick={() => setShowMovingAvg(!showMovingAvg)}
+              aria-pressed={showMovingAvg}
               className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${
                 showMovingAvg ? "opacity-100" : "opacity-40"
               }`}
@@ -369,6 +370,7 @@ export function TheOceanIsRising() {
 
             <button
               onClick={() => setShowRegression(!showRegression)}
+              aria-pressed={showRegression}
               className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${
                 showRegression ? "opacity-100" : "opacity-40"
               }`}
@@ -379,6 +381,7 @@ export function TheOceanIsRising() {
 
             <button
               onClick={() => setShowEnso(!showEnso)}
+              aria-pressed={showEnso}
               className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-orange-400 ${
                 showEnso ? "opacity-100" : "opacity-40"
               }`}

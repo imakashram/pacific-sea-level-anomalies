@@ -215,8 +215,18 @@ export function ChapterSubRegionalClusters() {
             return (
               <div
                 key={cluster.region}
+                role="button"
+                tabIndex={0}
+                aria-pressed={isSelected}
+                aria-label={`Select ${cluster.region} Realm`}
                 onClick={() => setSelectedRegion(cluster.region)}
-                className={`p-6 bg-card/25 backdrop-blur-md border rounded-2xl flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-sm ${
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelectedRegion(cluster.region);
+                  }
+                }}
+                className={`p-6 bg-card/25 backdrop-blur-md border rounded-2xl flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-sm focus:outline-none ${
                   isSelected
                     ? `${theme.border} bg-card/40 ring-1 ring-white/10 ${theme.glow} scale-[1.02]`
                     : "border-slate-800/60 hover:border-slate-700/80"
@@ -358,8 +368,18 @@ export function ChapterSubRegionalClusters() {
                     return (
                       <g
                         key={`column-${cluster.region}`}
+                        role="button"
+                        tabIndex={0}
+                        aria-pressed={isSelected}
+                        aria-label={`Select ${cluster.region} Realm Column`}
                         onClick={() => setSelectedRegion(cluster.region)}
-                        className="cursor-pointer transition-opacity duration-300"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            setSelectedRegion(cluster.region);
+                          }
+                        }}
+                        className="cursor-pointer transition-opacity duration-300 focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-1 focus:ring-offset-slate-900"
                         opacity={isSelected ? 1 : 0.35}
                       >
                         {/* Background Pillar Glow */}
