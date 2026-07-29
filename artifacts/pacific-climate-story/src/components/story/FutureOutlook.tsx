@@ -185,7 +185,7 @@ const CARD_THEMES: Record<
 
 /**
  * Static 100% verified fallback forecast data (1993-2023 historical + 2024-2033 projections)
- * derived directly from OLS linear regression on climate_change.csv dataset.
+ * derived directly from OLS linear regression on sea_level_anomalies.csv dataset.
  */
 const FALLBACK_HISTORICAL: HistoricalPoint[] = [
   { year: 1993, avgAnomaly: -0.019 },

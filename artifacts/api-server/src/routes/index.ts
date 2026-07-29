@@ -1,10 +1,10 @@
 import { Router, type IRouter } from "express";
 import healthRouter from "./health";
-import climateRouter from "./climate";
+import seaLevelAnomaliesRouter from "./sea-level-anomalies";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
-router.use(climateRouter);
+router.use(seaLevelAnomaliesRouter);
 
 export default router;

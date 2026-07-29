@@ -62,7 +62,7 @@ const REGION_THEMES: Record<
 
 /**
  * Static 100% verified sub-regional cluster data
- * derived directly from climate_change.csv dataset.
+ * derived directly from sea_level_anomalies.csv dataset.
  */
 const CLUSTER_DATA: RegionalCluster[] = [
   {

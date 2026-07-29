@@ -5,11 +5,11 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { ClimateOverviewYearRange } from "./climateOverviewYearRange";
+import type { SeaLevelAnomaliesOverviewYearRange } from './seaLevelAnomaliesOverviewYearRange';
 
-export interface ClimateOverview {
+export interface SeaLevelAnomaliesOverview {
   totalCountries: number;
-  yearRange: ClimateOverviewYearRange;
+  yearRange: SeaLevelAnomaliesOverviewYearRange;
   totalObservations: number;
   avgRiseMeters: number;
   maxRiseCountry: string;

@@ -199,7 +199,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
 
 /**
  * 100% verified fallback risk assessment dataset (21 Pacific island nations)
- * derived directly from climate_change.csv observations.
+ * derived directly from sea_level_anomalies.csv observations.
  */
 const FALLBACK_COUNTRIES: RiskCountry[] = [
   {

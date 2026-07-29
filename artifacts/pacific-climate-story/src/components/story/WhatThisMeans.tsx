@@ -3,7 +3,7 @@ import { motion, useInView } from "framer-motion";
 import {
   useGetDecadeAnalysis,
   useGetAcceleration,
-  useGetClimateOverview,
+  useGetSeaLevelAnomaliesOverview,
   useGetThresholdCrossings,
   useGetRankings,
 } from "@workspace/api-client-react";
@@ -141,7 +141,7 @@ interface TakeawayItem {
 export function WhatThisMeans() {
   const { data: apiAccelData } = useGetAcceleration();
   const { data: apiDecadeData } = useGetDecadeAnalysis();
-  const { data: apiOverview } = useGetClimateOverview();
+  const { data: apiOverview } = useGetSeaLevelAnomaliesOverview();
   const { data: apiThresholdData } = useGetThresholdCrossings();
   const { data: apiRankings } = useGetRankings();
 

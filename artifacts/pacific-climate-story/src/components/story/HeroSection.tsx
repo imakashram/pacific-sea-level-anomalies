@@ -1,6 +1,6 @@
 import { motion, useScroll, useSpring } from "framer-motion";
 import {
-  useGetClimateOverview,
+  useGetSeaLevelAnomaliesOverview,
   useGetDecadeAnalysis,
   useGetAcceleration,
   useGetVolatility,
@@ -15,7 +15,7 @@ import {
  */
 export function HeroSection() {
   // Fetch overview metrics & detailed stats via API hooks
-  const { data: overview } = useGetClimateOverview();
+  const { data: overview } = useGetSeaLevelAnomaliesOverview();
   const { data: decadeData } = useGetDecadeAnalysis();
   const { data: accelData } = useGetAcceleration();
   const { data: volData } = useGetVolatility();

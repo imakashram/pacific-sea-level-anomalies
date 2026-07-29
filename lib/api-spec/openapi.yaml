@@ -10,8 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
-  - name: climate
-    description: Climate change data endpoints
+  - name: sea-level-anomalies
+    description: Sea level anomalies data endpoints
 paths:
   /healthz:
     get:
@@ -26,10 +26,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
 
-  /climate/overview:
+  /sea-level-anomalies/overview:
     get:
-      operationId: getClimateOverview
-      tags: [climate]
+      operationId: getSeaLevelAnomaliesOverview
+      tags: [sea-level-anomalies]
       summary: Key headline metrics
       responses:
         "200":
@@ -37,12 +37,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ClimateOverview"
+                $ref: "#/components/schemas/SeaLevelAnomaliesOverview"
 
-  /climate/sea-level-trend:
+  /sea-level-anomalies/sea-level-trend:
     get:
       operationId: getSeaLevelTrend
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Aggregated annual sea level trend across all countries
       responses:
         "200":
@@ -54,10 +54,10 @@ paths:
                 items:
                   $ref: "#/components/schemas/TrendDataPoint"
 
-  /climate/sea-level-by-country:
+  /sea-level-anomalies/sea-level-by-country:
     get:
       operationId: getSeaLevelByCountry
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Sea level anomaly time series per country
       responses:
         "200":
@@ -69,10 +69,10 @@ paths:
                 items:
                   $ref: "#/components/schemas/CountryTimeSeries"
 
-  /climate/heatmap:
+  /sea-level-anomalies/heatmap:
     get:
-      operationId: getClimateHeatmap
-      tags: [climate]
+      operationId: getSeaLevelAnomaliesHeatmap
+      tags: [sea-level-anomalies]
       summary: Country × year heatmap matrix
       responses:
         "200":
@@ -82,10 +82,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/HeatmapData"
 
-  /climate/decade-analysis:
+  /sea-level-anomalies/decade-analysis:
     get:
       operationId: getDecadeAnalysis
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Per-country and global averages across 3 decades
       description: Breaks sea level data into 3 decades (1993-2002, 2003-2012, 2013-2023) to show escalation over time
       responses:
@@ -96,10 +96,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/DecadeAnalysis"
 
-  /climate/volatility:
+  /sea-level-anomalies/volatility:
     get:
       operationId: getVolatility
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Per-country volatility (standard deviation) and mean anomaly
       description: Enables scatter plot of mean vs volatility — reveals which nations face chaotic vs steady rise
       responses:
@@ -110,10 +110,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/VolatilityData"
 
-  /climate/acceleration:
+  /sea-level-anomalies/acceleration:
     get:
       operationId: getAcceleration
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Linear slope of sea level rise per country across time windows
       description: Full-period, first-half, and second-half linear slopes reveal where rise is speeding up most
       responses:
@@ -126,10 +126,10 @@ paths:
                 items:
                   $ref: "#/components/schemas/AccelerationPoint"
 
-  /climate/rankings:
+  /sea-level-anomalies/rankings:
     get:
       operationId: getRankings
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Full sortable analytics table for all countries
       description: All key metrics per country in one response — designed for a rich sortable data table
       responses:
@@ -142,10 +142,10 @@ paths:
                 items:
                   $ref: "#/components/schemas/CountryRanking"
 
-  /climate/forecast:
+  /sea-level-anomalies/forecast:
     get:
       operationId: getForecast
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: 10-year sea level projection with confidence bands
       description: Linear regression extrapolation from 1993-2023 data projected through 2033, with ±2σ confidence intervals
       responses:
@@ -156,10 +156,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/ForecastData"
 
-  /climate/risk-scores:
+  /sea-level-anomalies/risk-scores:
     get:
       operationId: getRiskScores
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Composite climate risk score per country
       description: 0-100 risk score combining cumulative rise, slope, volatility, and decade acceleration
       responses:
@@ -170,10 +170,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/RiskScoreData"
 
-  /climate/country-profile/{code}:
+  /sea-level-anomalies/country-profile/{code}:
     get:
       operationId: getCountryProfile
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Full deep-dive profile for a single country
       description: Time series with rolling avg, decade breakdown, stats, and rank vs peers
       parameters:
@@ -193,10 +193,10 @@ paths:
         "404":
           description: Country not found
 
-  /climate/geographic-clusters:
+  /sea-level-anomalies/geographic-clusters:
     get:
       operationId: getGeographicClusters
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Sea level data grouped by Pacific sub-region (Polynesia, Melanesia, Micronesia)
       responses:
         "200":
@@ -206,10 +206,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/GeographicClustersData"
 
-  /climate/threshold-crossings:
+  /sea-level-anomalies/threshold-crossings:
     get:
       operationId: getThresholdCrossings
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Year each nation first crossed key sea level thresholds
       responses:
         "200":
@@ -219,10 +219,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/ThresholdCrossingsData"
 
-  /climate/el-nino-impact:
+  /sea-level-anomalies/el-nino-impact:
     get:
       operationId: getElNinoImpact
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Per-nation 1997-2000 sea level values showing El Niño suppression and recovery
       responses:
         "200":
@@ -232,10 +232,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/ElNinoImpactData"
 
-  /climate/enso-sensitivity:
+  /sea-level-anomalies/enso-sensitivity:
     get:
       operationId: getENSOSensitivity
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Per-nation sea level anomaly averaged by ENSO phase (El Niño, La Niña, neutral)
       description: Sensitivity = La Niña avg − El Niño avg. El Niño years 1997-98 and 2015-16; La Niña years 2010-11 and 2020-21.
       responses:
@@ -246,10 +246,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/ENSOSensitivityData"
 
-  /climate/annual-deviation:
+  /sea-level-anomalies/annual-deviation:
     get:
       operationId: getAnnualDeviation
-      tags: [climate]
+      tags: [sea-level-anomalies]
       summary: Pacific-wide annual mean deviation from 30-year grand mean for lollipop chart
       responses:
         "200":
@@ -268,7 +268,7 @@ components:
           type: string
       required: [status]
 
-    ClimateOverview:
+    SeaLevelAnomaliesOverview:
       type: object
       properties:
         totalCountries:

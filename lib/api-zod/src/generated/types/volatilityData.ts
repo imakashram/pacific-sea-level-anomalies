@@ -5,7 +5,7 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { VolatilityCountry } from "./volatilityCountry";
+import type { VolatilityCountry } from './volatilityCountry';
 
 export interface VolatilityData {
   countries: VolatilityCountry[];

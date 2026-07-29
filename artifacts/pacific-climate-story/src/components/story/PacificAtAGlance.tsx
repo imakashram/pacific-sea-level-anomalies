@@ -118,7 +118,7 @@ function downloadCSV(rows: RankingRow[]) {
 
 /**
  * 100% verified fallback rankings dataset (21 Pacific Island territories)
- * derived directly from climate_change.csv observations.
+ * derived directly from sea_level_anomalies.csv observations.
  */
 const FALLBACK_RANKINGS: RankingRow[] = [
   {

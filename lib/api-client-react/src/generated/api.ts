@@ -5,18 +5,19 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import {
+  useQuery
+} from '@tanstack/react-query';
 import type {
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
 import type {
   AccelerationPoint,
   AnnualDeviationData,
-  ClimateOverview,
   CountryProfile,
   CountryRanking,
   CountryTimeSeries,
@@ -28,1311 +29,1336 @@ import type {
   HealthStatus,
   HeatmapData,
   RiskScoreData,
+  SeaLevelAnomaliesOverview,
   ThresholdCrossingsData,
   TrendDataPoint,
-  VolatilityData,
-} from "./api.schemas";
+  VolatilityData
+} from './api.schemas';
 
-import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import { customFetch } from '../custom-fetch';
+import type { ErrorType } from '../custom-fetch';
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
-type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
+      type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
 
-type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
 
 export const getHealthCheckUrl = () => {
-  return `/api/healthz`;
-};
+
+
+
+
+  return `/api/healthz`
+}
 
 /**
  * @summary Health check
  */
-export const healthCheck = async (
-  options?: RequestInit,
-): Promise<HealthStatus> => {
-  return customFetch<HealthStatus>(getHealthCheckUrl(), {
+export const healthCheck = async ( options?: RequestInit): Promise<HealthStatus> => {
+
+  return customFetch<HealthStatus>(getHealthCheckUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getHealthCheckQueryKey = () => {
-  return [`/api/healthz`] as const;
-};
+    return [
+    `/api/healthz`
+    ] as const;
+    }
 
-export const getHealthCheckQueryOptions = <
-  TData = Awaited<ReturnType<typeof healthCheck>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof healthCheck>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getHealthCheckQueryKey();
+export const getHealthCheckQueryOptions = <TData = Awaited<ReturnType<typeof healthCheck>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof healthCheck>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthCheck>>> = ({
-    signal,
-  }) => healthCheck({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof healthCheck>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getHealthCheckQueryKey();
 
-export type HealthCheckQueryResult = NonNullable<
-  Awaited<ReturnType<typeof healthCheck>>
->;
-export type HealthCheckQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof healthCheck>>> = ({ signal }) => healthCheck({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof healthCheck>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type HealthCheckQueryResult = NonNullable<Awaited<ReturnType<typeof healthCheck>>>
+export type HealthCheckQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Health check
  */
 
-export function useHealthCheck<
-  TData = Awaited<ReturnType<typeof healthCheck>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof healthCheck>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getHealthCheckQueryOptions(options);
+export function useHealthCheck<TData = Awaited<ReturnType<typeof healthCheck>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof healthCheck>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getHealthCheckQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-export const getGetClimateOverviewUrl = () => {
-  return `/api/climate/overview`;
-};
+
+
+
+
+
+
+export const getGetSeaLevelAnomaliesOverviewUrl = () => {
+
+
+
+
+  return `/api/sea-level-anomalies/overview`
+}
 
 /**
  * @summary Key headline metrics
  */
-export const getClimateOverview = async (
-  options?: RequestInit,
-): Promise<ClimateOverview> => {
-  return customFetch<ClimateOverview>(getGetClimateOverviewUrl(), {
+export const getSeaLevelAnomaliesOverview = async ( options?: RequestInit): Promise<SeaLevelAnomaliesOverview> => {
+
+  return customFetch<SeaLevelAnomaliesOverview>(getGetSeaLevelAnomaliesOverviewUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
 
-export const getGetClimateOverviewQueryKey = () => {
-  return [`/api/climate/overview`] as const;
-};
 
-export const getGetClimateOverviewQueryOptions = <
-  TData = Awaited<ReturnType<typeof getClimateOverview>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getClimateOverview>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
+  }
+);}
 
-  const queryKey = queryOptions?.queryKey ?? getGetClimateOverviewQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getClimateOverview>>
-  > = ({ signal }) => getClimateOverview({ signal, ...requestOptions });
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getClimateOverview>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
 
-export type GetClimateOverviewQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getClimateOverview>>
->;
-export type GetClimateOverviewQueryError = ErrorType<unknown>;
+
+export const getGetSeaLevelAnomaliesOverviewQueryKey = () => {
+    return [
+    `/api/sea-level-anomalies/overview`
+    ] as const;
+    }
+
+
+export const getGetSeaLevelAnomaliesOverviewQueryOptions = <TData = Awaited<ReturnType<typeof getSeaLevelAnomaliesOverview>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelAnomaliesOverview>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSeaLevelAnomaliesOverviewQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSeaLevelAnomaliesOverview>>> = ({ signal }) => getSeaLevelAnomaliesOverview({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelAnomaliesOverview>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSeaLevelAnomaliesOverviewQueryResult = NonNullable<Awaited<ReturnType<typeof getSeaLevelAnomaliesOverview>>>
+export type GetSeaLevelAnomaliesOverviewQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Key headline metrics
  */
 
-export function useGetClimateOverview<
-  TData = Awaited<ReturnType<typeof getClimateOverview>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getClimateOverview>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetClimateOverviewQueryOptions(options);
+export function useGetSeaLevelAnomaliesOverview<TData = Awaited<ReturnType<typeof getSeaLevelAnomaliesOverview>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelAnomaliesOverview>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSeaLevelAnomaliesOverviewQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+
 
 export const getGetSeaLevelTrendUrl = () => {
-  return `/api/climate/sea-level-trend`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/sea-level-trend`
+}
 
 /**
  * @summary Aggregated annual sea level trend across all countries
  */
-export const getSeaLevelTrend = async (
-  options?: RequestInit,
-): Promise<TrendDataPoint[]> => {
-  return customFetch<TrendDataPoint[]>(getGetSeaLevelTrendUrl(), {
+export const getSeaLevelTrend = async ( options?: RequestInit): Promise<TrendDataPoint[]> => {
+
+  return customFetch<TrendDataPoint[]>(getGetSeaLevelTrendUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetSeaLevelTrendQueryKey = () => {
-  return [`/api/climate/sea-level-trend`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/sea-level-trend`
+    ] as const;
+    }
 
-export const getGetSeaLevelTrendQueryOptions = <
-  TData = Awaited<ReturnType<typeof getSeaLevelTrend>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getSeaLevelTrend>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetSeaLevelTrendQueryKey();
+export const getGetSeaLevelTrendQueryOptions = <TData = Awaited<ReturnType<typeof getSeaLevelTrend>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelTrend>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getSeaLevelTrend>>
-  > = ({ signal }) => getSeaLevelTrend({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getSeaLevelTrend>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetSeaLevelTrendQueryKey();
 
-export type GetSeaLevelTrendQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getSeaLevelTrend>>
->;
-export type GetSeaLevelTrendQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSeaLevelTrend>>> = ({ signal }) => getSeaLevelTrend({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelTrend>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSeaLevelTrendQueryResult = NonNullable<Awaited<ReturnType<typeof getSeaLevelTrend>>>
+export type GetSeaLevelTrendQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Aggregated annual sea level trend across all countries
  */
 
-export function useGetSeaLevelTrend<
-  TData = Awaited<ReturnType<typeof getSeaLevelTrend>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getSeaLevelTrend>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetSeaLevelTrendQueryOptions(options);
+export function useGetSeaLevelTrend<TData = Awaited<ReturnType<typeof getSeaLevelTrend>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelTrend>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSeaLevelTrendQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+
 
 export const getGetSeaLevelByCountryUrl = () => {
-  return `/api/climate/sea-level-by-country`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/sea-level-by-country`
+}
 
 /**
  * @summary Sea level anomaly time series per country
  */
-export const getSeaLevelByCountry = async (
-  options?: RequestInit,
-): Promise<CountryTimeSeries[]> => {
-  return customFetch<CountryTimeSeries[]>(getGetSeaLevelByCountryUrl(), {
+export const getSeaLevelByCountry = async ( options?: RequestInit): Promise<CountryTimeSeries[]> => {
+
+  return customFetch<CountryTimeSeries[]>(getGetSeaLevelByCountryUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetSeaLevelByCountryQueryKey = () => {
-  return [`/api/climate/sea-level-by-country`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/sea-level-by-country`
+    ] as const;
+    }
 
-export const getGetSeaLevelByCountryQueryOptions = <
-  TData = Awaited<ReturnType<typeof getSeaLevelByCountry>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getSeaLevelByCountry>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetSeaLevelByCountryQueryKey();
+export const getGetSeaLevelByCountryQueryOptions = <TData = Awaited<ReturnType<typeof getSeaLevelByCountry>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelByCountry>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getSeaLevelByCountry>>
-  > = ({ signal }) => getSeaLevelByCountry({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getSeaLevelByCountry>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetSeaLevelByCountryQueryKey();
 
-export type GetSeaLevelByCountryQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getSeaLevelByCountry>>
->;
-export type GetSeaLevelByCountryQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSeaLevelByCountry>>> = ({ signal }) => getSeaLevelByCountry({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelByCountry>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSeaLevelByCountryQueryResult = NonNullable<Awaited<ReturnType<typeof getSeaLevelByCountry>>>
+export type GetSeaLevelByCountryQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Sea level anomaly time series per country
  */
 
-export function useGetSeaLevelByCountry<
-  TData = Awaited<ReturnType<typeof getSeaLevelByCountry>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getSeaLevelByCountry>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetSeaLevelByCountryQueryOptions(options);
+export function useGetSeaLevelByCountry<TData = Awaited<ReturnType<typeof getSeaLevelByCountry>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelByCountry>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSeaLevelByCountryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-export const getGetClimateHeatmapUrl = () => {
-  return `/api/climate/heatmap`;
-};
+
+
+
+
+
+
+export const getGetSeaLevelAnomaliesHeatmapUrl = () => {
+
+
+
+
+  return `/api/sea-level-anomalies/heatmap`
+}
 
 /**
  * @summary Country × year heatmap matrix
  */
-export const getClimateHeatmap = async (
-  options?: RequestInit,
-): Promise<HeatmapData> => {
-  return customFetch<HeatmapData>(getGetClimateHeatmapUrl(), {
+export const getSeaLevelAnomaliesHeatmap = async ( options?: RequestInit): Promise<HeatmapData> => {
+
+  return customFetch<HeatmapData>(getGetSeaLevelAnomaliesHeatmapUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
 
-export const getGetClimateHeatmapQueryKey = () => {
-  return [`/api/climate/heatmap`] as const;
-};
 
-export const getGetClimateHeatmapQueryOptions = <
-  TData = Awaited<ReturnType<typeof getClimateHeatmap>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getClimateHeatmap>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
+  }
+);}
 
-  const queryKey = queryOptions?.queryKey ?? getGetClimateHeatmapQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getClimateHeatmap>>
-  > = ({ signal }) => getClimateHeatmap({ signal, ...requestOptions });
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getClimateHeatmap>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
 
-export type GetClimateHeatmapQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getClimateHeatmap>>
->;
-export type GetClimateHeatmapQueryError = ErrorType<unknown>;
+
+export const getGetSeaLevelAnomaliesHeatmapQueryKey = () => {
+    return [
+    `/api/sea-level-anomalies/heatmap`
+    ] as const;
+    }
+
+
+export const getGetSeaLevelAnomaliesHeatmapQueryOptions = <TData = Awaited<ReturnType<typeof getSeaLevelAnomaliesHeatmap>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelAnomaliesHeatmap>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSeaLevelAnomaliesHeatmapQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSeaLevelAnomaliesHeatmap>>> = ({ signal }) => getSeaLevelAnomaliesHeatmap({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelAnomaliesHeatmap>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSeaLevelAnomaliesHeatmapQueryResult = NonNullable<Awaited<ReturnType<typeof getSeaLevelAnomaliesHeatmap>>>
+export type GetSeaLevelAnomaliesHeatmapQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Country × year heatmap matrix
  */
 
-export function useGetClimateHeatmap<
-  TData = Awaited<ReturnType<typeof getClimateHeatmap>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getClimateHeatmap>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetClimateHeatmapQueryOptions(options);
+export function useGetSeaLevelAnomaliesHeatmap<TData = Awaited<ReturnType<typeof getSeaLevelAnomaliesHeatmap>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSeaLevelAnomaliesHeatmap>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSeaLevelAnomaliesHeatmapQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+
 
 export const getGetDecadeAnalysisUrl = () => {
-  return `/api/climate/decade-analysis`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/decade-analysis`
+}
 
 /**
  * Breaks sea level data into 3 decades (1993-2002, 2003-2012, 2013-2023) to show escalation over time
  * @summary Per-country and global averages across 3 decades
  */
-export const getDecadeAnalysis = async (
-  options?: RequestInit,
-): Promise<DecadeAnalysis> => {
-  return customFetch<DecadeAnalysis>(getGetDecadeAnalysisUrl(), {
+export const getDecadeAnalysis = async ( options?: RequestInit): Promise<DecadeAnalysis> => {
+
+  return customFetch<DecadeAnalysis>(getGetDecadeAnalysisUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetDecadeAnalysisQueryKey = () => {
-  return [`/api/climate/decade-analysis`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/decade-analysis`
+    ] as const;
+    }
 
-export const getGetDecadeAnalysisQueryOptions = <
-  TData = Awaited<ReturnType<typeof getDecadeAnalysis>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getDecadeAnalysis>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetDecadeAnalysisQueryKey();
+export const getGetDecadeAnalysisQueryOptions = <TData = Awaited<ReturnType<typeof getDecadeAnalysis>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDecadeAnalysis>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getDecadeAnalysis>>
-  > = ({ signal }) => getDecadeAnalysis({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getDecadeAnalysis>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetDecadeAnalysisQueryKey();
 
-export type GetDecadeAnalysisQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getDecadeAnalysis>>
->;
-export type GetDecadeAnalysisQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDecadeAnalysis>>> = ({ signal }) => getDecadeAnalysis({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDecadeAnalysis>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDecadeAnalysisQueryResult = NonNullable<Awaited<ReturnType<typeof getDecadeAnalysis>>>
+export type GetDecadeAnalysisQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Per-country and global averages across 3 decades
  */
 
-export function useGetDecadeAnalysis<
-  TData = Awaited<ReturnType<typeof getDecadeAnalysis>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getDecadeAnalysis>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetDecadeAnalysisQueryOptions(options);
+export function useGetDecadeAnalysis<TData = Awaited<ReturnType<typeof getDecadeAnalysis>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDecadeAnalysis>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDecadeAnalysisQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+
+
+
+
+
+
 export const getGetVolatilityUrl = () => {
-  return `/api/climate/volatility`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/volatility`
+}
 
 /**
  * Enables scatter plot of mean vs volatility — reveals which nations face chaotic vs steady rise
  * @summary Per-country volatility (standard deviation) and mean anomaly
  */
-export const getVolatility = async (
-  options?: RequestInit,
-): Promise<VolatilityData> => {
-  return customFetch<VolatilityData>(getGetVolatilityUrl(), {
+export const getVolatility = async ( options?: RequestInit): Promise<VolatilityData> => {
+
+  return customFetch<VolatilityData>(getGetVolatilityUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetVolatilityQueryKey = () => {
-  return [`/api/climate/volatility`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/volatility`
+    ] as const;
+    }
 
-export const getGetVolatilityQueryOptions = <
-  TData = Awaited<ReturnType<typeof getVolatility>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getVolatility>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetVolatilityQueryKey();
+export const getGetVolatilityQueryOptions = <TData = Awaited<ReturnType<typeof getVolatility>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVolatility>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getVolatility>>> = ({
-    signal,
-  }) => getVolatility({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getVolatility>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetVolatilityQueryKey();
 
-export type GetVolatilityQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getVolatility>>
->;
-export type GetVolatilityQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVolatility>>> = ({ signal }) => getVolatility({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVolatility>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetVolatilityQueryResult = NonNullable<Awaited<ReturnType<typeof getVolatility>>>
+export type GetVolatilityQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Per-country volatility (standard deviation) and mean anomaly
  */
 
-export function useGetVolatility<
-  TData = Awaited<ReturnType<typeof getVolatility>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getVolatility>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetVolatilityQueryOptions(options);
+export function useGetVolatility<TData = Awaited<ReturnType<typeof getVolatility>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVolatility>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetVolatilityQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+
+
+
+
+
+
 export const getGetAccelerationUrl = () => {
-  return `/api/climate/acceleration`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/acceleration`
+}
 
 /**
  * Full-period, first-half, and second-half linear slopes reveal where rise is speeding up most
  * @summary Linear slope of sea level rise per country across time windows
  */
-export const getAcceleration = async (
-  options?: RequestInit,
-): Promise<AccelerationPoint[]> => {
-  return customFetch<AccelerationPoint[]>(getGetAccelerationUrl(), {
+export const getAcceleration = async ( options?: RequestInit): Promise<AccelerationPoint[]> => {
+
+  return customFetch<AccelerationPoint[]>(getGetAccelerationUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetAccelerationQueryKey = () => {
-  return [`/api/climate/acceleration`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/acceleration`
+    ] as const;
+    }
 
-export const getGetAccelerationQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAcceleration>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getAcceleration>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAccelerationQueryKey();
+export const getGetAccelerationQueryOptions = <TData = Awaited<ReturnType<typeof getAcceleration>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAcceleration>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAcceleration>>> = ({
-    signal,
-  }) => getAcceleration({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAcceleration>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetAccelerationQueryKey();
 
-export type GetAccelerationQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAcceleration>>
->;
-export type GetAccelerationQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAcceleration>>> = ({ signal }) => getAcceleration({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAcceleration>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAccelerationQueryResult = NonNullable<Awaited<ReturnType<typeof getAcceleration>>>
+export type GetAccelerationQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Linear slope of sea level rise per country across time windows
  */
 
-export function useGetAcceleration<
-  TData = Awaited<ReturnType<typeof getAcceleration>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getAcceleration>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetAccelerationQueryOptions(options);
+export function useGetAcceleration<TData = Awaited<ReturnType<typeof getAcceleration>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAcceleration>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAccelerationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+
+
+
+
+
+
 export const getGetRankingsUrl = () => {
-  return `/api/climate/rankings`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/rankings`
+}
 
 /**
  * All key metrics per country in one response — designed for a rich sortable data table
  * @summary Full sortable analytics table for all countries
  */
-export const getRankings = async (
-  options?: RequestInit,
-): Promise<CountryRanking[]> => {
-  return customFetch<CountryRanking[]>(getGetRankingsUrl(), {
+export const getRankings = async ( options?: RequestInit): Promise<CountryRanking[]> => {
+
+  return customFetch<CountryRanking[]>(getGetRankingsUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetRankingsQueryKey = () => {
-  return [`/api/climate/rankings`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/rankings`
+    ] as const;
+    }
 
-export const getGetRankingsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getRankings>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getRankings>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetRankingsQueryKey();
+export const getGetRankingsQueryOptions = <TData = Awaited<ReturnType<typeof getRankings>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRankings>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRankings>>> = ({
-    signal,
-  }) => getRankings({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getRankings>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetRankingsQueryKey();
 
-export type GetRankingsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getRankings>>
->;
-export type GetRankingsQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRankings>>> = ({ signal }) => getRankings({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRankings>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRankingsQueryResult = NonNullable<Awaited<ReturnType<typeof getRankings>>>
+export type GetRankingsQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Full sortable analytics table for all countries
  */
 
-export function useGetRankings<
-  TData = Awaited<ReturnType<typeof getRankings>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getRankings>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetRankingsQueryOptions(options);
+export function useGetRankings<TData = Awaited<ReturnType<typeof getRankings>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRankings>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRankingsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+
+
+
+
+
+
 export const getGetForecastUrl = () => {
-  return `/api/climate/forecast`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/forecast`
+}
 
 /**
  * Linear regression extrapolation from 1993-2023 data projected through 2033, with ±2σ confidence intervals
  * @summary 10-year sea level projection with confidence bands
  */
-export const getForecast = async (
-  options?: RequestInit,
-): Promise<ForecastData> => {
-  return customFetch<ForecastData>(getGetForecastUrl(), {
+export const getForecast = async ( options?: RequestInit): Promise<ForecastData> => {
+
+  return customFetch<ForecastData>(getGetForecastUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetForecastQueryKey = () => {
-  return [`/api/climate/forecast`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/forecast`
+    ] as const;
+    }
 
-export const getGetForecastQueryOptions = <
-  TData = Awaited<ReturnType<typeof getForecast>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getForecast>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetForecastQueryKey();
+export const getGetForecastQueryOptions = <TData = Awaited<ReturnType<typeof getForecast>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getForecast>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getForecast>>> = ({
-    signal,
-  }) => getForecast({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getForecast>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetForecastQueryKey();
 
-export type GetForecastQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getForecast>>
->;
-export type GetForecastQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getForecast>>> = ({ signal }) => getForecast({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getForecast>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetForecastQueryResult = NonNullable<Awaited<ReturnType<typeof getForecast>>>
+export type GetForecastQueryError = ErrorType<unknown>
+
 
 /**
  * @summary 10-year sea level projection with confidence bands
  */
 
-export function useGetForecast<
-  TData = Awaited<ReturnType<typeof getForecast>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getForecast>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetForecastQueryOptions(options);
+export function useGetForecast<TData = Awaited<ReturnType<typeof getForecast>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getForecast>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetForecastQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+
+
+
+
+
+
 export const getGetRiskScoresUrl = () => {
-  return `/api/climate/risk-scores`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/risk-scores`
+}
 
 /**
  * 0-100 risk score combining cumulative rise, slope, volatility, and decade acceleration
  * @summary Composite climate risk score per country
  */
-export const getRiskScores = async (
-  options?: RequestInit,
-): Promise<RiskScoreData> => {
-  return customFetch<RiskScoreData>(getGetRiskScoresUrl(), {
+export const getRiskScores = async ( options?: RequestInit): Promise<RiskScoreData> => {
+
+  return customFetch<RiskScoreData>(getGetRiskScoresUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetRiskScoresQueryKey = () => {
-  return [`/api/climate/risk-scores`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/risk-scores`
+    ] as const;
+    }
 
-export const getGetRiskScoresQueryOptions = <
-  TData = Awaited<ReturnType<typeof getRiskScores>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getRiskScores>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetRiskScoresQueryKey();
+export const getGetRiskScoresQueryOptions = <TData = Awaited<ReturnType<typeof getRiskScores>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRiskScores>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRiskScores>>> = ({
-    signal,
-  }) => getRiskScores({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getRiskScores>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetRiskScoresQueryKey();
 
-export type GetRiskScoresQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getRiskScores>>
->;
-export type GetRiskScoresQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRiskScores>>> = ({ signal }) => getRiskScores({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRiskScores>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRiskScoresQueryResult = NonNullable<Awaited<ReturnType<typeof getRiskScores>>>
+export type GetRiskScoresQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Composite climate risk score per country
  */
 
-export function useGetRiskScores<
-  TData = Awaited<ReturnType<typeof getRiskScores>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getRiskScores>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetRiskScoresQueryOptions(options);
+export function useGetRiskScores<TData = Awaited<ReturnType<typeof getRiskScores>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRiskScores>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRiskScoresQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-export const getGetCountryProfileUrl = (code: string) => {
-  return `/api/climate/country-profile/${code}`;
-};
+
+
+
+
+
+
+export const getGetCountryProfileUrl = (code: string,) => {
+
+
+
+
+  return `/api/sea-level-anomalies/country-profile/${code}`
+}
 
 /**
  * Time series with rolling avg, decade breakdown, stats, and rank vs peers
  * @summary Full deep-dive profile for a single country
  */
-export const getCountryProfile = async (
-  code: string,
-  options?: RequestInit,
-): Promise<CountryProfile> => {
-  return customFetch<CountryProfile>(getGetCountryProfileUrl(code), {
+export const getCountryProfile = async (code: string, options?: RequestInit): Promise<CountryProfile> => {
+
+  return customFetch<CountryProfile>(getGetCountryProfileUrl(code),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
 
-export const getGetCountryProfileQueryKey = (code: string) => {
-  return [`/api/climate/country-profile/${code}`] as const;
-};
 
-export const getGetCountryProfileQueryOptions = <
-  TData = Awaited<ReturnType<typeof getCountryProfile>>,
-  TError = ErrorType<void>,
->(
-  code: string,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getCountryProfile>>,
-      TError,
-      TData
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  },
+  }
+);}
+
+
+
+
+
+export const getGetCountryProfileQueryKey = (code: string,) => {
+    return [
+    `/api/sea-level-anomalies/country-profile/${code}`
+    ] as const;
+    }
+
+
+export const getGetCountryProfileQueryOptions = <TData = Awaited<ReturnType<typeof getCountryProfile>>, TError = ErrorType<void>>(code: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCountryProfile>>, TError, TData>, }
 ) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetCountryProfileQueryKey(code);
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getCountryProfile>>
-  > = ({ signal }) => getCountryProfile(code, { signal, ...requestOptions });
+  const queryKey =  queryOptions?.queryKey ?? getGetCountryProfileQueryKey(code);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!code,
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getCountryProfile>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
 
-export type GetCountryProfileQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getCountryProfile>>
->;
-export type GetCountryProfileQueryError = ErrorType<void>;
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCountryProfile>>> = ({ signal }) => getCountryProfile(code, { signal });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(code), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCountryProfile>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCountryProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getCountryProfile>>>
+export type GetCountryProfileQueryError = ErrorType<void>
+
 
 /**
  * @summary Full deep-dive profile for a single country
  */
 
-export function useGetCountryProfile<
-  TData = Awaited<ReturnType<typeof getCountryProfile>>,
-  TError = ErrorType<void>,
->(
-  code: string,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getCountryProfile>>,
-      TError,
-      TData
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetCountryProfileQueryOptions(code, options);
+export function useGetCountryProfile<TData = Awaited<ReturnType<typeof getCountryProfile>>, TError = ErrorType<void>>(
+ code: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCountryProfile>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCountryProfileQueryOptions(code,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+
 
 export const getGetGeographicClustersUrl = () => {
-  return `/api/climate/geographic-clusters`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/geographic-clusters`
+}
 
 /**
  * @summary Sea level data grouped by Pacific sub-region (Polynesia, Melanesia, Micronesia)
  */
-export const getGeographicClusters = async (
-  options?: RequestInit,
-): Promise<GeographicClustersData> => {
-  return customFetch<GeographicClustersData>(getGetGeographicClustersUrl(), {
+export const getGeographicClusters = async ( options?: RequestInit): Promise<GeographicClustersData> => {
+
+  return customFetch<GeographicClustersData>(getGetGeographicClustersUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetGeographicClustersQueryKey = () => {
-  return [`/api/climate/geographic-clusters`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/geographic-clusters`
+    ] as const;
+    }
 
-export const getGetGeographicClustersQueryOptions = <
-  TData = Awaited<ReturnType<typeof getGeographicClusters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getGeographicClusters>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetGeographicClustersQueryKey();
+export const getGetGeographicClustersQueryOptions = <TData = Awaited<ReturnType<typeof getGeographicClusters>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGeographicClusters>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getGeographicClusters>>
-  > = ({ signal }) => getGeographicClusters({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getGeographicClusters>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetGeographicClustersQueryKey();
 
-export type GetGeographicClustersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getGeographicClusters>>
->;
-export type GetGeographicClustersQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGeographicClusters>>> = ({ signal }) => getGeographicClusters({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGeographicClusters>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetGeographicClustersQueryResult = NonNullable<Awaited<ReturnType<typeof getGeographicClusters>>>
+export type GetGeographicClustersQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Sea level data grouped by Pacific sub-region (Polynesia, Melanesia, Micronesia)
  */
 
-export function useGetGeographicClusters<
-  TData = Awaited<ReturnType<typeof getGeographicClusters>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getGeographicClusters>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetGeographicClustersQueryOptions(options);
+export function useGetGeographicClusters<TData = Awaited<ReturnType<typeof getGeographicClusters>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGeographicClusters>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetGeographicClustersQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+
 
 export const getGetThresholdCrossingsUrl = () => {
-  return `/api/climate/threshold-crossings`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/threshold-crossings`
+}
 
 /**
  * @summary Year each nation first crossed key sea level thresholds
  */
-export const getThresholdCrossings = async (
-  options?: RequestInit,
-): Promise<ThresholdCrossingsData> => {
-  return customFetch<ThresholdCrossingsData>(getGetThresholdCrossingsUrl(), {
+export const getThresholdCrossings = async ( options?: RequestInit): Promise<ThresholdCrossingsData> => {
+
+  return customFetch<ThresholdCrossingsData>(getGetThresholdCrossingsUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetThresholdCrossingsQueryKey = () => {
-  return [`/api/climate/threshold-crossings`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/threshold-crossings`
+    ] as const;
+    }
 
-export const getGetThresholdCrossingsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getThresholdCrossings>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getThresholdCrossings>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetThresholdCrossingsQueryKey();
+export const getGetThresholdCrossingsQueryOptions = <TData = Awaited<ReturnType<typeof getThresholdCrossings>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getThresholdCrossings>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getThresholdCrossings>>
-  > = ({ signal }) => getThresholdCrossings({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getThresholdCrossings>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetThresholdCrossingsQueryKey();
 
-export type GetThresholdCrossingsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getThresholdCrossings>>
->;
-export type GetThresholdCrossingsQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getThresholdCrossings>>> = ({ signal }) => getThresholdCrossings({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getThresholdCrossings>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetThresholdCrossingsQueryResult = NonNullable<Awaited<ReturnType<typeof getThresholdCrossings>>>
+export type GetThresholdCrossingsQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Year each nation first crossed key sea level thresholds
  */
 
-export function useGetThresholdCrossings<
-  TData = Awaited<ReturnType<typeof getThresholdCrossings>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getThresholdCrossings>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetThresholdCrossingsQueryOptions(options);
+export function useGetThresholdCrossings<TData = Awaited<ReturnType<typeof getThresholdCrossings>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getThresholdCrossings>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetThresholdCrossingsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+
 
 export const getGetElNinoImpactUrl = () => {
-  return `/api/climate/el-nino-impact`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/el-nino-impact`
+}
 
 /**
  * @summary Per-nation 1997-2000 sea level values showing El Niño suppression and recovery
  */
-export const getElNinoImpact = async (
-  options?: RequestInit,
-): Promise<ElNinoImpactData> => {
-  return customFetch<ElNinoImpactData>(getGetElNinoImpactUrl(), {
+export const getElNinoImpact = async ( options?: RequestInit): Promise<ElNinoImpactData> => {
+
+  return customFetch<ElNinoImpactData>(getGetElNinoImpactUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetElNinoImpactQueryKey = () => {
-  return [`/api/climate/el-nino-impact`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/el-nino-impact`
+    ] as const;
+    }
 
-export const getGetElNinoImpactQueryOptions = <
-  TData = Awaited<ReturnType<typeof getElNinoImpact>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getElNinoImpact>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetElNinoImpactQueryKey();
+export const getGetElNinoImpactQueryOptions = <TData = Awaited<ReturnType<typeof getElNinoImpact>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getElNinoImpact>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getElNinoImpact>>> = ({
-    signal,
-  }) => getElNinoImpact({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getElNinoImpact>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetElNinoImpactQueryKey();
 
-export type GetElNinoImpactQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getElNinoImpact>>
->;
-export type GetElNinoImpactQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getElNinoImpact>>> = ({ signal }) => getElNinoImpact({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getElNinoImpact>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetElNinoImpactQueryResult = NonNullable<Awaited<ReturnType<typeof getElNinoImpact>>>
+export type GetElNinoImpactQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Per-nation 1997-2000 sea level values showing El Niño suppression and recovery
  */
 
-export function useGetElNinoImpact<
-  TData = Awaited<ReturnType<typeof getElNinoImpact>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getElNinoImpact>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetElNinoImpactQueryOptions(options);
+export function useGetElNinoImpact<TData = Awaited<ReturnType<typeof getElNinoImpact>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getElNinoImpact>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetElNinoImpactQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+
+
+
+
+
+
 export const getGetENSOSensitivityUrl = () => {
-  return `/api/climate/enso-sensitivity`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/enso-sensitivity`
+}
 
 /**
  * Sensitivity = La Niña avg − El Niño avg. El Niño years 1997-98 and 2015-16; La Niña years 2010-11 and 2020-21.
  * @summary Per-nation sea level anomaly averaged by ENSO phase (El Niño, La Niña, neutral)
  */
-export const getENSOSensitivity = async (
-  options?: RequestInit,
-): Promise<ENSOSensitivityData> => {
-  return customFetch<ENSOSensitivityData>(getGetENSOSensitivityUrl(), {
+export const getENSOSensitivity = async ( options?: RequestInit): Promise<ENSOSensitivityData> => {
+
+  return customFetch<ENSOSensitivityData>(getGetENSOSensitivityUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetENSOSensitivityQueryKey = () => {
-  return [`/api/climate/enso-sensitivity`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/enso-sensitivity`
+    ] as const;
+    }
 
-export const getGetENSOSensitivityQueryOptions = <
-  TData = Awaited<ReturnType<typeof getENSOSensitivity>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getENSOSensitivity>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetENSOSensitivityQueryKey();
+export const getGetENSOSensitivityQueryOptions = <TData = Awaited<ReturnType<typeof getENSOSensitivity>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getENSOSensitivity>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getENSOSensitivity>>
-  > = ({ signal }) => getENSOSensitivity({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getENSOSensitivity>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetENSOSensitivityQueryKey();
 
-export type GetENSOSensitivityQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getENSOSensitivity>>
->;
-export type GetENSOSensitivityQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getENSOSensitivity>>> = ({ signal }) => getENSOSensitivity({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getENSOSensitivity>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetENSOSensitivityQueryResult = NonNullable<Awaited<ReturnType<typeof getENSOSensitivity>>>
+export type GetENSOSensitivityQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Per-nation sea level anomaly averaged by ENSO phase (El Niño, La Niña, neutral)
  */
 
-export function useGetENSOSensitivity<
-  TData = Awaited<ReturnType<typeof getENSOSensitivity>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getENSOSensitivity>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetENSOSensitivityQueryOptions(options);
+export function useGetENSOSensitivity<TData = Awaited<ReturnType<typeof getENSOSensitivity>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getENSOSensitivity>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetENSOSensitivityQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+
 
 export const getGetAnnualDeviationUrl = () => {
-  return `/api/climate/annual-deviation`;
-};
+
+
+
+
+  return `/api/sea-level-anomalies/annual-deviation`
+}
 
 /**
  * @summary Pacific-wide annual mean deviation from 30-year grand mean for lollipop chart
  */
-export const getAnnualDeviation = async (
-  options?: RequestInit,
-): Promise<AnnualDeviationData> => {
-  return customFetch<AnnualDeviationData>(getGetAnnualDeviationUrl(), {
+export const getAnnualDeviation = async ( options?: RequestInit): Promise<AnnualDeviationData> => {
+
+  return customFetch<AnnualDeviationData>(getGetAnnualDeviationUrl(),
+  {
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
 
 export const getGetAnnualDeviationQueryKey = () => {
-  return [`/api/climate/annual-deviation`] as const;
-};
+    return [
+    `/api/sea-level-anomalies/annual-deviation`
+    ] as const;
+    }
 
-export const getGetAnnualDeviationQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAnnualDeviation>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getAnnualDeviation>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAnnualDeviationQueryKey();
+export const getGetAnnualDeviationQueryOptions = <TData = Awaited<ReturnType<typeof getAnnualDeviation>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnualDeviation>>, TError, TData>, }
+) => {
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAnnualDeviation>>
-  > = ({ signal }) => getAnnualDeviation({ signal, ...requestOptions });
+const {query: queryOptions} = options ?? {};
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAnnualDeviation>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  const queryKey =  queryOptions?.queryKey ?? getGetAnnualDeviationQueryKey();
 
-export type GetAnnualDeviationQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAnnualDeviation>>
->;
-export type GetAnnualDeviationQueryError = ErrorType<unknown>;
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnnualDeviation>>> = ({ signal }) => getAnnualDeviation({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnnualDeviation>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAnnualDeviationQueryResult = NonNullable<Awaited<ReturnType<typeof getAnnualDeviation>>>
+export type GetAnnualDeviationQueryError = ErrorType<unknown>
+
 
 /**
  * @summary Pacific-wide annual mean deviation from 30-year grand mean for lollipop chart
  */
 
-export function useGetAnnualDeviation<
-  TData = Awaited<ReturnType<typeof getAnnualDeviation>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getAnnualDeviation>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetAnnualDeviationQueryOptions(options);
+export function useGetAnnualDeviation<TData = Awaited<ReturnType<typeof getAnnualDeviation>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnualDeviation>>, TError, TData>, }
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAnnualDeviationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+
+

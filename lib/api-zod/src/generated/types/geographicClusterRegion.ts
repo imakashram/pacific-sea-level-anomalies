@@ -5,9 +5,9 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { RegionNationStat } from "./regionNationStat";
-import type { RegionStats } from "./regionStats";
-import type { RegionYearlyAvg } from "./regionYearlyAvg";
+import type { RegionNationStat } from './regionNationStat';
+import type { RegionStats } from './regionStats';
+import type { RegionYearlyAvg } from './regionYearlyAvg';
 
 export interface GeographicClusterRegion {
   region: string;

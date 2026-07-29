@@ -289,7 +289,7 @@ function CustomYAxisTick(props: {
 
 /**
  * 100% verified fallback profile data for Palau (PW)
- * derived directly from climate_change.csv observations.
+ * derived directly from sea_level_anomalies.csv observations.
  */
 const FALLBACK_PROFILE = {
   code: "PW",

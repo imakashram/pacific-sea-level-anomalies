@@ -6,12 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type RiskScoreRiskLevel =
-  (typeof RiskScoreRiskLevel)[keyof typeof RiskScoreRiskLevel];
+export type RiskScoreRiskLevel = typeof RiskScoreRiskLevel[keyof typeof RiskScoreRiskLevel];
+
 
 export const RiskScoreRiskLevel = {
-  Critical: "Critical",
-  High: "High",
-  Medium: "Medium",
-  Low: "Low",
+  Critical: 'Critical',
+  High: 'High',
+  Medium: 'Medium',
+  Low: 'Low',
 } as const;

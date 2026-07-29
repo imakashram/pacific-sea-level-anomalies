@@ -28,7 +28,7 @@ interface ApiEndpoint {
 const ENDPOINTS: ApiEndpoint[] = [
   // Core
   {
-    path: "/api/climate/overview",
+    path: "/api/sea-level-anomalies/overview",
     method: "GET",
     description:
       "Returns high-level statistics and metadata summaries for the complete climate anomalies dataset.",
@@ -36,7 +36,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["HeroSection", "TheDataLandscape", "WhatThisMeans"],
   },
   {
-    path: "/api/climate/sea-level-by-country",
+    path: "/api/sea-level-anomalies/sea-level-by-country",
     method: "GET",
     description:
       "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
@@ -44,7 +44,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["TheOceanIsRising", "PacificAtAGlance"],
   },
   {
-    path: "/api/climate/country-profile/:code",
+    path: "/api/sea-level-anomalies/country-profile/:code",
     method: "GET",
     description:
       "Returns a comprehensive data profile for a single nation, including annual anomaly records, decadal shift benchmarks, ranking statistics, and local trends.",
@@ -84,7 +84,7 @@ const ENDPOINTS: ApiEndpoint[] = [
 
   // Trends
   {
-    path: "/api/climate/decade-analysis",
+    path: "/api/sea-level-anomalies/decade-analysis",
     method: "GET",
     description:
       "Divides observations into Decade 1 (1993-2002), Decade 2 (2003-2012), and Decade 3 (2013-2023) to compute baseline shifts and regional changes.",
@@ -92,7 +92,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["HeroSection", "WhatThisMeans"],
   },
   {
-    path: "/api/climate/volatility",
+    path: "/api/sea-level-anomalies/volatility",
     method: "GET",
     description:
       "Computes statistical volatility (standard deviations) of anomalies for each territory.",
@@ -100,7 +100,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["HeroSection"],
   },
   {
-    path: "/api/climate/acceleration",
+    path: "/api/sea-level-anomalies/acceleration",
     method: "GET",
     description:
       "Analyzes anomaly curves to calculate acceleration rates of rising water levels.",
@@ -108,7 +108,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["HeroSection", "PaceOfChange", "WhatThisMeans"],
   },
   {
-    path: "/api/climate/annual-deviation",
+    path: "/api/sea-level-anomalies/annual-deviation",
     method: "GET",
     description:
       "Computes standard deviation variances of annual anomalies on a year-by-year scale.",
@@ -118,7 +118,7 @@ const ENDPOINTS: ApiEndpoint[] = [
 
   // ENSO
   {
-    path: "/api/climate/el-nino-impact",
+    path: "/api/sea-level-anomalies/el-nino-impact",
     method: "GET",
     description:
       "Aggregates anomalies specifically during historical extreme ENSO years (1997-1998, 2015-2016) to show direct impacts.",
@@ -126,7 +126,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: [],
   },
   {
-    path: "/api/climate/enso-sensitivity",
+    path: "/api/sea-level-anomalies/enso-sensitivity",
     method: "GET",
     description:
       "Correlates annual sea level anomalies with Southern Oscillation Index (SOI) datasets to measure ENSO susceptibility.",
@@ -136,7 +136,7 @@ const ENDPOINTS: ApiEndpoint[] = [
 
   // Risk & Forecast
   {
-    path: "/api/climate/forecast",
+    path: "/api/sea-level-anomalies/forecast",
     method: "GET",
     description:
       "Uses 30-year trend slopes and volatility ranges to model regional projection trajectories (2024-2050).",
@@ -144,7 +144,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["FutureOutlook"],
   },
   {
-    path: "/api/climate/risk-scores",
+    path: "/api/sea-level-anomalies/risk-scores",
     method: "GET",
     description:
       "Evaluates risk categories (Critical, High, Medium, Low) for all nations based on acceleration, rise, and elevation factors.",
@@ -152,7 +152,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["RiskAssessment", "PacificAtAGlance"],
   },
   {
-    path: "/api/climate/geographic-clusters",
+    path: "/api/sea-level-anomalies/geographic-clusters",
     method: "GET",
     description:
       "Groups territories geographically (Melanesia, Micronesia, Polynesia) to compile sub-regional summaries.",
@@ -160,7 +160,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["ChapterSubRegionalClusters"],
   },
   {
-    path: "/api/climate/threshold-crossings",
+    path: "/api/sea-level-anomalies/threshold-crossings",
     method: "GET",
     description:
       "Computes indicators mapping when territories first crossed anomaly thresholds (+0.0m, +0.1m, +0.2m).",
@@ -170,7 +170,7 @@ const ENDPOINTS: ApiEndpoint[] = [
 
   // Visuals
   {
-    path: "/api/climate/heatmap",
+    path: "/api/sea-level-anomalies/heatmap",
     method: "GET",
     description:
       "Prepares pivoted and ordered grids to feed the multi-nation decadal heatmap.",
@@ -178,7 +178,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["PatternsOverTime"],
   },
   {
-    path: "/api/climate/sea-level-trend",
+    path: "/api/sea-level-anomalies/sea-level-trend",
     method: "GET",
     description:
       "Returns annual global sea level trend values across the Pacific.",
@@ -186,7 +186,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["TheOceanIsRising", "OceanDecorations"],
   },
   {
-    path: "/api/climate/rankings",
+    path: "/api/sea-level-anomalies/rankings",
     method: "GET",
     description:
       "Generates detailed rankings of countries by rise, volatility, and linear slope.",

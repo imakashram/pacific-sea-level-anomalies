@@ -5,8 +5,8 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import type { CountryTimeSeriesDataItem } from "./countryTimeSeriesDataItem";
-import type { CountryTimeSeriesTrend } from "./countryTimeSeriesTrend";
+import type { CountryTimeSeriesDataItem } from './countryTimeSeriesDataItem';
+import type { CountryTimeSeriesTrend } from './countryTimeSeriesTrend';
 
 export interface CountryTimeSeries {
   country: string;

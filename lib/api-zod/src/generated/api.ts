@@ -5,407 +5,358 @@
  * Pacific Island Climate Change Data Story API
  * OpenAPI spec version: 0.1.0
  */
-import * as zod from "zod";
+import * as zod from 'zod';
+
 
 /**
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
-  status: zod.string(),
-});
+  "status": zod.string()
+})
+
 
 /**
  * @summary Key headline metrics
  */
-export const GetClimateOverviewResponse = zod.object({
-  totalCountries: zod.number(),
-  yearRange: zod.object({
-    start: zod.number(),
-    end: zod.number(),
-  }),
-  totalObservations: zod.number(),
-  avgRiseMeters: zod.number(),
-  maxRiseCountry: zod.string(),
-  maxRiseValue: zod.number(),
-  countriesAboveAvg: zod.number(),
-  elNinoYear: zod.number(),
-  recentDecadeAvg: zod.number(),
-  baselineDecadeAvg: zod.number(),
-});
+export const GetSeaLevelAnomaliesOverviewResponse = zod.object({
+  "totalCountries": zod.number(),
+  "yearRange": zod.object({
+  "start": zod.number(),
+  "end": zod.number()
+}),
+  "totalObservations": zod.number(),
+  "avgRiseMeters": zod.number(),
+  "maxRiseCountry": zod.string(),
+  "maxRiseValue": zod.number(),
+  "countriesAboveAvg": zod.number(),
+  "elNinoYear": zod.number(),
+  "recentDecadeAvg": zod.number(),
+  "baselineDecadeAvg": zod.number()
+})
+
 
 /**
  * @summary Aggregated annual sea level trend across all countries
  */
 export const GetSeaLevelTrendResponseItem = zod.object({
-  year: zod.number(),
-  avgAnomaly: zod.number(),
-  minAnomaly: zod.number(),
-  maxAnomaly: zod.number(),
-  countriesRising: zod.number(),
-});
-export const GetSeaLevelTrendResponse = zod.array(GetSeaLevelTrendResponseItem);
+  "year": zod.number(),
+  "avgAnomaly": zod.number(),
+  "minAnomaly": zod.number(),
+  "maxAnomaly": zod.number(),
+  "countriesRising": zod.number()
+})
+export const GetSeaLevelTrendResponse = zod.array(GetSeaLevelTrendResponseItem)
+
 
 /**
  * @summary Sea level anomaly time series per country
  */
 export const GetSeaLevelByCountryResponseItem = zod.object({
-  country: zod.string(),
-  code: zod.string(),
-  data: zod.array(
-    zod.object({
-      year: zod.number(),
-      value: zod.number(),
-    }),
-  ),
-  cumulativeRise: zod.number(),
-  trend: zod.enum(["rising", "stable", "variable"]),
-});
-export const GetSeaLevelByCountryResponse = zod.array(
-  GetSeaLevelByCountryResponseItem,
-);
+  "country": zod.string(),
+  "code": zod.string(),
+  "data": zod.array(zod.object({
+  "year": zod.number(),
+  "value": zod.number()
+})),
+  "cumulativeRise": zod.number(),
+  "trend": zod.enum(['rising', 'stable', 'variable'])
+})
+export const GetSeaLevelByCountryResponse = zod.array(GetSeaLevelByCountryResponseItem)
+
 
 /**
  * @summary Country × year heatmap matrix
  */
-export const GetClimateHeatmapResponse = zod.object({
-  years: zod.array(zod.number()),
-  countries: zod.array(zod.string()),
-  matrix: zod.array(zod.array(zod.number())),
-  minValue: zod.number(),
-  maxValue: zod.number(),
-});
+export const GetSeaLevelAnomaliesHeatmapResponse = zod.object({
+  "years": zod.array(zod.number()),
+  "countries": zod.array(zod.string()),
+  "matrix": zod.array(zod.array(zod.number())),
+  "minValue": zod.number(),
+  "maxValue": zod.number()
+})
+
 
 /**
  * Breaks sea level data into 3 decades (1993-2002, 2003-2012, 2013-2023) to show escalation over time
  * @summary Per-country and global averages across 3 decades
  */
 export const GetDecadeAnalysisResponse = zod.object({
-  countries: zod.array(
-    zod.object({
-      country: zod.string(),
-      code: zod.string(),
-      d1: zod.number().describe("Average anomaly 1993–2002"),
-      d2: zod.number().describe("Average anomaly 2003–2012"),
-      d3: zod.number().describe("Average anomaly 2013–2023"),
-      acceleration: zod
-        .number()
-        .describe("d3 minus d1 — net change across the study period"),
-    }),
-  ),
-  globalDecades: zod.array(
-    zod.object({
-      key: zod.string(),
-      label: zod.string(),
-      avg: zod.number(),
-    }),
-  ),
-});
+  "countries": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "d1": zod.number().describe('Average anomaly 1993–2002'),
+  "d2": zod.number().describe('Average anomaly 2003–2012'),
+  "d3": zod.number().describe('Average anomaly 2013–2023'),
+  "acceleration": zod.number().describe('d3 minus d1 — net change across the study period')
+})),
+  "globalDecades": zod.array(zod.object({
+  "key": zod.string(),
+  "label": zod.string(),
+  "avg": zod.number()
+}))
+})
+
 
 /**
  * Enables scatter plot of mean vs volatility — reveals which nations face chaotic vs steady rise
  * @summary Per-country volatility (standard deviation) and mean anomaly
  */
 export const GetVolatilityResponse = zod.object({
-  countries: zod.array(
-    zod.object({
-      country: zod.string(),
-      code: zod.string(),
-      mean: zod.number(),
-      volatility: zod.number(),
-      observations: zod.number(),
-    }),
-  ),
-  globalMean: zod.number(),
-  globalVolatility: zod.number(),
-});
+  "countries": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "mean": zod.number(),
+  "volatility": zod.number(),
+  "observations": zod.number()
+})),
+  "globalMean": zod.number(),
+  "globalVolatility": zod.number()
+})
+
 
 /**
  * Full-period, first-half, and second-half linear slopes reveal where rise is speeding up most
  * @summary Linear slope of sea level rise per country across time windows
  */
 export const GetAccelerationResponseItem = zod.object({
-  country: zod.string(),
-  code: zod.string(),
-  slopeFullPeriod: zod
-    .number()
-    .describe("Linear slope (m\/year) over full 1993–2023 period"),
-  slopeFirstHalf: zod.number().describe("Slope over first half of the period"),
-  slopeSecondHalf: zod
-    .number()
-    .describe("Slope over second half of the period"),
-  accelerating: zod
-    .boolean()
-    .describe("True if second-half slope exceeds first-half slope"),
-});
-export const GetAccelerationResponse = zod.array(GetAccelerationResponseItem);
+  "country": zod.string(),
+  "code": zod.string(),
+  "slopeFullPeriod": zod.number().describe('Linear slope (m\/year) over full 1993–2023 period'),
+  "slopeFirstHalf": zod.number().describe('Slope over first half of the period'),
+  "slopeSecondHalf": zod.number().describe('Slope over second half of the period'),
+  "accelerating": zod.boolean().describe('True if second-half slope exceeds first-half slope')
+})
+export const GetAccelerationResponse = zod.array(GetAccelerationResponseItem)
+
 
 /**
  * All key metrics per country in one response — designed for a rich sortable data table
  * @summary Full sortable analytics table for all countries
  */
 export const GetRankingsResponseItem = zod.object({
-  country: zod.string(),
-  code: zod.string(),
-  mean: zod.number(),
-  volatility: zod.number(),
-  cumulativeRise: zod.number(),
-  peakValue: zod.number(),
-  peakYear: zod.number(),
-  troughValue: zod.number(),
-  troughYear: zod.number(),
-  slope: zod.number(),
-  d1Avg: zod.number(),
-  d3Avg: zod.number(),
-  decadeAcceleration: zod.number(),
-  observations: zod.number(),
-});
-export const GetRankingsResponse = zod.array(GetRankingsResponseItem);
+  "country": zod.string(),
+  "code": zod.string(),
+  "mean": zod.number(),
+  "volatility": zod.number(),
+  "cumulativeRise": zod.number(),
+  "peakValue": zod.number(),
+  "peakYear": zod.number(),
+  "troughValue": zod.number(),
+  "troughYear": zod.number(),
+  "slope": zod.number(),
+  "d1Avg": zod.number(),
+  "d3Avg": zod.number(),
+  "decadeAcceleration": zod.number(),
+  "observations": zod.number()
+})
+export const GetRankingsResponse = zod.array(GetRankingsResponseItem)
+
 
 /**
  * Linear regression extrapolation from 1993-2023 data projected through 2033, with ±2σ confidence intervals
  * @summary 10-year sea level projection with confidence bands
  */
 export const GetForecastResponse = zod.object({
-  historical: zod.array(
-    zod.object({
-      year: zod.number(),
-      avgAnomaly: zod.number(),
-    }),
-  ),
-  projected: zod.array(
-    zod.object({
-      year: zod.number(),
-      projected: zod.number().describe("Projected average sea level anomaly"),
-      lower: zod.number().describe("Lower confidence bound (−2σ)"),
-      upper: zod.number().describe("Upper confidence bound (+2σ)"),
-    }),
-  ),
-  slopeMmPerYear: zod.number().describe("Linear trend slope in mm\/year"),
-  r2: zod.number().describe("Coefficient of determination (model fit quality)"),
-  projectedRise2030: zod
-    .number()
-    .describe("Projected cumulative anomaly increase by 2030"),
-  projectedRise2033: zod
-    .number()
-    .describe("Projected cumulative anomaly increase by 2033"),
-});
+  "historical": zod.array(zod.object({
+  "year": zod.number(),
+  "avgAnomaly": zod.number()
+})),
+  "projected": zod.array(zod.object({
+  "year": zod.number(),
+  "projected": zod.number().describe('Projected average sea level anomaly'),
+  "lower": zod.number().describe('Lower confidence bound (−2σ)'),
+  "upper": zod.number().describe('Upper confidence bound (+2σ)')
+})),
+  "slopeMmPerYear": zod.number().describe('Linear trend slope in mm\/year'),
+  "r2": zod.number().describe('Coefficient of determination (model fit quality)'),
+  "projectedRise2030": zod.number().describe('Projected cumulative anomaly increase by 2030'),
+  "projectedRise2033": zod.number().describe('Projected cumulative anomaly increase by 2033')
+})
+
 
 /**
  * 0-100 risk score combining cumulative rise, slope, volatility, and decade acceleration
  * @summary Composite climate risk score per country
  */
 export const GetRiskScoresResponse = zod.object({
-  countries: zod.array(
-    zod.object({
-      country: zod.string(),
-      code: zod.string(),
-      riskScore: zod.number().describe("Composite risk score 0–100"),
-      riskLevel: zod.enum(["Critical", "High", "Medium", "Low"]),
-      components: zod.object({
-        riseScore: zod.number(),
-        slopeScore: zod.number(),
-        volatilityScore: zod.number(),
-        accelerationScore: zod.number(),
-      }),
-      cumulativeRise: zod.number(),
-      slope: zod.number(),
-      volatility: zod.number(),
-      decadeAcceleration: zod.number(),
-    }),
-  ),
-  avgRiskScore: zod.number(),
-  criticalCount: zod.number(),
-  highCount: zod.number(),
-  mediumCount: zod.number(),
-  lowCount: zod.number(),
-});
+  "countries": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "riskScore": zod.number().describe('Composite risk score 0–100'),
+  "riskLevel": zod.enum(['Critical', 'High', 'Medium', 'Low']),
+  "components": zod.object({
+  "riseScore": zod.number(),
+  "slopeScore": zod.number(),
+  "volatilityScore": zod.number(),
+  "accelerationScore": zod.number()
+}),
+  "cumulativeRise": zod.number(),
+  "slope": zod.number(),
+  "volatility": zod.number(),
+  "decadeAcceleration": zod.number()
+})),
+  "avgRiskScore": zod.number(),
+  "criticalCount": zod.number(),
+  "highCount": zod.number(),
+  "mediumCount": zod.number(),
+  "lowCount": zod.number()
+})
+
 
 /**
  * Time series with rolling avg, decade breakdown, stats, and rank vs peers
  * @summary Full deep-dive profile for a single country
  */
 export const GetCountryProfileParams = zod.object({
-  code: zod.coerce.string().describe("ISO country code (e.g. FJ, TV, WS)"),
-});
+  "code": zod.coerce.string().describe('ISO country code (e.g. FJ, TV, WS)')
+})
 
 export const GetCountryProfileResponse = zod.object({
-  country: zod.string(),
-  code: zod.string(),
-  timeSeries: zod.array(
-    zod.object({
-      year: zod.number(),
-      value: zod.number(),
-      rollingAvg: zod.number(),
-    }),
-  ),
-  decadeBreakdown: zod.array(
-    zod.object({
-      label: zod.string(),
-      avg: zod.number(),
-      count: zod.number(),
-    }),
-  ),
-  stats: zod.object({
-    mean: zod.number(),
-    volatility: zod.number(),
-    cumulativeRise: zod.number(),
-    slope: zod.number(),
-    peakValue: zod.number(),
-    peakYear: zod.number(),
-    troughValue: zod.number(),
-    troughYear: zod.number(),
-    observations: zod.number(),
-    rankByCumulativeRise: zod.number(),
-    totalCountries: zod.number(),
-  }),
-});
+  "country": zod.string(),
+  "code": zod.string(),
+  "timeSeries": zod.array(zod.object({
+  "year": zod.number(),
+  "value": zod.number(),
+  "rollingAvg": zod.number()
+})),
+  "decadeBreakdown": zod.array(zod.object({
+  "label": zod.string(),
+  "avg": zod.number(),
+  "count": zod.number()
+})),
+  "stats": zod.object({
+  "mean": zod.number(),
+  "volatility": zod.number(),
+  "cumulativeRise": zod.number(),
+  "slope": zod.number(),
+  "peakValue": zod.number(),
+  "peakYear": zod.number(),
+  "troughValue": zod.number(),
+  "troughYear": zod.number(),
+  "observations": zod.number(),
+  "rankByCumulativeRise": zod.number(),
+  "totalCountries": zod.number()
+})
+})
+
 
 /**
  * @summary Sea level data grouped by Pacific sub-region (Polynesia, Melanesia, Micronesia)
  */
 export const GetGeographicClustersResponse = zod.object({
-  years: zod.array(zod.number()),
-  regions: zod.array(
-    zod.object({
-      region: zod.string(),
-      nationCount: zod.number(),
-      nations: zod.array(
-        zod.object({
-          code: zod.string(),
-          country: zod.string(),
-          cumulativeRise: zod.number(),
-          slope: zod.number(),
-          acceleration: zod.number(),
-        }),
-      ),
-      yearlyAvg: zod.array(
-        zod.object({
-          year: zod.number(),
-          avgAnomaly: zod.number(),
-        }),
-      ),
-      stats: zod.object({
-        avgCumulativeRise: zod.number(),
-        avgSlopeMmPerYear: zod.number(),
-        avgDecadeAcceleration: zod.number(),
-        avgVolatility: zod.number(),
-        topNation: zod.string(),
-        topNationRise: zod.number(),
-      }),
-    }),
-  ),
-});
+  "years": zod.array(zod.number()),
+  "regions": zod.array(zod.object({
+  "region": zod.string(),
+  "nationCount": zod.number(),
+  "nations": zod.array(zod.object({
+  "code": zod.string(),
+  "country": zod.string(),
+  "cumulativeRise": zod.number(),
+  "slope": zod.number(),
+  "acceleration": zod.number()
+})),
+  "yearlyAvg": zod.array(zod.object({
+  "year": zod.number(),
+  "avgAnomaly": zod.number()
+})),
+  "stats": zod.object({
+  "avgCumulativeRise": zod.number(),
+  "avgSlopeMmPerYear": zod.number(),
+  "avgDecadeAcceleration": zod.number(),
+  "avgVolatility": zod.number(),
+  "topNation": zod.string(),
+  "topNationRise": zod.number()
+})
+}))
+})
+
 
 /**
  * @summary Year each nation first crossed key sea level thresholds
  */
 export const GetThresholdCrossingsResponse = zod.object({
-  nations: zod.array(
-    zod.object({
-      country: zod.string(),
-      code: zod.string(),
-      firstPositive: zod.number().nullable(),
-      firstTenth: zod.number().nullable(),
-      firstFifth: zod.number().nullable(),
-      yearsPositive: zod.number(),
-      yearsAboveTenth: zod.number(),
-      yearsAboveFifth: zod.number(),
-      streakAboveZero: zod.number(),
-      latestValue: zod.number(),
-      cumulativeRise: zod.number(),
-    }),
-  ),
-  summary: zod.object({
-    crossedZero: zod.number(),
-    crossedTenth: zod.number(),
-    crossedFifth: zod.number(),
-    total: zod.number(),
-    avgFirstPositiveYear: zod.number(),
-  }),
-});
+  "nations": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "firstPositive": zod.number().nullable(),
+  "firstTenth": zod.number().nullable(),
+  "firstFifth": zod.number().nullable(),
+  "yearsPositive": zod.number(),
+  "yearsAboveTenth": zod.number(),
+  "yearsAboveFifth": zod.number(),
+  "streakAboveZero": zod.number(),
+  "latestValue": zod.number(),
+  "cumulativeRise": zod.number()
+})),
+  "summary": zod.object({
+  "crossedZero": zod.number(),
+  "crossedTenth": zod.number(),
+  "crossedFifth": zod.number(),
+  "total": zod.number(),
+  "avgFirstPositiveYear": zod.number()
+})
+})
+
 
 /**
  * @summary Per-nation 1997-2000 sea level values showing El Niño suppression and recovery
  */
 export const GetElNinoImpactResponse = zod.object({
-  nations: zod.array(
-    zod.object({
-      country: zod.string(),
-      code: zod.string(),
-      v1997: zod.number().nullable(),
-      v1998: zod.number().nullable(),
-      v1999: zod.number().nullable(),
-      v2000: zod.number().nullable(),
-      drop: zod
-        .number()
-        .nullable()
-        .describe(
-          "1998 value minus pre-event average (negative = suppression)",
-        ),
-      recovery: zod
-        .number()
-        .nullable()
-        .describe("Post-event average minus 1998 value (positive = rebound)"),
-    }),
-  ),
-  globalAvg1997: zod.number(),
-  globalAvg1998: zod.number(),
-  globalAvg1999: zod.number(),
-  totalNegative1998: zod.number(),
-  avgDrop: zod.number(),
-});
+  "nations": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "v1997": zod.number().nullable(),
+  "v1998": zod.number().nullable(),
+  "v1999": zod.number().nullable(),
+  "v2000": zod.number().nullable(),
+  "drop": zod.number().nullable().describe('1998 value minus pre-event average (negative = suppression)'),
+  "recovery": zod.number().nullable().describe('Post-event average minus 1998 value (positive = rebound)')
+})),
+  "globalAvg1997": zod.number(),
+  "globalAvg1998": zod.number(),
+  "globalAvg1999": zod.number(),
+  "totalNegative1998": zod.number(),
+  "avgDrop": zod.number()
+})
+
 
 /**
  * Sensitivity = La Niña avg − El Niño avg. El Niño years 1997-98 and 2015-16; La Niña years 2010-11 and 2020-21.
  * @summary Per-nation sea level anomaly averaged by ENSO phase (El Niño, La Niña, neutral)
  */
 export const GetENSOSensitivityResponse = zod.object({
-  nations: zod.array(
-    zod.object({
-      country: zod.string(),
-      code: zod.string(),
-      elNinoAvg: zod
-        .number()
-        .describe(
-          "Average sea level anomaly during El Niño years (1997-98, 2015-16)",
-        ),
-      laNinaAvg: zod
-        .number()
-        .describe(
-          "Average sea level anomaly during La Niña years (2010-11, 2020-21)",
-        ),
-      neutralAvg: zod
-        .number()
-        .describe("Average sea level anomaly during neutral years"),
-      sensitivity: zod
-        .number()
-        .describe(
-          "La Niña avg minus El Niño avg — higher = more ENSO-sensitive",
-        ),
-    }),
-  ),
-  global: zod.object({
-    elNinoAvg: zod.number(),
-    laNinaAvg: zod.number(),
-    neutralAvg: zod.number(),
-  }),
-  elNinoYears: zod.array(zod.number()),
-  laNinaYears: zod.array(zod.number()),
-});
+  "nations": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "elNinoAvg": zod.number().describe('Average sea level anomaly during El Niño years (1997-98, 2015-16)'),
+  "laNinaAvg": zod.number().describe('Average sea level anomaly during La Niña years (2010-11, 2020-21)'),
+  "neutralAvg": zod.number().describe('Average sea level anomaly during neutral years'),
+  "sensitivity": zod.number().describe('La Niña avg minus El Niño avg — higher = more ENSO-sensitive')
+})),
+  "global": zod.object({
+  "elNinoAvg": zod.number(),
+  "laNinaAvg": zod.number(),
+  "neutralAvg": zod.number()
+}),
+  "elNinoYears": zod.array(zod.number()),
+  "laNinaYears": zod.array(zod.number())
+})
+
 
 /**
  * @summary Pacific-wide annual mean deviation from 30-year grand mean for lollipop chart
  */
 export const GetAnnualDeviationResponse = zod.object({
-  deviations: zod.array(
-    zod.object({
-      year: zod.number(),
-      avg: zod.number(),
-      deviation: zod.number(),
-      enso: zod.string(),
-    }),
-  ),
-  mean30yr: zod.number(),
-  maxDeviation: zod.number(),
-  minDeviation: zod.number(),
-});
+  "deviations": zod.array(zod.object({
+  "year": zod.number(),
+  "avg": zod.number(),
+  "deviation": zod.number(),
+  "enso": zod.string()
+})),
+  "mean30yr": zod.number(),
+  "maxDeviation": zod.number(),
+  "minDeviation": zod.number()
+})
+
+

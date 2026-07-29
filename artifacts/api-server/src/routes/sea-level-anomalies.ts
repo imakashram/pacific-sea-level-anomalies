@@ -1,11 +1,7 @@
 import { Router } from "express";
 import { readFileSync } from "fs";
-import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import Papa from "papaparse";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const router = Router();
 
@@ -27,7 +23,7 @@ interface DataPoint {
 }
 
 function loadData(): DataPoint[] {
-  const csvPath = join(__dirname, "../data/climate_change.csv");
+  const csvPath = fileURLToPath(new URL("../data/sea_level_anomalies.csv", import.meta.url));
   const raw = readFileSync(csvPath, "utf-8");
   const result = Papa.parse<RawRow>(raw, {
     header: true,
@@ -71,7 +67,7 @@ function linearSlope(xs: number[], ys: number[]): number {
 
 // ── Existing endpoints ──────────────────────────────────────────────────────
 
-router.get("/climate/overview", (_req, res): void => {
+router.get("/sea-level-anomalies/overview", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
 
@@ -121,7 +117,7 @@ router.get("/climate/overview", (_req, res): void => {
   });
 });
 
-router.get("/climate/sea-level-trend", (_req, res): void => {
+router.get("/sea-level-anomalies/sea-level-trend", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const years = [...new Set(seaLevel.map((d) => d.year))].sort();
@@ -142,7 +138,7 @@ router.get("/climate/sea-level-trend", (_req, res): void => {
   res.json(trend);
 });
 
-router.get("/climate/sea-level-by-country", (_req, res): void => {
+router.get("/sea-level-anomalies/sea-level-by-country", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -181,7 +177,7 @@ router.get("/climate/sea-level-by-country", (_req, res): void => {
   res.json(result);
 });
 
-router.get("/climate/heatmap", (_req, res): void => {
+router.get("/sea-level-anomalies/heatmap", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const years = [...new Set(seaLevel.map((d) => d.year))].sort();
@@ -214,7 +210,7 @@ router.get("/climate/heatmap", (_req, res): void => {
  *   D1: 1993–2002 (baseline), D2: 2003–2012 (transition), D3: 2013–2023 (acceleration)
  * Also returns the overall aggregate per decade for trend context.
  */
-router.get("/climate/decade-analysis", (_req, res): void => {
+router.get("/sea-level-anomalies/decade-analysis", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -280,7 +276,7 @@ router.get("/climate/decade-analysis", (_req, res): void => {
  * Enables a scatter plot: X = mean anomaly, Y = volatility.
  * Also returns global stdDev for reference line.
  */
-router.get("/climate/volatility", (_req, res): void => {
+router.get("/sea-level-anomalies/volatility", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -320,7 +316,7 @@ router.get("/climate/volatility", (_req, res): void => {
  * computed over 3 windows: full period, first half, second half.
  * Reveals where rise is speeding up most dramatically.
  */
-router.get("/climate/acceleration", (_req, res): void => {
+router.get("/sea-level-anomalies/acceleration", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -363,7 +359,7 @@ router.get("/climate/acceleration", (_req, res): void => {
  * Full sortable summary table: all countries with all key metrics in one response.
  * Designed for a comprehensive data table with rich sorting capabilities.
  */
-router.get("/climate/rankings", (_req, res): void => {
+router.get("/sea-level-anomalies/rankings", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -421,7 +417,7 @@ router.get("/climate/rankings", (_req, res): void => {
  * /climate/country-profile/:code
  * Full single-country deep-dive: time series, decade averages, stats, rank vs peers.
  */
-router.get("/climate/country-profile/:code", (req, res): void => {
+router.get("/sea-level-anomalies/country-profile/:code", (req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const { code } = req.params;
@@ -516,7 +512,7 @@ router.get("/climate/country-profile/:code", (req, res): void => {
  * Projects global average sea level anomaly through 2033 using linear regression.
  * Returns historical series (all years) + projected points with ±2σ confidence bands.
  */
-router.get("/climate/forecast", (_req, res): void => {
+router.get("/sea-level-anomalies/forecast", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const years = [...new Set(seaLevel.map((d) => d.year))].sort();
@@ -589,7 +585,7 @@ router.get("/climate/forecast", (_req, res): void => {
  *   - Decade acceleration D1→D3 (15%)
  * Risk tiers: Critical ≥80, High ≥60, Medium ≥40, Low <40
  */
-router.get("/climate/risk-scores", (_req, res): void => {
+router.get("/sea-level-anomalies/risk-scores", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -721,7 +717,7 @@ const REGION_MAP: Record<string, string> = {
   WF: "Polynesia",
 };
 
-router.get("/climate/geographic-clusters", (_req, res): void => {
+router.get("/sea-level-anomalies/geographic-clusters", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const years = [...new Set(seaLevel.map((d) => d.year))].sort((a, b) => a - b);
@@ -813,7 +809,7 @@ router.get("/climate/geographic-clusters", (_req, res): void => {
 });
 
 // ── Threshold crossings ───────────────────────────────────────────────────────
-router.get("/climate/threshold-crossings", (_req, res): void => {
+router.get("/sea-level-anomalies/threshold-crossings", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -893,7 +889,7 @@ router.get("/climate/threshold-crossings", (_req, res): void => {
 });
 
 // ── El Niño impact by nation ──────────────────────────────────────────────────
-router.get("/climate/el-nino-impact", (_req, res): void => {
+router.get("/sea-level-anomalies/el-nino-impact", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -958,7 +954,7 @@ router.get("/climate/el-nino-impact", (_req, res): void => {
  *   El Niño (1997-98, 2015-16), La Niña (2010-11, 2020-21), Neutral (all other years)
  * Sensitivity = La Niña avg − El Niño avg: reveals how much each nation swings with ENSO cycles.
  */
-router.get("/climate/enso-sensitivity", (_req, res): void => {
+router.get("/sea-level-anomalies/enso-sensitivity", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -1019,7 +1015,7 @@ router.get("/climate/enso-sensitivity", (_req, res): void => {
  * /climate/annual-deviation
  * Pacific-wide annual mean vs 30-year grand mean — deviation per year — for lollipop chart.
  */
-router.get("/climate/annual-deviation", (_req, res): void => {
+router.get("/sea-level-anomalies/annual-deviation", (_req, res): void => {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
 

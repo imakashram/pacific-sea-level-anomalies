@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ClimateOverviewYearRange = {
+export type SeaLevelAnomaliesOverviewYearRange = {
   start: number;
   end: number;
 };
