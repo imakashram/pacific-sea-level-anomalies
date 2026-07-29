@@ -117,14 +117,7 @@ const ENDPOINTS: ApiEndpoint[] = [
   },
 
   // ENSO
-  {
-    path: "/api/sea-level-anomalies/el-nino-impact",
-    method: "GET",
-    description:
-      "Aggregates anomalies specifically during historical extreme ENSO years (1997-1998, 2015-2016) to show direct impacts.",
-    category: "enso",
-    usedIn: [],
-  },
+
   {
     path: "/api/sea-level-anomalies/enso-sensitivity",
     method: "GET",
@@ -151,14 +144,7 @@ const ENDPOINTS: ApiEndpoint[] = [
     category: "risk",
     usedIn: ["RiskAssessment", "PacificAtAGlance"],
   },
-  {
-    path: "/api/sea-level-anomalies/geographic-clusters",
-    method: "GET",
-    description:
-      "Groups territories geographically (Melanesia, Micronesia, Polynesia) to compile sub-regional summaries.",
-    category: "risk",
-    usedIn: ["ChapterSubRegionalClusters"],
-  },
+
   {
     path: "/api/sea-level-anomalies/threshold-crossings",
     method: "GET",
