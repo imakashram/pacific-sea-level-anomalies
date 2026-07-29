@@ -13,6 +13,7 @@ import { RiskAssessment } from "@/components/story/RiskAssessment";
 import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
 import { WhatThisMeans } from "@/components/story/WhatThisMeans";
 import { OceanDecorations } from "@/components/story/OceanDecorations";
+import { useSEO } from "@/lib/useSEO";
 
 export default function StoryPage() {
   const [activeTab, setActiveTab] = useState<"explorer" | "table">("explorer");
@@ -21,9 +22,30 @@ export default function StoryPage() {
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
-    document.title =
-      "Pacific Sea Level Anomalies | Interactive Climate Data Story";
   }, []);
+
+  useSEO({
+    title: "Pacific Sea Level Anomalies | Interactive Climate Data Story",
+    description:
+      "Explore and analyze sea level anomalies across the Pacific Ocean. Visualize historic data, climate trend patterns, El Niño impacts, and sea-level rise metrics.",
+    canonicalPath: "/",
+    keywords:
+      "climate change, sea level rise, Pacific Ocean, El Nino, climate anomalies, global warming, environment data, interactive climate visualization",
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Pacific Sea Level Anomalies | Interactive Climate Data Story",
+      "description": "Explore and analyze sea level anomalies across the Pacific Ocean. Visualize historic data, climate trend patterns, El Niño impacts, and sea-level rise metrics.",
+      "publisher": {
+        "@type": "Person",
+        "name": "Akash Ram"
+      },
+      "about": {
+        "@type": "Thing",
+        "name": "Climate Change & Sea Level Rise"
+      }
+    }
+  });
 
   const hideDecorations = activeTab === "table" && isSectionInView;
 

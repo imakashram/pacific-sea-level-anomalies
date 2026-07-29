@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { Link } from "wouter";
 import {
   ArrowLeft,
   Calculator,
@@ -13,6 +13,7 @@ import {
   Activity,
   Search,
 } from "lucide-react";
+import { useSEO } from "@/lib/useSEO";
 
 interface CalculationCard {
   id: string;
@@ -385,7 +386,26 @@ const CALCULATIONS: CalculationCard[] = [
 ];
 
 export default function HowItIsCalculatedPage() {
-  const [, setLocation] = useLocation();
+  useSEO({
+    title: "How It's Calculated | Pacific Sea Level Anomalies",
+    description: "Learn about the methodology and calculations behind the Pacific Sea Level Anomalies data story. Examine formulas for Sea Level Anomaly, Decadal Shift, Speed Rate, and Volatility.",
+    canonicalPath: "/how-it-is-calculated",
+    keywords: "climate calculations, sea level anomaly formulas, climate change statistics, climate methodology",
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Calculation Methodology for Pacific Sea Level Anomalies",
+      "description": "Step-by-step mathematical guide detailing formulas, statistics, and calculations used to measure climate indicators and decadal shifts.",
+      "author": {
+        "@type": "Person",
+        "name": "Akash Ram"
+      },
+      "about": {
+        "@type": "Thing",
+        "name": "Mathematical calculations of ocean height anomalies"
+      }
+    }
+  });
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredCalculations = CALCULATIONS.filter(
@@ -403,14 +423,15 @@ export default function HowItIsCalculatedPage() {
       {/* Header Bar */}
       <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => setLocation("/")}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
-            title="Return to Climate Story"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Story</span>
-          </button>
+          <Link href="/">
+            <button
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
+              title="Return to Climate Story"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Story</span>
+            </button>
+          </Link>
           <div className="h-5 w-px bg-slate-800" />
           <div className="flex items-center gap-2.5">
             <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
@@ -423,13 +444,14 @@ export default function HowItIsCalculatedPage() {
         </div>
 
         {/* Navigation Link to API Explorer */}
-        <button
-          onClick={() => setLocation("/explorer")}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
-        >
-          <Terminal className="w-4 h-4 text-cyan-400" />
-          <span>API Explorer</span>
-        </button>
+        <Link href="/explorer">
+          <button
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
+          >
+            <Terminal className="w-4 h-4 text-cyan-400" />
+            <span>API Explorer</span>
+          </button>
+        </Link>
       </header>
 
       {/* Main Container */}

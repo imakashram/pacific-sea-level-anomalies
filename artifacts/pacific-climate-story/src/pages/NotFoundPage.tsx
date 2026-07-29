@@ -1,12 +1,13 @@
-import { useEffect } from "react";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, ArrowLeft } from "lucide-react";
+import { useSEO } from "@/lib/useSEO";
 
 export default function NotFoundPage() {
-  useEffect(() => {
-    document.title = "404 Page Not Found | Pacific Sea Level Anomalies";
-  }, []);
+  useSEO({
+    title: "404 Page Not Found | Pacific Sea Level Anomalies",
+    noindex: true,
+  });
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#070913] text-[#f8fafc] font-sans antialiased relative overflow-hidden">
