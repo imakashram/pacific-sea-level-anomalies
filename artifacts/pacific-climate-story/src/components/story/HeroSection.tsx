@@ -65,9 +65,9 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h2 className="text-primary tracking-widest uppercase text-xs md:text-sm font-semibold mb-6">
+            <p className="text-primary tracking-widest uppercase text-xs md:text-sm font-semibold mb-6">
               A Climate Story · 21 Pacific Nations · 30 Years of Change
-            </h2>
+            </p>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight mb-8">
               The Ocean Is <br />
               <motion.span

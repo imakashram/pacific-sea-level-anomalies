@@ -7,12 +7,13 @@ interface SEOProps {
   keywords?: string;
   noindex?: boolean;
   schema?: Record<string, any>;
+  image?: string;
 }
 
 /**
  * Custom React hook to dynamically manage document head metadata for SEO optimization.
  */
-export function useSEO({ title, description, canonicalPath, keywords, noindex, schema }: SEOProps) {
+export function useSEO({ title, description, canonicalPath, keywords, noindex, schema, image }: SEOProps) {
   useEffect(() => {
     // 1. Update document title
     document.title = title;
@@ -83,7 +84,7 @@ export function useSEO({ title, description, canonicalPath, keywords, noindex, s
       metaKeywords.setAttribute("content", keywords);
     }
 
-    // 5. Update Open Graph and Twitter titles
+    // 5. Update Open Graph and Twitter titles & preview images
     let ogTitle = document.querySelector('meta[property="og:title"]');
     if (!ogTitle) {
       ogTitle = document.createElement("meta");
@@ -99,6 +100,28 @@ export function useSEO({ title, description, canonicalPath, keywords, noindex, s
       document.head.appendChild(twitterTitle);
     }
     twitterTitle.setAttribute("content", title);
+
+    const baseUrl = "https://pacificocean.insightcrust.com";
+    const defaultImage = `${baseUrl}/og-image.png`;
+    const fullImageUrl = image
+      ? (image.startsWith("http") ? image : `${baseUrl}${image.startsWith("/") ? "" : "/"}${image}`)
+      : defaultImage;
+
+    let ogImage = document.querySelector('meta[property="og:image"]');
+    if (!ogImage) {
+      ogImage = document.createElement("meta");
+      ogImage.setAttribute("property", "og:image");
+      document.head.appendChild(ogImage);
+    }
+    ogImage.setAttribute("content", fullImageUrl);
+
+    let twitterImage = document.querySelector('meta[name="twitter:image"]');
+    if (!twitterImage) {
+      twitterImage = document.createElement("meta");
+      twitterImage.setAttribute("name", "twitter:image");
+      document.head.appendChild(twitterImage);
+    }
+    twitterImage.setAttribute("content", fullImageUrl);
 
     // 6. Update Robots directive
     let metaRobots = document.querySelector('meta[name="robots"]');
@@ -132,5 +155,5 @@ export function useSEO({ title, description, canonicalPath, keywords, noindex, s
         scriptSchema.remove();
       }
     };
-  }, [title, description, canonicalPath, keywords, noindex, schema]);
+  }, [title, description, canonicalPath, keywords, noindex, schema, image]);
 }

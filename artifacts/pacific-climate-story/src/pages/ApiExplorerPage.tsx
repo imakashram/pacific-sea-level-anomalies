@@ -347,11 +347,13 @@ export default function ApiExplorerPage() {
       <main id="main-content" className="max-w-[1600px] mx-auto p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100vh-80px)] overflow-hidden" tabIndex={-1}>
         {/* Left Column: API Catalog List */}
         <section className="lg:col-span-4 flex flex-col gap-4 h-full overflow-hidden bg-slate-900/10 border border-slate-900/80 p-4 rounded-2xl">
+          <h2 className="sr-only">API Endpoints Catalog</h2>
           {/* Search bar */}
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <input
               type="text"
+              id="search-endpoints"
               placeholder="Search endpoints or components..."
               aria-label="Search endpoints or components"
               value={searchQuery}
@@ -398,6 +400,7 @@ export default function ApiExplorerPage() {
                 return (
                   <button
                     key={ep.path}
+                    id={`btn-endpoint-${ep.path.replace(/[:/]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "").toLowerCase()}`}
                     onClick={() => {
                       setSelectedApi(ep);
                       setJsonSearchQuery("");
@@ -449,6 +452,7 @@ export default function ApiExplorerPage() {
 
         {/* Right Column: API Console Panel */}
         <section className="lg:col-span-8 flex flex-col gap-6 h-full overflow-hidden">
+          <h2 className="sr-only">API Console & Details</h2>
           {/* Header Dashboard of API Panel */}
           <div className="bg-slate-900/30 border border-slate-800/60 p-6 rounded-2xl flex flex-col gap-4 shadow-sm">
             <div className="flex justify-between items-start gap-4">
@@ -483,6 +487,7 @@ export default function ApiExplorerPage() {
                 )}
               </div>
               <button
+                id="btn-fetch-api"
                 onClick={handleFetch}
                 disabled={isFetching}
                 className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-semibold text-xs hover:bg-cyan-400 transition cursor-pointer shadow-lg shadow-cyan-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -583,6 +588,7 @@ export default function ApiExplorerPage() {
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-500" />
                     <input
                       type="text"
+                      id="input-filter-json"
                       placeholder="Filter JSON keys..."
                       aria-label="Filter JSON keys"
                       value={jsonSearchQuery}
@@ -592,6 +598,7 @@ export default function ApiExplorerPage() {
                   </div>
                 )}
                 <button
+                  id="btn-copy-response"
                   onClick={handleCopy}
                   disabled={!apiResponse}
                   className="flex items-center gap-1 px-3 py-1 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 disabled:opacity-50 transition cursor-pointer text-[10px]"

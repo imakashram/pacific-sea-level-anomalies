@@ -444,7 +444,7 @@ export default function HowItIsCalculatedPage() {
 
         {/* Navigation Link to API Explorer */}
         <Link
-          href="/explorer"
+          href="/api-explorer"
           className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
         >
           <Terminal className="w-4 h-4 text-cyan-400" />
@@ -528,6 +528,7 @@ export default function HowItIsCalculatedPage() {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <input
             type="text"
+            id="search-calculations"
             placeholder="Search calculation metrics (e.g. speed, volatility, risk)..."
             aria-label="Search calculation metrics"
             value={searchQuery}
