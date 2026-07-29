@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {
-  useGetCountryProfile,
-  useGetRankings,
+  useGetExploreAnyNation,
+  useGetPacificAtAGlance,
 } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import {
@@ -362,7 +362,7 @@ export function ExploreAnyNation({
   selectedCode?: string;
   setSelectedCode?: (code: string) => void;
 }) {
-  const { data: rankings } = useGetRankings();
+  const { data: rankings } = useGetPacificAtAGlance();
   const [localSelectedCode, localSetSelectedCode] = useState<string>("PW");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -378,7 +378,7 @@ export function ExploreAnyNation({
   const selectedCode = propsSelectedCode || localSelectedCode;
   const setSelectedCode = propsSetSelectedCode || localSetSelectedCode;
 
-  const { data: apiProfile, isLoading } = useGetCountryProfile(selectedCode, {
+  const { data: apiProfile, isLoading } = useGetExploreAnyNation(selectedCode, {
     query: {
       queryKey: ["countryProfile", selectedCode],
       enabled: !!selectedCode,

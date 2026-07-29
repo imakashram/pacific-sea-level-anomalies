@@ -65,9 +65,9 @@ function linearSlope(xs: number[], ys: number[]): number {
   return den === 0 ? 0 : num / den;
 }
 
-// ── Existing endpoints ──────────────────────────────────────────────────────
+// ── Helper API functions ────────────────────────────────────────────────────
 
-router.get("/sea-level-anomalies/overview", (_req, res): void => {
+function getOverviewData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
 
@@ -103,7 +103,7 @@ router.get("/sea-level-anomalies/overview", (_req, res): void => {
   const recentAvg =
     recent.reduce((s, d) => s + d.value, 0) / (recent.length || 1);
 
-  res.json({
+  return {
     totalCountries: countries.length,
     yearRange: { start: years[0], end: years[years.length - 1] },
     totalObservations: seaLevel.length,
@@ -114,15 +114,15 @@ router.get("/sea-level-anomalies/overview", (_req, res): void => {
     elNinoYear: 1998,
     recentDecadeAvg: parseFloat(recentAvg.toFixed(3)),
     baselineDecadeAvg: parseFloat(baselineAvg.toFixed(3)),
-  });
-});
+  };
+}
 
-router.get("/sea-level-anomalies/sea-level-trend", (_req, res): void => {
+function getSeaLevelTrendData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const years = [...new Set(seaLevel.map((d) => d.year))].sort();
 
-  const trend = years.map((year) => {
+  return years.map((year) => {
     const yearData = seaLevel.filter((d) => d.year === year);
     const values = yearData.map((d) => d.value);
     const avg = values.reduce((s, v) => s + v, 0) / (values.length || 1);
@@ -134,16 +134,14 @@ router.get("/sea-level-anomalies/sea-level-trend", (_req, res): void => {
       countriesRising: values.filter((v) => v > 0).length,
     };
   });
+}
 
-  res.json(trend);
-});
-
-router.get("/sea-level-anomalies/sea-level-by-country", (_req, res): void => {
+function getSeaLevelByCountryData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
 
-  const result = countries.map((country) => {
+  return countries.map((country) => {
     const countryData = seaLevel.filter((d) => d.country === country);
     const sorted = countryData.sort((a, b) => a.year - b.year);
     const code = countryData[0]?.code ?? "";
@@ -173,11 +171,9 @@ router.get("/sea-level-anomalies/sea-level-by-country", (_req, res): void => {
       trend,
     };
   });
+}
 
-  res.json(result);
-});
-
-router.get("/sea-level-anomalies/heatmap", (_req, res): void => {
+function getHeatmapData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const years = [...new Set(seaLevel.map((d) => d.year))].sort();
@@ -193,24 +189,16 @@ router.get("/sea-level-anomalies/heatmap", (_req, res): void => {
   );
 
   const allValues = matrix.flat();
-  res.json({
+  return {
     years,
     countries,
     matrix,
     minValue: Math.min(...allValues),
     maxValue: Math.max(...allValues),
-  });
-});
+  };
+}
 
-// ── New analytics endpoints ─────────────────────────────────────────────────
-
-/**
- * /climate/decade-analysis
- * Per-country average anomaly broken into 3 decades:
- *   D1: 1993–2002 (baseline), D2: 2003–2012 (transition), D3: 2013–2023 (acceleration)
- * Also returns the overall aggregate per decade for trend context.
- */
-router.get("/sea-level-anomalies/decade-analysis", (_req, res): void => {
+function getDecadeAnalysisData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -267,16 +255,10 @@ router.get("/sea-level-anomalies/decade-analysis", (_req, res): void => {
     };
   });
 
-  res.json({ countries: countryRows, globalDecades });
-});
+  return { countries: countryRows, globalDecades };
+}
 
-/**
- * /climate/volatility
- * Per-country volatility (standard deviation of annual anomalies) and mean.
- * Enables a scatter plot: X = mean anomaly, Y = volatility.
- * Also returns global stdDev for reference line.
- */
-router.get("/sea-level-anomalies/volatility", (_req, res): void => {
+function getVolatilityData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -289,7 +271,6 @@ router.get("/sea-level-anomalies/volatility", (_req, res): void => {
     const mean = vals.reduce((s, v) => s + v, 0) / (vals.length || 1);
     const sd = stdDev(vals);
 
-    // Quadrant: highMean + highVol → "Extreme", highMean + lowVol → "Steady", etc.
     return {
       country,
       code,
@@ -303,20 +284,14 @@ router.get("/sea-level-anomalies/volatility", (_req, res): void => {
   const globalMean = allVals.reduce((s, v) => s + v, 0) / (allVals.length || 1);
   const globalVolatility = stdDev(allVals);
 
-  res.json({
+  return {
     countries: countryStats,
     globalMean: parseFloat(globalMean.toFixed(4)),
     globalVolatility: parseFloat(globalVolatility.toFixed(4)),
-  });
-});
+  };
+}
 
-/**
- * /climate/acceleration
- * Linear slope (meters/year) of sea level anomaly for each country,
- * computed over 3 windows: full period, first half, second half.
- * Reveals where rise is speeding up most dramatically.
- */
-router.get("/sea-level-anomalies/acceleration", (_req, res): void => {
+function getAccelerationData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -349,17 +324,11 @@ router.get("/sea-level-anomalies/acceleration", (_req, res): void => {
     };
   });
 
-  // Sort by full-period slope descending
   result.sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod);
-  res.json(result);
-});
+  return result;
+}
 
-/**
- * /climate/rankings
- * Full sortable summary table: all countries with all key metrics in one response.
- * Designed for a comprehensive data table with rich sorting capabilities.
- */
-router.get("/sea-level-anomalies/rankings", (_req, res): void => {
+function getRankingsData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -410,25 +379,19 @@ router.get("/sea-level-anomalies/rankings", (_req, res): void => {
   });
 
   result.sort((a, b) => b.cumulativeRise - a.cumulativeRise);
-  res.json(result);
-});
+  return result;
+}
 
-/**
- * /climate/country-profile/:code
- * Full single-country deep-dive: time series, decade averages, stats, rank vs peers.
- */
-router.get("/sea-level-anomalies/country-profile/:code", (req, res): void => {
+function getCountryProfileData(code: string) {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
-  const { code } = req.params;
 
   const pts = seaLevel
     .filter((d) => d.code.toLowerCase() === code.toLowerCase())
     .sort((a, b) => a.year - b.year);
 
   if (pts.length === 0) {
-    res.status(404).json({ error: `No data found for country code: ${code}` });
-    return;
+    return null;
   }
 
   const country = pts[0]?.country ?? "";
@@ -486,7 +449,7 @@ router.get("/sea-level-anomalies/country-profile/:code", (req, res): void => {
   allRises.sort((a, b) => b - a);
   const rank = allRises.findIndex((r) => r <= cumulativeRise) + 1;
 
-  res.json({
+  return {
     country,
     code: pts[0]?.code ?? "",
     timeSeries,
@@ -504,15 +467,10 @@ router.get("/sea-level-anomalies/country-profile/:code", (req, res): void => {
       rankByCumulativeRise: rank,
       totalCountries: allCountries.length,
     },
-  });
-});
+  };
+}
 
-/**
- * /climate/forecast
- * Projects global average sea level anomaly through 2033 using linear regression.
- * Returns historical series (all years) + projected points with ±2σ confidence bands.
- */
-router.get("/sea-level-anomalies/forecast", (_req, res): void => {
+function getForecastData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const years = [...new Set(seaLevel.map((d) => d.year))].sort();
@@ -566,26 +524,17 @@ router.get("/sea-level-anomalies/forecast", (_req, res): void => {
   const proj2030 = slope * 2030 + intercept;
   const proj2033 = slope * 2033 + intercept;
 
-  res.json({
+  return {
     historical,
     projected,
     slopeMmPerYear: parseFloat((slope * 1000).toFixed(3)),
     r2: parseFloat(r2.toFixed(4)),
     projectedRise2030: parseFloat((proj2030 - baseline2023).toFixed(4)),
     projectedRise2033: parseFloat((proj2033 - baseline2023).toFixed(4)),
-  });
-});
+  };
+}
 
-/**
- * /climate/risk-scores
- * Composite 0–100 risk score per country based on 4 weighted dimensions:
- *   - Cumulative rise (40%)
- *   - Slope / rate of rise (30%)
- *   - Volatility (15%)
- *   - Decade acceleration D1→D3 (15%)
- * Risk tiers: Critical ≥80, High ≥60, Medium ≥40, Low <40
- */
-router.get("/sea-level-anomalies/risk-scores", (_req, res): void => {
+function getRiskScoresData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -679,20 +628,17 @@ router.get("/sea-level-anomalies/risk-scores", (_req, res): void => {
     ).toFixed(1),
   );
 
-  res.json({
+  return {
     countries: scored,
     avgRiskScore,
     criticalCount: scored.filter((c) => c.riskLevel === "Critical").length,
     highCount: scored.filter((c) => c.riskLevel === "High").length,
     mediumCount: scored.filter((c) => c.riskLevel === "Medium").length,
     lowCount: scored.filter((c) => c.riskLevel === "Low").length,
-  });
-});
+  };
+}
 
-
-
-// ── Threshold crossings ───────────────────────────────────────────────────────
-router.get("/sea-level-anomalies/threshold-crossings", (_req, res): void => {
+function getThresholdCrossingsData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -759,7 +705,7 @@ router.get("/sea-level-anomalies/threshold-crossings", (_req, res): void => {
       .filter((n) => n.firstPositive != null)
       .reduce((s, n) => s + n.firstPositive!, 0) / (crossedZero || 1);
 
-  res.json({
+  return {
     nations,
     summary: {
       crossedZero,
@@ -768,18 +714,10 @@ router.get("/sea-level-anomalies/threshold-crossings", (_req, res): void => {
       total: nations.length,
       avgFirstPositiveYear: parseFloat(avgFirstPositive.toFixed(1)),
     },
-  });
-});
+  };
+}
 
-
-
-/**
- * /climate/enso-sensitivity
- * Per-country average sea level anomaly split by ENSO phase:
- *   El Niño (1997-98, 2015-16), La Niña (2010-11, 2020-21), Neutral (all other years)
- * Sensitivity = La Niña avg − El Niño avg: reveals how much each nation swings with ENSO cycles.
- */
-router.get("/sea-level-anomalies/enso-sensitivity", (_req, res): void => {
+function getENSOSensitivityData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
   const countries = [...new Set(seaLevel.map((d) => d.country))].sort();
@@ -824,7 +762,7 @@ router.get("/sea-level-anomalies/enso-sensitivity", (_req, res): void => {
     .filter((d) => !ELNINO_YEARS.has(d.year) && !LANINA_YEARS.has(d.year))
     .map((d) => d.value);
 
-  res.json({
+  return {
     nations,
     global: {
       elNinoAvg: parseFloat(avg(allElNino).toFixed(4)),
@@ -833,14 +771,10 @@ router.get("/sea-level-anomalies/enso-sensitivity", (_req, res): void => {
     },
     elNinoYears: [1997, 1998, 2015, 2016],
     laNinaYears: [2010, 2011, 2020, 2021],
-  });
-});
+  };
+}
 
-/**
- * /climate/annual-deviation
- * Pacific-wide annual mean vs 30-year grand mean — deviation per year — for lollipop chart.
- */
-router.get("/sea-level-anomalies/annual-deviation", (_req, res): void => {
+function getAnnualDeviationData() {
   const data = getData();
   const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
 
@@ -870,7 +804,7 @@ router.get("/sea-level-anomalies/annual-deviation", (_req, res): void => {
         : "neutral",
   }));
 
-  res.json({
+  return {
     deviations,
     mean30yr: parseFloat(mean30yr.toFixed(4)),
     maxDeviation: parseFloat(
@@ -879,7 +813,151 @@ router.get("/sea-level-anomalies/annual-deviation", (_req, res): void => {
     minDeviation: parseFloat(
       Math.min(...deviations.map((d) => d.deviation)).toFixed(4),
     ),
+  };
+}
+
+// ── Legacy endpoints ────────────────────────────────────────────────────────
+
+router.get("/sea-level-anomalies/overview", (_req, res): void => {
+  res.json(getOverviewData());
+});
+
+router.get("/sea-level-anomalies/sea-level-trend", (_req, res): void => {
+  res.json(getSeaLevelTrendData());
+});
+
+router.get("/sea-level-anomalies/sea-level-by-country", (_req, res): void => {
+  res.json(getSeaLevelByCountryData());
+});
+
+router.get("/sea-level-anomalies/heatmap", (_req, res): void => {
+  res.json(getHeatmapData());
+});
+
+router.get("/sea-level-anomalies/decade-analysis", (_req, res): void => {
+  res.json(getDecadeAnalysisData());
+});
+
+router.get("/sea-level-anomalies/volatility", (_req, res): void => {
+  res.json(getVolatilityData());
+});
+
+router.get("/sea-level-anomalies/acceleration", (_req, res): void => {
+  res.json(getAccelerationData());
+});
+
+router.get("/sea-level-anomalies/rankings", (_req, res): void => {
+  res.json(getRankingsData());
+});
+
+router.get("/sea-level-anomalies/country-profile/:code", (req, res): void => {
+  const result = getCountryProfileData(req.params.code);
+  if (!result) {
+    res.status(404).json({ error: `No data found for country code: ${req.params.code}` });
+  } else {
+    res.json(result);
+  }
+});
+
+router.get("/sea-level-anomalies/forecast", (_req, res): void => {
+  res.json(getForecastData());
+});
+
+router.get("/sea-level-anomalies/risk-scores", (_req, res): void => {
+  res.json(getRiskScoresData());
+});
+
+router.get("/sea-level-anomalies/threshold-crossings", (_req, res): void => {
+  res.json(getThresholdCrossingsData());
+});
+
+router.get("/sea-level-anomalies/enso-sensitivity", (_req, res): void => {
+  res.json(getENSOSensitivityData());
+});
+
+router.get("/sea-level-anomalies/annual-deviation", (_req, res): void => {
+  res.json(getAnnualDeviationData());
+});
+
+
+// ── Core endpoints ──────────────────────────────────────────────────────────
+
+router.get("/core/overview", (_req, res): void => {
+  res.json(getOverviewData());
+});
+
+router.get("/core/sea-level-by-country", (_req, res): void => {
+  res.json(getSeaLevelByCountryData());
+});
+
+router.get("/core/country-profile/:code", (req, res): void => {
+  const result = getCountryProfileData(req.params.code);
+  if (!result) {
+    res.status(404).json({ error: `No data found for country code: ${req.params.code}` });
+  } else {
+    res.json(result);
+  }
+});
+
+router.get("/core/sea-level-trend", (_req, res): void => {
+  res.json(getSeaLevelTrendData());
+});
+
+
+// ── Story endpoints ─────────────────────────────────────────────────────────
+
+router.get("/story/hero-section", (_req, res): void => {
+  res.json({
+    overview: getOverviewData(),
+    decadeAnalysis: getDecadeAnalysisData(),
+    acceleration: getAccelerationData(),
+    volatility: getVolatilityData(),
   });
+});
+
+router.get("/story/data-landscape", (_req, res): void => {
+  res.json(getOverviewData());
+});
+
+router.get("/story/ocean-rising", (_req, res): void => {
+  res.json(getSeaLevelTrendData());
+});
+
+router.get("/story/pace-of-change", (_req, res): void => {
+  res.json(getAccelerationData());
+});
+
+router.get("/story/enso-effect", (_req, res): void => {
+  res.json(getENSOSensitivityData());
+});
+
+router.get("/story/patterns-over-time", (_req, res): void => {
+  res.json(getHeatmapData());
+});
+
+router.get("/story/future-outlook", (_req, res): void => {
+  res.json(getForecastData());
+});
+
+router.get("/story/risk-assessment", (_req, res): void => {
+  res.json(getRiskScoresData());
+});
+
+router.get("/story/pacific-at-a-glance", (_req, res): void => {
+  res.json(getRankingsData());
+});
+
+router.get("/story/explore-any-nation/:code", (req, res): void => {
+  const result = getCountryProfileData(req.params.code);
+  if (!result) {
+    res.status(404).json({ error: `No data found for country code: ${req.params.code}` });
+  } else {
+    res.json(result);
+  }
+});
+
+router.get("/story/what-this-means", (_req, res): void => {
+  res.json(getThresholdCrossingsData());
 });
 
 export default router;

@@ -1,5 +1,5 @@
 import { StorySection } from "./StorySection";
-import { useGetSeaLevelAnomaliesOverview } from "@workspace/api-client-react";
+import { useGetDataLandscape } from "@workspace/api-client-react";
 import {
   CalendarRange,
   Database,
@@ -18,7 +18,7 @@ import { Link } from "wouter";
  * explaining the reference baseline, observational volume, and multidecadal rise metrics.
  */
 export function TheDataLandscape() {
-  const { data: overview, isLoading } = useGetSeaLevelAnomaliesOverview();
+  const { data: overview, isLoading } = useGetDataLandscape();
 
   // 100% verified fallback metrics calculated directly from 1993-2023 Pacific SLA records
   const startYear = overview?.yearRange?.start ?? 1993;

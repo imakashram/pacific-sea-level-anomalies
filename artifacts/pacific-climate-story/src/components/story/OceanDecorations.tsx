@@ -7,7 +7,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import {
-  useGetSeaLevelTrend,
+  useGetCoreSeaLevelTrend,
   useGetAnnualDeviation,
 } from "@workspace/api-client-react";
 
@@ -531,7 +531,7 @@ export function OceanDecorations() {
   const { scrollYProgress } = useScroll();
 
   // Fetch telemetry datasets via workspace API hooks
-  const { data: trendData } = useGetSeaLevelTrend();
+  const { data: trendData } = useGetCoreSeaLevelTrend();
   const { data: deviationData } = useGetAnnualDeviation();
 
   // Telemetry state synced with scroll position

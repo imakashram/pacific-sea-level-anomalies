@@ -1,5 +1,5 @@
 import { StorySection } from "./StorySection";
-import { useGetSeaLevelAnomaliesHeatmap } from "@workspace/api-client-react";
+import { useGetPatternsOverTime } from "@workspace/api-client-react";
 import { motion, useInView } from "framer-motion";
 import { useRef, useMemo, useState } from "react";
 
@@ -19,7 +19,7 @@ function peakOfRow(row: (number | null)[]): number {
 }
 
 export function PatternsOverTime() {
-  const { data: heatmapData, isLoading } = useGetSeaLevelAnomaliesHeatmap();
+  const { data: heatmapData, isLoading } = useGetPatternsOverTime();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [sortKey, setSortKey] = useState<SortKey>("totalRise");

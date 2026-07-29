@@ -1,4 +1,4 @@
-import { useGetRiskScores } from "@workspace/api-client-react";
+import { useGetRiskAssessment } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import {
   BarChart,
@@ -557,7 +557,7 @@ const FALLBACK_RISK_DATA = {
  * Combines a master horizontal bar chart with a detailed multi-vector spider/radar chart.
  */
 export function RiskAssessment() {
-  const { data: apiData, isLoading } = useGetRiskScores();
+  const { data: apiData, isLoading } = useGetRiskAssessment();
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
   const [isChartInView, setIsChartInView] = useState(false);
   const [isAnimationActive, setIsAnimationActive] = useState(true);

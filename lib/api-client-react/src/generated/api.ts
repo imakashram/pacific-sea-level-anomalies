@@ -26,6 +26,7 @@ import type {
   ForecastData,
   HealthStatus,
   HeatmapData,
+  HeroSectionData,
   RiskScoreData,
   SeaLevelAnomaliesOverview,
   ThresholdCrossingsData,
@@ -1194,6 +1195,1162 @@ export function useGetAnnualDeviation<TData = Awaited<ReturnType<typeof getAnnua
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetAnnualDeviationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetCoreOverviewUrl = () => {
+
+
+
+
+  return `/api/core/overview`
+}
+
+/**
+ * @summary Key headline metrics
+ */
+export const getCoreOverview = async ( options?: RequestInit): Promise<SeaLevelAnomaliesOverview> => {
+
+  return customFetch<SeaLevelAnomaliesOverview>(getGetCoreOverviewUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCoreOverviewQueryKey = () => {
+    return [
+    `/api/core/overview`
+    ] as const;
+    }
+
+
+export const getGetCoreOverviewQueryOptions = <TData = Awaited<ReturnType<typeof getCoreOverview>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreOverview>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCoreOverviewQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCoreOverview>>> = ({ signal }) => getCoreOverview({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCoreOverview>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCoreOverviewQueryResult = NonNullable<Awaited<ReturnType<typeof getCoreOverview>>>
+export type GetCoreOverviewQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Key headline metrics
+ */
+
+export function useGetCoreOverview<TData = Awaited<ReturnType<typeof getCoreOverview>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreOverview>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCoreOverviewQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetCoreSeaLevelByCountryUrl = () => {
+
+
+
+
+  return `/api/core/sea-level-by-country`
+}
+
+/**
+ * @summary Sea level anomaly time series per country
+ */
+export const getCoreSeaLevelByCountry = async ( options?: RequestInit): Promise<CountryTimeSeries[]> => {
+
+  return customFetch<CountryTimeSeries[]>(getGetCoreSeaLevelByCountryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCoreSeaLevelByCountryQueryKey = () => {
+    return [
+    `/api/core/sea-level-by-country`
+    ] as const;
+    }
+
+
+export const getGetCoreSeaLevelByCountryQueryOptions = <TData = Awaited<ReturnType<typeof getCoreSeaLevelByCountry>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreSeaLevelByCountry>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCoreSeaLevelByCountryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCoreSeaLevelByCountry>>> = ({ signal }) => getCoreSeaLevelByCountry({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCoreSeaLevelByCountry>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCoreSeaLevelByCountryQueryResult = NonNullable<Awaited<ReturnType<typeof getCoreSeaLevelByCountry>>>
+export type GetCoreSeaLevelByCountryQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Sea level anomaly time series per country
+ */
+
+export function useGetCoreSeaLevelByCountry<TData = Awaited<ReturnType<typeof getCoreSeaLevelByCountry>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreSeaLevelByCountry>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCoreSeaLevelByCountryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetCoreCountryProfileUrl = (code: string,) => {
+
+
+
+
+  return `/api/core/country-profile/${code}`
+}
+
+/**
+ * Time series with rolling avg, decade breakdown, stats, and rank vs peers
+ * @summary Full deep-dive profile for a single country
+ */
+export const getCoreCountryProfile = async (code: string, options?: RequestInit): Promise<CountryProfile> => {
+
+  return customFetch<CountryProfile>(getGetCoreCountryProfileUrl(code),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCoreCountryProfileQueryKey = (code: string,) => {
+    return [
+    `/api/core/country-profile/${code}`
+    ] as const;
+    }
+
+
+export const getGetCoreCountryProfileQueryOptions = <TData = Awaited<ReturnType<typeof getCoreCountryProfile>>, TError = ErrorType<void>>(code: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreCountryProfile>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCoreCountryProfileQueryKey(code);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCoreCountryProfile>>> = ({ signal }) => getCoreCountryProfile(code, { signal });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(code), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCoreCountryProfile>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCoreCountryProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getCoreCountryProfile>>>
+export type GetCoreCountryProfileQueryError = ErrorType<void>
+
+
+/**
+ * @summary Full deep-dive profile for a single country
+ */
+
+export function useGetCoreCountryProfile<TData = Awaited<ReturnType<typeof getCoreCountryProfile>>, TError = ErrorType<void>>(
+ code: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreCountryProfile>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCoreCountryProfileQueryOptions(code,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetCoreSeaLevelTrendUrl = () => {
+
+
+
+
+  return `/api/core/sea-level-trend`
+}
+
+/**
+ * @summary Aggregated annual sea level trend across all countries
+ */
+export const getCoreSeaLevelTrend = async ( options?: RequestInit): Promise<TrendDataPoint[]> => {
+
+  return customFetch<TrendDataPoint[]>(getGetCoreSeaLevelTrendUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCoreSeaLevelTrendQueryKey = () => {
+    return [
+    `/api/core/sea-level-trend`
+    ] as const;
+    }
+
+
+export const getGetCoreSeaLevelTrendQueryOptions = <TData = Awaited<ReturnType<typeof getCoreSeaLevelTrend>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreSeaLevelTrend>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCoreSeaLevelTrendQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCoreSeaLevelTrend>>> = ({ signal }) => getCoreSeaLevelTrend({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCoreSeaLevelTrend>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCoreSeaLevelTrendQueryResult = NonNullable<Awaited<ReturnType<typeof getCoreSeaLevelTrend>>>
+export type GetCoreSeaLevelTrendQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aggregated annual sea level trend across all countries
+ */
+
+export function useGetCoreSeaLevelTrend<TData = Awaited<ReturnType<typeof getCoreSeaLevelTrend>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreSeaLevelTrend>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCoreSeaLevelTrendQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetHeroSectionUrl = () => {
+
+
+
+
+  return `/api/story/hero-section`
+}
+
+/**
+ * @summary Aligned data for Hero Section
+ */
+export const getHeroSection = async ( options?: RequestInit): Promise<HeroSectionData> => {
+
+  return customFetch<HeroSectionData>(getGetHeroSectionUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHeroSectionQueryKey = () => {
+    return [
+    `/api/story/hero-section`
+    ] as const;
+    }
+
+
+export const getGetHeroSectionQueryOptions = <TData = Awaited<ReturnType<typeof getHeroSection>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHeroSection>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHeroSectionQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHeroSection>>> = ({ signal }) => getHeroSection({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHeroSection>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHeroSectionQueryResult = NonNullable<Awaited<ReturnType<typeof getHeroSection>>>
+export type GetHeroSectionQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for Hero Section
+ */
+
+export function useGetHeroSection<TData = Awaited<ReturnType<typeof getHeroSection>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHeroSection>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHeroSectionQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDataLandscapeUrl = () => {
+
+
+
+
+  return `/api/story/data-landscape`
+}
+
+/**
+ * @summary Aligned data for Data Landscape section
+ */
+export const getDataLandscape = async ( options?: RequestInit): Promise<SeaLevelAnomaliesOverview> => {
+
+  return customFetch<SeaLevelAnomaliesOverview>(getGetDataLandscapeUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDataLandscapeQueryKey = () => {
+    return [
+    `/api/story/data-landscape`
+    ] as const;
+    }
+
+
+export const getGetDataLandscapeQueryOptions = <TData = Awaited<ReturnType<typeof getDataLandscape>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDataLandscape>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDataLandscapeQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDataLandscape>>> = ({ signal }) => getDataLandscape({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDataLandscape>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDataLandscapeQueryResult = NonNullable<Awaited<ReturnType<typeof getDataLandscape>>>
+export type GetDataLandscapeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for Data Landscape section
+ */
+
+export function useGetDataLandscape<TData = Awaited<ReturnType<typeof getDataLandscape>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDataLandscape>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDataLandscapeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetOceanRisingUrl = () => {
+
+
+
+
+  return `/api/story/ocean-rising`
+}
+
+/**
+ * @summary Aligned data for Ocean Is Rising section
+ */
+export const getOceanRising = async ( options?: RequestInit): Promise<TrendDataPoint[]> => {
+
+  return customFetch<TrendDataPoint[]>(getGetOceanRisingUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetOceanRisingQueryKey = () => {
+    return [
+    `/api/story/ocean-rising`
+    ] as const;
+    }
+
+
+export const getGetOceanRisingQueryOptions = <TData = Awaited<ReturnType<typeof getOceanRising>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getOceanRising>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetOceanRisingQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getOceanRising>>> = ({ signal }) => getOceanRising({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getOceanRising>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetOceanRisingQueryResult = NonNullable<Awaited<ReturnType<typeof getOceanRising>>>
+export type GetOceanRisingQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for Ocean Is Rising section
+ */
+
+export function useGetOceanRising<TData = Awaited<ReturnType<typeof getOceanRising>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getOceanRising>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetOceanRisingQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetPaceOfChangeUrl = () => {
+
+
+
+
+  return `/api/story/pace-of-change`
+}
+
+/**
+ * @summary Aligned data for Pace of Change section
+ */
+export const getPaceOfChange = async ( options?: RequestInit): Promise<AccelerationPoint[]> => {
+
+  return customFetch<AccelerationPoint[]>(getGetPaceOfChangeUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPaceOfChangeQueryKey = () => {
+    return [
+    `/api/story/pace-of-change`
+    ] as const;
+    }
+
+
+export const getGetPaceOfChangeQueryOptions = <TData = Awaited<ReturnType<typeof getPaceOfChange>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPaceOfChange>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPaceOfChangeQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaceOfChange>>> = ({ signal }) => getPaceOfChange({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPaceOfChange>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPaceOfChangeQueryResult = NonNullable<Awaited<ReturnType<typeof getPaceOfChange>>>
+export type GetPaceOfChangeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for Pace of Change section
+ */
+
+export function useGetPaceOfChange<TData = Awaited<ReturnType<typeof getPaceOfChange>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPaceOfChange>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPaceOfChangeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetEnsoEffectUrl = () => {
+
+
+
+
+  return `/api/story/enso-effect`
+}
+
+/**
+ * @summary Aligned data for ENSO Effect section
+ */
+export const getEnsoEffect = async ( options?: RequestInit): Promise<ENSOSensitivityData> => {
+
+  return customFetch<ENSOSensitivityData>(getGetEnsoEffectUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetEnsoEffectQueryKey = () => {
+    return [
+    `/api/story/enso-effect`
+    ] as const;
+    }
+
+
+export const getGetEnsoEffectQueryOptions = <TData = Awaited<ReturnType<typeof getEnsoEffect>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEnsoEffect>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEnsoEffectQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEnsoEffect>>> = ({ signal }) => getEnsoEffect({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEnsoEffect>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetEnsoEffectQueryResult = NonNullable<Awaited<ReturnType<typeof getEnsoEffect>>>
+export type GetEnsoEffectQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for ENSO Effect section
+ */
+
+export function useGetEnsoEffect<TData = Awaited<ReturnType<typeof getEnsoEffect>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEnsoEffect>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetEnsoEffectQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetPatternsOverTimeUrl = () => {
+
+
+
+
+  return `/api/story/patterns-over-time`
+}
+
+/**
+ * @summary Aligned data for Patterns over Time section
+ */
+export const getPatternsOverTime = async ( options?: RequestInit): Promise<HeatmapData> => {
+
+  return customFetch<HeatmapData>(getGetPatternsOverTimeUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPatternsOverTimeQueryKey = () => {
+    return [
+    `/api/story/patterns-over-time`
+    ] as const;
+    }
+
+
+export const getGetPatternsOverTimeQueryOptions = <TData = Awaited<ReturnType<typeof getPatternsOverTime>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPatternsOverTime>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPatternsOverTimeQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPatternsOverTime>>> = ({ signal }) => getPatternsOverTime({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPatternsOverTime>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPatternsOverTimeQueryResult = NonNullable<Awaited<ReturnType<typeof getPatternsOverTime>>>
+export type GetPatternsOverTimeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for Patterns over Time section
+ */
+
+export function useGetPatternsOverTime<TData = Awaited<ReturnType<typeof getPatternsOverTime>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPatternsOverTime>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPatternsOverTimeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetFutureOutlookUrl = () => {
+
+
+
+
+  return `/api/story/future-outlook`
+}
+
+/**
+ * @summary Aligned data for Future Outlook section
+ */
+export const getFutureOutlook = async ( options?: RequestInit): Promise<ForecastData> => {
+
+  return customFetch<ForecastData>(getGetFutureOutlookUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetFutureOutlookQueryKey = () => {
+    return [
+    `/api/story/future-outlook`
+    ] as const;
+    }
+
+
+export const getGetFutureOutlookQueryOptions = <TData = Awaited<ReturnType<typeof getFutureOutlook>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFutureOutlook>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFutureOutlookQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFutureOutlook>>> = ({ signal }) => getFutureOutlook({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFutureOutlook>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetFutureOutlookQueryResult = NonNullable<Awaited<ReturnType<typeof getFutureOutlook>>>
+export type GetFutureOutlookQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for Future Outlook section
+ */
+
+export function useGetFutureOutlook<TData = Awaited<ReturnType<typeof getFutureOutlook>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFutureOutlook>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetFutureOutlookQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetRiskAssessmentUrl = () => {
+
+
+
+
+  return `/api/story/risk-assessment`
+}
+
+/**
+ * @summary Aligned data for Risk Assessment section
+ */
+export const getRiskAssessment = async ( options?: RequestInit): Promise<RiskScoreData> => {
+
+  return customFetch<RiskScoreData>(getGetRiskAssessmentUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetRiskAssessmentQueryKey = () => {
+    return [
+    `/api/story/risk-assessment`
+    ] as const;
+    }
+
+
+export const getGetRiskAssessmentQueryOptions = <TData = Awaited<ReturnType<typeof getRiskAssessment>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRiskAssessment>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRiskAssessmentQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRiskAssessment>>> = ({ signal }) => getRiskAssessment({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRiskAssessment>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRiskAssessmentQueryResult = NonNullable<Awaited<ReturnType<typeof getRiskAssessment>>>
+export type GetRiskAssessmentQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for Risk Assessment section
+ */
+
+export function useGetRiskAssessment<TData = Awaited<ReturnType<typeof getRiskAssessment>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRiskAssessment>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRiskAssessmentQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetPacificAtAGlanceUrl = () => {
+
+
+
+
+  return `/api/story/pacific-at-a-glance`
+}
+
+/**
+ * @summary Aligned data for Pacific at a Glance section
+ */
+export const getPacificAtAGlance = async ( options?: RequestInit): Promise<CountryRanking[]> => {
+
+  return customFetch<CountryRanking[]>(getGetPacificAtAGlanceUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPacificAtAGlanceQueryKey = () => {
+    return [
+    `/api/story/pacific-at-a-glance`
+    ] as const;
+    }
+
+
+export const getGetPacificAtAGlanceQueryOptions = <TData = Awaited<ReturnType<typeof getPacificAtAGlance>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPacificAtAGlance>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPacificAtAGlanceQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPacificAtAGlance>>> = ({ signal }) => getPacificAtAGlance({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPacificAtAGlance>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPacificAtAGlanceQueryResult = NonNullable<Awaited<ReturnType<typeof getPacificAtAGlance>>>
+export type GetPacificAtAGlanceQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for Pacific at a Glance section
+ */
+
+export function useGetPacificAtAGlance<TData = Awaited<ReturnType<typeof getPacificAtAGlance>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPacificAtAGlance>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPacificAtAGlanceQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetExploreAnyNationUrl = (code: string,) => {
+
+
+
+
+  return `/api/story/explore-any-nation/${code}`
+}
+
+/**
+ * @summary Aligned data for Explore Any Nation sub-section
+ */
+export const getExploreAnyNation = async (code: string, options?: RequestInit): Promise<CountryProfile> => {
+
+  return customFetch<CountryProfile>(getGetExploreAnyNationUrl(code),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetExploreAnyNationQueryKey = (code: string,) => {
+    return [
+    `/api/story/explore-any-nation/${code}`
+    ] as const;
+    }
+
+
+export const getGetExploreAnyNationQueryOptions = <TData = Awaited<ReturnType<typeof getExploreAnyNation>>, TError = ErrorType<void>>(code: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getExploreAnyNation>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetExploreAnyNationQueryKey(code);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExploreAnyNation>>> = ({ signal }) => getExploreAnyNation(code, { signal });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(code), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getExploreAnyNation>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetExploreAnyNationQueryResult = NonNullable<Awaited<ReturnType<typeof getExploreAnyNation>>>
+export type GetExploreAnyNationQueryError = ErrorType<void>
+
+
+/**
+ * @summary Aligned data for Explore Any Nation sub-section
+ */
+
+export function useGetExploreAnyNation<TData = Awaited<ReturnType<typeof getExploreAnyNation>>, TError = ErrorType<void>>(
+ code: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getExploreAnyNation>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetExploreAnyNationQueryOptions(code,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetWhatThisMeansUrl = () => {
+
+
+
+
+  return `/api/story/what-this-means`
+}
+
+/**
+ * @summary Aligned data for What This Means section
+ */
+export const getWhatThisMeans = async ( options?: RequestInit): Promise<ThresholdCrossingsData> => {
+
+  return customFetch<ThresholdCrossingsData>(getGetWhatThisMeansUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetWhatThisMeansQueryKey = () => {
+    return [
+    `/api/story/what-this-means`
+    ] as const;
+    }
+
+
+export const getGetWhatThisMeansQueryOptions = <TData = Awaited<ReturnType<typeof getWhatThisMeans>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWhatThisMeans>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetWhatThisMeansQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWhatThisMeans>>> = ({ signal }) => getWhatThisMeans({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWhatThisMeans>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetWhatThisMeansQueryResult = NonNullable<Awaited<ReturnType<typeof getWhatThisMeans>>>
+export type GetWhatThisMeansQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Aligned data for What This Means section
+ */
+
+export function useGetWhatThisMeans<TData = Awaited<ReturnType<typeof getWhatThisMeans>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWhatThisMeans>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetWhatThisMeansQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

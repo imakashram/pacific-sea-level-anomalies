@@ -2,10 +2,10 @@ import { StorySection } from "./StorySection";
 import { motion, useInView } from "framer-motion";
 import {
   useGetDecadeAnalysis,
-  useGetAcceleration,
-  useGetSeaLevelAnomaliesOverview,
-  useGetThresholdCrossings,
-  useGetRankings,
+  useGetPaceOfChange,
+  useGetDataLandscape,
+  useGetWhatThisMeans,
+  useGetPacificAtAGlance,
 } from "@workspace/api-client-react";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -139,11 +139,11 @@ interface TakeawayItem {
  * 21 Pacific island territories into an animated 6-metric summary grid.
  */
 export function WhatThisMeans() {
-  const { data: apiAccelData } = useGetAcceleration();
+  const { data: apiAccelData } = useGetPaceOfChange();
   const { data: apiDecadeData } = useGetDecadeAnalysis();
-  const { data: apiOverview } = useGetSeaLevelAnomaliesOverview();
-  const { data: apiThresholdData } = useGetThresholdCrossings();
-  const { data: apiRankings } = useGetRankings();
+  const { data: apiOverview } = useGetDataLandscape();
+  const { data: apiThresholdData } = useGetWhatThisMeans();
+  const { data: apiRankings } = useGetPacificAtAGlance();
 
   // Extract verified metric parameters or fallback defaults
   const acceleratingCount = apiAccelData

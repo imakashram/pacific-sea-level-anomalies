@@ -12,6 +12,10 @@ tags:
     description: Health operations
   - name: sea-level-anomalies
     description: Sea level anomalies data endpoints
+  - name: core
+    description: Core API endpoints
+  - name: story
+    description: Story section endpoints
 paths:
   /healthz:
     get:
@@ -234,6 +238,229 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AnnualDeviationData"
+  /core/overview:
+    get:
+      operationId: getCoreOverview
+      tags: [core]
+      summary: Key headline metrics
+      responses:
+        "200":
+          description: Overview statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeaLevelAnomaliesOverview"
+
+  /core/sea-level-by-country:
+    get:
+      operationId: getCoreSeaLevelByCountry
+      tags: [core]
+      summary: Sea level anomaly time series per country
+      responses:
+        "200":
+          description: Country time series data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CountryTimeSeries"
+
+  /core/country-profile/{code}:
+    get:
+      operationId: getCoreCountryProfile
+      tags: [core]
+      summary: Full deep-dive profile for a single country
+      description: Time series with rolling avg, decade breakdown, stats, and rank vs peers
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ISO country code (e.g. FJ, TV, WS)
+      responses:
+        "200":
+          description: Country profile data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountryProfile"
+        "404":
+          description: Country not found
+
+  /core/sea-level-trend:
+    get:
+      operationId: getCoreSeaLevelTrend
+      tags: [core]
+      summary: Aggregated annual sea level trend across all countries
+      responses:
+        "200":
+          description: Yearly trend data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrendDataPoint"
+
+  /story/hero-section:
+    get:
+      operationId: getHeroSection
+      tags: [story]
+      summary: Aligned data for Hero Section
+      responses:
+        "200":
+          description: Hero section telemetry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeroSectionData"
+
+  /story/data-landscape:
+    get:
+      operationId: getDataLandscape
+      tags: [story]
+      summary: Aligned data for Data Landscape section
+      responses:
+        "200":
+          description: Data landscape overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeaLevelAnomaliesOverview"
+
+  /story/ocean-rising:
+    get:
+      operationId: getOceanRising
+      tags: [story]
+      summary: Aligned data for Ocean Is Rising section
+      responses:
+        "200":
+          description: Ocean is rising trend data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrendDataPoint"
+
+  /story/pace-of-change:
+    get:
+      operationId: getPaceOfChange
+      tags: [story]
+      summary: Aligned data for Pace of Change section
+      responses:
+        "200":
+          description: Acceleration metrics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AccelerationPoint"
+
+  /story/enso-effect:
+    get:
+      operationId: getEnsoEffect
+      tags: [story]
+      summary: Aligned data for ENSO Effect section
+      responses:
+        "200":
+          description: ENSO sensitivity data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ENSOSensitivityData"
+
+  /story/patterns-over-time:
+    get:
+      operationId: getPatternsOverTime
+      tags: [story]
+      summary: Aligned data for Patterns over Time section
+      responses:
+        "200":
+          description: Heatmap matrix
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatmapData"
+
+  /story/future-outlook:
+    get:
+      operationId: getFutureOutlook
+      tags: [story]
+      summary: Aligned data for Future Outlook section
+      responses:
+        "200":
+          description: Projected forecast data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForecastData"
+
+  /story/risk-assessment:
+    get:
+      operationId: getRiskAssessment
+      tags: [story]
+      summary: Aligned data for Risk Assessment section
+      responses:
+        "200":
+          description: Risk score details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskScoreData"
+
+  /story/pacific-at-a-glance:
+    get:
+      operationId: getPacificAtAGlance
+      tags: [story]
+      summary: Aligned data for Pacific at a Glance section
+      responses:
+        "200":
+          description: Full sortable rankings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CountryRanking"
+
+  /story/explore-any-nation/{code}:
+    get:
+      operationId: getExploreAnyNation
+      tags: [story]
+      summary: Aligned data for Explore Any Nation sub-section
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ISO country code (e.g. FJ, TV, WS)
+      responses:
+        "200":
+          description: Country profile details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountryProfile"
+        "404":
+          description: Country not found
+
+  /story/what-this-means:
+    get:
+      operationId: getWhatThisMeans
+      tags: [story]
+      summary: Aligned data for What This Means section
+      responses:
+        "200":
+          description: Threshold crossings summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThresholdCrossingsData"
 
 components:
   schemas:
@@ -851,3 +1078,18 @@ components:
         maxDeviation: { type: number }
         minDeviation: { type: number }
       required: [deviations, mean30yr, maxDeviation, minDeviation]
+
+    HeroSectionData:
+      type: object
+      properties:
+        overview:
+          $ref: "#/components/schemas/SeaLevelAnomaliesOverview"
+        decadeAnalysis:
+          $ref: "#/components/schemas/DecadeAnalysis"
+        acceleration:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccelerationPoint"
+        volatility:
+          $ref: "#/components/schemas/VolatilityData"
+      required: [overview, decadeAnalysis, acceleration, volatility]

@@ -27,6 +27,7 @@ export * from './forecastPoint';
 export * from './globalDecadeAvg';
 export * from './healthStatus';
 export * from './heatmapData';
+export * from './heroSectionData';
 export * from './historicalForecastPoint';
 export * from './riskScore';
 export * from './riskScoreComponents';

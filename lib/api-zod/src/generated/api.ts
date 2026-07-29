@@ -307,3 +307,360 @@ export const GetAnnualDeviationResponse = zod.object({
 })
 
 
+/**
+ * @summary Key headline metrics
+ */
+export const GetCoreOverviewResponse = zod.object({
+  "totalCountries": zod.number(),
+  "yearRange": zod.object({
+  "start": zod.number(),
+  "end": zod.number()
+}),
+  "totalObservations": zod.number(),
+  "avgRiseMeters": zod.number(),
+  "maxRiseCountry": zod.string(),
+  "maxRiseValue": zod.number(),
+  "countriesAboveAvg": zod.number(),
+  "elNinoYear": zod.number(),
+  "recentDecadeAvg": zod.number(),
+  "baselineDecadeAvg": zod.number()
+})
+
+
+/**
+ * @summary Sea level anomaly time series per country
+ */
+export const GetCoreSeaLevelByCountryResponseItem = zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "data": zod.array(zod.object({
+  "year": zod.number(),
+  "value": zod.number()
+})),
+  "cumulativeRise": zod.number(),
+  "trend": zod.enum(['rising', 'stable', 'variable'])
+})
+export const GetCoreSeaLevelByCountryResponse = zod.array(GetCoreSeaLevelByCountryResponseItem)
+
+
+/**
+ * Time series with rolling avg, decade breakdown, stats, and rank vs peers
+ * @summary Full deep-dive profile for a single country
+ */
+export const GetCoreCountryProfileParams = zod.object({
+  "code": zod.coerce.string().describe('ISO country code (e.g. FJ, TV, WS)')
+})
+
+export const GetCoreCountryProfileResponse = zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "timeSeries": zod.array(zod.object({
+  "year": zod.number(),
+  "value": zod.number(),
+  "rollingAvg": zod.number()
+})),
+  "decadeBreakdown": zod.array(zod.object({
+  "label": zod.string(),
+  "avg": zod.number(),
+  "count": zod.number()
+})),
+  "stats": zod.object({
+  "mean": zod.number(),
+  "volatility": zod.number(),
+  "cumulativeRise": zod.number(),
+  "slope": zod.number(),
+  "peakValue": zod.number(),
+  "peakYear": zod.number(),
+  "troughValue": zod.number(),
+  "troughYear": zod.number(),
+  "observations": zod.number(),
+  "rankByCumulativeRise": zod.number(),
+  "totalCountries": zod.number()
+})
+})
+
+
+/**
+ * @summary Aggregated annual sea level trend across all countries
+ */
+export const GetCoreSeaLevelTrendResponseItem = zod.object({
+  "year": zod.number(),
+  "avgAnomaly": zod.number(),
+  "minAnomaly": zod.number(),
+  "maxAnomaly": zod.number(),
+  "countriesRising": zod.number()
+})
+export const GetCoreSeaLevelTrendResponse = zod.array(GetCoreSeaLevelTrendResponseItem)
+
+
+/**
+ * @summary Aligned data for Hero Section
+ */
+export const GetHeroSectionResponse = zod.object({
+  "overview": zod.object({
+  "totalCountries": zod.number(),
+  "yearRange": zod.object({
+  "start": zod.number(),
+  "end": zod.number()
+}),
+  "totalObservations": zod.number(),
+  "avgRiseMeters": zod.number(),
+  "maxRiseCountry": zod.string(),
+  "maxRiseValue": zod.number(),
+  "countriesAboveAvg": zod.number(),
+  "elNinoYear": zod.number(),
+  "recentDecadeAvg": zod.number(),
+  "baselineDecadeAvg": zod.number()
+}),
+  "decadeAnalysis": zod.object({
+  "countries": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "d1": zod.number().describe('Average anomaly 1993–2002'),
+  "d2": zod.number().describe('Average anomaly 2003–2012'),
+  "d3": zod.number().describe('Average anomaly 2013–2023'),
+  "acceleration": zod.number().describe('d3 minus d1 — net change across the study period')
+})),
+  "globalDecades": zod.array(zod.object({
+  "key": zod.string(),
+  "label": zod.string(),
+  "avg": zod.number()
+}))
+}),
+  "acceleration": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "slopeFullPeriod": zod.number().describe('Linear slope (m\/year) over full 1993–2023 period'),
+  "slopeFirstHalf": zod.number().describe('Slope over first half of the period'),
+  "slopeSecondHalf": zod.number().describe('Slope over second half of the period'),
+  "accelerating": zod.boolean().describe('True if second-half slope exceeds first-half slope')
+})),
+  "volatility": zod.object({
+  "countries": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "mean": zod.number(),
+  "volatility": zod.number(),
+  "observations": zod.number()
+})),
+  "globalMean": zod.number(),
+  "globalVolatility": zod.number()
+})
+})
+
+
+/**
+ * @summary Aligned data for Data Landscape section
+ */
+export const GetDataLandscapeResponse = zod.object({
+  "totalCountries": zod.number(),
+  "yearRange": zod.object({
+  "start": zod.number(),
+  "end": zod.number()
+}),
+  "totalObservations": zod.number(),
+  "avgRiseMeters": zod.number(),
+  "maxRiseCountry": zod.string(),
+  "maxRiseValue": zod.number(),
+  "countriesAboveAvg": zod.number(),
+  "elNinoYear": zod.number(),
+  "recentDecadeAvg": zod.number(),
+  "baselineDecadeAvg": zod.number()
+})
+
+
+/**
+ * @summary Aligned data for Ocean Is Rising section
+ */
+export const GetOceanRisingResponseItem = zod.object({
+  "year": zod.number(),
+  "avgAnomaly": zod.number(),
+  "minAnomaly": zod.number(),
+  "maxAnomaly": zod.number(),
+  "countriesRising": zod.number()
+})
+export const GetOceanRisingResponse = zod.array(GetOceanRisingResponseItem)
+
+
+/**
+ * @summary Aligned data for Pace of Change section
+ */
+export const GetPaceOfChangeResponseItem = zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "slopeFullPeriod": zod.number().describe('Linear slope (m\/year) over full 1993–2023 period'),
+  "slopeFirstHalf": zod.number().describe('Slope over first half of the period'),
+  "slopeSecondHalf": zod.number().describe('Slope over second half of the period'),
+  "accelerating": zod.boolean().describe('True if second-half slope exceeds first-half slope')
+})
+export const GetPaceOfChangeResponse = zod.array(GetPaceOfChangeResponseItem)
+
+
+/**
+ * @summary Aligned data for ENSO Effect section
+ */
+export const GetEnsoEffectResponse = zod.object({
+  "nations": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "elNinoAvg": zod.number().describe('Average sea level anomaly during El Niño years (1997-98, 2015-16)'),
+  "laNinaAvg": zod.number().describe('Average sea level anomaly during La Niña years (2010-11, 2020-21)'),
+  "neutralAvg": zod.number().describe('Average sea level anomaly during neutral years'),
+  "sensitivity": zod.number().describe('La Niña avg minus El Niño avg — higher = more ENSO-sensitive')
+})),
+  "global": zod.object({
+  "elNinoAvg": zod.number(),
+  "laNinaAvg": zod.number(),
+  "neutralAvg": zod.number()
+}),
+  "elNinoYears": zod.array(zod.number()),
+  "laNinaYears": zod.array(zod.number())
+})
+
+
+/**
+ * @summary Aligned data for Patterns over Time section
+ */
+export const GetPatternsOverTimeResponse = zod.object({
+  "years": zod.array(zod.number()),
+  "countries": zod.array(zod.string()),
+  "matrix": zod.array(zod.array(zod.number())),
+  "minValue": zod.number(),
+  "maxValue": zod.number()
+})
+
+
+/**
+ * @summary Aligned data for Future Outlook section
+ */
+export const GetFutureOutlookResponse = zod.object({
+  "historical": zod.array(zod.object({
+  "year": zod.number(),
+  "avgAnomaly": zod.number()
+})),
+  "projected": zod.array(zod.object({
+  "year": zod.number(),
+  "projected": zod.number().describe('Projected average sea level anomaly'),
+  "lower": zod.number().describe('Lower confidence bound (−2σ)'),
+  "upper": zod.number().describe('Upper confidence bound (+2σ)')
+})),
+  "slopeMmPerYear": zod.number().describe('Linear trend slope in mm\/year'),
+  "r2": zod.number().describe('Coefficient of determination (model fit quality)'),
+  "projectedRise2030": zod.number().describe('Projected cumulative anomaly increase by 2030'),
+  "projectedRise2033": zod.number().describe('Projected cumulative anomaly increase by 2033')
+})
+
+
+/**
+ * @summary Aligned data for Risk Assessment section
+ */
+export const GetRiskAssessmentResponse = zod.object({
+  "countries": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "riskScore": zod.number().describe('Composite risk score 0–100'),
+  "riskLevel": zod.enum(['Critical', 'High', 'Medium', 'Low']),
+  "components": zod.object({
+  "riseScore": zod.number(),
+  "slopeScore": zod.number(),
+  "volatilityScore": zod.number(),
+  "accelerationScore": zod.number()
+}),
+  "cumulativeRise": zod.number(),
+  "slope": zod.number(),
+  "volatility": zod.number(),
+  "decadeAcceleration": zod.number()
+})),
+  "avgRiskScore": zod.number(),
+  "criticalCount": zod.number(),
+  "highCount": zod.number(),
+  "mediumCount": zod.number(),
+  "lowCount": zod.number()
+})
+
+
+/**
+ * @summary Aligned data for Pacific at a Glance section
+ */
+export const GetPacificAtAGlanceResponseItem = zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "mean": zod.number(),
+  "volatility": zod.number(),
+  "cumulativeRise": zod.number(),
+  "peakValue": zod.number(),
+  "peakYear": zod.number(),
+  "troughValue": zod.number(),
+  "troughYear": zod.number(),
+  "slope": zod.number(),
+  "d1Avg": zod.number(),
+  "d3Avg": zod.number(),
+  "decadeAcceleration": zod.number(),
+  "observations": zod.number()
+})
+export const GetPacificAtAGlanceResponse = zod.array(GetPacificAtAGlanceResponseItem)
+
+
+/**
+ * @summary Aligned data for Explore Any Nation sub-section
+ */
+export const GetExploreAnyNationParams = zod.object({
+  "code": zod.coerce.string().describe('ISO country code (e.g. FJ, TV, WS)')
+})
+
+export const GetExploreAnyNationResponse = zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "timeSeries": zod.array(zod.object({
+  "year": zod.number(),
+  "value": zod.number(),
+  "rollingAvg": zod.number()
+})),
+  "decadeBreakdown": zod.array(zod.object({
+  "label": zod.string(),
+  "avg": zod.number(),
+  "count": zod.number()
+})),
+  "stats": zod.object({
+  "mean": zod.number(),
+  "volatility": zod.number(),
+  "cumulativeRise": zod.number(),
+  "slope": zod.number(),
+  "peakValue": zod.number(),
+  "peakYear": zod.number(),
+  "troughValue": zod.number(),
+  "troughYear": zod.number(),
+  "observations": zod.number(),
+  "rankByCumulativeRise": zod.number(),
+  "totalCountries": zod.number()
+})
+})
+
+
+/**
+ * @summary Aligned data for What This Means section
+ */
+export const GetWhatThisMeansResponse = zod.object({
+  "nations": zod.array(zod.object({
+  "country": zod.string(),
+  "code": zod.string(),
+  "firstPositive": zod.number().nullable(),
+  "firstTenth": zod.number().nullable(),
+  "firstFifth": zod.number().nullable(),
+  "yearsPositive": zod.number(),
+  "yearsAboveTenth": zod.number(),
+  "yearsAboveFifth": zod.number(),
+  "streakAboveZero": zod.number(),
+  "latestValue": zod.number(),
+  "cumulativeRise": zod.number()
+})),
+  "summary": zod.object({
+  "crossedZero": zod.number(),
+  "crossedTenth": zod.number(),
+  "crossedFifth": zod.number(),
+  "total": zod.number(),
+  "avgFirstPositiveYear": zod.number()
+})
+})
+
+

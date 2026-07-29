@@ -15,7 +15,7 @@ interface ApiEndpoint {
   path: string;
   method: string;
   description: string;
-  category: "core" | "trends" | "enso" | "risk" | "visuals";
+  category: "core" | "story";
   usedIn?: string[];
   params?: {
     name: string;
@@ -28,26 +28,23 @@ interface ApiEndpoint {
 const ENDPOINTS: ApiEndpoint[] = [
   // Core
   {
-    path: "/api/sea-level-anomalies/overview",
+    path: "/api/core/overview",
     method: "GET",
-    description:
-      "Returns high-level statistics and metadata summaries for the complete climate anomalies dataset.",
+    description: "Returns high-level statistics and metadata summaries for the complete climate anomalies dataset.",
     category: "core",
     usedIn: ["HeroSection", "TheDataLandscape", "WhatThisMeans"],
   },
   {
-    path: "/api/sea-level-anomalies/sea-level-by-country",
+    path: "/api/core/sea-level-by-country",
     method: "GET",
-    description:
-      "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
+    description: "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
     category: "core",
-    usedIn: ["TheOceanIsRising", "PacificAtAGlance"],
+    usedIn: ["PacificAtAGlance"],
   },
   {
-    path: "/api/sea-level-anomalies/country-profile/:code",
+    path: "/api/core/country-profile/:code",
     method: "GET",
-    description:
-      "Returns a comprehensive data profile for a single nation, including annual anomaly records, decadal shift benchmarks, ranking statistics, and local trends.",
+    description: "Returns a comprehensive data profile for a single nation, including annual anomaly records, decadal shift benchmarks, ranking statistics, and local trends.",
     category: "core",
     usedIn: ["ExploreAnyNation"],
     params: [
@@ -56,129 +53,107 @@ const ENDPOINTS: ApiEndpoint[] = [
         placeholder: "Country Code (e.g. PW, PG, TV)",
         type: "dropdown",
         options: [
-          "PW",
-          "PG",
-          "TV",
-          "MH",
-          "FM",
-          "KI",
-          "FJ",
-          "SB",
-          "VU",
-          "TO",
-          "WS",
-          "CK",
-          "NU",
-          "TK",
-          "WF",
-          "PF",
-          "NC",
-          "GU",
-          "MP",
-          "AS",
-          "NR",
-        ],
-      },
-    ],
+          "PW", "PG", "TV", "MH", "FM", "KI", "FJ", "SB", "VU", "TO", "WS", "CK", "NU", "TK", "WF", "PF", "NC", "GU", "MP", "AS", "NR"
+        ]
+      }
+    ]
+  },
+  {
+    path: "/api/core/sea-level-trend",
+    method: "GET",
+    description: "Returns annual global sea level trend values across the Pacific.",
+    category: "core",
+    usedIn: ["TheOceanIsRising", "OceanDecorations"],
   },
 
-  // Trends
+  // Story
   {
-    path: "/api/sea-level-anomalies/decade-analysis",
+    path: "/api/story/hero-section",
     method: "GET",
-    description:
-      "Divides observations into Decade 1 (1993-2002), Decade 2 (2003-2012), and Decade 3 (2013-2023) to compute baseline shifts and regional changes.",
-    category: "trends",
-    usedIn: ["HeroSection", "WhatThisMeans"],
-  },
-  {
-    path: "/api/sea-level-anomalies/volatility",
-    method: "GET",
-    description:
-      "Computes statistical volatility (standard deviations) of anomalies for each territory.",
-    category: "trends",
+    description: "Returns combined telemetry, decade averages, acceleration rates, and volatility stats for the landing narrative.",
+    category: "story",
     usedIn: ["HeroSection"],
   },
   {
-    path: "/api/sea-level-anomalies/acceleration",
+    path: "/api/story/data-landscape",
     method: "GET",
-    description:
-      "Analyzes anomaly curves to calculate acceleration rates of rising water levels.",
-    category: "trends",
-    usedIn: ["HeroSection", "PaceOfChange", "WhatThisMeans"],
+    description: "Returns baseline summaries and observation counts for the general climate metrics introduction.",
+    category: "story",
+    usedIn: ["TheDataLandscape"],
   },
   {
-    path: "/api/sea-level-anomalies/annual-deviation",
+    path: "/api/story/ocean-rising",
     method: "GET",
-    description:
-      "Computes standard deviation variances of annual anomalies on a year-by-year scale.",
-    category: "trends",
-    usedIn: ["OceanDecorations"],
+    description: "Returns aggregated annual sea level trend values mapping the rising Pacific waters.",
+    category: "story",
+    usedIn: ["TheOceanIsRising"],
   },
-
-  // ENSO
-
   {
-    path: "/api/sea-level-anomalies/enso-sensitivity",
+    path: "/api/story/pace-of-change",
     method: "GET",
-    description:
-      "Correlates annual sea level anomalies with Southern Oscillation Index (SOI) datasets to measure ENSO susceptibility.",
-    category: "enso",
+    description: "Returns linear rise slopes computed over different time windows to highlight speed variations.",
+    category: "story",
+    usedIn: ["PaceOfChange"],
+  },
+  {
+    path: "/api/story/enso-effect",
+    method: "GET",
+    description: "Returns phase-by-phase averages correlating anomalies with Southern Oscillation Index datasets.",
+    category: "story",
     usedIn: ["ENSOEffect"],
   },
-
-  // Risk & Forecast
   {
-    path: "/api/sea-level-anomalies/forecast",
+    path: "/api/story/patterns-over-time",
     method: "GET",
-    description:
-      "Uses 30-year trend slopes and volatility ranges to model regional projection trajectories (2024-2050).",
-    category: "risk",
-    usedIn: ["FutureOutlook"],
-  },
-  {
-    path: "/api/sea-level-anomalies/risk-scores",
-    method: "GET",
-    description:
-      "Evaluates risk categories (Critical, High, Medium, Low) for all nations based on acceleration, rise, and elevation factors.",
-    category: "risk",
-    usedIn: ["RiskAssessment", "PacificAtAGlance"],
-  },
-
-  {
-    path: "/api/sea-level-anomalies/threshold-crossings",
-    method: "GET",
-    description:
-      "Computes indicators mapping when territories first crossed anomaly thresholds (+0.0m, +0.1m, +0.2m).",
-    category: "risk",
-    usedIn: ["WhatThisMeans"],
-  },
-
-  // Visuals
-  {
-    path: "/api/sea-level-anomalies/heatmap",
-    method: "GET",
-    description:
-      "Prepares pivoted and ordered grids to feed the multi-nation decadal heatmap.",
-    category: "visuals",
+    description: "Returns country-by-year heatmap anomaly grids for decadal patterns visualization.",
+    category: "story",
     usedIn: ["PatternsOverTime"],
   },
   {
-    path: "/api/sea-level-anomalies/sea-level-trend",
+    path: "/api/story/future-outlook",
     method: "GET",
-    description:
-      "Returns annual global sea level trend values across the Pacific.",
-    category: "visuals",
-    usedIn: ["TheOceanIsRising", "OceanDecorations"],
+    description: "Returns extrapolated 10-year forward sea level trajectories with OLS confidence intervals.",
+    category: "story",
+    usedIn: ["FutureOutlook"],
   },
   {
-    path: "/api/sea-level-anomalies/rankings",
+    path: "/api/story/risk-assessment",
     method: "GET",
-    description:
-      "Generates detailed rankings of countries by rise, volatility, and linear slope.",
-    category: "visuals",
-    usedIn: ["PacificAtAGlance", "ExploreAnyNation", "WhatThisMeans"],
+    description: "Returns normalized composite risk scores across multi-weighted vulnerability indicators.",
+    category: "story",
+    usedIn: ["RiskAssessment"],
   },
+  {
+    path: "/api/story/pacific-at-a-glance",
+    method: "GET",
+    description: "Returns a complete sortable analytics metrics list for peer comparison table.",
+    category: "story",
+    usedIn: ["PacificAtAGlance"],
+  },
+  {
+    path: "/api/story/explore-any-nation/:code",
+    method: "GET",
+    description: "Returns detailed country profiles tailored for individual territory deep-dives.",
+    category: "story",
+    usedIn: ["ExploreAnyNation"],
+    params: [
+      {
+        name: "code",
+        placeholder: "Country Code (e.g. PW, PG, TV)",
+        type: "dropdown",
+        options: [
+          "PW", "PG", "TV", "MH", "FM", "KI", "FJ", "SB", "VU", "TO", "WS", "CK", "NU", "TK", "WF", "PF", "NC", "GU", "MP", "AS", "NR"
+        ]
+      }
+    ]
+  },
+  {
+    path: "/api/story/what-this-means",
+    method: "GET",
+    description: "Returns historic crossing milestones mapping when nations first crossed sea level benchmarks.",
+    category: "story",
+    usedIn: ["WhatThisMeans"],
+  }
 ];
 
 export default function ApiExplorerPage() {
@@ -187,7 +162,7 @@ export default function ApiExplorerPage() {
   const [paramValues, setParamValues] = useState<Record<string, string>>({
     code: "PW",
   });
-  const categoryFilter = "all";
+  const [categoryFilter, setCategoryFilter] = useState<"all" | "core" | "story">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [apiResponse, setApiResponse] = useState<any>(null);
   const [statusCode, setStatusCode] = useState<number | null>(null);
@@ -350,6 +325,23 @@ export default function ApiExplorerPage() {
             />
           </div>
 
+          {/* Category Filter Tabs */}
+          <div className="flex gap-1.5 p-1 bg-slate-950/60 rounded-xl border border-slate-900/80">
+            {(["all", "core", "story"] as const).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategoryFilter(cat)}
+                className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${
+                  categoryFilter === cat
+                    ? "bg-cyan-500 text-slate-950 shadow"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                {cat === "all" ? "All" : cat === "core" ? "Core" : "Story"}
+              </button>
+            ))}
+          </div>
+
           {/* Endpoint List scroll box */}
           <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-2 scrollbar-thin">
             {filteredEndpoints.length === 0 ? (
@@ -372,11 +364,18 @@ export default function ApiExplorerPage() {
                         : "bg-slate-900/20 border-slate-800/60 hover:bg-slate-900/40 hover:border-slate-800"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <span
-                        className={`font-mono text-xs font-semibold overflow-hidden text-ellipsis whitespace-nowrap ${isSelected ? "text-cyan-400" : "text-slate-300"}`}
+                        className={`font-mono text-xs font-semibold overflow-hidden text-ellipsis whitespace-nowrap flex-1 ${isSelected ? "text-cyan-400" : "text-slate-300"}`}
                       >
                         {ep.path}
+                      </span>
+                      <span className={`text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border flex-shrink-0 ${
+                        ep.category === "core"
+                          ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                          : "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
+                      }`}>
+                        {ep.category}
                       </span>
                     </div>
                     <p className="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">

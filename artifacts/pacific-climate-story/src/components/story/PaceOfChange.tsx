@@ -1,4 +1,4 @@
-import { useGetAcceleration } from "@workspace/api-client-react";
+import { useGetPaceOfChange } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import {
   BarChart,
@@ -586,7 +586,7 @@ function BarChartTooltip({ active, payload }: any) {
  * Integrates metrics grid, long-term pace comparison, and decadal acceleration transitions.
  */
 export function PaceOfChange() {
-  const { data, isLoading } = useGetAcceleration();
+  const { data, isLoading } = useGetPaceOfChange();
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
   const [isInView, setIsInView] = useState(false);
   const [isAnimationActive, setIsAnimationActive] = useState(true);

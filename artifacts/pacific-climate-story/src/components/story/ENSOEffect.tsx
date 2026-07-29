@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetENSOSensitivity } from "@workspace/api-client-react";
+import { useGetEnsoEffect } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import { motion, AnimatePresence } from "framer-motion";
 import { TrendingUp, Globe, Activity, TrendingDown } from "lucide-react";
@@ -10,7 +10,7 @@ const NEUTRAL_COLOR = "#94a3b8";
 
 export function ENSOEffect() {
   // Hook: ENSO Sensitivity
-  const { data: ensoData, isLoading } = useGetENSOSensitivity();
+  const { data: ensoData, isLoading } = useGetEnsoEffect();
   const [displayCount, setDisplayCount] = useState<10 | 21>(10);
   const [hoveredNation, setHoveredNation] = useState<string | null>(null);
   const [hoverCoords, setHoverCoords] = useState<{

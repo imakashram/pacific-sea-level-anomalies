@@ -1,10 +1,5 @@
 import { motion, useScroll, useSpring } from "framer-motion";
-import {
-  useGetSeaLevelAnomaliesOverview,
-  useGetDecadeAnalysis,
-  useGetAcceleration,
-  useGetVolatility,
-} from "@workspace/api-client-react";
+import { useGetHeroSection } from "@workspace/api-client-react";
 
 /**
  * HeroSection Component
@@ -15,10 +10,11 @@ import {
  */
 export function HeroSection() {
   // Fetch overview metrics & detailed stats via API hooks
-  const { data: overview } = useGetSeaLevelAnomaliesOverview();
-  const { data: decadeData } = useGetDecadeAnalysis();
-  const { data: accelData } = useGetAcceleration();
-  const { data: volData } = useGetVolatility();
+  const { data: heroData } = useGetHeroSection();
+  const overview = heroData?.overview;
+  const decadeData = heroData?.decadeAnalysis;
+  const accelData = heroData?.acceleration;
+  const volData = heroData?.volatility;
 
   // Smooth scroll progress bar hook anchored at bottom of viewport
   const { scrollYProgress } = useScroll();

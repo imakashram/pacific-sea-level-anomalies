@@ -301,3 +301,10 @@ export interface AnnualDeviationData {
   minDeviation: number;
 }
 
+export interface HeroSectionData {
+  overview: SeaLevelAnomaliesOverview;
+  decadeAnalysis: DecadeAnalysis;
+  acceleration: AccelerationPoint[];
+  volatility: VolatilityData;
+}
+

@@ -1,5 +1,5 @@
 import { StorySection } from "./StorySection";
-import { useGetSeaLevelTrend } from "@workspace/api-client-react";
+import { useGetOceanRising } from "@workspace/api-client-react";
 import {
   Area,
   XAxis,
@@ -137,7 +137,7 @@ function TrendTooltip({
  * with moving average smoothing, linear regression trendline analysis, and milestone annotations.
  */
 export function TheOceanIsRising() {
-  const { data: trendData, isLoading: trendLoading } = useGetSeaLevelTrend();
+  const { data: trendData, isLoading: trendLoading } = useGetOceanRising();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -146,7 +146,7 @@ export function TheOceanIsRising() {
   const [showEnso, setShowEnso] = useState(true);
 
   // Fallback calculations for data
-  const data = trendData && trendData.length > 0 ? trendData : [];
+  const data = (trendData && trendData.length > 0 ? trendData : []) as TrendDataPoint[];
 
   // Compute Linear Regression
   const reg =

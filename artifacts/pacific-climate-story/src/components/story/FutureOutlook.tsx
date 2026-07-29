@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useGetForecast } from "@workspace/api-client-react";
+import { useGetFutureOutlook } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import {
   ComposedChart,
@@ -241,7 +241,7 @@ const FALLBACK_PROJECTED: ProjectedPoint[] = [
  * linear regression model with ±2σ residual error confidence intervals.
  */
 export function FutureOutlook() {
-  const { data: apiData, isLoading } = useGetForecast();
+  const { data: apiData, isLoading } = useGetFutureOutlook();
   const chartRef = useRef<HTMLDivElement>(null);
   const [isChartInView, setIsChartInView] = useState(false);
   const [isAnimationActive, setIsAnimationActive] = useState(true);

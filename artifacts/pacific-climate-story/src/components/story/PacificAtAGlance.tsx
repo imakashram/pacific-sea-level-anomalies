@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import {
-  useGetRankings,
-  useGetSeaLevelByCountry,
-  useGetRiskScores,
+  useGetPacificAtAGlance,
+  useGetCoreSeaLevelByCountry,
+  useGetRiskAssessment,
 } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import { motion, AnimatePresence } from "framer-motion";
@@ -367,9 +367,9 @@ export function PacificAtAGlance({
   activeTab: "explorer" | "table";
   setActiveTab: (tab: "explorer" | "table") => void;
 }) {
-  const { data: apiRankings, isLoading } = useGetRankings();
-  const { data: timeSeriesData } = useGetSeaLevelByCountry();
-  const { data: riskData } = useGetRiskScores();
+  const { data: apiRankings, isLoading } = useGetPacificAtAGlance();
+  const { data: timeSeriesData } = useGetCoreSeaLevelByCountry();
+  const { data: riskData } = useGetRiskAssessment();
 
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("cumulativeRise");
