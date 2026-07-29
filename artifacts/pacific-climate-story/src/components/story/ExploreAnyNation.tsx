@@ -807,6 +807,11 @@ export function ExploreAnyNation({
                 </div>
 
                 <div className="h-[280px]">
+                  <div className="sr-only">
+                    This chart visualizes the 30-year sea level anomaly history and linear trend line for {profile.country} from 1993 to 2023.
+                    The territory exhibits a cumulative rise of {(profile.stats.cumulativeRise * 100).toFixed(1)} cm, an average anomaly of {(profile.stats.mean * 100).toFixed(1)} cm, and a yearly slope growth rate of {(profile.stats.slope * 1000).toFixed(2)} mm/year.
+                    Its sea level peaked at {(profile.stats.peakValue * 100).toFixed(1)} cm in the year {profile.stats.peakYear}.
+                  </div>
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
                       key={profile.code}
@@ -1056,6 +1061,12 @@ export function ExploreAnyNation({
                     </p>
                   </div>
                   <div className="h-[180px]">
+                    <div className="sr-only">
+                      This bar chart compares the decadal averages for {profile.country} across three epochs.
+                      The first decade (1993-2002) average is {(decadeBreakdownCm[0]?.avg ?? 0).toFixed(1)} cm,
+                      the second decade (2003-2012) average is {(decadeBreakdownCm[1]?.avg ?? 0).toFixed(1)} cm, and
+                      the third decade (2013-2023) average is {(decadeBreakdownCm[2]?.avg ?? 0).toFixed(1)} cm.
+                    </div>
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
                         key={profile.code}

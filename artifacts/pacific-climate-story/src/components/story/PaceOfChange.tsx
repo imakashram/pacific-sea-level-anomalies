@@ -184,11 +184,17 @@ function SlopeChart({
 
   return (
     <div className="relative w-full">
+      {/* Screen Reader Alternative description */}
+      <div className="sr-only">
+        This interactive slope chart visualizes and compares the pace of sea level rise in millimeters per year (mm/yr) for all 21 Pacific territories across two epochs: the first half from 1993 to 2007, and the second half from 2008 to 2023. High rise rates are highlighted. Most nations exhibit accelerating rates in the second half epoch.
+      </div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto select-none"
         style={{ maxHeight: 440 }}
         onMouseLeave={handleMouseLeave}
+        role="img"
+        aria-label="Interactive slope chart comparing the pace of sea level rise in mm/year across two 15-year epochs (1993-2007 vs 2008-2023)."
       >
         {/* Vertical baseline axis track lines */}
         <line

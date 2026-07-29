@@ -57,7 +57,7 @@ function MiniSparkline({
   color: string;
 }) {
   return (
-    <div className="w-24 h-10 opacity-80 hover:opacity-100 transition-opacity duration-300">
+    <div className="w-24 h-10 opacity-80 hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <Line

@@ -710,6 +710,11 @@ export function RiskAssessment() {
                     </p>
                   </div>
                   <div className="h-[500px] flex items-center justify-center">
+                    <div className="sr-only">
+                      This bar chart visualizes the composite risk scores across all 21 Pacific nations.
+                      The risk score is calculated as a composite of cumulative rise, rate of change (slope), volatility, and decadal acceleration.
+                      Nations are grouped by risk categories such as Critical, High, Moderate, and Low, showing their exposure and vulnerability.
+                    </div>
                     {isChartInView ? (
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart
@@ -1072,6 +1077,10 @@ export function RiskAssessment() {
                       </div>
 
                       <div className="h-[360px] w-full flex items-center justify-center -mt-2">
+                        <div className="sr-only">
+                          This radar chart displays the relative risk component scores for the selected country, {selectedCountry.country}.
+                          It details the individual scores for sea level rise, rate of change (slope), volatility, and decadal acceleration, each normalized on a scale from 0 to 100.
+                        </div>
                         <ResponsiveContainer width="100%" height="100%">
                           <RadarChart
                             data={radarData}

@@ -1,5 +1,6 @@
 import { StorySection } from "./StorySection";
 import { motion, useInView } from "framer-motion";
+import { Link } from "wouter";
 import {
   useGetDecadeAnalysis,
   useGetPaceOfChange,
@@ -15,6 +16,9 @@ import {
   AlertTriangle,
   ArrowUpCircle,
   Gauge,
+  ArrowUp,
+  Terminal,
+  Calculator,
   type LucideIcon,
 } from "lucide-react";
 
@@ -322,22 +326,51 @@ export function WhatThisMeans() {
           )}
         </div>
 
-        {/* Footer Database Citation & Quote */}
-        <motion.div
-          className="pt-12 border-t border-border/30 text-center"
+        {/* Footer Database Citation, Quick Links & Quote */}
+        <motion.footer
+          className="pt-12 border-t border-border/30 text-center flex flex-col items-center gap-8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <p className="text-muted-foreground text-sm mb-6">
-            Data sourced from the Pacific Community (SPC) Climate Change
-            Indicators Database. Indicator: SEA_LVL (Sea Level Anomaly).
-          </p>
-          <div className="font-serif italic text-primary text-2xl">
-            "The ocean is speaking. The question is whether we are listening."
+          <nav className="flex flex-wrap justify-center gap-6 text-xs font-semibold text-slate-400 select-none">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer focus:outline-none"
+              aria-label="Scroll back to top of the page"
+            >
+              <ArrowUp className="w-3.5 h-3.5" />
+              <span>Back to Top</span>
+            </button>
+            <span className="text-slate-800" aria-hidden="true">|</span>
+            <Link
+              href="/api-explorer"
+              className="flex items-center gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer focus:outline-none"
+            >
+              <Terminal className="w-3.5 h-3.5" />
+              <span>API Explorer</span>
+            </Link>
+            <span className="text-slate-800" aria-hidden="true">|</span>
+            <Link
+              href="/how-it-is-calculated"
+              className="flex items-center gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer focus:outline-none"
+            >
+              <Calculator className="w-3.5 h-3.5" />
+              <span>How It's Calculated</span>
+            </Link>
+          </nav>
+
+          <div className="flex flex-col gap-4">
+            <p className="text-muted-foreground text-sm max-w-2xl mx-auto leading-relaxed">
+              Data sourced from the Pacific Community (SPC) Climate Change
+              Indicators Database. Indicator: SEA_LVL (Sea Level Anomaly).
+            </p>
+            <div className="font-serif italic text-primary text-2xl">
+              "The ocean is speaking. The question is whether we are listening."
+            </div>
           </div>
-        </motion.div>
+        </motion.footer>
       </div>
     </StorySection>
   );

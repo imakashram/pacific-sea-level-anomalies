@@ -290,11 +290,12 @@ export function ChapterSubRegionalClusters() {
                 </span>
               </div>
 
-              {/* Bespoke SVG Stepper Visualization */}
               <div className="relative w-full h-[320px] flex items-center justify-center">
                 <svg
                   viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
                   className="w-full h-full overflow-visible"
+                  role="img"
+                  aria-label="Interactive stepper chart comparing decadal average sea level shifts across the Melanesia, Micronesia, and Polynesia sub-regions."
                 >
                   <defs>
                     {/* SVG Gradients for each region */}

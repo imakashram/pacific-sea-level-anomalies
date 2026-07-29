@@ -394,6 +394,11 @@ export function TheOceanIsRising() {
 
         {/* Recharts Render Area */}
         <div className="w-full h-[76%] relative z-10">
+          <div className="sr-only">
+            This line chart visualizes the rising trend of annual Pacific sea level anomalies from 1993 to 2023.
+            Over the 30-year period, sea levels exhibit a net rise of {totalRiseCm.toFixed(1)} cm and a decadal baseline shift of {shiftCm.toFixed(1)} cm, rising at a linear speed rate of {(reg.slope * 1000).toFixed(2)} mm/year.
+            Major positive anomalies peak during El Niño events (such as 1997-1998 and 2015-2016), with a 5-year moving average showing a sustained upward trend.
+          </div>
           {trendLoading ? (
             <div className="w-full h-full flex items-center justify-center text-cyan-400/60 font-serif gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-bounce" />

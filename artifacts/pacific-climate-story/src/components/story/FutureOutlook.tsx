@@ -525,6 +525,11 @@ export function FutureOutlook() {
             >
               {/* Chart Body */}
               <div ref={chartRef} className="h-[380px]">
+                <div className="sr-only">
+                  This projection chart shows the linear trend projection of regional sea level rise through 2033, based on historical observations from 1993 to 2023.
+                  The historical net rise of {totalHistRiseCm.toFixed(1)} cm is projected to continue, reaching a net increase of {(forecastData.projectedRise2030 * 100).toFixed(1)} cm by 2030, and further rising to {(forecastData.projectedRise2033 * 100).toFixed(1)} cm by 2033, relative to the baseline.
+                  The shaded band represents the ±2 standard deviation confidence interval showing the range of expected outcomes.
+                </div>
                 {isChartInView ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart

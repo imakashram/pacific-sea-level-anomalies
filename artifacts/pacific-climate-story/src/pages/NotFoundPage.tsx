@@ -10,7 +10,11 @@ export default function NotFoundPage() {
   });
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#070913] text-[#f8fafc] font-sans antialiased relative overflow-hidden">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="min-h-screen w-full flex items-center justify-center bg-[#070913] text-[#f8fafc] font-sans antialiased relative overflow-hidden focus:outline-none"
+    >
       {/* Ambient background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none" />
 
@@ -37,7 +41,7 @@ export default function NotFoundPage() {
           </Link>
         </CardContent>
       </Card>
-    </div>
+    </main>
   );
 }
 
