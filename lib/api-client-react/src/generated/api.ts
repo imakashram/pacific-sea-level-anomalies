@@ -23,9 +23,7 @@ import type {
   CountryTimeSeries,
   DecadeAnalysis,
   ENSOSensitivityData,
-  ElNinoImpactData,
   ForecastData,
-  GeographicClustersData,
   HealthStatus,
   HeatmapData,
   RiskScoreData,
@@ -976,83 +974,6 @@ export function useGetCountryProfile<TData = Awaited<ReturnType<typeof getCountr
 
 
 
-export const getGetGeographicClustersUrl = () => {
-
-
-
-
-  return `/api/sea-level-anomalies/geographic-clusters`
-}
-
-/**
- * @summary Sea level data grouped by Pacific sub-region (Polynesia, Melanesia, Micronesia)
- */
-export const getGeographicClusters = async ( options?: RequestInit): Promise<GeographicClustersData> => {
-
-  return customFetch<GeographicClustersData>(getGetGeographicClustersUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-
-
-
-export const getGetGeographicClustersQueryKey = () => {
-    return [
-    `/api/sea-level-anomalies/geographic-clusters`
-    ] as const;
-    }
-
-
-export const getGetGeographicClustersQueryOptions = <TData = Awaited<ReturnType<typeof getGeographicClusters>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGeographicClusters>>, TError, TData>, }
-) => {
-
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetGeographicClustersQueryKey();
-
-
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGeographicClusters>>> = ({ signal }) => getGeographicClusters({ signal });
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGeographicClusters>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetGeographicClustersQueryResult = NonNullable<Awaited<ReturnType<typeof getGeographicClusters>>>
-export type GetGeographicClustersQueryError = ErrorType<unknown>
-
-
-/**
- * @summary Sea level data grouped by Pacific sub-region (Polynesia, Melanesia, Micronesia)
- */
-
-export function useGetGeographicClusters<TData = Awaited<ReturnType<typeof getGeographicClusters>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGeographicClusters>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-
-  const queryOptions = getGetGeographicClustersQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  return { ...query, queryKey: queryOptions.queryKey };
-}
-
-
-
-
-
-
-
 export const getGetThresholdCrossingsUrl = () => {
 
 
@@ -1118,83 +1039,6 @@ export function useGetThresholdCrossings<TData = Awaited<ReturnType<typeof getTh
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetThresholdCrossingsQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  return { ...query, queryKey: queryOptions.queryKey };
-}
-
-
-
-
-
-
-
-export const getGetElNinoImpactUrl = () => {
-
-
-
-
-  return `/api/sea-level-anomalies/el-nino-impact`
-}
-
-/**
- * @summary Per-nation 1997-2000 sea level values showing El Niño suppression and recovery
- */
-export const getElNinoImpact = async ( options?: RequestInit): Promise<ElNinoImpactData> => {
-
-  return customFetch<ElNinoImpactData>(getGetElNinoImpactUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-
-
-
-export const getGetElNinoImpactQueryKey = () => {
-    return [
-    `/api/sea-level-anomalies/el-nino-impact`
-    ] as const;
-    }
-
-
-export const getGetElNinoImpactQueryOptions = <TData = Awaited<ReturnType<typeof getElNinoImpact>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getElNinoImpact>>, TError, TData>, }
-) => {
-
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetElNinoImpactQueryKey();
-
-
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getElNinoImpact>>> = ({ signal }) => getElNinoImpact({ signal });
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getElNinoImpact>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetElNinoImpactQueryResult = NonNullable<Awaited<ReturnType<typeof getElNinoImpact>>>
-export type GetElNinoImpactQueryError = ErrorType<unknown>
-
-
-/**
- * @summary Per-nation 1997-2000 sea level values showing El Niño suppression and recovery
- */
-
-export function useGetElNinoImpact<TData = Awaited<ReturnType<typeof getElNinoImpact>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getElNinoImpact>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-
-  const queryOptions = getGetElNinoImpactQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

@@ -242,37 +242,6 @@ export const GetCountryProfileResponse = zod.object({
 
 
 /**
- * @summary Sea level data grouped by Pacific sub-region (Polynesia, Melanesia, Micronesia)
- */
-export const GetGeographicClustersResponse = zod.object({
-  "years": zod.array(zod.number()),
-  "regions": zod.array(zod.object({
-  "region": zod.string(),
-  "nationCount": zod.number(),
-  "nations": zod.array(zod.object({
-  "code": zod.string(),
-  "country": zod.string(),
-  "cumulativeRise": zod.number(),
-  "slope": zod.number(),
-  "acceleration": zod.number()
-})),
-  "yearlyAvg": zod.array(zod.object({
-  "year": zod.number(),
-  "avgAnomaly": zod.number()
-})),
-  "stats": zod.object({
-  "avgCumulativeRise": zod.number(),
-  "avgSlopeMmPerYear": zod.number(),
-  "avgDecadeAcceleration": zod.number(),
-  "avgVolatility": zod.number(),
-  "topNation": zod.string(),
-  "topNationRise": zod.number()
-})
-}))
-})
-
-
-/**
  * @summary Year each nation first crossed key sea level thresholds
  */
 export const GetThresholdCrossingsResponse = zod.object({
@@ -296,28 +265,6 @@ export const GetThresholdCrossingsResponse = zod.object({
   "total": zod.number(),
   "avgFirstPositiveYear": zod.number()
 })
-})
-
-
-/**
- * @summary Per-nation 1997-2000 sea level values showing El Niño suppression and recovery
- */
-export const GetElNinoImpactResponse = zod.object({
-  "nations": zod.array(zod.object({
-  "country": zod.string(),
-  "code": zod.string(),
-  "v1997": zod.number().nullable(),
-  "v1998": zod.number().nullable(),
-  "v1999": zod.number().nullable(),
-  "v2000": zod.number().nullable(),
-  "drop": zod.number().nullable().describe('1998 value minus pre-event average (negative = suppression)'),
-  "recovery": zod.number().nullable().describe('Post-event average minus 1998 value (positive = rebound)')
-})),
-  "globalAvg1997": zod.number(),
-  "globalAvg1998": zod.number(),
-  "globalAvg1999": zod.number(),
-  "totalNegative1998": zod.number(),
-  "avgDrop": zod.number()
 })
 
 

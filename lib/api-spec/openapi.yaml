@@ -193,18 +193,6 @@ paths:
         "404":
           description: Country not found
 
-  /sea-level-anomalies/geographic-clusters:
-    get:
-      operationId: getGeographicClusters
-      tags: [sea-level-anomalies]
-      summary: Sea level data grouped by Pacific sub-region (Polynesia, Melanesia, Micronesia)
-      responses:
-        "200":
-          description: Geographic cluster data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GeographicClustersData"
 
   /sea-level-anomalies/threshold-crossings:
     get:
@@ -219,18 +207,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ThresholdCrossingsData"
 
-  /sea-level-anomalies/el-nino-impact:
-    get:
-      operationId: getElNinoImpact
-      tags: [sea-level-anomalies]
-      summary: Per-nation 1997-2000 sea level values showing El Niño suppression and recovery
-      responses:
-        "200":
-          description: El Niño impact data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ElNinoImpactData"
 
   /sea-level-anomalies/enso-sensitivity:
     get:
@@ -733,142 +709,6 @@ components:
           $ref: "#/components/schemas/CountryProfileStats"
       required: [country, code, timeSeries, decadeBreakdown, stats]
 
-    ElNinoNation:
-      type: object
-      properties:
-        country:
-          type: string
-        code:
-          type: string
-        v1997:
-          type: number
-          nullable: true
-        v1998:
-          type: number
-          nullable: true
-        v1999:
-          type: number
-          nullable: true
-        v2000:
-          type: number
-          nullable: true
-        drop:
-          type: number
-          nullable: true
-          description: 1998 value minus pre-event average (negative = suppression)
-        recovery:
-          type: number
-          nullable: true
-          description: Post-event average minus 1998 value (positive = rebound)
-      required: [country, code, v1997, v1998, v1999, v2000, drop, recovery]
-
-    ElNinoImpactData:
-      type: object
-      properties:
-        nations:
-          type: array
-          items:
-            $ref: "#/components/schemas/ElNinoNation"
-        globalAvg1997:
-          type: number
-        globalAvg1998:
-          type: number
-        globalAvg1999:
-          type: number
-        totalNegative1998:
-          type: integer
-        avgDrop:
-          type: number
-      required:
-        [
-          nations,
-          globalAvg1997,
-          globalAvg1998,
-          globalAvg1999,
-          totalNegative1998,
-          avgDrop,
-        ]
-
-    RegionYearlyAvg:
-      type: object
-      properties:
-        year:
-          type: integer
-        avgAnomaly:
-          type: number
-      required: [year, avgAnomaly]
-
-    RegionNationStat:
-      type: object
-      properties:
-        code:
-          type: string
-        country:
-          type: string
-        cumulativeRise:
-          type: number
-        slope:
-          type: number
-        acceleration:
-          type: number
-      required: [code, country, cumulativeRise, slope, acceleration]
-
-    RegionStats:
-      type: object
-      properties:
-        avgCumulativeRise:
-          type: number
-        avgSlopeMmPerYear:
-          type: number
-        avgDecadeAcceleration:
-          type: number
-        avgVolatility:
-          type: number
-        topNation:
-          type: string
-        topNationRise:
-          type: number
-      required:
-        [
-          avgCumulativeRise,
-          avgSlopeMmPerYear,
-          avgDecadeAcceleration,
-          avgVolatility,
-          topNation,
-          topNationRise,
-        ]
-
-    GeographicClusterRegion:
-      type: object
-      properties:
-        region:
-          type: string
-        nationCount:
-          type: integer
-        nations:
-          type: array
-          items:
-            $ref: "#/components/schemas/RegionNationStat"
-        yearlyAvg:
-          type: array
-          items:
-            $ref: "#/components/schemas/RegionYearlyAvg"
-        stats:
-          $ref: "#/components/schemas/RegionStats"
-      required: [region, nationCount, nations, yearlyAvg, stats]
-
-    GeographicClustersData:
-      type: object
-      properties:
-        years:
-          type: array
-          items:
-            type: integer
-        regions:
-          type: array
-          items:
-            $ref: "#/components/schemas/GeographicClusterRegion"
-      required: [years, regions]
 
     ThresholdCrossingNation:
       type: object

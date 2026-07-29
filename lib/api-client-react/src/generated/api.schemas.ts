@@ -234,63 +234,6 @@ export interface CountryProfile {
   stats: CountryProfileStats;
 }
 
-export interface ElNinoNation {
-  country: string;
-  code: string;
-  v1997: number | null;
-  v1998: number | null;
-  v1999: number | null;
-  v2000: number | null;
-  /** 1998 value minus pre-event average (negative = suppression) */
-  drop: number | null;
-  /** Post-event average minus 1998 value (positive = rebound) */
-  recovery: number | null;
-}
-
-export interface ElNinoImpactData {
-  nations: ElNinoNation[];
-  globalAvg1997: number;
-  globalAvg1998: number;
-  globalAvg1999: number;
-  totalNegative1998: number;
-  avgDrop: number;
-}
-
-export interface RegionYearlyAvg {
-  year: number;
-  avgAnomaly: number;
-}
-
-export interface RegionNationStat {
-  code: string;
-  country: string;
-  cumulativeRise: number;
-  slope: number;
-  acceleration: number;
-}
-
-export interface RegionStats {
-  avgCumulativeRise: number;
-  avgSlopeMmPerYear: number;
-  avgDecadeAcceleration: number;
-  avgVolatility: number;
-  topNation: string;
-  topNationRise: number;
-}
-
-export interface GeographicClusterRegion {
-  region: string;
-  nationCount: number;
-  nations: RegionNationStat[];
-  yearlyAvg: RegionYearlyAvg[];
-  stats: RegionStats;
-}
-
-export interface GeographicClustersData {
-  years: number[];
-  regions: GeographicClusterRegion[];
-}
-
 export interface ThresholdCrossingNation {
   country: string;
   code: string;
