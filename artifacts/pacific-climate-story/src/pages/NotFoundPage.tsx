@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 
-export default function NotFound() {
+export default function NotFoundPage() {
   useEffect(() => {
     document.title = "404 Page Not Found | Pacific Sea Level Anomalies";
   }, []);

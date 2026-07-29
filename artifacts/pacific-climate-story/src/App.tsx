@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import NotFound from "@/pages/not-found";
+import NotFoundPage from "@/pages/NotFoundPage";
 import StoryPage from "@/pages/StoryPage";
 import ApiExplorerPage from "@/pages/ApiExplorerPage";
 import HowItIsCalculatedPage from "@/pages/HowItIsCalculatedPage";
@@ -17,7 +17,7 @@ function Router() {
       <Route path="/how-it-is-calculated" component={HowItIsCalculatedPage} />
       <Route path="/calculations" component={HowItIsCalculatedPage} />
       <Route path="/methodology" component={HowItIsCalculatedPage} />
-      <Route component={NotFound} />
+      <Route component={NotFoundPage} />
     </Switch>
   );
 }
