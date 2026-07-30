@@ -422,34 +422,34 @@ export default function HowItIsCalculatedPage() {
 
       {/* Header Bar */}
       <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2.5">
+          <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+            <Calculator className="w-4 h-4" />
+          </div>
+          <h1 className="text-xl font-bold font-serif text-slate-100 tracking-tight">
+            How It's Calculated
+          </h1>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {/* Navigation Link to API Explorer */}
+          <Link
+            href="/api-explorer"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
+          >
+            <Terminal className="w-4 h-4 text-cyan-400" />
+            <span>API Explorer</span>
+          </Link>
+          <div className="h-5 w-px bg-slate-800/60" />
           <Link
             href="/"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
             title="Return to Climate Story"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Story</span>
           </Link>
-          <div className="h-5 w-px bg-slate-800" />
-          <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
-              <Calculator className="w-4 h-4" />
-            </div>
-            <h1 className="text-xl font-bold font-serif text-slate-100 tracking-tight">
-              How It's Calculated
-            </h1>
-          </div>
         </div>
-
-        {/* Navigation Link to API Explorer */}
-        <Link
-          href="/api-explorer"
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
-        >
-          <Terminal className="w-4 h-4 text-cyan-400" />
-          <span>API Explorer</span>
-        </Link>
       </header>
 
       {/* Main Container */}
