@@ -816,17 +816,6 @@ function getAnnualDeviationData() {
   };
 }
 
-// ── Legacy endpoints ────────────────────────────────────────────────────────
-
-router.get("/sea-level-anomalies/decade-analysis", (_req, res): void => {
-  res.json(getDecadeAnalysisData());
-});
-
-router.get("/sea-level-anomalies/annual-deviation", (_req, res): void => {
-  res.json(getAnnualDeviationData());
-});
-
-
 // ── Core endpoints ──────────────────────────────────────────────────────────
 
 router.get("/core/overview", (_req, res): void => {
@@ -905,6 +894,14 @@ router.get("/story/explore-any-nation/:code", (req, res): void => {
 
 router.get("/story/what-this-means", (_req, res): void => {
   res.json(getThresholdCrossingsData());
+});
+
+router.get("/story/decade-analysis", (_req, res): void => {
+  res.json(getDecadeAnalysisData());
+});
+
+router.get("/story/annual-deviation", (_req, res): void => {
+  res.json(getAnnualDeviationData());
 });
 
 export default router;

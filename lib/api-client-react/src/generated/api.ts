@@ -125,7 +125,7 @@ export const getGetDecadeAnalysisUrl = () => {
 
 
 
-  return `/api/sea-level-anomalies/decade-analysis`
+  return `/api/story/decade-analysis`
 }
 
 /**
@@ -149,7 +149,7 @@ export const getDecadeAnalysis = async ( options?: RequestInit): Promise<DecadeA
 
 export const getGetDecadeAnalysisQueryKey = () => {
     return [
-    `/api/sea-level-anomalies/decade-analysis`
+    `/api/story/decade-analysis`
     ] as const;
     }
 
@@ -203,7 +203,7 @@ export const getGetAnnualDeviationUrl = () => {
 
 
 
-  return `/api/sea-level-anomalies/annual-deviation`
+  return `/api/story/annual-deviation`
 }
 
 /**
@@ -226,7 +226,7 @@ export const getAnnualDeviation = async ( options?: RequestInit): Promise<Annual
 
 export const getGetAnnualDeviationQueryKey = () => {
     return [
-    `/api/sea-level-anomalies/annual-deviation`
+    `/api/story/annual-deviation`
     ] as const;
     }
 

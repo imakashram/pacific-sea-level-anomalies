@@ -30,10 +30,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
 
-  /sea-level-anomalies/decade-analysis:
+  /story/decade-analysis:
     get:
       operationId: getDecadeAnalysis
-      tags: [sea-level-anomalies]
+      tags: [story]
       summary: Per-country and global averages across 3 decades
       description: Breaks sea level data into 3 decades (1993-2002, 2003-2012, 2013-2023) to show escalation over time
       responses:
@@ -44,10 +44,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/DecadeAnalysis"
 
-  /sea-level-anomalies/annual-deviation:
+  /story/annual-deviation:
     get:
       operationId: getAnnualDeviation
-      tags: [sea-level-anomalies]
+      tags: [story]
       summary: Pacific-wide annual mean deviation from 30-year grand mean for lollipop chart
       responses:
         "200":
