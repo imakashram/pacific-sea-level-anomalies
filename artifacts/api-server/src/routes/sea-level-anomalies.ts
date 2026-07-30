@@ -818,61 +818,8 @@ function getAnnualDeviationData() {
 
 // ── Legacy endpoints ────────────────────────────────────────────────────────
 
-router.get("/sea-level-anomalies/overview", (_req, res): void => {
-  res.json(getOverviewData());
-});
-
-router.get("/sea-level-anomalies/sea-level-trend", (_req, res): void => {
-  res.json(getSeaLevelTrendData());
-});
-
-router.get("/sea-level-anomalies/sea-level-by-country", (_req, res): void => {
-  res.json(getSeaLevelByCountryData());
-});
-
-router.get("/sea-level-anomalies/heatmap", (_req, res): void => {
-  res.json(getHeatmapData());
-});
-
 router.get("/sea-level-anomalies/decade-analysis", (_req, res): void => {
   res.json(getDecadeAnalysisData());
-});
-
-router.get("/sea-level-anomalies/volatility", (_req, res): void => {
-  res.json(getVolatilityData());
-});
-
-router.get("/sea-level-anomalies/acceleration", (_req, res): void => {
-  res.json(getAccelerationData());
-});
-
-router.get("/sea-level-anomalies/rankings", (_req, res): void => {
-  res.json(getRankingsData());
-});
-
-router.get("/sea-level-anomalies/country-profile/:code", (req, res): void => {
-  const result = getCountryProfileData(req.params.code);
-  if (!result) {
-    res.status(404).json({ error: `No data found for country code: ${req.params.code}` });
-  } else {
-    res.json(result);
-  }
-});
-
-router.get("/sea-level-anomalies/forecast", (_req, res): void => {
-  res.json(getForecastData());
-});
-
-router.get("/sea-level-anomalies/risk-scores", (_req, res): void => {
-  res.json(getRiskScoresData());
-});
-
-router.get("/sea-level-anomalies/threshold-crossings", (_req, res): void => {
-  res.json(getThresholdCrossingsData());
-});
-
-router.get("/sea-level-anomalies/enso-sensitivity", (_req, res): void => {
-  res.json(getENSOSensitivityData());
 });
 
 router.get("/sea-level-anomalies/annual-deviation", (_req, res): void => {
