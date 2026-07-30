@@ -238,13 +238,12 @@ export function TheDataLandscape() {
       {/* Action Links & Resources Bar */}
       <motion.div
         className="mt-8 flex flex-wrap items-center justify-center gap-3"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <motion.a
-          variants={itemVariants}
+        <a
           href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_CLIMATE_CHANGE&df[ag]=SPC&df[vs]=1.0&av=true&dq=A.SEA_LVL.&pd=,&to[TIME_PERIOD]=false"
           target="_blank"
           rel="noopener noreferrer"
@@ -254,27 +253,23 @@ export function TheDataLandscape() {
           <Database className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform duration-300" />
           <span>Pacific Data Hub Source</span>
           <ExternalLink className="w-3.5 h-3.5 opacity-60" />
-        </motion.a>
+        </a>
 
-        <motion.div variants={itemVariants}>
-          <Link
-            href="/api-explorer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-xl text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-all duration-300 shadow-md cursor-pointer group"
-          >
-            <Terminal className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform duration-300" />
-            <span>API Explorer</span>
-          </Link>
-        </motion.div>
+        <Link
+          href="/api-explorer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-xl text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-all duration-300 shadow-md cursor-pointer group"
+        >
+          <Terminal className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform duration-300" />
+          <span>API Explorer</span>
+        </Link>
 
-        <motion.div variants={itemVariants}>
-          <Link
-            href="/how-it-is-calculated"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-xl text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-all duration-300 shadow-md cursor-pointer group"
-          >
-            <Calculator className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform duration-300" />
-            <span>How It's Calculated</span>
-          </Link>
-        </motion.div>
+        <Link
+          href="/how-it-is-calculated"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-xl text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-all duration-300 shadow-md cursor-pointer group"
+        >
+          <Calculator className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform duration-300" />
+          <span>How It's Calculated</span>
+        </Link>
       </motion.div>
     </StorySection>
   );
