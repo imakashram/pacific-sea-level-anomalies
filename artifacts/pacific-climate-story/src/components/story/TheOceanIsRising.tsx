@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useMotionValue, animate } from "framer-motion";
 import { StorySection } from "./StorySection";
 import { useGetOceanRising } from "@workspace/api-client-react";
 import {
@@ -12,9 +14,66 @@ import {
   Line,
   ComposedChart,
 } from "recharts";
-import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
 import { Waves, Sun, CloudRain, Flame } from "lucide-react";
+
+interface AnimatedCounterProps {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+}
+
+function AnimatedCounter({
+  value,
+  decimals = 1,
+  prefix = "",
+  suffix = "",
+}: AnimatedCounterProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(motionValue, value, {
+      duration: 1.5,
+      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
+      onUpdate: (latest) => {
+        if (ref.current) {
+          ref.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
+        }
+      },
+    });
+    return () => controls.stop();
+  }, [value, decimals, prefix, suffix, motionValue]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {value.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
 
 /**
  * Interface representing a single sea level trend observation point.
@@ -219,9 +278,7 @@ export function TheOceanIsRising() {
         movingAvg: count > 0 ? parseFloat((sum / count).toFixed(4)) : null,
       };
     });
-  }
-
-  return (
+  }  return (
     <StorySection
       id="the-ocean-is-rising"
       className="relative overflow-visible"
@@ -231,7 +288,13 @@ export function TheOceanIsRising() {
       <div className="absolute left-10 bottom-10 w-80 h-80 rounded-full bg-blue-500/5 blur-[100px] pointer-events-none" />
 
       {/* Section Header */}
-      <div className="mb-12 text-center flex flex-col items-center justify-center relative z-10">
+      <motion.div
+        className="mb-12 text-center flex flex-col items-center justify-center relative z-10"
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
+      >
         <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
           The Ocean Is Rising
         </h2>
@@ -240,12 +303,27 @@ export function TheOceanIsRising() {
           past 30 years. Short-term climate cycles create temporary ups and
           downs, but the overall trend is still upward.
         </p>
-      </div>
+      </motion.div>
 
       {/* Climate Milestone Feature Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10 max-w-5xl mx-auto relative z-10">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10 max-w-5xl mx-auto relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         {/* Card 1: 1998 El Niño Warm Event */}
-        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5 hover:-translate-y-1">
+        <motion.div
+          variants={itemVariants}
+          whileHover={{
+            y: -4,
+            borderColor: "rgba(249, 115, 22, 0.4)",
+            backgroundColor: "rgba(249, 115, 22, 0.05)",
+            boxShadow: "0 10px 25px -5px rgba(249, 115, 22, 0.08)",
+          }}
+          className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
+        >
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
               El Niño (1997-1998)
@@ -262,10 +340,19 @@ export function TheOceanIsRising() {
             western Pacific for a short time, making the long-term rise less
             noticeable.
           </div>
-        </div>
+        </motion.div>
 
         {/* Card 2: 2011 La Niña Cool Event */}
-        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-sky-500/40 hover:shadow-sky-500/5 hover:bg-sky-950/5 hover:-translate-y-1">
+        <motion.div
+          variants={itemVariants}
+          whileHover={{
+            y: -4,
+            borderColor: "rgba(56, 189, 248, 0.4)",
+            backgroundColor: "rgba(56, 189, 248, 0.05)",
+            boxShadow: "0 10px 25px -5px rgba(56, 189, 248, 0.08)",
+          }}
+          className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
+        >
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
               La Niña (2010-2011, 2020-2021)
@@ -281,10 +368,19 @@ export function TheOceanIsRising() {
             A cool ocean event that usually raises sea levels across much of the
             western Pacific by moving more warm water toward the region.
           </div>
-        </div>
+        </motion.div>
 
         {/* Card 3: 2016 El Niño Extreme Event */}
-        <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-rose-500/40 hover:shadow-rose-500/5 hover:bg-rose-950/5 hover:-translate-y-1">
+        <motion.div
+          variants={itemVariants}
+          whileHover={{
+            y: -4,
+            borderColor: "rgba(244, 63, 94, 0.4)",
+            backgroundColor: "rgba(244, 63, 94, 0.05)",
+            boxShadow: "0 10px 25px -5px rgba(244, 63, 94, 0.08)",
+          }}
+          className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
+        >
           <div className="flex items-center justify-between text-muted-foreground mb-1">
             <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
               El Niño (2015-2016)
@@ -301,11 +397,18 @@ export function TheOceanIsRising() {
             warm ocean temperatures and major sea-level changes across the
             Pacific.
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Interactive Main Composed Chart Container */}
-      <div ref={ref} className="w-full h-[60vh] min-h-[460px] relative mb-12">
+      <motion.div
+        ref={ref}
+        className="w-full h-[60vh] min-h-[460px] relative mb-12"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
+      >
         {/* Chart Title & Subtitle */}
         <div className="mb-6 relative z-10 text-left">
           <h3 className="text-xs font-mono font-bold text-slate-100">
@@ -326,7 +429,7 @@ export function TheOceanIsRising() {
                 Linear Trend Rate
               </span>
               <span className="text-sm font-mono font-bold text-teal-400">
-                +{(reg.slope * 1000).toFixed(2)} mm/yr
+                <AnimatedCounter value={reg.slope * 1000} prefix="+" suffix=" mm/yr" decimals={2} />
               </span>
             </div>
             <div className="w-px h-7 bg-slate-700/50 self-stretch" />
@@ -336,7 +439,7 @@ export function TheOceanIsRising() {
                 30y Net Rise
               </span>
               <span className="text-sm font-mono font-bold text-cyan-400">
-                +{totalRiseCm.toFixed(1)} cm
+                <AnimatedCounter value={totalRiseCm} prefix="+" suffix=" cm" />
               </span>
             </div>
             <div className="w-px h-7 bg-slate-700/50 self-stretch" />
@@ -346,7 +449,7 @@ export function TheOceanIsRising() {
                 Decadal Shift
               </span>
               <span className="text-sm font-mono font-bold text-orange-400">
-                +{shiftCm.toFixed(1)} cm
+                <AnimatedCounter value={shiftCm} prefix="+" suffix=" cm" />
               </span>
             </div>
           </div>
@@ -651,7 +754,7 @@ export function TheOceanIsRising() {
           Hover over the graph to inspect annual details. Click the legend
           toggles above to filter analytical layers.
         </p>
-      </div>
+      </motion.div>
     </StorySection>
   );
 }
