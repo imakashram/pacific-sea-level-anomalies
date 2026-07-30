@@ -89,11 +89,10 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
           {label}
         </span>
         <span
-          className={`text-[10px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider ${
-            isProjected
+          className={`text-[10px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider ${isProjected
               ? "bg-orange-500/20 text-orange-400 border border-orange-500/30"
               : "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
-          }`}
+            }`}
         >
           {isProjected ? "Projection" : "Historical"}
         </span>
@@ -278,16 +277,16 @@ export function FutureOutlook() {
       // 2. Transition Point (2023 Baseline anchor)
       ...(lastHist
         ? [
-            {
-              year: lastHist.year,
-              historical: lastHistCm,
-              projected: lastHistCm,
-              lower: lastHistCm,
-              upper: lastHistCm,
-              band: [lastHistCm!, lastHistCm!] as [number, number],
-              baseline2023: lastHistCm,
-            },
-          ]
+          {
+            year: lastHist.year,
+            historical: lastHistCm,
+            projected: lastHistCm,
+            lower: lastHistCm,
+            upper: lastHistCm,
+            band: [lastHistCm!, lastHistCm!] as [number, number],
+            baseline2023: lastHistCm,
+          },
+        ]
         : []),
       // 3. Projected Data Points (2024 to 2033)
       ...projectedSeries.map((p) => ({
@@ -328,7 +327,7 @@ export function FutureOutlook() {
   const totalHistRiseM =
     historicalSeries.length > 1
       ? historicalSeries[historicalSeries.length - 1].avgAnomaly -
-        historicalSeries[0].avgAnomaly
+      historicalSeries[0].avgAnomaly
       : 0;
   const totalHistRiseCm = totalHistRiseM * 100;
 
@@ -482,7 +481,7 @@ export function FutureOutlook() {
             {/* Chart Header with title, subtitle, and legend below */}
             <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
               <div className="max-w-xl">
-                <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
+                <h3 className="text-xs font-mono font-bold text-slate-100  tracking-wider">
                   Decadal Projection (Through 2033)
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">

@@ -13,9 +13,47 @@ import {
   Label,
   LabelList,
 } from "recharts";
-import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { motion, useMotionValue, animate } from "framer-motion";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { TrendingUp, ArrowUpRight, Shield, Activity } from "lucide-react";
+
+interface AnimatedCounterProps {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+}
+
+function AnimatedCounter({
+  value,
+  decimals = 1,
+  prefix = "",
+  suffix = "",
+}: AnimatedCounterProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(motionValue, value, {
+      duration: 1.5,
+      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
+      onUpdate: (latest) => {
+        if (ref.current) {
+          ref.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
+        }
+      },
+    });
+    return () => controls.stop();
+  }, [value, decimals, prefix, suffix, motionValue]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {value.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
 
 /**
  * Iterative relaxation algorithm to resolve label overlaps along the Y-axis.
@@ -302,12 +340,12 @@ function SlopeChart({
             : "hsl(var(--destructive))";
           const strokeWidth = shouldHighlight ? 2.5 : 1.0;
           const strokeOpacity = isHovered
-            ? 1.0
-            : isAnyHovered
-              ? 0.08
-              : isKeyCountry
-                ? 0.85
-                : 0.15;
+              ? 1.0
+              : isAnyHovered
+                ? 0.08
+                : isKeyCountry
+                  ? 0.85
+                  : 0.15;
           const dotRadius = shouldHighlight ? 5.5 : 3.5;
           const textOpacity = shouldHighlight ? 1.0 : isAnyHovered ? 0.1 : 0.4;
 
@@ -591,6 +629,31 @@ function BarChartTooltip({ active, payload }: any) {
  * Main Pace of Change Section Component.
  * Integrates metrics grid, long-term pace comparison, and decadal acceleration transitions.
  */
+const paceContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const paceCardVariants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+/**
+ * Main Pace of Change Section Component.
+ * Integrates metrics grid, long-term pace comparison, and decadal acceleration transitions.
+ */
 export function PaceOfChange() {
   const { data, isLoading } = useGetPaceOfChange();
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
@@ -645,14 +708,17 @@ export function PaceOfChange() {
 
         {/* Metrics Grid */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          variants={paceContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12 w-full text-left"
         >
           {/* Card 1: Nations accelerating */}
-          <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-red-500/40 hover:shadow-red-500/5 hover:bg-red-950/5 hover:-translate-y-1">
+          <motion.div
+            variants={paceCardVariants}
+            className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-red-500/40 hover:shadow-red-500/5 hover:bg-red-950/5 hover:-translate-y-1"
+          >
             <div className="flex items-center justify-between text-muted-foreground mb-1">
               <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                 Nations accelerating
@@ -662,17 +728,24 @@ export function PaceOfChange() {
               </div>
             </div>
             <div className="text-3xl font-serif font-bold tracking-tight text-red-400">
-              {isLoading || !data
-                ? "—"
-                : `${acceleratingCount} / ${data.length}`}
+              {isLoading || !data ? (
+                "—"
+              ) : (
+                <>
+                  <AnimatedCounter value={acceleratingCount} decimals={0} /> / {data.length}
+                </>
+              )}
             </div>
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
               Nations where sea level rise is speeding up
             </div>
-          </div>
+          </motion.div>
 
           {/* Card 2: Average speed increase */}
-          <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5 hover:-translate-y-1">
+          <motion.div
+            variants={paceCardVariants}
+            className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5 hover:-translate-y-1"
+          >
             <div className="flex items-center justify-between text-muted-foreground mb-1">
               <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                 Avg Speed Increase
@@ -682,20 +755,31 @@ export function PaceOfChange() {
               </div>
             </div>
             <div className="text-3xl font-serif font-bold tracking-tight text-orange-400">
-              {isLoading || !data
-                ? "—"
-                : `${avgDelta >= 0 ? "+" : ""}${avgDelta.toFixed(2)}`}
-              <span className="text-sm font-sans text-muted-foreground ml-1">
-                mm/yr
-              </span>
+              {isLoading || !data ? (
+                "—"
+              ) : (
+                <>
+                  <AnimatedCounter
+                    value={avgDelta}
+                    decimals={2}
+                    prefix={avgDelta >= 0 ? "+" : ""}
+                  />
+                  <span className="text-sm font-sans text-muted-foreground ml-1">
+                    mm/yr
+                  </span>
+                </>
+              )}
             </div>
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
               Comparison between first and second 15 years
             </div>
-          </div>
+          </motion.div>
 
           {/* Card 3: Most Accelerating */}
-          <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5 hover:-translate-y-1">
+          <motion.div
+            variants={paceCardVariants}
+            className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5 hover:-translate-y-1"
+          >
             <div className="flex items-center justify-between text-muted-foreground mb-1">
               <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                 Most Accelerating
@@ -712,10 +796,13 @@ export function PaceOfChange() {
                 ? "Checking territories..."
                 : `Pace jumped from ${(mostAccel.slopeFirstHalf * 1000).toFixed(2)} to ${(mostAccel.slopeSecondHalf * 1000).toFixed(2)} mm/yr - a ${((mostAccel.slopeSecondHalf - mostAccel.slopeFirstHalf) * 1000).toFixed(2)} mm/yr increase.`}
             </div>
-          </div>
+          </motion.div>
 
           {/* Card 4: Most Stable Pace */}
-          <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-teal-500/40 hover:shadow-teal-500/5 hover:bg-teal-950/5 hover:-translate-y-1">
+          <motion.div
+            variants={paceCardVariants}
+            className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-teal-500/40 hover:shadow-teal-500/5 hover:bg-teal-950/5 hover:-translate-y-1"
+          >
             <div className="flex items-center justify-between text-muted-foreground mb-1">
               <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                 Most Stable Pace
@@ -732,17 +819,24 @@ export function PaceOfChange() {
                 ? "Checking territories..."
                 : `Pace shifted from ${(mostStable.slopeFirstHalf * 1000).toFixed(2)} to ${(mostStable.slopeSecondHalf * 1000).toFixed(2)} mm/yr.`}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
 
         {isLoading || !data ? (
           <div className="h-[400px] bg-card/20 animate-pulse rounded-xl" />
         ) : (
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.15,
+                },
+              },
+            }}
             onViewportEnter={() => {
               setIsInView(true);
               setTimeout(() => {
@@ -751,10 +845,20 @@ export function PaceOfChange() {
             }}
           >
             {/* Visual 1: 30-Year Pace Comparison */}
-            <div className="bg-card/10 border border-border/30 rounded-2xl p-6 mb-10 shadow-2xl">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+                },
+              }}
+              className="bg-card/10 border border-border/30 rounded-2xl p-6 mb-10 shadow-2xl"
+            >
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
                 <div className="max-w-xl">
-                  <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
+                  <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
                     30-Year Pace Comparison
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
@@ -958,19 +1062,35 @@ export function PaceOfChange() {
                   <div className="w-full h-full" />
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* Interaction Helper Text */}
-            <p className="text-center text-xs text-muted-foreground mt-4 mb-10 font-sans select-none">
+            <motion.p
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { duration: 0.5 } },
+              }}
+              className="text-center text-xs text-muted-foreground mt-4 mb-10 font-sans select-none"
+            >
               Hover over any bar to inspect that nation's 30-year sea level rise
               pace and compare it to the global average.
-            </p>
+            </motion.p>
 
             {/* Visual 2: Acceleration Before & After 2008 */}
-            <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-2xl">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+                },
+              }}
+              className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-2xl"
+            >
               <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
                 <div className="max-w-xl">
-                  <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
+                  <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
                     Acceleration Before & After 2008
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
@@ -990,14 +1110,20 @@ export function PaceOfChange() {
                 </div>
               </div>
               <SlopeChart data={sortedByAccel} />
-            </div>
+            </motion.div>
 
             {/* Interaction Helper Text */}
-            <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
+            <motion.p
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { duration: 0.5 } },
+              }}
+              className="text-center text-xs text-muted-foreground mt-4 font-sans select-none"
+            >
               Hover over any line or label to isolate its trajectory and trace
               how that nation's rate of rise accelerated or slowed between
               epochs.
-            </p>
+            </motion.p>
           </motion.div>
         )}
       </div>

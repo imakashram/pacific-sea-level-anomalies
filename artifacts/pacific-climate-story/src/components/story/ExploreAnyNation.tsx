@@ -771,7 +771,7 @@ export function ExploreAnyNation({
               >
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 pb-3 border-b border-white/5 gap-3">
                   <div className="flex flex-col gap-1">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
+                    <h4 className="text-xs font-bold tracking-wider text-muted-foreground font-mono">
                       30-Year Anomaly Trajectory
                     </h4>
                     <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">
@@ -1053,7 +1053,7 @@ export function ExploreAnyNation({
               >
                 <div>
                   <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
+                    <h4 className="text-xs font-bold tracking-wider text-muted-foreground font-mono">
                       Decadal Comparisons
                     </h4>
                     <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">

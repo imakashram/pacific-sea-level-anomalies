@@ -570,27 +570,27 @@ export function RiskAssessment() {
 
   const radarData = selectedCountry
     ? [
-        {
-          subject: "Rise",
-          value: selectedCountry.components.riseScore,
-          fullMark: 100,
-        },
-        {
-          subject: "Speed",
-          value: selectedCountry.components.slopeScore,
-          fullMark: 100,
-        },
-        {
-          subject: "Volatility",
-          value: selectedCountry.components.volatilityScore,
-          fullMark: 100,
-        },
-        {
-          subject: "Accel.",
-          value: selectedCountry.components.accelerationScore,
-          fullMark: 100,
-        },
-      ]
+      {
+        subject: "Rise",
+        value: selectedCountry.components.riseScore,
+        fullMark: 100,
+      },
+      {
+        subject: "Speed",
+        value: selectedCountry.components.slopeScore,
+        fullMark: 100,
+      },
+      {
+        subject: "Volatility",
+        value: selectedCountry.components.volatilityScore,
+        fullMark: 100,
+      },
+      {
+        subject: "Accel.",
+        value: selectedCountry.components.accelerationScore,
+        fullMark: 100,
+      },
+    ]
     : [];
 
   return (
@@ -701,7 +701,7 @@ export function RiskAssessment() {
               >
                 <div>
                   <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
-                    <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                    <h3 className="text-xs font-mono font-semibold  tracking-wider text-muted-foreground">
                       Composite Risk Score by Nation
                     </h3>
                     <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
@@ -852,13 +852,12 @@ export function RiskAssessment() {
                                   fill={
                                     isSelected
                                       ? RISK_COLORS[
-                                          countryData?.riskLevel || "Low"
-                                        ]
+                                      countryData?.riskLevel || "Low"
+                                      ]
                                       : "hsl(var(--muted-foreground))"
                                   }
-                                  className={`text-xs font-mono transition-all duration-300 focus:outline-none focus:fill-primary focus:underline ${
-                                    isSelected ? "font-bold" : "font-normal"
-                                  }`}
+                                  className={`text-xs font-mono transition-all duration-300 focus:outline-none focus:fill-primary focus:underline ${isSelected ? "font-bold" : "font-normal"
+                                    }`}
                                   style={{ cursor: "pointer" }}
                                   onClick={() =>
                                     countryData &&
@@ -999,7 +998,7 @@ export function RiskAssessment() {
                                 fill={`url(#grad-${entry.riskLevel})`}
                                 opacity={
                                   selectedCode === null ||
-                                  selectedCode === entry.code
+                                    selectedCode === entry.code
                                     ? 1
                                     : 0.35
                                 }
@@ -1042,7 +1041,7 @@ export function RiskAssessment() {
               >
                 <div>
                   <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
-                    <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                    <h3 className="text-xs font-mono font-semibold  tracking-wider text-muted-foreground">
                       {selectedCountry
                         ? `${selectedCountry.country} (${selectedCountry.code})`
                         : "Nation Detail Breakdown"}
@@ -1126,11 +1125,11 @@ export function RiskAssessment() {
                                 cy: number;
                                 payload: { value: string };
                                 textAnchor:
-                                  | "end"
-                                  | "inherit"
-                                  | "middle"
-                                  | "start"
-                                  | undefined;
+                                | "end"
+                                | "inherit"
+                                | "middle"
+                                | "start"
+                                | undefined;
                               }) => {
                                 const { x, y, cx, cy, payload, textAnchor } =
                                   polarProps;

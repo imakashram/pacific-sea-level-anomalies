@@ -204,14 +204,12 @@ export function ENSOEffect() {
               {/* Chart Header */}
               <div className="mb-6 pb-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-end justify-between gap-4 select-none">
                 <div className="text-left flex-1">
-                  <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
+                  <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
                     ENSO Deviation Range (1993–2023)
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed max-w-2xl">
-                    Comparing average sea level anomalies during El Niño
-                    (orange), Neutral (grey), and La Niña (blue) phases. The
-                    connecting lines illustrate the total short-term volatility
-                    range in centimeters.
+                    Average sea level anomalies during El Niño, Neutral, and La Niña
+                    phases, showing the total swing range in centimeters.
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-sky-400 font-mono text-[10px] sm:mb-1 flex-shrink-0 self-end sm:self-auto">

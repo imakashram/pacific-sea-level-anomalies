@@ -164,7 +164,7 @@ export function PatternsOverTime() {
       >
         {/* Chart Header */}
         <div className="mb-6 pb-4 border-b border-white/5 text-left select-none">
-          <h3 className="text-xs font-mono font-bold text-slate-100 uppercase tracking-wider">
+          <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
             Sea Level Anomaly Heatmap (1993–2023)
           </h3>
           <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
