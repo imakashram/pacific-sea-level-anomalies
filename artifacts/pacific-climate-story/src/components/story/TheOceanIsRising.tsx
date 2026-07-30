@@ -336,9 +336,8 @@ export function TheOceanIsRising() {
             Warm Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            A warm ocean event that usually lowers sea levels across much of the
-            western Pacific for a short time, making the long-term rise less
-            noticeable.
+            A warm ocean event that temporarily lowers sea levels across much of the
+            western Pacific.
           </div>
         </motion.div>
 
@@ -365,8 +364,8 @@ export function TheOceanIsRising() {
             Cool Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            A cool ocean event that usually raises sea levels across much of the
-            western Pacific by moving more warm water toward the region.
+            A cool ocean event that temporarily raises sea levels across much of the
+            western Pacific.
           </div>
         </motion.div>
 
@@ -393,9 +392,8 @@ export function TheOceanIsRising() {
             Extreme Warm Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            One of the strongest El Niño events ever recorded, causing unusually
-            warm ocean temperatures and major sea-level changes across the
-            Pacific.
+            An exceptionally strong El Niño that temporarily changed sea levels
+            across the Pacific.
           </div>
         </motion.div>
       </motion.div>
