@@ -1,5 +1,5 @@
 import { StorySection } from "./StorySection";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useMotionValue, animate } from "framer-motion";
 import { Link } from "wouter";
 import {
   useGetDecadeAnalysis,
@@ -8,7 +8,7 @@ import {
   useGetWhatThisMeans,
   useGetPacificAtAGlance,
 } from "@workspace/api-client-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   ChevronsUp,
   Waves,
@@ -34,6 +34,7 @@ interface AnimatedCountProps {
 
 /**
  * Utility component that smoothly animates numeric counters when scrolled into view.
+ * Powered by Framer Motion native animation to avoid React re-rendering latency.
  */
 function AnimatedCount({
   target,
@@ -41,32 +42,28 @@ function AnimatedCount({
   prefix = "",
   suffix = "",
 }: AnimatedCountProps) {
-  const [value, setValue] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true });
+  const motionValue = useMotionValue(0);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
-    if (!inView || target === 0) return;
-    const duration = 1800;
-    const steps = 72;
-    let step = 0;
-    const timer = setInterval(() => {
-      step++;
-      const progress = step / steps;
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(target * eased);
-      if (step >= steps) {
-        setValue(target);
-        clearInterval(timer);
-      }
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [inView, target]);
+    if (!inView) return;
+    const controls = animate(motionValue, target, {
+      duration: 1.8,
+      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
+      onUpdate: (latest) => {
+        if (ref.current) {
+          ref.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
+        }
+      },
+    });
+    return () => controls.stop();
+  }, [inView, target, decimals, prefix, suffix, motionValue]);
 
   return (
     <span ref={ref}>
       {prefix}
-      {value.toFixed(decimals)}
+      {target.toFixed(decimals)}
       {suffix}
     </span>
   );
@@ -135,6 +132,60 @@ interface TakeawayItem {
   suffix: string;
   icon: LucideIcon;
 }
+
+const headerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const childVariants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+const gridContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+const footerContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.4,
+    },
+  },
+};
 
 /**
  * WhatThisMeans Component
@@ -247,37 +298,46 @@ export function WhatThisMeans() {
         {/* Section Header */}
         <motion.div
           className="text-center flex flex-col items-center justify-center mb-8 border-b border-border/10 pb-6 mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+          <motion.h2
+            variants={childVariants}
+            className="text-5xl md:text-6xl font-serif font-bold mb-6"
+          >
             What This Means
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
+          </motion.h2>
+          <motion.p
+            variants={childVariants}
+            className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto"
+          >
             Over 30 years of observations across 21 Pacific nations reveal a
             persistent rise in sea level anomalies.
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* Animated Counter Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-16">
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-16"
+          variants={gridContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           {takeaways.map(
-            (
-              {
-                value,
-                of,
-                label,
-                color,
-                desc,
-                decimals,
-                prefix,
-                suffix,
-                icon: Icon,
-              },
-              i,
-            ) => {
+            ({
+              value,
+              of,
+              label,
+              color,
+              desc,
+              decimals,
+              prefix,
+              suffix,
+              icon: Icon,
+            }) => {
               const theme = CARD_THEMES[color] || {
                 text: color,
                 bg: "bg-card/10",
@@ -288,11 +348,13 @@ export function WhatThisMeans() {
               return (
                 <motion.div
                   key={label}
-                  className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${theme.glow} hover:-translate-y-1`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.6 }}
+                  variants={cardVariants}
+                  whileHover={{
+                    y: -6,
+                    scale: 1.02,
+                    transition: { duration: 0.3, ease: "easeOut" },
+                  }}
+                  className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${theme.glow}`}
                 >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
@@ -324,17 +386,20 @@ export function WhatThisMeans() {
               );
             },
           )}
-        </div>
+        </motion.div>
 
         {/* Footer Database Citation, Quick Links & Quote */}
         <motion.footer
           className="pt-12 border-t border-border/30 text-center flex flex-col items-center gap-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
+          variants={footerContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
         >
-          <nav className="flex flex-wrap justify-center gap-6 text-xs font-semibold text-slate-400 select-none">
+          <motion.nav
+            variants={childVariants}
+            className="flex flex-wrap justify-center gap-6 text-xs font-semibold text-slate-400 select-none"
+          >
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer focus:outline-none"
@@ -359,9 +424,9 @@ export function WhatThisMeans() {
               <Calculator className="w-3.5 h-3.5" />
               <span>How It's Calculated</span>
             </Link>
-          </nav>
+          </motion.nav>
 
-          <div className="flex flex-col gap-4">
+          <motion.div variants={childVariants} className="flex flex-col gap-4">
             <p className="text-muted-foreground text-sm max-w-2xl mx-auto leading-relaxed">
               Data sourced from the Pacific Community (SPC) Climate Change
               Indicators Database. Indicator: SEA_LVL (Sea Level Anomaly).
@@ -369,7 +434,7 @@ export function WhatThisMeans() {
             <div className="font-serif italic text-primary text-2xl">
               "The ocean is speaking. The question is whether we are listening."
             </div>
-          </div>
+          </motion.div>
         </motion.footer>
       </div>
     </StorySection>
