@@ -20,7 +20,6 @@ import {
 import { useSEO } from "@/lib/useSEO";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 interface ApiEndpoint {
   path: string;
   method: string;
@@ -40,21 +39,24 @@ const ENDPOINTS: ApiEndpoint[] = [
   {
     path: "/api/core/overview",
     method: "GET",
-    description: "Returns high-level statistics and metadata summaries for the complete climate anomalies dataset.",
+    description:
+      "Returns high-level statistics and metadata summaries for the complete climate anomalies dataset.",
     category: "core",
     usedIn: ["HeroSection", "TheDataLandscape", "WhatThisMeans"],
   },
   {
     path: "/api/core/sea-level-by-country",
     method: "GET",
-    description: "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
+    description:
+      "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
     category: "core",
     usedIn: ["PacificAtAGlance"],
   },
   {
     path: "/api/core/country-profile/:code",
     method: "GET",
-    description: "Returns a comprehensive data profile for a single nation, including annual anomaly records, decadal shift benchmarks, ranking statistics, and local trends.",
+    description:
+      "Returns a comprehensive data profile for a single nation, including annual anomaly records, decadal shift benchmarks, ranking statistics, and local trends.",
     category: "core",
     usedIn: ["ExploreAnyNation"],
     params: [
@@ -63,15 +65,36 @@ const ENDPOINTS: ApiEndpoint[] = [
         placeholder: "Country Code (e.g. PW, PG, TV)",
         type: "dropdown",
         options: [
-          "PW", "PG", "TV", "MH", "FM", "KI", "FJ", "SB", "VU", "TO", "WS", "CK", "NU", "TK", "WF", "PF", "NC", "GU", "MP", "AS", "NR"
-        ]
-      }
-    ]
+          "PW",
+          "PG",
+          "TV",
+          "MH",
+          "FM",
+          "KI",
+          "FJ",
+          "SB",
+          "VU",
+          "TO",
+          "WS",
+          "CK",
+          "NU",
+          "TK",
+          "WF",
+          "PF",
+          "NC",
+          "GU",
+          "MP",
+          "AS",
+          "NR",
+        ],
+      },
+    ],
   },
   {
     path: "/api/core/sea-level-trend",
     method: "GET",
-    description: "Returns annual global sea level trend values across the Pacific.",
+    description:
+      "Returns annual global sea level trend values across the Pacific.",
     category: "core",
     usedIn: ["TheOceanIsRising", "OceanDecorations"],
   },
@@ -80,70 +103,80 @@ const ENDPOINTS: ApiEndpoint[] = [
   {
     path: "/api/story/hero-section",
     method: "GET",
-    description: "Returns combined telemetry, decade averages, acceleration rates, and volatility stats for the landing narrative.",
+    description:
+      "Returns combined telemetry, decade averages, acceleration rates, and volatility stats for the landing narrative.",
     category: "story",
     usedIn: ["HeroSection"],
   },
   {
     path: "/api/story/data-landscape",
     method: "GET",
-    description: "Returns baseline summaries and observation counts for the general climate metrics introduction.",
+    description:
+      "Returns baseline summaries and observation counts for the general climate metrics introduction.",
     category: "story",
     usedIn: ["TheDataLandscape"],
   },
   {
     path: "/api/story/ocean-rising",
     method: "GET",
-    description: "Returns aggregated annual sea level trend values mapping the rising Pacific waters.",
+    description:
+      "Returns aggregated annual sea level trend values mapping the rising Pacific waters.",
     category: "story",
     usedIn: ["TheOceanIsRising"],
   },
   {
     path: "/api/story/pace-of-change",
     method: "GET",
-    description: "Returns linear rise slopes computed over different time windows to highlight speed variations.",
+    description:
+      "Returns linear rise slopes computed over different time windows to highlight speed variations.",
     category: "story",
     usedIn: ["PaceOfChange"],
   },
   {
     path: "/api/story/enso-effect",
     method: "GET",
-    description: "Returns phase-by-phase averages correlating anomalies with Southern Oscillation Index datasets.",
+    description:
+      "Returns phase-by-phase averages correlating anomalies with Southern Oscillation Index datasets.",
     category: "story",
     usedIn: ["ENSOEffect"],
   },
   {
     path: "/api/story/patterns-over-time",
     method: "GET",
-    description: "Returns country-by-year heatmap anomaly grids for decadal patterns visualization.",
+    description:
+      "Returns country-by-year heatmap anomaly grids for decadal patterns visualization.",
     category: "story",
     usedIn: ["PatternsOverTime"],
   },
   {
     path: "/api/story/future-outlook",
     method: "GET",
-    description: "Returns extrapolated 10-year forward sea level trajectories with OLS confidence intervals.",
+    description:
+      "Returns extrapolated 10-year forward sea level trajectories with OLS confidence intervals.",
     category: "story",
     usedIn: ["FutureOutlook"],
   },
   {
     path: "/api/story/risk-assessment",
     method: "GET",
-    description: "Returns normalized composite risk scores across multi-weighted vulnerability indicators.",
+    description:
+      "Returns normalized composite risk scores across multi-weighted vulnerability indicators.",
     category: "story",
     usedIn: ["RiskAssessment"],
   },
   {
     path: "/api/story/pacific-at-a-glance",
     method: "GET",
-    description: "Returns a complete sortable analytics metrics list for peer comparison table.",
+    description:
+      "Returns a complete sortable analytics metrics list for peer comparison table.",
     category: "story",
     usedIn: ["PacificAtAGlance"],
   },
   {
     path: "/api/story/explore-any-nation/:code",
     method: "GET",
-    description: "Returns detailed country profiles tailored for individual territory deep-dives.",
+    description:
+      "Returns detailed country profiles tailored for individual territory deep-dives.",
     category: "story",
     usedIn: ["ExploreAnyNation"],
     params: [
@@ -152,41 +185,67 @@ const ENDPOINTS: ApiEndpoint[] = [
         placeholder: "Country Code (e.g. PW, PG, TV)",
         type: "dropdown",
         options: [
-          "PW", "PG", "TV", "MH", "FM", "KI", "FJ", "SB", "VU", "TO", "WS", "CK", "NU", "TK", "WF", "PF", "NC", "GU", "MP", "AS", "NR"
-        ]
-      }
-    ]
+          "PW",
+          "PG",
+          "TV",
+          "MH",
+          "FM",
+          "KI",
+          "FJ",
+          "SB",
+          "VU",
+          "TO",
+          "WS",
+          "CK",
+          "NU",
+          "TK",
+          "WF",
+          "PF",
+          "NC",
+          "GU",
+          "MP",
+          "AS",
+          "NR",
+        ],
+      },
+    ],
   },
   {
     path: "/api/story/what-this-means",
     method: "GET",
-    description: "Returns historic crossing milestones mapping when nations first crossed sea level benchmarks.",
+    description:
+      "Returns historic crossing milestones mapping when nations first crossed sea level benchmarks.",
     category: "story",
     usedIn: ["WhatThisMeans"],
-  }
+  },
 ];
 
 export default function ApiExplorerPage() {
   useSEO({
     title: "API Explorer | Pacific Sea Level Anomalies",
-    description: "Explore the Pacific Sea Level Anomalies API. Access core datasets, overview statistics, country-specific profiles, decadal shift records, and narrative endpoints.",
+    description:
+      "Explore the Pacific Sea Level Anomalies API. Access core datasets, overview statistics, country-specific profiles, decadal shift records, and narrative endpoints.",
     canonicalPath: "/api-explorer",
-    keywords: "API explorer, climate change API, sea level data API, Pacific climate JSON, developer resources",
+    keywords:
+      "API explorer, climate change API, sea level data API, Pacific climate JSON, developer resources",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Pacific Sea Level API Explorer",
-      "description": "Interactive developer utility to test and explore the Pacific Sea Level Anomalies API endpoints, retrieving JSON telemetry data.",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "All"
-    }
+      name: "Pacific Sea Level API Explorer",
+      description:
+        "Interactive developer utility to test and explore the Pacific Sea Level Anomalies API endpoints, retrieving JSON telemetry data.",
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "All",
+    },
   });
 
   const [selectedApi, setSelectedApi] = useState<ApiEndpoint>(ENDPOINTS[0]);
   const [paramValues, setParamValues] = useState<Record<string, string>>({
     code: "PW",
   });
-  const [categoryFilter, setCategoryFilter] = useState<"all" | "core" | "story">("all");
+  const [categoryFilter, setCategoryFilter] = useState<
+    "all" | "core" | "story"
+  >("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [apiResponse, setApiResponse] = useState<any>(null);
   const [statusCode, setStatusCode] = useState<number | null>(null);
@@ -195,7 +254,9 @@ export default function ApiExplorerPage() {
   const [copied, setCopied] = useState(false);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [jsonSearchQuery, setJsonSearchQuery] = useState("");
-  const [activeCodeTab, setActiveCodeTab] = useState<"curl" | "js" | "python">("curl");
+  const [activeCodeTab, setActiveCodeTab] = useState<"curl" | "js" | "python">(
+    "curl",
+  );
 
   const getTargetUrl = () => {
     let url = selectedApi.path;
@@ -256,10 +317,13 @@ export default function ApiExplorerPage() {
   // Auto-select first endpoint of the category when filter changes and current selection is not in the filtered list
   useEffect(() => {
     const matchesCategory =
-      categoryFilter === "all" || (selectedApi.category as string) === categoryFilter;
+      categoryFilter === "all" ||
+      (selectedApi.category as string) === categoryFilter;
     if (!matchesCategory) {
       const firstOfCategory = ENDPOINTS.find(
-        (ep) => (categoryFilter as string) === "all" || (ep.category as string) === categoryFilter
+        (ep) =>
+          (categoryFilter as string) === "all" ||
+          (ep.category as string) === categoryFilter,
       );
       if (firstOfCategory) {
         setSelectedApi(firstOfCategory);
@@ -336,9 +400,11 @@ export default function ApiExplorerPage() {
       const currentIndex = categories.indexOf(categoryFilter);
       let nextIndex = currentIndex;
       if (e.key === "ArrowRight") {
-        nextIndex = currentIndex === categories.length - 1 ? 0 : currentIndex + 1;
+        nextIndex =
+          currentIndex === categories.length - 1 ? 0 : currentIndex + 1;
       } else {
-        nextIndex = currentIndex === 0 ? categories.length - 1 : currentIndex - 1;
+        nextIndex =
+          currentIndex === 0 ? categories.length - 1 : currentIndex - 1;
       }
       const nextCat = categories[nextIndex];
       setCategoryFilter(nextCat);
@@ -458,10 +524,19 @@ export default function ApiExplorerPage() {
                   >
                     {getIcon()}
                     <span>
-                      {cat === "all" ? "All" : cat === "core" ? "Core" : "Story"}
+                      {cat === "all"
+                        ? "All"
+                        : cat === "core"
+                          ? "Core"
+                          : "Story"}
                     </span>
-                    <span className={`text-[8px] px-1 py-0.2 rounded font-mono ${isActive ? "bg-slate-950/50 text-slate-300" : "text-slate-500"
-                      }`}>
+                    <span
+                      className={`text-[8px] px-1 py-0.2 rounded font-mono ${
+                        isActive
+                          ? "bg-slate-950/50 text-slate-300"
+                          : "text-slate-500"
+                      }`}
+                    >
                       ({count})
                     </span>
 
@@ -469,7 +544,11 @@ export default function ApiExplorerPage() {
                       <motion.div
                         layoutId="activeCategory"
                         className="absolute inset-0 bg-slate-900 border border-slate-800 rounded-lg -z-10 shadow-sm"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 30,
+                        }}
                       />
                     )}
                   </button>
@@ -510,13 +589,21 @@ export default function ApiExplorerPage() {
                           const isParam = part.startsWith(":");
                           return (
                             <span key={idx} className="flex items-center">
-                              <span className="text-slate-500 px-0.5 select-none">/</span>
+                              <span className="text-slate-500 px-0.5 select-none">
+                                /
+                              </span>
                               {isParam ? (
                                 <span className="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold text-[9px] animate-pulse">
                                   {part}
                                 </span>
                               ) : (
-                                <span className={isSelected ? "text-cyan-300 font-medium" : "text-slate-400 group-hover:text-slate-100 transition-colors"}>
+                                <span
+                                  className={
+                                    isSelected
+                                      ? "text-cyan-300 font-medium"
+                                      : "text-slate-400 group-hover:text-slate-100 transition-colors"
+                                  }
+                                >
                                   {part}
                                 </span>
                               )}
@@ -536,23 +623,25 @@ export default function ApiExplorerPage() {
                         setSelectedApi(ep);
                         setJsonSearchQuery("");
                       }}
-                      className={`w-full p-3.5 rounded-xl border text-left flex flex-col gap-2.5 text-slate-300 transition-all duration-300 cursor-pointer group relative overflow-hidden pr-8 hover:-translate-y-0.5 flex-shrink-0 ${isSelected
+                      className={`w-full p-3.5 rounded-xl border text-left flex flex-col gap-2.5 text-slate-300 transition-all duration-300 cursor-pointer group relative overflow-hidden pr-8 hover:-translate-y-0.5 flex-shrink-0 ${
+                        isSelected
                           ? ep.category === "core"
                             ? "bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950/20 border-blue-500/40 shadow-md shadow-blue-500/5"
                             : "bg-gradient-to-br from-slate-900 via-slate-950 to-purple-950/20 border-purple-500/40 shadow-md shadow-purple-500/5"
                           : "bg-slate-900/25 border-slate-800/80 hover:bg-slate-900/50 hover:border-slate-700/60 hover:shadow-lg"
-                        }`}
+                      }`}
                     >
                       {/* Selection/Hover Color Indicator on left */}
                       <div
-                        className={`absolute left-0 top-0 bottom-0 w-1 transition-all duration-300 ${ep.category === "core"
+                        className={`absolute left-0 top-0 bottom-0 w-1 transition-all duration-300 ${
+                          ep.category === "core"
                             ? isSelected
                               ? "bg-gradient-to-b from-blue-500 to-indigo-600 shadow-[0_0_10px_rgba(59,130,246,0.6)]"
                               : "bg-blue-500/30 group-hover:bg-blue-500 group-hover:h-full"
                             : isSelected
                               ? "bg-gradient-to-b from-purple-500 to-pink-600 shadow-[0_0_10px_rgba(168,85,247,0.6)]"
                               : "bg-purple-500/30 group-hover:bg-purple-500 group-hover:h-full"
-                          }`}
+                        }`}
                       />
 
                       {/* Header row with HTTP Method and Category */}
@@ -598,10 +687,11 @@ export default function ApiExplorerPage() {
                           {ep.usedIn.map((comp) => (
                             <span
                               key={comp}
-                              className={`px-1.5 py-0.5 rounded text-[8px] font-mono border transition-colors flex-shrink-0 ${isSelected
+                              className={`px-1.5 py-0.5 rounded text-[8px] font-mono border transition-colors flex-shrink-0 ${
+                                isSelected
                                   ? "bg-slate-950/90 text-cyan-400 border-cyan-500/20"
                                   : "bg-slate-950/60 text-slate-400 border-slate-800 group-hover:border-slate-700 group-hover:text-slate-300"
-                                }`}
+                              }`}
                             >
                               {comp}
                             </span>
@@ -611,8 +701,13 @@ export default function ApiExplorerPage() {
 
                       {/* Chevron indicator sliding in on hover */}
                       <div className="absolute right-2.5 top-1/2 -translate-y-1/2 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                        <ChevronRight className={`w-3.5 h-3.5 ${ep.category === "core" ? "text-blue-400" : "text-purple-400"
-                          }`} />
+                        <ChevronRight
+                          className={`w-3.5 h-3.5 ${
+                            ep.category === "core"
+                              ? "text-blue-400"
+                              : "text-purple-400"
+                          }`}
+                        />
                       </div>
                     </motion.button>
                   );
@@ -642,7 +737,9 @@ export default function ApiExplorerPage() {
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500/50" />
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/50" />
               </div>
-              <span className="text-[8px] font-mono text-slate-600 uppercase tracking-widest">sandbox.terminal</span>
+              <span className="text-[8px] font-mono text-slate-600 uppercase tracking-widest">
+                sandbox.terminal
+              </span>
             </div>
 
             <span className="text-[9px] text-slate-500 font-mono font-bold uppercase tracking-wider mt-1">
@@ -657,14 +754,20 @@ export default function ApiExplorerPage() {
               </span>
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(`${window.location.origin}${getTargetUrl()}`);
+                  navigator.clipboard.writeText(
+                    `${window.location.origin}${getTargetUrl()}`,
+                  );
                   setCopiedSnippet(true);
                   setTimeout(() => setCopiedSnippet(false), 2000);
                 }}
                 className="text-slate-500 hover:text-slate-350 p-1 transition cursor-pointer"
                 title="Copy full endpoint path"
               >
-                {copiedSnippet ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedSnippet ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
               </button>
             </div>
           </div>
@@ -698,7 +801,11 @@ export default function ApiExplorerPage() {
                         className="bg-[#060812] border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/20 focus:border-cyan-500/40 hover:bg-slate-950/90 transition cursor-pointer"
                       >
                         {p.options.map((opt) => (
-                          <option key={opt} value={opt} className="bg-[#070913]">
+                          <option
+                            key={opt}
+                            value={opt}
+                            className="bg-[#070913]"
+                          >
                             {opt}
                           </option>
                         ))}
@@ -756,7 +863,9 @@ export default function ApiExplorerPage() {
                           : "text-slate-500 hover:text-slate-350"
                       }`}
                     >
-                      <span className={`w-1.5 h-1.5 rounded-full ${getLangDotColor()}`} />
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${getLangDotColor()}`}
+                      />
                       {lang === "js" ? "Fetch" : lang}
                     </button>
                   );
@@ -769,12 +878,18 @@ export default function ApiExplorerPage() {
               </pre>
               <button
                 onClick={() =>
-                  handleCopySnippet(getCodeSnippet(activeCodeTab, getTargetUrl()) || "")
+                  handleCopySnippet(
+                    getCodeSnippet(activeCodeTab, getTargetUrl()) || "",
+                  )
                 }
                 className="absolute right-3 top-3 bg-slate-900 border border-slate-800 text-slate-500 hover:text-slate-300 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer shadow-md"
                 title="Copy code snippet"
               >
-                {copiedSnippet ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedSnippet ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
               </button>
             </div>
           </div>
@@ -791,7 +906,9 @@ export default function ApiExplorerPage() {
             ) : (
               <Play className="w-4 h-4 fill-[#04060f] text-[#04060f] group-hover:scale-110 transition duration-200" />
             )}
-            <span>{isFetching ? "Triggering Request..." : "Send Sandbox Request"}</span>
+            <span>
+              {isFetching ? "Triggering Request..." : "Send Sandbox Request"}
+            </span>
           </button>
         </section>
 
@@ -813,7 +930,9 @@ export default function ApiExplorerPage() {
                         : "bg-rose-500/10 text-rose-400 border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.1)]"
                     }`}
                   >
-                    <span className={`w-1.5 h-1.5 rounded-full ${statusCode === 200 ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${statusCode === 200 ? "bg-emerald-400 animate-pulse" : "bg-rose-400"}`}
+                    />
                     {statusCode} {statusCode === 200 ? "OK" : "ERR"}
                   </span>
                   {responseTime !== null && (
@@ -827,7 +946,9 @@ export default function ApiExplorerPage() {
             </div>
             <div className="flex items-center gap-2">
               <FileJson className="w-4 h-4 text-cyan-500" />
-              <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">JSON Response</span>
+              <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
+                JSON Response
+              </span>
             </div>
           </div>
 
@@ -850,12 +971,14 @@ export default function ApiExplorerPage() {
                 <div className="px-4 py-2 border-b border-slate-800 flex items-center justify-between text-xs bg-[#060812]">
                   <div className="flex items-center gap-2 border-r border-slate-800/80 pr-4">
                     <FileJson className="w-3.5 h-3.5 text-cyan-500" />
-                    <span className="text-[10px] font-mono text-slate-300 font-medium">response.json</span>
+                    <span className="text-[10px] font-mono text-slate-300 font-medium">
+                      response.json
+                    </span>
                     <span className="text-[8px] bg-slate-900 border border-slate-800 text-slate-500 px-1 py-0.2 rounded font-mono">
                       UTF-8
                     </span>
                   </div>
-                  
+
                   <div className="flex items-center gap-3 flex-1 pl-4 justify-between">
                     <div className="relative flex-1 max-w-[160px]">
                       <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-650" />
@@ -877,7 +1000,9 @@ export default function ApiExplorerPage() {
                       {copied ? (
                         <>
                           <Check className="w-3 h-3 text-emerald-400" />
-                          <span className="text-emerald-400">Copied Payload</span>
+                          <span className="text-emerald-400">
+                            Copied Payload
+                          </span>
                         </>
                       ) : (
                         <>
@@ -906,7 +1031,8 @@ export default function ApiExplorerPage() {
                     Console Idle
                   </span>
                   <p className="text-[10px] text-slate-500 max-w-[220px] leading-relaxed">
-                    Select an API endpoint and click 'Send Sandbox Request' to inspect telemetry response.
+                    Select an API endpoint and click 'Send Sandbox Request' to
+                    inspect telemetry response.
                   </p>
                 </div>
               </div>
