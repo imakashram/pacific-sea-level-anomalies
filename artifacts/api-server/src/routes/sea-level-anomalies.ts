@@ -836,7 +836,7 @@ function getSubRegionsData(): RegionalCluster[] {
         { code: "NC", name: "New Caledonia" },
       ],
       description:
-        "Volcanic high islands experiencing the highest average linear trend rate (+4.72 mm/yr) and extreme surge amplitudes.",
+        "High volcanic islands facing the fastest sea level rise and extreme surge risks.",
     },
     {
       region: "Micronesia",
@@ -857,7 +857,7 @@ function getSubRegionsData(): RegionalCluster[] {
         { code: "PW", name: "Palau" },
       ],
       description:
-        "Low-lying coral atolls exceptionally susceptible to ENSO volatility and saltwater intrusion even at moderate sea level rises.",
+        "Low-lying coral atolls vulnerable to climate shifts and saltwater intrusion.",
     },
     {
       region: "Polynesia",
@@ -880,7 +880,7 @@ function getSubRegionsData(): RegionalCluster[] {
         { code: "TO", name: "Tonga" },
       ],
       description:
-        "Widespread archipelago cluster showing the largest net decadal shift (+8.8 cm) from baseline levels.",
+        "Widespread island groups showing the largest overall decadal shift.",
     },
   ];
 }

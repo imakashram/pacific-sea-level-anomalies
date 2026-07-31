@@ -1,7 +1,7 @@
 import { StorySection } from "./StorySection";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { MapPin, Gauge } from "lucide-react";
+import { MapPin, Gauge, TrendingUp, Activity, Globe } from "lucide-react";
 import { useGetSubRegions } from "@workspace/api-client-react";
 
 const REGION_THEMES: Record<
@@ -14,6 +14,8 @@ const REGION_THEMES: Record<
     gradientFrom: string;
     gradientTo: string;
     hex: string;
+    hoverClass: string;
+    icon: React.ComponentType<any>;
   }
 > = {
   Melanesia: {
@@ -24,6 +26,8 @@ const REGION_THEMES: Record<
     gradientFrom: "#34d399",
     gradientTo: "#059669",
     hex: "#34d399",
+    hoverClass: "hover:border-emerald-500/40 hover:shadow-emerald-500/5 hover:bg-emerald-950/5 hover:-translate-y-1",
+    icon: TrendingUp,
   },
   Micronesia: {
     text: "text-cyan-400",
@@ -33,6 +37,8 @@ const REGION_THEMES: Record<
     gradientFrom: "#38bdf8",
     gradientTo: "#0284c7",
     hex: "#38bdf8",
+    hoverClass: "hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5 hover:-translate-y-1",
+    icon: Activity,
   },
   Polynesia: {
     text: "text-purple-400",
@@ -42,6 +48,8 @@ const REGION_THEMES: Record<
     gradientFrom: "#a78bfa",
     gradientTo: "#7c3aed",
     hex: "#a78bfa",
+    hoverClass: "hover:border-purple-500/40 hover:shadow-purple-500/5 hover:bg-purple-950/5 hover:-translate-y-1",
+    icon: Globe,
   },
 };
 
@@ -122,55 +130,41 @@ export function PacificSubRegions() {
         >
           {CLUSTER_DATA.map((cluster) => {
             const theme = REGION_THEMES[cluster.region];
-            const isSelected = selectedRegion === cluster.region;
+            const Icon = theme.icon;
 
             return (
               <div
                 key={cluster.region}
-                role="button"
-                tabIndex={0}
-                aria-pressed={isSelected}
-                aria-label={`Select ${cluster.region} Realm`}
-                onClick={() => setSelectedRegion(cluster.region)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setSelectedRegion(cluster.region);
-                  }
-                }}
-                className={`p-6 bg-card/25 backdrop-blur-md border rounded-2xl flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-sm focus:outline-none ${
-                  isSelected
-                    ? `${theme.border} bg-card/40 ring-1 ring-white/10 ${theme.glow} scale-[1.02]`
-                    : "border-slate-800/60 hover:border-slate-700/80"
-                }`}
+                className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col justify-between transition-all duration-300 shadow-sm group ${theme.hoverClass}`}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span
-                      className={`text-xs uppercase tracking-wider font-semibold ${theme.text}`}
-                    >
-                      {cluster.region} Realm
-                    </span>
-                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-muted-foreground font-semibold">
-                      {cluster.nationsCount} Nations
-                    </span>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between text-muted-foreground mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                        {cluster.region}
+                      </span>
+                      <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-muted-foreground font-semibold">
+                        {cluster.nationsCount} Nations
+                      </span>
+                    </div>
+                    <div className={`${theme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
                   </div>
 
-                  <div
-                    className={`text-4xl font-serif font-bold tracking-tight mb-2 ${theme.text}`}
-                  >
+                  <div className={`text-3xl font-serif font-bold tracking-tight ${theme.text}`}>
                     +{cluster.avgSlopeMmYr.toFixed(2)}
                     <span className="text-sm font-sans text-muted-foreground ml-1">
                       mm/yr
                     </span>
                   </div>
 
-                  <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+                  <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     {cluster.description}
-                  </p>
+                  </div>
                 </div>
 
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono">
+                <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] font-mono">
                   <span className="text-muted-foreground">Decadal Shift:</span>
                   <span className={`font-bold ${theme.text}`}>
                     +{cluster.shiftCm.toFixed(1)} cm
