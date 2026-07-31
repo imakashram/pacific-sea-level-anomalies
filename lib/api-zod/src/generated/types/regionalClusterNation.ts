@@ -9,4 +9,5 @@
 export interface RegionalClusterNation {
   code: string;
   name: string;
+  value: number;
 }

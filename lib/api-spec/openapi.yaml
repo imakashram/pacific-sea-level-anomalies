@@ -934,7 +934,9 @@ components:
           type: string
         name:
           type: string
-      required: [code, name]
+        value:
+          type: number
+      required: [code, name, value]
 
     RegionalCluster:
       type: object

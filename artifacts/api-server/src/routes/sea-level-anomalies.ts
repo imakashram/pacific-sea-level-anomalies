@@ -817,6 +817,15 @@ function getAnnualDeviationData() {
   };
 }
 
+function getLatestCountryValue(code: string): number {
+  const data = getData();
+  const countryData = data.filter((d) => d.code === code && d.indicator === "SEA_LVL");
+  if (countryData.length === 0) return 0;
+  const maxYear = Math.max(...countryData.map((d) => d.year));
+  const latestPoint = countryData.find((d) => d.year === maxYear);
+  return parseFloat(((latestPoint ? latestPoint.value : 0) * 100).toFixed(1));
+}
+
 function getSubRegionsData(): RegionalCluster[] {
   return [
     {
@@ -829,11 +838,11 @@ function getSubRegionsData(): RegionalCluster[] {
       avgSlopeMmYr: 4.72,
       latest2023AvgCm: 12.0,
       nations: [
-        { code: "PG", name: "Papua New Guinea" },
-        { code: "FJ", name: "Fiji" },
-        { code: "SB", name: "Solomon Islands" },
-        { code: "VU", name: "Vanuatu" },
-        { code: "NC", name: "New Caledonia" },
+        { code: "PG", name: "Papua New Guinea", value: getLatestCountryValue("PG") },
+        { code: "FJ", name: "Fiji", value: getLatestCountryValue("FJ") },
+        { code: "SB", name: "Solomon Islands", value: getLatestCountryValue("SB") },
+        { code: "VU", name: "Vanuatu", value: getLatestCountryValue("VU") },
+        { code: "NC", name: "New Caledonia", value: getLatestCountryValue("NC") },
       ],
       description:
         "High volcanic islands facing the fastest sea level rise and extreme surge risks.",
@@ -848,13 +857,13 @@ function getSubRegionsData(): RegionalCluster[] {
       avgSlopeMmYr: 4.1,
       latest2023AvgCm: 10.0,
       nations: [
-        { code: "KI", name: "Kiribati" },
-        { code: "NR", name: "Nauru" },
-        { code: "MP", name: "Northern Mariana Islands" },
-        { code: "MH", name: "Marshall Islands" },
-        { code: "FM", name: "Micronesia, Federated State of" },
-        { code: "GU", name: "Guam" },
-        { code: "PW", name: "Palau" },
+        { code: "KI", name: "Kiribati", value: getLatestCountryValue("KI") },
+        { code: "NR", name: "Nauru", value: getLatestCountryValue("NR") },
+        { code: "MP", name: "Northern Mariana Islands", value: getLatestCountryValue("MP") },
+        { code: "MH", name: "Marshall Islands", value: getLatestCountryValue("MH") },
+        { code: "FM", name: "Micronesia, Federated State of", value: getLatestCountryValue("FM") },
+        { code: "GU", name: "Guam", value: getLatestCountryValue("GU") },
+        { code: "PW", name: "Palau", value: getLatestCountryValue("PW") },
       ],
       description:
         "Low-lying coral atolls vulnerable to climate shifts and saltwater intrusion.",
@@ -869,15 +878,15 @@ function getSubRegionsData(): RegionalCluster[] {
       avgSlopeMmYr: 4.19,
       latest2023AvgCm: 10.0,
       nations: [
-        { code: "AS", name: "American Samoa" },
-        { code: "WS", name: "Samoa" },
-        { code: "NU", name: "Niue" },
-        { code: "TV", name: "Tuvalu" },
-        { code: "CK", name: "Cook Islands" },
-        { code: "TK", name: "Tokelau" },
-        { code: "PF", name: "French Polynesia" },
-        { code: "WF", name: "Wallis and Futuna" },
-        { code: "TO", name: "Tonga" },
+        { code: "AS", name: "American Samoa", value: getLatestCountryValue("AS") },
+        { code: "WS", name: "Samoa", value: getLatestCountryValue("WS") },
+        { code: "NU", name: "Niue", value: getLatestCountryValue("NU") },
+        { code: "TV", name: "Tuvalu", value: getLatestCountryValue("TV") },
+        { code: "CK", name: "Cook Islands", value: getLatestCountryValue("CK") },
+        { code: "TK", name: "Tokelau", value: getLatestCountryValue("TK") },
+        { code: "PF", name: "French Polynesia", value: getLatestCountryValue("PF") },
+        { code: "WF", name: "Wallis and Futuna", value: getLatestCountryValue("WF") },
+        { code: "TO", name: "Tonga", value: getLatestCountryValue("TO") },
       ],
       description:
         "Widespread island groups showing the largest overall decadal shift.",

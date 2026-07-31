@@ -424,7 +424,8 @@ export const GetSubRegionsResponseItem = zod.object({
   "latest2023AvgCm": zod.number(),
   "nations": zod.array(zod.object({
   "code": zod.string(),
-  "name": zod.string()
+  "name": zod.string(),
+  "value": zod.number()
 })),
   "description": zod.string()
 })

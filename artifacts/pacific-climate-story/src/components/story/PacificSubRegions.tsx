@@ -397,13 +397,25 @@ export function PacificSubRegions() {
                           stroke={theme.hex}
                           strokeWidth="2.5"
                         />
+                        {/* Decade bracket on left */}
                         <text
                           x={cx - 15}
                           y={yD1 + 4}
-                          fill={isSelected ? "#ffffff" : "rgba(255,255,255,0.5)"}
+                          fill={isSelected ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)"}
                           fontSize="12"
                           fontFamily="monospace"
                           textAnchor="end"
+                        >
+                          [D1]
+                        </text>
+                        {/* Value on right */}
+                        <text
+                          x={cx + 15}
+                          y={yD1 + 4}
+                          fill={isSelected ? "#ffffff" : "rgba(255,255,255,0.7)"}
+                          fontSize="12"
+                          fontFamily="monospace"
+                          textAnchor="start"
                         >
                           {cluster.d1AvgCm >= 0
                             ? `+${cluster.d1AvgCm}`
@@ -419,13 +431,25 @@ export function PacificSubRegions() {
                           stroke={theme.hex}
                           strokeWidth="2.5"
                         />
+                        {/* Decade bracket on left */}
                         <text
                           x={cx - 15}
                           y={yD2 + 4}
-                          fill={isSelected ? "#ffffff" : "rgba(255,255,255,0.5)"}
+                          fill={isSelected ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)"}
                           fontSize="12"
                           fontFamily="monospace"
                           textAnchor="end"
+                        >
+                          [D2]
+                        </text>
+                        {/* Value on right */}
+                        <text
+                          x={cx + 15}
+                          y={yD2 + 4}
+                          fill={isSelected ? "#ffffff" : "rgba(255,255,255,0.7)"}
+                          fontSize="12"
+                          fontFamily="monospace"
+                          textAnchor="start"
                         >
                           +{cluster.d2AvgCm}
                         </text>
@@ -439,6 +463,17 @@ export function PacificSubRegions() {
                           stroke="#ffffff"
                           strokeWidth="2"
                         />
+                        {/* Decade bracket on left */}
+                        <text
+                          x={cx - 15}
+                          y={yD3 + 4}
+                          fill={isSelected ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)"}
+                          fontSize="12"
+                          fontFamily="monospace"
+                          textAnchor="end"
+                        >
+                          [D3]
+                        </text>
                         {/* Endpoint Milestone Badge */}
                         <rect
                           x={cx + 14}
@@ -513,16 +548,18 @@ export function PacificSubRegions() {
             </div>
 
             <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-center h-full">
-              <div className="flex flex-col gap-2 max-h-[320px] overflow-y-auto custom-scrollbar pr-1">
+              <div className="flex flex-col gap-2 max-h-[380px] overflow-y-auto custom-scrollbar pr-1">
                 {selectedCluster.nations.map((n) => (
                   <div
                     key={n.code}
                     className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-card/30 border border-border/20 text-xs font-mono"
                   >
                     <span className="font-semibold text-foreground">
-                      {n.name}
+                      {n.name} ({n.code})
                     </span>
-                    <span className="text-muted-foreground/60">({n.code})</span>
+                    <span className={`font-semibold ${REGION_THEMES[selectedCluster.region].text}`}>
+                      {n.value >= 0 ? "+" : ""}{n.value.toFixed(1)} cm
+                    </span>
                   </div>
                 ))}
               </div>

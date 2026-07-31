@@ -311,6 +311,7 @@ export interface HeroSectionData {
 export interface RegionalClusterNation {
   code: string;
   name: string;
+  value: number;
 }
 
 export type RegionalClusterRegion = typeof RegionalClusterRegion[keyof typeof RegionalClusterRegion];
