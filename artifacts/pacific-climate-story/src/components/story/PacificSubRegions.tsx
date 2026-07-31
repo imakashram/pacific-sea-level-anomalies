@@ -1,7 +1,7 @@
 import { StorySection } from "./StorySection";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { MapPin, Gauge, TrendingUp, Activity, Globe } from "lucide-react";
+import { MapPin, TrendingUp, Activity, Globe } from "lucide-react";
 import { useGetSubRegions } from "@workspace/api-client-react";
 
 const REGION_THEMES: Record<
@@ -84,9 +84,9 @@ export function PacificSubRegions() {
   const SVG_WIDTH = 680;
   const SVG_HEIGHT = 360;
   const COLUMN_X = {
-    Melanesia: 120,
-    Micronesia: 340,
-    Polynesia: 560,
+    Melanesia: 145,
+    Micronesia: 365,
+    Polynesia: 585,
   };
 
   // Convert sea level anomaly (cm) to SVG Y coordinate (domain: -2 cm to +10 cm)
@@ -177,25 +177,24 @@ export function PacificSubRegions() {
 
         {/* Custom Bespoke SVG Escalation Stepper & Territory Detail Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Column: Bespoke Custom SVG Escalation Stepper Chart */}
+          {/* Left Column: Decadal Shift Stepper Chart */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="lg:col-span-7 bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between"
+            className="lg:col-span-7 flex flex-col gap-4"
           >
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                  <Gauge className="w-4 h-4 text-cyan-400" />
-                  Bespoke Escalation Stepper (D1 → D2 → D3 cm)
-                </h3>
-                <span className="text-[10px] font-mono text-cyan-400/80 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">
-                  Custom SVG Matrix
-                </span>
-              </div>
+            <div className="px-1 text-left select-none">
+              <h3 className="text-sm font-mono font-bold text-slate-100">
+                Decadal Shift Stepper
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                Compare decadal average sea level shifts across Melanesia, Micronesia, and Polynesia.
+              </p>
+            </div>
 
+            <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between h-full">
               <div className="relative w-full h-[320px] flex items-center justify-center">
                 <svg
                   viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
@@ -208,59 +207,136 @@ export function PacificSubRegions() {
                     {CLUSTER_DATA.map((c) => {
                       const theme = REGION_THEMES[c.region];
                       return (
-                        <linearGradient
-                          key={`grad-${c.region}`}
-                          id={`grad-${c.region}`}
-                          x1="0"
-                          y1="1"
-                          x2="0"
-                          y2="0"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor={theme.gradientFrom}
-                            stopOpacity="0.2"
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor={theme.gradientFrom}
-                            stopOpacity="0.9"
-                          />
-                        </linearGradient>
+                        <g key={`gradients-${c.region}`}>
+                          <linearGradient
+                            id={`grad-${c.region}`}
+                            x1="0"
+                            y1="1"
+                            x2="0"
+                            y2="0"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor={theme.gradientFrom}
+                              stopOpacity="0.2"
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor={theme.gradientFrom}
+                              stopOpacity="0.9"
+                            />
+                          </linearGradient>
+                          <linearGradient
+                            id={`beam-grad-${c.region}`}
+                            x1="0"
+                            y1="1"
+                            x2="0"
+                            y2="0"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor={theme.hex}
+                              stopOpacity="0"
+                            />
+                            <stop
+                              offset="50%"
+                              stopColor={theme.hex}
+                              stopOpacity="0.04"
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor={theme.hex}
+                              stopOpacity="0.08"
+                            />
+                          </linearGradient>
+                        </g>
                       );
                     })}
                   </defs>
+
+                  {/* Y-Axis Title */}
+                  <text
+                    x="12"
+                    y={SVG_HEIGHT / 2 - 10}
+                    fill="rgba(148, 163, 184, 0.5)"
+                    fontSize="14"
+                    fontFamily="monospace"
+                    transform={`rotate(-90, 12, ${SVG_HEIGHT / 2 - 10})`}
+                    textAnchor="middle"
+                  >
+                    Sea Level Anomaly (cm)
+                  </text>
 
                   {/* Horizontal Gridlines & Y-Axis Baseline References */}
                   {[-2, 0, 4, 8, 10].map((val) => {
                     const y = valToY(val);
                     return (
                       <g key={`ygrid-${val}`}>
-                        <line
-                          x1="50"
-                          y1={y}
-                          x2={SVG_WIDTH - 20}
-                          y2={y}
-                          stroke={
-                            val === 0
-                              ? "rgba(255,255,255,0.25)"
-                              : "rgba(255,255,255,0.05)"
-                          }
-                          strokeDasharray={val === 0 ? "4 4" : "2 2"}
-                        />
+                        {val !== 0 && (
+                          <line
+                            x1="70"
+                            y1={y}
+                            x2={SVG_WIDTH - 20}
+                            y2={y}
+                            stroke="rgba(148, 163, 184, 0.08)"
+                            strokeDasharray="3 3"
+                          />
+                        )}
                         <text
-                          x="40"
+                          x="60"
                           y={y + 4}
-                          fill="rgba(255,255,255,0.4)"
-                          fontSize="10"
+                          fill="rgba(148, 163, 184, 0.7)"
+                          fontSize="13"
                           fontFamily="monospace"
                           textAnchor="end"
                         >
-                          {val > 0 ? `+${val}` : val} cm
+                          {val > 0 ? `+${val}` : val}
                         </text>
                       </g>
                     );
                   })}
+
+                  {/* Decadal Trend Guide Paths (Connecting D1, D2, D3 across regions) */}
+                  {CLUSTER_DATA.length >= 3 && (() => {
+                    const mel = CLUSTER_DATA.find(c => c.region === "Melanesia");
+                    const mic = CLUSTER_DATA.find(c => c.region === "Micronesia");
+                    const pol = CLUSTER_DATA.find(c => c.region === "Polynesia");
+
+                    if (!mel || !mic || !pol) return null;
+
+                    const xMel = COLUMN_X["Melanesia"];
+                    const xMic = COLUMN_X["Micronesia"];
+                    const xPol = COLUMN_X["Polynesia"];
+
+                    return (
+                      <g opacity="0.12" pointerEvents="none">
+                        {/* D1 Connection */}
+                        <path
+                          d={`M ${xMel} ${valToY(mel.d1AvgCm)} L ${xMic} ${valToY(mic.d1AvgCm)} L ${xPol} ${valToY(pol.d1AvgCm)}`}
+                          stroke="#ffffff"
+                          strokeWidth="1.5"
+                          strokeDasharray="4 4"
+                          fill="none"
+                        />
+                        {/* D2 Connection */}
+                        <path
+                          d={`M ${xMel} ${valToY(mel.d2AvgCm)} L ${xMic} ${valToY(mic.d2AvgCm)} L ${xPol} ${valToY(pol.d2AvgCm)}`}
+                          stroke="#ffffff"
+                          strokeWidth="1.5"
+                          strokeDasharray="4 4"
+                          fill="none"
+                        />
+                        {/* D3 Connection */}
+                        <path
+                          d={`M ${xMel} ${valToY(mel.d3AvgCm)} L ${xMic} ${valToY(mic.d3AvgCm)} L ${xPol} ${valToY(pol.d3AvgCm)}`}
+                          stroke="#ffffff"
+                          strokeWidth="1.5"
+                          strokeDasharray="4 4"
+                          fill="none"
+                        />
+                      </g>
+                    );
+                  })()}
 
                   {/* 3 Parallel Realm Escalation Stepper Beams */}
                   {CLUSTER_DATA.map((cluster) => {
@@ -286,8 +362,8 @@ export function PacificSubRegions() {
                             setSelectedRegion(cluster.region);
                           }
                         }}
-                        className="cursor-pointer transition-opacity duration-300 focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-1 focus:ring-offset-slate-900"
-                        opacity={isSelected ? 1 : 0.35}
+                        className={`cursor-pointer transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-1 focus:ring-offset-slate-900 ${isSelected ? "opacity-100" : "opacity-35 hover:opacity-75"
+                          }`}
                       >
                         {/* Background Pillar Glow */}
                         <rect
@@ -295,9 +371,12 @@ export function PacificSubRegions() {
                           y={PADDING_TOP}
                           width="70"
                           height={CHART_HEIGHT}
-                          fill={theme.hex}
-                          opacity={isSelected ? 0.04 : 0}
+                          fill={`url(#beam-grad-${cluster.region})`}
+                          stroke={theme.hex}
+                          strokeWidth="1"
+                          strokeOpacity={isSelected ? 0.15 : 0}
                           rx="12"
+                          className="transition-all duration-300"
                         />
 
                         {/* Vertical Stepper Connector Beam (D1 -> D2 -> D3) */}
@@ -319,10 +398,10 @@ export function PacificSubRegions() {
                           strokeWidth="2.5"
                         />
                         <text
-                          x={cx - 12}
+                          x={cx - 15}
                           y={yD1 + 4}
-                          fill="rgba(255,255,255,0.7)"
-                          fontSize="9"
+                          fill={isSelected ? "#ffffff" : "rgba(255,255,255,0.5)"}
+                          fontSize="12"
                           fontFamily="monospace"
                           textAnchor="end"
                         >
@@ -341,10 +420,10 @@ export function PacificSubRegions() {
                           strokeWidth="2.5"
                         />
                         <text
-                          x={cx - 12}
+                          x={cx - 15}
                           y={yD2 + 4}
-                          fill="rgba(255,255,255,0.7)"
-                          fontSize="9"
+                          fill={isSelected ? "#ffffff" : "rgba(255,255,255,0.5)"}
+                          fontSize="12"
                           fontFamily="monospace"
                           textAnchor="end"
                         >
@@ -362,20 +441,20 @@ export function PacificSubRegions() {
                         />
                         {/* Endpoint Milestone Badge */}
                         <rect
-                          x={cx + 10}
-                          y={yD3 - 11}
-                          width="54"
-                          height="20"
+                          x={cx + 14}
+                          y={yD3 - 12}
+                          width="66"
+                          height="22"
                           rx="6"
                           fill="#0b1528"
                           stroke={theme.hex}
                           strokeWidth="1"
                         />
                         <text
-                          x={cx + 37}
-                          y={yD3 + 3}
+                          x={cx + 47}
+                          y={yD3 + 4}
                           fill={theme.hex}
-                          fontSize="10"
+                          fontSize="13"
                           fontFamily="monospace"
                           fontWeight="bold"
                           textAnchor="middle"
@@ -386,12 +465,12 @@ export function PacificSubRegions() {
                         {/* Realm Column Title Label */}
                         <text
                           x={cx}
-                          y={SVG_HEIGHT - 20}
+                          y={SVG_HEIGHT - 22}
                           fill={
                             isSelected ? theme.hex : "rgba(255,255,255,0.6)"
                           }
-                          fontSize="13"
-                          fontFamily="serif"
+                          fontSize="15"
+                          fontFamily="monospace"
                           fontWeight="bold"
                           textAnchor="middle"
                         >
@@ -400,8 +479,8 @@ export function PacificSubRegions() {
                         <text
                           x={cx}
                           y={SVG_HEIGHT - 6}
-                          fill="rgba(255,255,255,0.4)"
-                          fontSize="9"
+                          fill="rgba(148, 163, 184, 0.7)"
+                          fontSize="12"
                           fontFamily="monospace"
                           textAnchor="middle"
                         >
@@ -412,22 +491,6 @@ export function PacificSubRegions() {
                   })}
                 </svg>
               </div>
-
-              {/* Stepper Era Legend */}
-              <div className="flex items-center justify-center gap-6 mt-4 text-xs font-mono text-muted-foreground border-t border-white/5 pt-3">
-                <span className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full border border-white/60 bg-[#0f172a]" />
-                  D1 (1993–2002) Baseline
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full border border-white/60 bg-[#0f172a]" />
-                  D2 (2003–2012) Mid-Shift
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-cyan-400 border border-white" />
-                  D3 (2013–2023) Anomaly
-                </span>
-              </div>
             </div>
           </motion.div>
 
@@ -437,27 +500,20 @@ export function PacificSubRegions() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.25 }}
-            className="lg:col-span-5 bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between"
+            className="lg:col-span-5 flex flex-col gap-4"
           >
-            <div>
-              <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
-                <div className="flex items-center gap-2">
-                  <MapPin
-                    className={`w-4 h-4 ${REGION_THEMES[selectedCluster.region].text}`}
-                  />
-                  <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-foreground">
-                    {selectedCluster.region} Nations (
-                    {selectedCluster.nationsCount})
-                  </h3>
-                </div>
-                <span
-                  className={`text-xs font-mono font-bold ${REGION_THEMES[selectedCluster.region].text}`}
-                >
-                  +{selectedCluster.latest2023AvgCm.toFixed(1)} cm (2023 Avg)
-                </span>
-              </div>
+            <div className="px-1 text-left select-none">
+              <h3 className="text-sm font-mono font-bold text-slate-100 flex items-center gap-2">
+                <MapPin className={`w-3.5 h-3.5 ${REGION_THEMES[selectedCluster.region].text}`} />
+                {selectedCluster.region} ({selectedCluster.nationsCount} Nations)
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                Recent average anomaly: <span className={`font-semibold ${REGION_THEMES[selectedCluster.region].text}`}>+{selectedCluster.latest2023AvgCm.toFixed(1)} cm</span> (2023 Avg)
+              </p>
+            </div>
 
-              <div className="flex flex-col gap-2 max-h-[260px] overflow-y-auto custom-scrollbar pr-1">
+            <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-center h-full">
+              <div className="flex flex-col gap-2 max-h-[320px] overflow-y-auto custom-scrollbar pr-1">
                 {selectedCluster.nations.map((n) => (
                   <div
                     key={n.code}
@@ -473,6 +529,11 @@ export function PacificSubRegions() {
             </div>
           </motion.div>
         </div>
+
+        {/* Interaction Helper Text */}
+        <p className="text-center text-xs text-muted-foreground mt-8 max-w-2xl mx-auto font-sans select-none leading-relaxed">
+          Click on any sub-region column (Melanesia, Micronesia, or Polynesia) to highlight its decadal escalation pathway. The right-hand panel dynamically displays the member nations and localized baseline anomalies for the active realm.
+        </p>
       </div>
     </StorySection>
   );
