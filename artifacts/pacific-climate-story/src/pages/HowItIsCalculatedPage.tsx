@@ -9,8 +9,12 @@ import {
   Scale,
   Activity,
   Search,
+  Layers,
+  Sparkles,
+  AlertTriangle,
 } from "lucide-react";
 import { useSEO } from "@/lib/useSEO";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface CalculationCard {
   id: string;
@@ -174,28 +178,9 @@ const CALCULATIONS: CalculationCard[] = [
     ],
   },
   {
-    id: "start-end-leap",
-    category: "core",
-    title: "9. Start-to-End Leap Delta",
-    question: "How much did the sea level jump from the very first year to the last?",
-    unit: "Centimeters (cm)",
-    plainEnglish:
-      "A simple comparison showing the direct difference in sea level between the first year of monitoring (1993) and the latest year (2023).",
-    formulaSimple: "Leap Delta = SLA(2023) - SLA(1993)",
-    inputData:
-      "1993 initial anomaly (-5.2 cm) vs 2023 final anomaly (+14.8 cm)",
-    outputResult: "+20.0 cm total leap",
-    exampleNation: "Papua New Guinea",
-    steps: [
-      "Record starting sea level anomaly in 1993.",
-      "Record ending sea level anomaly in 2023.",
-      "Subtract 1993 starting level from 2023 ending level.",
-    ],
-  },
-  {
     id: "enso-correlation",
     category: "risk",
-    title: "10. ENSO Climate Sensitivity (Pearson r)",
+    title: "9. ENSO Climate Sensitivity (Pearson r)",
     question:
       "How much do major climate events (El Niño and La Niña) affect the local sea levels?",
     unit: "Correlation (-1.0 to +1.0)",
@@ -214,7 +199,7 @@ const CALCULATIONS: CalculationCard[] = [
   {
     id: "risk-score",
     category: "risk",
-    title: "11. Composite Risk Index (R)",
+    title: "10. Composite Risk Index (R)",
     question: "How threatened is this island overall compared to others?",
     unit: "Score (0–100 Risk Level)",
     plainEnglish:
@@ -233,7 +218,7 @@ const CALCULATIONS: CalculationCard[] = [
   {
     id: "threshold-breach",
     category: "risk",
-    title: "12. Threshold Breach Year",
+    title: "11. Threshold Breach Year",
     question: "When did the island first cross critical sea-level warning lines?",
     unit: "Calendar Year (YYYY)",
     plainEnglish:
@@ -249,28 +234,9 @@ const CALCULATIONS: CalculationCard[] = [
     ],
   },
   {
-    id: "yoy-budget",
-    category: "risk",
-    title: "13. Year-Over-Year Budget Share",
-    question:
-      "What portion of the total 30-year sea-level rise happened in just one single year?",
-    unit: "Percentage (%)",
-    plainEnglish:
-      "Calculates what percentage of the total accumulated rise happened in a specific year, helping identify years with exceptionally high storm surges or climate events.",
-    formulaSimple: "Budget Share (%) = (Annual Anomaly / 30-Year Sum) × 100",
-    inputData: "Annual anomaly divided by sum of positive anomalies",
-    outputResult: "7.8% annual rise budget share",
-    exampleNation: "Fiji (2016 Peak Year)",
-    steps: [
-      "Sum all positive sea level anomalies over 30 years.",
-      "Divide target year anomaly by 30-year total sum.",
-      "Multiply by 100 to get yearly percentage share.",
-    ],
-  },
-  {
     id: "regional-clusters",
     category: "core",
-    title: "14. Sub-Regional Cluster Averages",
+    title: "12. Sub-Regional Cluster Averages",
     question: "How do different island groups (Melanesia, Micronesia, Polynesia) compare?",
     unit: "Centimeters (cm)",
     plainEnglish:
@@ -286,27 +252,9 @@ const CALCULATIONS: CalculationCard[] = [
     ],
   },
   {
-    id: "percentile-distributions",
-    category: "spread",
-    title: "15. Decadal Percentile Distributions (P10, P50, P90)",
-    question: "What are the lower, middle, and upper limits of sea-level rise across the region?",
-    unit: "Centimeters (cm)",
-    plainEnglish:
-      "Instead of looking at one single average, this divides all monitored stations to show the lowest 10% (islands with least rise), the middle 50% (median), and the top 10% (most impacted islands) to show the full range of rise.",
-    formulaSimple: "Percentile Rank (P₁₀, P₅₀, P₉₀) of Annual Anomalies",
-    inputData: "Sorted annual anomaly array across 21 stations",
-    outputResult: "P₅₀ (Median): +8.5 cm, P₉₀ (Upper): +15.2 cm",
-    exampleNation: "Regional Distribution Boxplot",
-    steps: [
-      "Order all territory anomalies for a decade from lowest to highest.",
-      "Extract P10 (lowest 10%), P50 (median), and P90 (highest 10%).",
-      "Chart distribution bounds to display decadal spread.",
-    ],
-  },
-  {
     id: "annual-deviation",
     category: "spread",
-    title: "16. Cross-Territory Annual Dispersion",
+    title: "13. Cross-Territory Annual Dispersion",
     question:
       "How different were the sea levels from island to island in any single year?",
     unit: "Standard Deviation (σ_y)",
@@ -326,7 +274,7 @@ const CALCULATIONS: CalculationCard[] = [
   {
     id: "nations-rising-count",
     category: "core",
-    title: "17. Nations Rising Count per Year",
+    title: "14. Nations Rising Count per Year",
     question:
       "How many of the 21 Pacific territories recorded high water levels in a year?",
     unit: "Count (0 to 21 Nations)",
@@ -345,7 +293,7 @@ const CALCULATIONS: CalculationCard[] = [
   {
     id: "forecasting-model",
     category: "trends",
-    title: "18. Predictive Projection Model (2024–2050)",
+    title: "15. Predictive Projection Model (2024–2050)",
     question: "What is the predicted sea level height in the year 2050?",
     unit: "Centimeters (cm)",
     plainEnglish:
@@ -365,7 +313,7 @@ const CALCULATIONS: CalculationCard[] = [
   {
     id: "rolling-average",
     category: "trends",
-    title: "19. 5-Year Rolling Moving Average (SMA)",
+    title: "16. 5-Year Rolling Moving Average (SMA)",
     question: "How do we filter out temporary yearly bounces in charts to see the real trend?",
     unit: "Centimeters (cm)",
     plainEnglish:
@@ -379,26 +327,6 @@ const CALCULATIONS: CalculationCard[] = [
       "Take anomaly values for 2 years prior, target year, and 2 years ahead.",
       "Add the 5 annual anomaly values and divide by 5.",
       "Render smoothed moving average line overlay on charts.",
-    ],
-  },
-  {
-    id: "relative-comparison-ratio",
-    category: "core",
-    title: "20. Relative Regional Comparison Ratio (%)",
-    question:
-      "How does a single island's sea-level rise compare to the regional average?",
-    unit: "Percentage (%)",
-    plainEnglish:
-      "Compares a single island's measurements directly to the average of all 21 Pacific nations to show if it is rising faster or slower than its neighbors.",
-    formulaSimple:
-      "Relative Ratio (%) = ((Nation Metric / Regional Avg Metric) - 1) × 100",
-    inputData: "Nation metric value vs Regional benchmark average",
-    outputResult: "+62% above regional average",
-    exampleNation: "Palau Cumulative Rise Stat Card",
-    steps: [
-      "Find mean value of metric across all 21 Pacific territories.",
-      "Divide target nation's metric by regional average metric.",
-      "Subtract 1 and multiply by 100 to show % shift.",
     ],
   },
 ];
@@ -424,19 +352,58 @@ export default function HowItIsCalculatedPage() {
       }
     }
   });
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredCalculations = CALCULATIONS.filter(
-    (item) =>
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<"all" | "core" | "trends" | "risk" | "spread">("all");
+
+  const filteredCalculations = CALCULATIONS.filter((item) => {
+    const matchesSearch =
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.plainEnglish.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+      item.plainEnglish.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesTab = activeTab === "all" || item.category === activeTab;
+    return matchesSearch && matchesTab;
+  });
+
+  const counts = {
+    all: CALCULATIONS.length,
+    core: CALCULATIONS.filter((c) => c.category === "core").length,
+    trends: CALCULATIONS.filter((c) => c.category === "trends").length,
+    risk: CALCULATIONS.filter((c) => c.category === "risk").length,
+    spread: CALCULATIONS.filter((c) => c.category === "spread").length,
+  };
+
+  const tabs = [
+    { id: "all", name: "All Metrics", count: counts.all, icon: Layers },
+    { id: "core", name: "Core Indicators", count: counts.core, icon: Scale },
+    { id: "trends", name: "Trends & Forecasts", count: counts.trends, icon: TrendingUp },
+    { id: "risk", name: "Risk & Climate Impact", count: counts.risk, icon: Waves },
+    { id: "spread", name: "Statistical Spread", count: counts.spread, icon: Activity },
+  ] as const;
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring" as const, stiffness: 110, damping: 14 },
+    },
+  };
 
   return (
-    <div className="min-h-screen bg-[#070913] text-[#f8fafc] font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200">
+    <div className="min-h-screen bg-[#070913] text-[#f8fafc] font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200 relative overflow-x-hidden">
       {/* Background ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-cyan-500/5 blur-[160px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] rounded-full bg-cyan-500/5 blur-[160px] pointer-events-none" />
 
       {/* Header Bar */}
       <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-6 py-4 flex items-center justify-between">
@@ -453,181 +420,281 @@ export default function HowItIsCalculatedPage() {
       {/* Main Container */}
       <main id="main-content" className="max-w-[1300px] mx-auto p-6 lg:p-10 flex flex-col gap-8" tabIndex={-1}>
         {/* Introduction Header */}
-        <div className="bg-slate-900/40 border border-slate-800 p-8 rounded-3xl flex flex-col gap-6 shadow-md">
+        <div className="relative overflow-hidden bg-slate-900/20 border border-slate-800/80 p-8 rounded-3xl flex flex-col gap-6 shadow-xl backdrop-blur-sm">
+          {/* Subtle decoration inside header */}
+          <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none" />
+
           <div>
-            <h2 className="text-2xl font-bold font-serif text-slate-100">
+            <div className="flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-wider uppercase mb-1">
+              <Sparkles className="w-3.5 h-3.5" /> Reference Documentation
+            </div>
+            <h2 className="text-3xl font-bold font-serif text-slate-100 leading-tight">
               Calculation Methodology Guide
             </h2>
-            <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
-              Step-by-step guide explaining all 20 calculated metrics, formulas,
-              and statistical transformations used in the Pacific Climate Story.
+            <p className="text-xs text-slate-400 mt-2 max-w-none leading-relaxed">
+              Below is a step-by-step guide explaining all calculated metrics, formulas, and statistical transformations used in the Pacific Climate Story.
             </p>
           </div>
 
           {/* Neutral Cheat Sheet Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-800/60">
-            <div className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800/60 flex flex-col gap-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t border-slate-800/60">
+            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
-                <Scale className="w-3.5 h-3.5" /> Heights in Centimeters (cm)
+                <Scale className="w-3.5 h-3.5" /> Heights in Centimeters
               </span>
               <span className="text-xs font-semibold text-slate-200">
                 1 Meter = 100 cm
               </span>
-              <p className="text-[11px] text-slate-400 leading-normal">
-                Raw meter values are multiplied by 100 (
-                <strong className="text-slate-300">+12.4 cm</strong> instead of
-                0.124m).
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Raw height values are converted to centimeters so small shifts are easy to see (e.g. <strong className="text-slate-300">+12.4 cm</strong> instead of 0.124m).
               </p>
             </div>
 
-            <div className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800/60 flex flex-col gap-1">
+            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
-                <TrendingUp className="w-3.5 h-3.5" /> Rise Speed in mm/yr
+                <TrendingUp className="w-3.5 h-3.5" /> Speed in Millimeters
               </span>
               <span className="text-xs font-semibold text-slate-200">
                 1 Meter = 1,000 mm
               </span>
-              <p className="text-[11px] text-slate-400 leading-normal">
-                Annual rise rates use linear slope fitting expressed in mm/yr (
-                <strong className="text-slate-300">4.84 mm/yr</strong>).
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Yearly rise speeds use linear trend-fitting and are written in millimeters (e.g. <strong className="text-slate-300">4.8 mm/yr</strong>).
               </p>
             </div>
 
-            <div className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800/60 flex flex-col gap-1">
+            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
                 <Activity className="w-3.5 h-3.5" /> Baseline = 1993–2002
               </span>
               <span className="text-xs font-semibold text-slate-200">
-                10-Year Reference Zero
+                10-Year Reference Average
               </span>
-              <p className="text-[11px] text-slate-400 leading-normal">
-                The 10-year mean from 1993 to 2002 serves as the benchmark zero
-                (<strong className="text-slate-300">0.0 cm</strong>) line.
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                The average sea level from 1993 to 2002 acts as the zero-line benchmark (<strong className="text-slate-300">0.0 cm</strong>) for measuring anomalies.
               </p>
             </div>
 
-            <div className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800/60 flex flex-col gap-1">
+            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
-                <Waves className="w-3.5 h-3.5" /> Volatility = ±cm
+                <Waves className="w-3.5 h-3.5" /> Volatility = ±cm deviation
               </span>
               <span className="text-xs font-semibold text-slate-200">
-                Yearly Fluctuation
+                Year-Over-Year Swings
               </span>
-              <p className="text-[11px] text-slate-400 leading-normal">
-                Standard deviation measures how ocean levels bounce up and down
-                (<strong className="text-slate-300">±8.7 cm</strong>).
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Standard deviation measures how jumpy ocean levels are as they swing above and below the baseline (e.g. <strong className="text-slate-300">±8.7 cm</strong>).
               </p>
             </div>
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative w-full max-w-md">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-          <input
-            type="text"
-            id="search-calculations"
-            placeholder="Search calculation metrics (e.g. speed, volatility, risk)..."
-            aria-label="Search calculation metrics"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-900/60 border border-slate-800 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500/40 transition shadow-inner"
-          />
+        {/* Filters and Search Bar Container */}
+        <div className="flex flex-col gap-5 bg-slate-900/10 border border-slate-800/60 p-6 rounded-3xl backdrop-blur-sm">
+          {/* Search bar */}
+          <div className="relative w-full max-w-md">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <input
+              type="text"
+              id="search-calculations"
+              placeholder="Search calculation metrics (e.g. speed, volatility, risk)..."
+              aria-label="Search calculation metrics"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-slate-950 border border-slate-800/80 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500/40 transition shadow-inner placeholder:text-slate-500"
+            />
+          </div>
+
+          {/* Interactive Navigation Tabs */}
+          <div className="flex flex-wrap gap-2 border-t border-slate-850/60 pt-4">
+            {tabs.map((tab) => {
+              const TabIcon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer border ${isActive
+                    ? "bg-cyan-500/10 border-cyan-500/30 text-cyan-400 shadow-md"
+                    : "bg-slate-900/40 border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200"
+                    }`}
+                >
+                  <TabIcon className="w-3.5 h-3.5" />
+                  <span>{tab.name}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${isActive ? "bg-cyan-500/20 text-cyan-300" : "bg-slate-950 text-slate-500"
+                    }`}>
+                    {tab.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Calculation Cards Stack */}
-        <div className="flex flex-col gap-6">
-          {filteredCalculations.map((item) => (
-            <div
-              key={item.id}
-              className="bg-slate-900/40 border border-slate-800 p-6 lg:p-7 rounded-2xl flex flex-col gap-5 transition-all duration-200 hover:border-cyan-500/30 shadow-md"
-            >
-              {/* Card Title Row */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/60 pb-3">
-                <div>
-                  <h3 className="text-lg font-bold font-serif text-slate-100">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                    <HelpCircle className="w-3.5 h-3.5 text-cyan-400/80" />
-                    <span className="italic">{item.question}</span>
-                  </p>
-                </div>
-                <span className="px-3 py-1 rounded-lg bg-slate-950 border border-slate-800 text-cyan-400 font-mono text-xs font-semibold self-start sm:self-auto">
-                  Unit: {item.unit}
-                </span>
-              </div>
+        {/* Calculation Cards Grid / Stack */}
+        <div className="relative min-h-[300px]">
+          <AnimatePresence mode="wait">
+            {filteredCalculations.length > 0 ? (
+              <motion.div
+                key={activeTab + "_" + searchQuery}
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                className="grid grid-cols-1 gap-6"
+              >
+                {filteredCalculations.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    variants={itemVariants}
+                    className="bg-slate-900/25 border border-slate-800/80 p-6 lg:p-8 rounded-3xl flex flex-col gap-6 transition-all duration-300 hover:border-cyan-500/25 hover:bg-slate-900/35 shadow-lg group relative overflow-hidden"
+                  >
+                    {/* Visual Tab Category Tag Badge inside Card */}
+                    <div className="absolute right-0 top-0 w-32 h-32 rounded-full bg-cyan-500/[0.01] blur-2xl pointer-events-none group-hover:bg-cyan-500/[0.02]" />
 
-              {/* Plain-English Explanation Banner */}
-              <div className="bg-slate-950/60 border border-slate-800/60 p-4 rounded-xl flex items-start gap-3">
-                <BookOpen className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 font-mono">
-                    IN PLAIN WORDS
-                  </span>
-                  <p className="text-xs text-slate-300 leading-relaxed">
-                    {item.plainEnglish}
-                  </p>
-                </div>
-              </div>
-
-              {/* 3-Step Simple Procedure */}
-              <div className="flex flex-col gap-2.5">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 font-mono">
-                  CALCULATION PROCEDURE
-                </span>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {item.steps.map((stepDesc, sIdx) => (
-                    <div
-                      key={sIdx}
-                      className="bg-slate-950/40 border border-slate-800/60 p-3.5 rounded-xl flex flex-col gap-1"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono font-bold text-slate-500">
-                          STEP {sIdx + 1}
-                        </span>
-                        <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400/80" />
+                    {/* Card Title Row */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/40 pb-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md ${item.category === "core"
+                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            : item.category === "trends"
+                              ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+                              : item.category === "risk"
+                                ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                : "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                            }`}>
+                            {item.category === "core"
+                              ? "Core Indicator"
+                              : item.category === "trends"
+                                ? "Trend & Forecast"
+                                : item.category === "risk"
+                                  ? "Risk & Climate Impact"
+                                  : "Statistical Distribution"}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-bold font-serif text-slate-100 group-hover:text-cyan-300 transition-colors">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-slate-400 flex items-center gap-1.5 mt-1">
+                          <HelpCircle className="w-3.5 h-3.5 text-cyan-400/80 flex-shrink-0" />
+                          <span className="italic leading-normal">{item.question}</span>
+                        </p>
                       </div>
-                      <p className="text-[11px] text-slate-300 leading-relaxed mt-1">
-                        {stepDesc}
-                      </p>
+                      <span className="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-900 text-cyan-400 font-mono text-xs font-semibold self-start sm:self-auto shadow-inner">
+                        Unit: {item.unit}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              {/* Simple Formula & Worked Example Box */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-                {/* Formula Box */}
-                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 flex flex-col gap-1.5 font-mono">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500">
-                    FORMULA
-                  </span>
-                  <div className="text-xs md:text-sm font-bold text-cyan-400 py-0.5">
-                    {item.formulaSimple}
-                  </div>
-                  <span className="text-[10px] text-slate-500 mt-0.5">
-                    Source: {item.inputData}
-                  </span>
-                </div>
+                    {/* Plain-English Explanation Banner */}
+                    <div className="bg-slate-950/60 border border-slate-800/60 p-5 rounded-2xl flex items-start gap-3.5 border-l-2 border-l-cyan-500/60 shadow-md">
+                      <BookOpen className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500 font-mono">
+                          IN PLAIN ENGLISH
+                        </span>
+                        <p className="text-xs text-slate-300 leading-relaxed font-normal">
+                          {item.plainEnglish}
+                        </p>
+                      </div>
+                    </div>
 
-                {/* Worked Example */}
-                <div className="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col gap-1.5">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 font-mono">
-                    EXAMPLE ({item.exampleNation})
-                  </span>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-xs text-slate-400 font-medium">
-                      Result:
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-md bg-slate-900 border border-slate-800 font-mono text-xs font-bold text-slate-200">
-                      {item.outputResult}
-                    </span>
-                  </div>
+                    {/* 3-Step Simple Procedure */}
+                    <div className="flex flex-col gap-3">
+                      <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500 font-mono">
+                        HOW WE CALCULATE IT
+                      </span>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                        {item.steps.map((stepDesc, sIdx) => (
+                          <div
+                            key={sIdx}
+                            className="bg-slate-950/20 border border-slate-900/60 p-4 rounded-xl flex flex-col gap-1.5 hover:bg-slate-950/30 transition-colors"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-[9px] font-mono font-bold text-slate-500">
+                                STEP {sIdx + 1}
+                              </span>
+                              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400/70" />
+                            </div>
+                            <p className="text-[11px] text-slate-300 leading-relaxed font-normal">
+                              {stepDesc}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Simple Formula & Worked Example Box */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                      {/* Formula Box */}
+                      <div className="bg-slate-950/60 border border-slate-800/60 rounded-2xl p-4.5 flex flex-col gap-2.5 font-mono shadow-inner group">
+                        <div className="flex items-center justify-between pb-1.5 border-b border-slate-800/30">
+                          <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500">
+                            FORMULA
+                          </span>
+                          <div className="flex gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500/40" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500/40" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/40" />
+                          </div>
+                        </div>
+                        <div className="text-xs md:text-sm font-bold text-cyan-400 py-1 tracking-tight select-all leading-normal">
+                          {item.formulaSimple}
+                        </div>
+                        <div className="text-[10px] text-slate-400/80 mt-1 flex items-center gap-1.5 font-sans">
+                          <span className="font-semibold text-slate-500">Data Source:</span>
+                          <span>{item.inputData}</span>
+                        </div>
+                      </div>
+
+                      {/* Worked Example */}
+                      <div className="bg-slate-950/40 border border-slate-800/60 p-4.5 rounded-2xl flex flex-col gap-2.5 justify-between">
+                        <div>
+                          <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500 font-mono block mb-1">
+                            WORKED EXAMPLE
+                          </span>
+                          <span className="text-[11px] text-slate-400 leading-relaxed">
+                            Application to <strong className="text-slate-300">{item.exampleNation}</strong>:
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-xs text-slate-400 font-medium">Result:</span>
+                          <span className="px-3 py-1 rounded-xl bg-cyan-500/10 border border-cyan-500/20 font-mono text-xs font-bold text-cyan-300 shadow-md">
+                            {item.outputResult}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="flex flex-col items-center justify-center p-16 text-center bg-slate-900/10 border border-slate-800/60 rounded-3xl gap-4 backdrop-blur-sm"
+              >
+                <div className="p-4 bg-cyan-500/10 rounded-full text-cyan-400 border border-cyan-500/20 shadow-md">
+                  <AlertTriangle className="w-7 h-7" />
                 </div>
-              </div>
-            </div>
-          ))}
+                <div>
+                  <h3 className="text-lg font-bold text-slate-200">No calculation metrics found</h3>
+                  <p className="text-xs text-slate-400 mt-1.5 max-w-sm leading-relaxed">
+                    No metrics match your search query "{searchQuery}" in this category. Try adjusting your query or switching tabs.
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setActiveTab("all");
+                  }}
+                  className="mt-2 px-5 py-2.5 bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 hover:border-cyan-500/40 rounded-xl text-xs font-semibold text-cyan-300 transition-all cursor-pointer shadow-md"
+                >
+                  Reset Filters
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
     </div>

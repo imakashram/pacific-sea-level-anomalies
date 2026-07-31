@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
 import {
-  ArrowLeft,
   Play,
   Copy,
   Check,
