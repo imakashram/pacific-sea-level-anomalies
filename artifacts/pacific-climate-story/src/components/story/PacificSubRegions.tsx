@@ -11,8 +11,6 @@ const REGION_THEMES: Record<
     bg: string;
     border: string;
     glow: string;
-    gradientFrom: string;
-    gradientTo: string;
     hex: string;
     hoverClass: string;
     icon: React.ComponentType<any>;
@@ -23,8 +21,6 @@ const REGION_THEMES: Record<
     bg: "bg-emerald-500/10",
     border: "border-emerald-500/30",
     glow: "shadow-[0_0_25px_rgba(52,211,153,0.15)]",
-    gradientFrom: "#34d399",
-    gradientTo: "#059669",
     hex: "#34d399",
     hoverClass: "hover:border-emerald-500/40 hover:shadow-emerald-500/5 hover:bg-emerald-950/5 hover:-translate-y-1",
     icon: TrendingUp,
@@ -34,8 +30,6 @@ const REGION_THEMES: Record<
     bg: "bg-cyan-500/10",
     border: "border-cyan-500/30",
     glow: "shadow-[0_0_25px_rgba(56,189,248,0.15)]",
-    gradientFrom: "#38bdf8",
-    gradientTo: "#0284c7",
     hex: "#38bdf8",
     hoverClass: "hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5 hover:-translate-y-1",
     icon: Activity,
@@ -45,11 +39,51 @@ const REGION_THEMES: Record<
     bg: "bg-purple-500/10",
     border: "border-purple-500/30",
     glow: "shadow-[0_0_25px_rgba(167,139,250,0.15)]",
-    gradientFrom: "#a78bfa",
-    gradientTo: "#7c3aed",
     hex: "#a78bfa",
     hoverClass: "hover:border-purple-500/40 hover:shadow-purple-500/5 hover:bg-purple-950/5 hover:-translate-y-1",
     icon: Globe,
+  },
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+const listContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.04,
+    },
+  },
+};
+
+const listItemVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
   },
 };
 
@@ -122,10 +156,10 @@ export function PacificSubRegions() {
 
         {/* 3 Sub-Regional Feature Cards Grid */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10"
         >
           {CLUSTER_DATA.map((cluster) => {
@@ -133,8 +167,9 @@ export function PacificSubRegions() {
             const Icon = theme.icon;
 
             return (
-              <div
+              <motion.div
                 key={cluster.region}
+                variants={cardVariants}
                 className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col justify-between transition-all duration-300 shadow-sm group ${theme.hoverClass}`}
               >
                 <div className="flex flex-col gap-2">
@@ -170,7 +205,7 @@ export function PacificSubRegions() {
                     +{cluster.shiftCm.toFixed(1)} cm
                   </span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </motion.div>
@@ -208,24 +243,6 @@ export function PacificSubRegions() {
                       const theme = REGION_THEMES[c.region];
                       return (
                         <g key={`gradients-${c.region}`}>
-                          <linearGradient
-                            id={`grad-${c.region}`}
-                            x1="0"
-                            y1="1"
-                            x2="0"
-                            y2="0"
-                          >
-                            <stop
-                              offset="0%"
-                              stopColor={theme.gradientFrom}
-                              stopOpacity="0.2"
-                            />
-                            <stop
-                              offset="100%"
-                              stopColor={theme.gradientFrom}
-                              stopOpacity="0.9"
-                            />
-                          </linearGradient>
                           <linearGradient
                             id={`beam-grad-${c.region}`}
                             x1="0"
@@ -548,10 +565,17 @@ export function PacificSubRegions() {
             </div>
 
             <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-center h-full">
-              <div className="flex flex-col gap-2 max-h-[380px] overflow-y-auto custom-scrollbar pr-1">
+              <motion.div
+                key={selectedRegion}
+                variants={listContainerVariants}
+                initial="hidden"
+                animate="visible"
+                className="flex flex-col gap-2 max-h-[380px] overflow-y-auto custom-scrollbar pr-1"
+              >
                 {selectedCluster.nations.map((n) => (
-                  <div
+                  <motion.div
                     key={n.code}
+                    variants={listItemVariants}
                     className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-card/30 border border-border/20 text-xs font-mono"
                   >
                     <span className="font-semibold text-foreground">
@@ -560,9 +584,9 @@ export function PacificSubRegions() {
                     <span className={`font-semibold ${REGION_THEMES[selectedCluster.region].text}`}>
                       {n.value >= 0 ? "+" : ""}{n.value.toFixed(1)} cm
                     </span>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
