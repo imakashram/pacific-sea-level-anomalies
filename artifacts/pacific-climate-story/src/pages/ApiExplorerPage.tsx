@@ -133,6 +133,14 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: ["PaceOfChange"],
   },
   {
+    path: "/api/story/sub-regions",
+    method: "GET",
+    description:
+      "Returns sub-regional climate risk data groups comparing Melanesia, Micronesia, and Polynesia realms.",
+    category: "story",
+    usedIn: ["PacificSubRegions"],
+  },
+  {
     path: "/api/story/enso-effect",
     method: "GET",
     description:
