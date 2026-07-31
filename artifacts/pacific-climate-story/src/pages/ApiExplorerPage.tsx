@@ -35,6 +35,14 @@ interface ApiEndpoint {
 const ENDPOINTS: ApiEndpoint[] = [
   // Core
   {
+    path: "/api/core/raw-data",
+    method: "GET",
+    description:
+      "Returns the complete raw observation records parsed directly from the sea_level_anomalies.csv file with all original columns.",
+    category: "core",
+    usedIn: [],
+  },
+  {
     path: "/api/core/overview",
     method: "GET",
     description:

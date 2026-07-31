@@ -56,6 +56,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AnnualDeviationData"
+  /core/raw-data:
+    get:
+      operationId: getCoreRawData
+      tags: [core]
+      summary: Retrieve the exact raw data from the CSV file
+      description: Returns all records parsed from the sea level anomalies CSV file with their original columns.
+      responses:
+        "200":
+          description: Raw CSV data records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RawCsvRecord"
   /core/overview:
     get:
       operationId: getCoreOverview
@@ -975,3 +990,86 @@ components:
         - latest2023AvgCm
         - nations
         - description
+
+    RawCsvRecord:
+      type: object
+      properties:
+        STRUCTURE:
+          type: string
+        STRUCTURE_ID:
+          type: string
+        STRUCTURE_NAME:
+          type: string
+        ACTION:
+          type: string
+        FREQ:
+          type: string
+        Frequency:
+          type: string
+        CLIMATE_CHANGE_INDICATORS:
+          type: string
+        Climate Change Indicators:
+          type: string
+        GEO_PICT:
+          type: string
+        Pacific Island Countries and territories:
+          type: string
+        TIME_PERIOD:
+          type: string
+        Time:
+          type: string
+        OBS_VALUE:
+          type: string
+        Observation value:
+          type: string
+        OBS_STATUS:
+          type: string
+        Observation Status:
+          type: string
+        UNIT_MEASURE:
+          type: string
+        Unit of measure:
+          type: string
+        ERROR_TYPE:
+          type: string
+        Error type:
+          type: string
+        ERROR_VAL:
+          type: string
+        Error value:
+          type: string
+        REPORTING_TYPE:
+          type: string
+        Reporting Type:
+          type: string
+        OBS_COMMENT:
+          type: string
+        Comment:
+          type: string
+      required:
+        - STRUCTURE
+        - STRUCTURE_ID
+        - STRUCTURE_NAME
+        - ACTION
+        - FREQ
+        - Frequency
+        - CLIMATE_CHANGE_INDICATORS
+        - Climate Change Indicators
+        - GEO_PICT
+        - Pacific Island Countries and territories
+        - TIME_PERIOD
+        - Time
+        - OBS_VALUE
+        - Observation value
+        - OBS_STATUS
+        - Observation Status
+        - UNIT_MEASURE
+        - Unit of measure
+        - ERROR_TYPE
+        - Error type
+        - ERROR_VAL
+        - Error value
+        - REPORTING_TYPE
+        - Reporting Type
+        - OBS_COMMENT
+        - Comment

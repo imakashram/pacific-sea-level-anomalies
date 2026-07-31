@@ -29,6 +29,7 @@ export * from './healthStatus';
 export * from './heatmapData';
 export * from './heroSectionData';
 export * from './historicalForecastPoint';
+export * from './rawCsvRecord';
 export * from './regionalCluster';
 export * from './regionalClusterNation';
 export * from './regionalClusterRegion';

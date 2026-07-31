@@ -27,6 +27,7 @@ import type {
   HealthStatus,
   HeatmapData,
   HeroSectionData,
+  RawCsvRecord,
   RegionalCluster,
   RiskScoreData,
   SeaLevelAnomaliesOverview,
@@ -264,6 +265,84 @@ export function useGetAnnualDeviation<TData = Awaited<ReturnType<typeof getAnnua
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetAnnualDeviationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetCoreRawDataUrl = () => {
+
+
+
+
+  return `/api/core/raw-data`
+}
+
+/**
+ * Returns all records parsed from the sea level anomalies CSV file with their original columns.
+ * @summary Retrieve the exact raw data from the CSV file
+ */
+export const getCoreRawData = async ( options?: RequestInit): Promise<RawCsvRecord[]> => {
+
+  return customFetch<RawCsvRecord[]>(getGetCoreRawDataUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCoreRawDataQueryKey = () => {
+    return [
+    `/api/core/raw-data`
+    ] as const;
+    }
+
+
+export const getGetCoreRawDataQueryOptions = <TData = Awaited<ReturnType<typeof getCoreRawData>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreRawData>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCoreRawDataQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCoreRawData>>> = ({ signal }) => getCoreRawData({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCoreRawData>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCoreRawDataQueryResult = NonNullable<Awaited<ReturnType<typeof getCoreRawData>>>
+export type GetCoreRawDataQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Retrieve the exact raw data from the CSV file
+ */
+
+export function useGetCoreRawData<TData = Awaited<ReturnType<typeof getCoreRawData>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoreRawData>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCoreRawDataQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

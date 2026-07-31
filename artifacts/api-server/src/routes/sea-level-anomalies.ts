@@ -2,7 +2,7 @@ import { Router } from "express";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import Papa from "papaparse";
-import { RegionalCluster } from "@workspace/api-zod";
+import { RegionalCluster, RawCsvRecord } from "@workspace/api-zod";
 
 const router = Router();
 
@@ -46,6 +46,20 @@ let cachedData: DataPoint[] | null = null;
 function getData(): DataPoint[] {
   if (!cachedData) cachedData = loadData();
   return cachedData;
+}
+
+let cachedRawData: RawCsvRecord[] | null = null;
+function getRawData(): RawCsvRecord[] {
+  if (!cachedRawData) {
+    const csvPath = fileURLToPath(new URL("../data/sea_level_anomalies.csv", import.meta.url));
+    const raw = readFileSync(csvPath, "utf-8");
+    const result = Papa.parse<RawCsvRecord>(raw, {
+      header: true,
+      skipEmptyLines: true,
+    });
+    cachedRawData = result.data;
+  }
+  return cachedRawData;
 }
 
 function stdDev(values: number[]): number {
@@ -898,6 +912,10 @@ function getSubRegionsData(): RegionalCluster[] {
 
 router.get("/core/overview", (_req, res): void => {
   res.json(getOverviewData());
+});
+
+router.get("/core/raw-data", (_req, res): void => {
+  res.json(getRawData());
 });
 
 router.get("/core/sea-level-by-country", (_req, res): void => {

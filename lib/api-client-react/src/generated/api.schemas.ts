@@ -336,3 +336,32 @@ export interface RegionalCluster {
   description: string;
 }
 
+export interface RawCsvRecord {
+  STRUCTURE: string;
+  STRUCTURE_ID: string;
+  STRUCTURE_NAME: string;
+  ACTION: string;
+  FREQ: string;
+  Frequency: string;
+  CLIMATE_CHANGE_INDICATORS: string;
+  'Climate Change Indicators': string;
+  GEO_PICT: string;
+  'Pacific Island Countries and territories': string;
+  TIME_PERIOD: string;
+  Time: string;
+  OBS_VALUE: string;
+  'Observation value': string;
+  OBS_STATUS: string;
+  'Observation Status': string;
+  UNIT_MEASURE: string;
+  'Unit of measure': string;
+  ERROR_TYPE: string;
+  'Error type': string;
+  ERROR_VAL: string;
+  'Error value': string;
+  REPORTING_TYPE: string;
+  'Reporting Type': string;
+  OBS_COMMENT: string;
+  Comment: string;
+}
+

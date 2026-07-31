@@ -54,6 +54,41 @@ export const GetAnnualDeviationResponse = zod.object({
 
 
 /**
+ * Returns all records parsed from the sea level anomalies CSV file with their original columns.
+ * @summary Retrieve the exact raw data from the CSV file
+ */
+export const GetCoreRawDataResponseItem = zod.object({
+  "STRUCTURE": zod.string(),
+  "STRUCTURE_ID": zod.string(),
+  "STRUCTURE_NAME": zod.string(),
+  "ACTION": zod.string(),
+  "FREQ": zod.string(),
+  "Frequency": zod.string(),
+  "CLIMATE_CHANGE_INDICATORS": zod.string(),
+  "Climate Change Indicators": zod.string(),
+  "GEO_PICT": zod.string(),
+  "Pacific Island Countries and territories": zod.string(),
+  "TIME_PERIOD": zod.string(),
+  "Time": zod.string(),
+  "OBS_VALUE": zod.string(),
+  "Observation value": zod.string(),
+  "OBS_STATUS": zod.string(),
+  "Observation Status": zod.string(),
+  "UNIT_MEASURE": zod.string(),
+  "Unit of measure": zod.string(),
+  "ERROR_TYPE": zod.string(),
+  "Error type": zod.string(),
+  "ERROR_VAL": zod.string(),
+  "Error value": zod.string(),
+  "REPORTING_TYPE": zod.string(),
+  "Reporting Type": zod.string(),
+  "OBS_COMMENT": zod.string(),
+  "Comment": zod.string()
+})
+export const GetCoreRawDataResponse = zod.array(GetCoreRawDataResponseItem)
+
+
+/**
  * @summary Key headline metrics
  */
 export const GetCoreOverviewResponse = zod.object({
