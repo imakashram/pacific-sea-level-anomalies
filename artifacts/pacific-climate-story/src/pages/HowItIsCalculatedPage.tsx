@@ -387,9 +387,9 @@ const CALCULATIONS: CalculationCard[] = [
 
 export default function HowItIsCalculatedPage() {
   useSEO({
-    title: "How It's Calculated | Pacific Sea Level Anomalies",
+    title: "Methodology & Formulas | Pacific Sea Level Anomalies",
     description: "Learn about the methodology and calculations behind the Pacific Sea Level Anomalies data story. Examine formulas for Sea Level Anomaly, Decadal Shift, Speed Rate, and Volatility.",
-    canonicalPath: "/how-it-is-calculated",
+    canonicalPath: "/methodology",
     keywords: "climate calculations, sea level anomaly formulas, climate change statistics, climate methodology",
     schema: {
       "@context": "https://schema.org",
@@ -427,7 +427,7 @@ export default function HowItIsCalculatedPage() {
             <Calculator className="w-4 h-4" />
           </div>
           <h1 className="text-xl font-bold font-serif text-slate-100 tracking-tight">
-            How It's Calculated
+            Methodology & Formulas
           </h1>
         </div>
 

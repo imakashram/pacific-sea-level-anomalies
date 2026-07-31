@@ -57,11 +57,11 @@ export function Footer() {
           </Link>
           <span className="text-slate-800" aria-hidden="true">|</span>
           <Link
-            href="/how-it-is-calculated"
+            href="/methodology"
             className="flex items-center gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer focus:outline-none"
           >
             <Calculator className="w-3.5 h-3.5" />
-            <span>How It's Calculated</span>
+            <span>Methodology & Formulas</span>
           </Link>
         </motion.nav>
 
