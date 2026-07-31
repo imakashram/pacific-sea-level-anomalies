@@ -1,6 +1,5 @@
 import { StorySection } from "./StorySection";
 import { motion, useInView, useMotionValue, animate } from "framer-motion";
-import { Link } from "wouter";
 import {
   useGetDecadeAnalysis,
   useGetPaceOfChange,
@@ -16,11 +15,9 @@ import {
   AlertTriangle,
   ArrowUpCircle,
   Gauge,
-  ArrowUp,
-  Terminal,
-  Calculator,
   type LucideIcon,
 } from "lucide-react";
+import { Footer } from "./Footer";
 
 /**
  * Props definition for the AnimatedCount component.
@@ -176,17 +173,6 @@ const cardVariants = {
   },
 };
 
-const footerContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.4,
-    },
-  },
-};
-
 /**
  * WhatThisMeans Component
  *
@@ -293,150 +279,105 @@ export function WhatThisMeans() {
   ];
 
   return (
-    <StorySection id="what-this-means" className="pb-32">
-      <div className="max-w-5xl mx-auto">
-        {/* Section Header */}
-        <motion.div
-          className="text-center flex flex-col items-center justify-center mb-8 border-b border-border/10 pb-6 mx-auto"
-          variants={headerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h2
-            variants={childVariants}
-            className="text-5xl md:text-6xl font-serif font-bold mb-6"
+    <>
+      <StorySection id="what-this-means" className="pb-12">
+        <div className="max-w-5xl mx-auto">
+          {/* Section Header */}
+          <motion.div
+            className="text-center flex flex-col items-center justify-center mb-8 border-b border-border/10 pb-6 mx-auto"
+            variants={headerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
           >
-            What This Means
-          </motion.h2>
-          <motion.p
-            variants={childVariants}
-            className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto"
-          >
-            Over 30 years of observations across 21 Pacific nations reveal a
-            persistent rise in sea level anomalies.
-          </motion.p>
-        </motion.div>
-
-        {/* Animated Counter Grid */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-16"
-          variants={gridContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {takeaways.map(
-            ({
-              value,
-              of,
-              label,
-              color,
-              desc,
-              decimals,
-              prefix,
-              suffix,
-              icon: Icon,
-            }) => {
-              const theme = CARD_THEMES[color] || {
-                text: color,
-                bg: "bg-card/10",
-                border: "border-border/30",
-                glow: "hover:border-border/40",
-              };
-
-              return (
-                <motion.div
-                  key={label}
-                  variants={cardVariants}
-                  whileHover={{
-                    y: -6,
-                    scale: 1.02,
-                    transition: { duration: 0.3, ease: "easeOut" },
-                  }}
-                  className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${theme.glow}`}
-                >
-                  <div className="flex items-center justify-between text-muted-foreground mb-1">
-                    <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                      {label}
-                    </span>
-                    <Icon
-                      className={`w-4 h-4 ${theme.text} opacity-60 group-hover:opacity-100 transition-all duration-300`}
-                    />
-                  </div>
-                  <div
-                    className={`text-3xl font-serif font-bold tracking-tight ${theme.text}`}
-                  >
-                    <AnimatedCount
-                      target={value}
-                      decimals={decimals}
-                      prefix={prefix}
-                      suffix={suffix}
-                    />
-                    {of != null && (
-                      <span className="text-sm text-muted-foreground/60 font-mono font-normal ml-0.5">
-                        /{of}
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    {desc}
-                  </span>
-                </motion.div>
-              );
-            },
-          )}
-        </motion.div>
-
-        {/* Footer Database Citation, Quick Links & Quote */}
-        <motion.footer
-          className="pt-12 border-t border-border/30 text-center flex flex-col items-center gap-8"
-          variants={footerContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          <motion.nav
-            variants={childVariants}
-            className="flex flex-wrap justify-center gap-6 text-xs font-semibold text-slate-400 select-none"
-          >
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer focus:outline-none"
-              aria-label="Scroll back to top of the page"
+            <motion.h2
+              variants={childVariants}
+              className="text-5xl md:text-6xl font-serif font-bold mb-6"
             >
-              <ArrowUp className="w-3.5 h-3.5" />
-              <span>Back to Top</span>
-            </button>
-            <span className="text-slate-800" aria-hidden="true">|</span>
-            <Link
-              href="/api-explorer"
-              className="flex items-center gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer focus:outline-none"
+              What This Means
+            </motion.h2>
+            <motion.p
+              variants={childVariants}
+              className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto"
             >
-              <Terminal className="w-3.5 h-3.5" />
-              <span>API Explorer</span>
-            </Link>
-            <span className="text-slate-800" aria-hidden="true">|</span>
-            <Link
-              href="/how-it-is-calculated"
-              className="flex items-center gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer focus:outline-none"
-            >
-              <Calculator className="w-3.5 h-3.5" />
-              <span>How It's Calculated</span>
-            </Link>
-          </motion.nav>
-
-          <motion.div variants={childVariants} className="flex flex-col gap-4">
-            <p className="text-muted-foreground text-sm max-w-2xl mx-auto leading-relaxed">
-              Data sourced from the Pacific Community (SPC) Climate Change
-              Indicators Database. Indicator: SEA_LVL (Sea Level Anomaly).
-            </p>
-            <div className="font-serif italic text-primary text-2xl">
-              "The ocean is speaking. The question is whether we are listening."
-            </div>
+              Over 30 years of observations across 21 Pacific nations reveal a
+              persistent rise in sea level anomalies.
+            </motion.p>
           </motion.div>
-        </motion.footer>
-      </div>
-    </StorySection>
+
+          {/* Animated Counter Grid */}
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-3 gap-5"
+            variants={gridContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {takeaways.map(
+              ({
+                value,
+                of,
+                label,
+                color,
+                desc,
+                decimals,
+                prefix,
+                suffix,
+                icon: Icon,
+              }) => {
+                const theme = CARD_THEMES[color] || {
+                  text: color,
+                  bg: "bg-card/10",
+                  border: "border-border/30",
+                  glow: "hover:border-border/40",
+                };
+
+                return (
+                  <motion.div
+                    key={label}
+                    variants={cardVariants}
+                    whileHover={{
+                      y: -6,
+                      scale: 1.02,
+                      transition: { duration: 0.3, ease: "easeOut" },
+                    }}
+                    className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${theme.glow}`}
+                  >
+                    <div className="flex items-center justify-between text-muted-foreground mb-1">
+                      <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
+                        {label}
+                      </span>
+                      <Icon
+                        className={`w-4 h-4 ${theme.text} opacity-60 group-hover:opacity-100 transition-all duration-300`}
+                      />
+                    </div>
+                    <div
+                      className={`text-3xl font-serif font-bold tracking-tight ${theme.text}`}
+                    >
+                      <AnimatedCount
+                        target={value}
+                        decimals={decimals}
+                        prefix={prefix}
+                        suffix={suffix}
+                      />
+                      {of != null && (
+                        <span className="text-sm text-muted-foreground/60 font-mono font-normal ml-0.5">
+                          /{of}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      {desc}
+                    </span>
+                  </motion.div>
+                );
+              },
+            )}
+          </motion.div>
+        </div>
+      </StorySection>
+
+      <Footer />
+    </>
   );
 }
