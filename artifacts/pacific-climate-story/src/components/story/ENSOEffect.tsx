@@ -200,7 +200,7 @@ export function ENSOEffect() {
             </div>
 
             {/* Dumbbell Chart Panel */}
-            <div className="w-full border border-border/30 rounded-xl p-6 bg-card/30 backdrop-blur-md relative z-10">
+            <div className="w-full border border-border/30 rounded-xl p-6 bg-card/30 backdrop-blur-md relative z-10 dumbbell-panel">
               {/* Chart Header */}
               <div className="mb-6 pb-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-end justify-between gap-4 select-none">
                 <div className="text-left flex-1">
@@ -219,9 +219,9 @@ export function ENSOEffect() {
               </div>
 
               {/* X-Axis Scale Header */}
-              <div className="flex items-center w-full h-8 border-b border-border/30 mb-4 text-xs font-mono text-muted-foreground select-none">
+              <div className="flex items-center w-full h-8 border-b border-border/30 mb-4 text-xs font-mono text-muted-foreground select-none px-3 gap-0">
                 {/* Left spacer matching row label width */}
-                <div className="w-[170px] flex-shrink-0" />
+                <div className="w-full sm:w-[170px] sm:flex-shrink-0 pr-2 hidden sm:block" />
 
                 {/* Ticks container matching track area */}
                 <div className="relative flex-1 h-full">
@@ -247,7 +247,7 @@ export function ENSOEffect() {
                 </div>
 
                 {/* Right spacer matching badge width */}
-                <div className="w-[90px] flex-shrink-0" />
+                <div className="w-[80px] sm:w-[90px] flex-shrink-0" />
               </div>
 
               {/* Dumbbell Rows */}
@@ -256,7 +256,7 @@ export function ENSOEffect() {
                 <div
                   className="absolute top-0 bottom-0 w-px bg-primary/25 border-r border-dashed border-primary/40 pointer-events-none z-0"
                   style={{
-                    left: `calc(170px + (100% - 260px) * ${zeroPct / 100})`,
+                    left: `calc(var(--left-offset) + (100% - var(--total-subtraction)) * ${zeroPct / 100})`,
                   }}
                 />
 
@@ -293,14 +293,14 @@ export function ENSOEffect() {
                         setHoveredNation(null);
                         setHoverCoords(null);
                       }}
-                      className={`relative flex items-center h-10 px-3 rounded-xl transition-all duration-300 group ${
+                      className={`relative flex flex-col sm:flex-row items-stretch sm:items-center py-2.5 sm:py-0 h-auto sm:h-10 px-3 rounded-xl transition-all duration-300 group gap-2 sm:gap-0 ${
                         isHovered
                           ? "bg-card/60 border border-primary/30 shadow-md scale-[1.01]"
-                          : "hover:bg-card/30"
+                          : "hover:bg-card/30 border border-transparent"
                       }`}
                     >
                       {/* Country Name & Code */}
-                      <div className="w-[170px] flex items-center gap-2 flex-shrink-0 pr-2">
+                      <div className="w-full sm:w-[170px] flex items-center gap-2 flex-shrink-0 pr-2">
                         <span className="text-xs font-mono font-semibold text-muted-foreground/60 w-5">
                           #{idx + 1}
                         </span>
@@ -312,67 +312,70 @@ export function ENSOEffect() {
                         </span>
                       </div>
 
-                      {/* Dumbbell Plot Track Area */}
-                      <div className="relative flex-1 h-full flex items-center">
-                        {/* Connecting Line Track */}
-                        <div
-                          className="absolute h-1.5 rounded-full transition-all duration-300 shadow-sm"
-                          style={{
-                            left: `${minPct}%`,
-                            width: `${maxPct - minPct}%`,
-                            background: `linear-gradient(to right, ${ELNINO_COLOR}, ${NEUTRAL_COLOR}, ${LANINA_COLOR})`,
-                            opacity: isHovered ? 1 : 0.75,
-                          }}
-                        />
+                      {/* Dumbbell Plot Track Area and Badge (grouped together for responsive layout alignment) */}
+                      <div className="flex items-center w-full sm:flex-1 h-6 sm:h-full gap-3">
+                        <div className="relative flex-1 h-full flex items-center">
+                          {/* Connecting Line Track */}
+                          <div
+                            className="absolute h-1.5 rounded-full transition-all duration-300 shadow-sm"
+                            style={{
+                              left: `${minPct}%`,
+                              width: `${maxPct - minPct}%`,
+                              background: `linear-gradient(to right, ${ELNINO_COLOR}, ${NEUTRAL_COLOR}, ${LANINA_COLOR})`,
+                              opacity: isHovered ? 1 : 0.75,
+                            }}
+                          />
 
-                        {/* El Niño Dot */}
-                        <div
-                          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
-                          style={{
-                            left: `${elPct}%`,
-                            backgroundColor: ELNINO_COLOR,
-                            boxShadow: `0 0 10px ${ELNINO_COLOR}`,
-                          }}
-                          title={`El Niño: ${elCm >= 0 ? "+" : ""}${elCm.toFixed(1)} cm`}
-                        />
+                          {/* El Niño Dot */}
+                          <div
+                            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
+                            style={{
+                              left: `${elPct}%`,
+                              backgroundColor: ELNINO_COLOR,
+                              boxShadow: `0 0 10px ${ELNINO_COLOR}`,
+                            }}
+                            title={`El Niño: ${elCm >= 0 ? "+" : ""}${elCm.toFixed(1)} cm`}
+                          />
 
-                        {/* Neutral Dot */}
-                        <div
-                          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full border border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
-                          style={{
-                            left: `${neuPct}%`,
-                            backgroundColor: NEUTRAL_COLOR,
-                          }}
-                          title={`Neutral: ${neuCm >= 0 ? "+" : ""}${neuCm.toFixed(1)} cm`}
-                        />
+                          {/* Neutral Dot */}
+                          <div
+                            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full border border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
+                            style={{
+                              left: `${neuPct}%`,
+                              backgroundColor: NEUTRAL_COLOR,
+                            }}
+                            title={`Neutral: ${neuCm >= 0 ? "+" : ""}${neuCm.toFixed(1)} cm`}
+                          />
 
-                        {/* La Niña Dot */}
-                        <div
-                          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
-                          style={{
-                            left: `${laPct}%`,
-                            backgroundColor: LANINA_COLOR,
-                            boxShadow: `0 0 10px ${LANINA_COLOR}`,
-                          }}
-                          title={`La Niña: ${laCm >= 0 ? "+" : ""}${laCm.toFixed(1)} cm`}
-                        />
-                      </div>
+                          {/* La Niña Dot */}
+                          <div
+                            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
+                            style={{
+                              left: `${laPct}%`,
+                              backgroundColor: LANINA_COLOR,
+                              boxShadow: `0 0 10px ${LANINA_COLOR}`,
+                            }}
+                            title={`La Niña: ${laCm >= 0 ? "+" : ""}${laCm.toFixed(1)} cm`}
+                          />
+                        </div>
 
-                      {/* Range Swing Badge */}
-                      <div className="w-[90px] text-right flex-shrink-0 pl-3">
-                        <span
-                          className={`inline-block text-xs font-mono font-bold px-2 py-0.5 rounded-full border transition-all ${
-                            isHovered
-                              ? "bg-sky-500/20 text-sky-300 border-sky-400/40 shadow-sm"
-                              : "bg-card/40 text-sky-400/90 border-border/40"
-                          }`}
-                        >
-                          {swingCm.toFixed(1)} cm
-                        </span>
+                        {/* Range Swing Badge */}
+                        <div className="w-[80px] sm:w-[90px] text-right flex-shrink-0 pl-3">
+                          <span
+                            className={`inline-block text-xs font-mono font-bold px-2 py-0.5 rounded-full border transition-all ${
+                              isHovered
+                                ? "bg-sky-500/20 text-sky-300 border-sky-400/40 shadow-sm"
+                                : "bg-card/40 text-sky-400/90 border-border/40"
+                            }`}
+                          >
+                            {swingCm.toFixed(1)} cm
+                          </span>
+                        </div>
                       </div>
                     </div>
                   );
                 })}
+
 
                 {/* Floating Detailed Hover Tooltip (rendered outside rows loop) */}
                 <AnimatePresence>

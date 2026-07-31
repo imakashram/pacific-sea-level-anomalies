@@ -12,6 +12,7 @@ import {
   Layers,
   Sparkles,
   AlertTriangle,
+  ArrowLeft,
 } from "lucide-react";
 import { useSEO } from "@/lib/useSEO";
 import { motion, AnimatePresence } from "framer-motion";
@@ -415,6 +416,14 @@ export default function HowItIsCalculatedPage() {
             Methodology & Formulas
           </h1>
         </div>
+
+        <a
+          href="/"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-850 text-xs font-semibold text-slate-300 hover:text-cyan-400 transition-all duration-300 shadow-md cursor-pointer group"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
+          <span>Back to Story</span>
+        </a>
       </header>
 
       {/* Main Container */}
