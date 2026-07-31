@@ -486,7 +486,7 @@ export function ENSOEffect() {
               </div>
 
               {/* Legend */}
-              <div className="flex flex-wrap items-center justify-center gap-6 mt-6 pt-4 border-t border-border/20 text-xs text-muted-foreground font-mono">
+              <div className="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs text-muted-foreground font-mono">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
                   <span>El Niño Phase (Warm/Dip)</span>
