@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import NotFoundPage from "@/pages/NotFoundPage";
 import StoryPage from "@/pages/StoryPage";
@@ -7,6 +7,14 @@ import ApiExplorerPage from "@/pages/ApiExplorerPage";
 import HowItIsCalculatedPage from "@/pages/HowItIsCalculatedPage";
 
 const queryClient = new QueryClient();
+
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  return null;
+}
 
 function Router() {
   return (
@@ -43,6 +51,7 @@ function App() {
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
+        <ScrollToTop />
         <Router />
       </WouterRouter>
     </QueryClientProvider>

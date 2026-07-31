@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Link } from "wouter";
 import { ArrowUp, Terminal, Calculator } from "lucide-react";
 
 const childVariants = {
@@ -48,21 +47,25 @@ export function Footer() {
             <span>Back to Top</span>
           </button>
           <span className="text-slate-800" aria-hidden="true">|</span>
-          <Link
+          <a
             href="/api-explorer"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer focus:outline-none"
           >
             <Terminal className="w-3.5 h-3.5" />
             <span>API Explorer</span>
-          </Link>
+          </a>
           <span className="text-slate-800" aria-hidden="true">|</span>
-          <Link
+          <a
             href="/methodology"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer focus:outline-none"
           >
             <Calculator className="w-3.5 h-3.5" />
             <span>Methodology & Formulas</span>
-          </Link>
+          </a>
         </motion.nav>
 
         <motion.div variants={childVariants} className="flex flex-col gap-4">

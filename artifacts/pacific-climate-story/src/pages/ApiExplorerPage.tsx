@@ -438,15 +438,6 @@ export default function ApiExplorerPage() {
             Pacific Sea Level API Explorer
           </h1>
         </div>
-
-        <Link
-          href="/"
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer shadow-inner"
-          title="Return to Climate Story"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Story</span>
-        </Link>
       </header>
 
       {/* Desktop Main Grid */}

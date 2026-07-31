@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { Link } from "wouter";
 import {
-  ArrowLeft,
   Calculator,
   TrendingUp,
   Waves,
   BookOpen,
-  Terminal,
   HelpCircle,
   CheckCircle2,
   Scale,
@@ -17,6 +14,7 @@ import { useSEO } from "@/lib/useSEO";
 
 interface CalculationCard {
   id: string;
+  category: "core" | "trends" | "risk" | "spread";
   title: string;
   question: string;
   unit: string;
@@ -31,11 +29,12 @@ interface CalculationCard {
 const CALCULATIONS: CalculationCard[] = [
   {
     id: "sea-level-anomaly",
+    category: "core",
     title: "1. Sea Level Anomaly (SLA)",
-    question: "How much higher or lower is the ocean level compared to normal?",
+    question: "Is the ocean level currently higher or lower than normal?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "We measure ocean height in any given year and compare it to the 10-year baseline average from 1993 to 2002.",
+      "This measures the height of the sea in a specific year and compares it to a 10-year baseline average (1993-2002). A positive number means the sea is higher than normal, and a negative number means it is lower.",
     formulaSimple:
       "Anomaly (cm) = (Ocean Height - 1993–2002 Baseline Avg) × 100",
     inputData: "Annual satellite & tidal height measurements (meters)",
@@ -49,11 +48,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "decade-shift",
+    category: "core",
     title: "2. Decadal Baseline Shift (Δ)",
-    question: "How much has sea level risen over 30 years?",
+    question: "How much has the baseline sea level shifted over the past 30 years?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "We compare the 10-year average of the first decade (1993–2002) directly against the recent decade average (2014–2023).",
+      "This compares the average sea level from the first decade of monitoring (1993–2002) directly to the average of the most recent decade (2014–2023). It tells us how much the baseline has risen over a generation.",
     formulaSimple: "Decadal Shift = (2014–2023 Average) - (1993–2002 Average)",
     inputData: "Decade 1 Mean (0.0 cm) vs Decade 3 Mean (+8.5 cm)",
     outputResult: "+8.5 cm regional shift",
@@ -66,11 +66,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "speed-rate",
+    category: "trends",
     title: "3. Speed Rate (Linear Trend)",
     question: "How fast is the water level rising every year?",
     unit: "Millimeters per year (mm/yr)",
     plainEnglish:
-      "We fit a linear regression trend line through 30 years of annual water levels to calculate the yearly growth rate.",
+      "This calculates the average speed of sea-level rise by drawing a straight trend line through 30 years of annual measurements. For example, a rate of 4.8 mm/yr means the water rises about half a centimeter each year.",
     formulaSimple: "Speed Rate = OLS Trendline Slope × 1,000 mm/m",
     inputData: "30 annual anomaly records (1993 to 2023)",
     outputResult: "4.84 mm/yr (13% above regional average)",
@@ -83,11 +84,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "volatility",
+    category: "risk",
     title: "4. Volatility (Fluctuation Range)",
-    question: "How unstable or jumpy are annual ocean levels?",
+    question: "How unstable or jumpy are the ocean levels from year to year?",
     unit: "± Centimeters (±cm)",
     plainEnglish:
-      "Volatility measures how far ocean levels bounce up and down around their mean trend line from year to year.",
+      "This measures how much sea levels bounce up and down around their long-term average. High volatility means the island experiences extreme highs and lows due to seasonal changes and storms.",
     formulaSimple:
       "Volatility = Standard Deviation (σ) of Annual Anomalies × 100",
     inputData: "Yearly variance from 30-year average line",
@@ -101,11 +103,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "acceleration",
+    category: "trends",
     title: "5. Decadal Acceleration",
-    question: "Is the ocean rising faster today than it was 20 years ago?",
+    question: "Is the rate of sea-level rise speeding up over time?",
     unit: "mm/yr²",
     plainEnglish:
-      "Acceleration measures whether the annual rate of rise is speeding up over time rather than remaining constant.",
+      "This tells us if the speed of sea-level rise is accelerating (like stepping on a car's gas pedal). A positive value means the sea is rising faster today than it was in the past.",
     formulaSimple: "Acceleration = 2 × Polynomial Fit Coefficient (c₂) × 1,000",
     inputData: "Second-degree polynomial fit (SLA = c₀ + c₁t + c₂t²)",
     outputResult: "+0.24 mm/yr² (Speeding up)",
@@ -118,11 +121,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "peak-record",
+    category: "risk",
     title: "6. Peak Anomaly Record",
-    question: "What is the highest ocean level recorded in history?",
+    question: "What is the highest sea level ever recorded on the island?",
     unit: "Centimeters (+cm)",
     plainEnglish:
-      "The highest single positive anomaly recorded across 30 years of observation for a territory.",
+      "The single highest yearly sea level recorded during the 30 years of observation. It highlights the maximum high-water mark for that territory.",
     formulaSimple: "Peak Record = Max(SLA₁, SLA₂, ..., SLA₃₀) × 100",
     inputData: "30 annual anomaly records for territory",
     outputResult: "Peak: +20.0 cm (Year 2008)",
@@ -135,11 +139,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "trough-record",
+    category: "risk",
     title: "7. Trough Anomaly Record",
-    question: "What is the lowest ocean level drop recorded in history?",
+    question: "What is the lowest sea level drop recorded in history?",
     unit: "Centimeters (-cm)",
     plainEnglish:
-      "The lowest negative anomaly recorded during extreme drought or El Niño phases.",
+      "The lowest yearly sea level drop recorded during extreme drought periods or dry climate phases (like El Niño).",
     formulaSimple: "Trough Record = Min(SLA₁, SLA₂, ..., SLA₃₀) × 100",
     inputData: "30 annual anomaly records for territory",
     outputResult: "Trough: -10.0 cm (Year 1993)",
@@ -152,11 +157,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "cumulative-rise",
+    category: "core",
     title: "8. Cumulative Rise Accumulation",
-    question: "What is the total accumulated water volume rise over 30 years?",
+    question: "What is the total sum of all yearly water level increases?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "We accumulate all positive annual ocean height gains over 30 years to measure total vertical rise burden.",
+      "This sums up only the years that experienced sea-level increases. It provides a visual indicator of the total accumulated height burden placed on the island over time.",
     formulaSimple: "Cumulative Rise = Sum of all positive annual anomalies",
     inputData: "Time-series of annual positive anomalies",
     outputResult: "+20.0 cm accumulated rise",
@@ -169,11 +175,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "start-end-leap",
+    category: "core",
     title: "9. Start-to-End Leap Delta",
-    question: "How much did ocean height jump between 1993 and 2023?",
+    question: "How much did the sea level jump from the very first year to the last?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "The direct height difference between starting observation year (1993) and latest year (2023).",
+      "A simple comparison showing the direct difference in sea level between the first year of monitoring (1993) and the latest year (2023).",
     formulaSimple: "Leap Delta = SLA(2023) - SLA(1993)",
     inputData:
       "1993 initial anomaly (-5.2 cm) vs 2023 final anomaly (+14.8 cm)",
@@ -187,12 +194,13 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "enso-correlation",
+    category: "risk",
     title: "10. ENSO Climate Sensitivity (Pearson r)",
     question:
-      "How do major climate events (El Niño / La Niña) alter sea levels?",
+      "How much do major climate events (El Niño and La Niña) affect the local sea levels?",
     unit: "Correlation (-1.0 to +1.0)",
     plainEnglish:
-      "Measures statistical correlation between sea level anomalies and Southern Oscillation Index (SOI) phases.",
+      "This calculates a correlation score showing how closely local sea levels follow the Pacific El Niño / La Niña cycle. It shows whether local waters drop during El Niño or rise during La Niña.",
     formulaSimple: "ENSO Correlation = Pearson Correlation (SLA vs SOI)",
     inputData: "Annual SOI Index matched against territory sea level anomalies",
     outputResult: "-0.78 (Strong Inverse Sensitivity)",
@@ -205,11 +213,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "risk-score",
+    category: "risk",
     title: "11. Composite Risk Index (R)",
-    question: "Which Pacific nations face the highest overall climate threat?",
+    question: "How threatened is this island overall compared to others?",
     unit: "Score (0–100 Risk Level)",
     plainEnglish:
-      "We combine 4 risk factors (Rise Speed + Volatility + Acceleration + Elevation Exposure) into a 0–100 score.",
+      "A threat index from 0 to 100 that combines four critical factors: how fast the sea is rising, how wild the year-to-year swings are, how much it is speeding up, and how flat or low-lying the island is.",
     formulaSimple:
       "Risk Score = 35% Speed + 25% Volatility + 20% Acceleration + 20% Elevation",
     inputData: "Normalized percentile rankings across 21 Pacific nations",
@@ -223,11 +232,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "threshold-breach",
+    category: "risk",
     title: "12. Threshold Breach Year",
-    question: "When did a territory first breach critical height benchmarks?",
+    question: "When did the island first cross critical sea-level warning lines?",
     unit: "Calendar Year (YYYY)",
     plainEnglish:
-      "Identifies the first calendar year when a territory's sea level crossed benchmark levels (+0cm, +10cm, +20cm).",
+      "Identifies the first calendar year when the sea level rose beyond benchmark heights (such as 10 cm or 20 cm above the starting baseline).",
     formulaSimple: "First Year (y*) where SLA(y*) ≥ Threshold Level",
     inputData: "Annual anomaly time series per territory",
     outputResult: "Breached +10cm in Year 2012",
@@ -240,12 +250,13 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "yoy-budget",
+    category: "risk",
     title: "13. Year-Over-Year Budget Share",
     question:
-      "What percentage of total 30-year rise occurred in a single year?",
+      "What portion of the total 30-year sea-level rise happened in just one single year?",
     unit: "Percentage (%)",
     plainEnglish:
-      "Calculates the fractional percentage share of a single year's anomaly relative to 30-year total accumulation.",
+      "Calculates what percentage of the total accumulated rise happened in a specific year, helping identify years with exceptionally high storm surges or climate events.",
     formulaSimple: "Budget Share (%) = (Annual Anomaly / 30-Year Sum) × 100",
     inputData: "Annual anomaly divided by sum of positive anomalies",
     outputResult: "7.8% annual rise budget share",
@@ -258,11 +269,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "regional-clusters",
+    category: "core",
     title: "14. Sub-Regional Cluster Averages",
-    question: "How do Melanesia, Micronesia, and Polynesia compare?",
+    question: "How do different island groups (Melanesia, Micronesia, Polynesia) compare?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "Groups 21 territories into 3 sub-regions to calculate regional mean rise trajectories.",
+      "Averages the sea level data of neighboring islands into three main sub-regions. This helps climate scientists track if certain sub-regions of the Pacific are rising faster than others.",
     formulaSimple: "Cluster Average = Mean of Member Territory Anomalies",
     inputData: "Territory groupings: Melanesia, Micronesia, Polynesia",
     outputResult: "Micronesia Mean: +10.2 cm",
@@ -275,11 +287,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "percentile-distributions",
+    category: "spread",
     title: "15. Decadal Percentile Distributions (P10, P50, P90)",
-    question: "What are the lower, median, and upper bounds of ocean rise?",
+    question: "What are the lower, middle, and upper limits of sea-level rise across the region?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "Computes 10th percentile (lower bound), 50th percentile (median), and 90th percentile (upper bound) across monitoring stations.",
+      "Instead of looking at one single average, this divides all monitored stations to show the lowest 10% (islands with least rise), the middle 50% (median), and the top 10% (most impacted islands) to show the full range of rise.",
     formulaSimple: "Percentile Rank (P₁₀, P₅₀, P₉₀) of Annual Anomalies",
     inputData: "Sorted annual anomaly array across 21 stations",
     outputResult: "P₅₀ (Median): +8.5 cm, P₉₀ (Upper): +15.2 cm",
@@ -292,12 +305,13 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "annual-deviation",
+    category: "spread",
     title: "16. Cross-Territory Annual Dispersion",
     question:
-      "How much did ocean rise vary across different islands each year?",
+      "How different were the sea levels from island to island in any single year?",
     unit: "Standard Deviation (σ_y)",
     plainEnglish:
-      "Calculates cross-sectional standard deviation among all 21 nations for every calendar year.",
+      "Measures how widely scattered the sea level heights were across all 21 nations for a given year. A high score means some islands were heavily flooded while others were dry.",
     formulaSimple:
       "Annual Dispersion = Standard Deviation across 21 nations in Year y",
     inputData: "21 territory anomaly values for a single year",
@@ -311,12 +325,13 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "nations-rising-count",
+    category: "core",
     title: "17. Nations Rising Count per Year",
     question:
-      "How many Pacific nations experienced positive ocean rise each year?",
+      "How many of the 21 Pacific territories recorded high water levels in a year?",
     unit: "Count (0 to 21 Nations)",
     plainEnglish:
-      "Counts how many of the 21 Pacific territories recorded positive height anomalies (>0.0cm) in any calendar year.",
+      "Counts how many of the 21 monitoring stations recorded sea levels above the baseline. In recent years, this has consistently reached 21 out of 21 (100% of islands).",
     formulaSimple: "Nations Rising = Count of Nations where SLA_y > 0",
     inputData: "Annual anomaly check (>0.0cm) for 21 nations",
     outputResult: "21 of 21 Nations Rising (100% in 2023)",
@@ -329,11 +344,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "forecasting-model",
+    category: "trends",
     title: "18. Predictive Projection Model (2024–2050)",
-    question: "What will ocean height levels be in 2050?",
+    question: "What is the predicted sea level height in the year 2050?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "Extrapolates ocean rise from 2024 to 2050 using historical linear speed and acceleration parameters with confidence bounds.",
+      "Projects future sea levels up to the year 2050 based on historical rising speeds and acceleration trends, while showing a safe range of uncertainty.",
     formulaSimple:
       "Projected SLA(t) = SLA₂₀₂₃ + Speed × (t - 2023) + ½ Acceleration × (t - 2023)² ± 1.96σ",
     inputData:
@@ -348,11 +364,12 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "rolling-average",
+    category: "trends",
     title: "19. 5-Year Rolling Moving Average (SMA)",
-    question: "How do we smooth out short-term year-to-year noise in charts?",
+    question: "How do we filter out temporary yearly bounces in charts to see the real trend?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "Calculates a 5-year centered moving average to smooth out sudden short-term spikes and reveal long-term trends.",
+      "Smooths out sharp, temporary swings (like a single stormy year) by averaging each year with the two years before and after it, revealing the clear long-term direction of rise.",
     formulaSimple:
       "SMA(y) = (SLA_y-2 + SLA_y-1 + SLA_y + SLA_y+1 + SLA_y+2) / 5",
     inputData: "5-year window centered around year y",
@@ -366,12 +383,13 @@ const CALCULATIONS: CalculationCard[] = [
   },
   {
     id: "relative-comparison-ratio",
+    category: "core",
     title: "20. Relative Regional Comparison Ratio (%)",
     question:
-      "How much higher or lower is a nation's metric compared to regional average?",
+      "How does a single island's sea-level rise compare to the regional average?",
     unit: "Percentage (%)",
     plainEnglish:
-      "Compares a single territory's metric directly against the 21-nation regional benchmark average.",
+      "Compares a single island's measurements directly to the average of all 21 Pacific nations to show if it is rising faster or slower than its neighbors.",
     formulaSimple:
       "Relative Ratio (%) = ((Nation Metric / Regional Avg Metric) - 1) × 100",
     inputData: "Nation metric value vs Regional benchmark average",
@@ -429,26 +447,6 @@ export default function HowItIsCalculatedPage() {
           <h1 className="text-xl font-bold font-serif text-slate-100 tracking-tight">
             Methodology & Formulas
           </h1>
-        </div>
-
-        <div className="flex items-center gap-3">
-          {/* Navigation Link to API Explorer */}
-          <Link
-            href="/api-explorer"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 text-xs font-semibold transition shadow-sm cursor-pointer"
-          >
-            <Terminal className="w-4 h-4 text-cyan-400" />
-            <span>API Explorer</span>
-          </Link>
-          <div className="h-5 w-px bg-slate-800/60" />
-          <Link
-            href="/"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold transition cursor-pointer"
-            title="Return to Climate Story"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Story</span>
-          </Link>
         </div>
       </header>
 
