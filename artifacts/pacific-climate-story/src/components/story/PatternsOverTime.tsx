@@ -95,7 +95,7 @@ export function PatternsOverTime() {
   ];
 
   return (
-    <StorySection id="the-heatmap" className="bg-background">
+    <StorySection id="the-heatmap">
       <div className="mb-8 text-center flex flex-col items-center justify-center">
         <h2 className="text-5xl md:text-6xl font-serif font-bold mb-6">
           Patterns Over Time

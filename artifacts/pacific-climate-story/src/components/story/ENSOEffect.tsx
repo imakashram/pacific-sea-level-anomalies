@@ -48,9 +48,7 @@ export function ENSOEffect() {
   }
 
   return (
-    <StorySection id="chapter-enso" className="bg-background relative">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/5 via-background to-background pointer-events-none" />
-
+    <StorySection id="chapter-enso" className="relative">
       <div className="relative z-10 max-w-5xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

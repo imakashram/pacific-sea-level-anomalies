@@ -51,26 +51,26 @@
 
 :root {
   color-scheme: light;
-  --background: 220 50% 4%;
+  --background: 212 50% 6%;
   --foreground: 210 40% 90%;
-  --border: 220 30% 15%;
-  --card: 220 50% 6%;
+  --border: 212 30% 18%;
+  --card: 212 40% 10%;
   --card-foreground: 210 40% 90%;
-  --card-border: 220 30% 15%;
-  --popover: 220 50% 6%;
+  --card-border: 212 30% 18%;
+  --popover: 212 40% 10%;
   --popover-foreground: 210 40% 90%;
-  --popover-border: 220 30% 15%;
+  --popover-border: 212 30% 18%;
   --primary: 180 100% 40%;
-  --primary-foreground: 220 50% 4%;
-  --secondary: 220 30% 15%;
+  --primary-foreground: 212 50% 6%;
+  --secondary: 212 30% 18%;
   --secondary-foreground: 210 40% 90%;
-  --muted: 220 30% 15%;
+  --muted: 212 30% 18%;
   --muted-foreground: 215 20% 65%;
   --accent: 180 100% 40%;
-  --accent-foreground: 220 50% 4%;
+  --accent-foreground: 212 50% 6%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --input: 220 30% 15%;
+  --input: 212 30% 18%;
   --ring: 180 100% 40%;
   --chart-1: 180 100% 40%;
   --chart-2: 195 80% 50%;
@@ -83,26 +83,26 @@
 
 .dark {
   color-scheme: dark;
-  --background: 220 50% 4%;
+  --background: 212 50% 6%;
   --foreground: 210 40% 90%;
-  --border: 220 30% 15%;
-  --card: 220 50% 6%;
+  --border: 212 30% 18%;
+  --card: 212 40% 10%;
   --card-foreground: 210 40% 90%;
-  --card-border: 220 30% 15%;
-  --popover: 220 50% 6%;
+  --card-border: 212 30% 18%;
+  --popover: 212 40% 10%;
   --popover-foreground: 210 40% 90%;
-  --popover-border: 220 30% 15%;
+  --popover-border: 212 30% 18%;
   --primary: 180 100% 40%;
-  --primary-foreground: 220 50% 4%;
-  --secondary: 220 30% 15%;
+  --primary-foreground: 212 50% 6%;
+  --secondary: 212 30% 18%;
   --secondary-foreground: 210 40% 90%;
-  --muted: 220 30% 15%;
+  --muted: 212 30% 18%;
   --muted-foreground: 215 20% 65%;
   --accent: 180 100% 40%;
-  --accent-foreground: 220 50% 4%;
+  --accent-foreground: 212 50% 6%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --input: 220 30% 15%;
+  --input: 212 30% 18%;
   --ring: 180 100% 40%;
   --chart-1: 180 100% 40%;
   --chart-2: 195 80% 50%;
@@ -181,5 +181,6 @@
     --total-subtraction: 274px;
   }
 }
+
 
 
