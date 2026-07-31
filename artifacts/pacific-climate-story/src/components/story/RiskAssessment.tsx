@@ -697,7 +697,7 @@ export function RiskAssessment() {
                     setIsAnimationActive(false);
                   }, 1800);
                 }}
-                className="lg:col-span-7 bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between"
+                className="lg:col-span-7 bg-card/10 border border-border/30 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between"
               >
                 <div>
                   <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
@@ -1037,7 +1037,7 @@ export function RiskAssessment() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.25 }}
-                className="lg:col-span-5 bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between min-h-[560px]"
+                className="lg:col-span-5 bg-card/10 border border-border/30 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between min-h-[560px]"
               >
                 <div>
                   <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
@@ -1171,7 +1171,7 @@ export function RiskAssessment() {
                       </div>
 
                       {/* Component breakdown mini cards */}
-                      <div className="grid grid-cols-4 gap-2 pt-2 border-t border-border/20">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-border/20">
                         {radarData.map((item) => {
                           const itemColor = getScoreColor(item.value);
                           return (

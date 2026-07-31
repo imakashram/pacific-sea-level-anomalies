@@ -108,12 +108,12 @@ export function PatternsOverTime() {
       </div>
 
       {/* Sort Controls */}
-      <div className="flex items-center gap-3 mx-auto mb-6 bg-slate-900/40 border border-white/5 rounded-xl px-4 py-2 w-fit select-none">
+      <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mx-auto mb-6 bg-slate-900/40 border border-white/5 rounded-xl px-4 py-2 w-fit select-none">
         <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
           Sort by:
         </span>
         <div
-          className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5"
+          className="flex flex-wrap justify-center bg-slate-950/60 p-0.5 rounded-lg border border-white/5"
           role="tablist"
           aria-label="Sort heatmaps"
           onKeyDown={handleTablistKeyDown}

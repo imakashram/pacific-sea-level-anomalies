@@ -14,6 +14,7 @@ import {
   Sparkles,
   Layers,
   ChevronRight,
+  ArrowLeft,
 } from "lucide-react";
 import { useSEO } from "@/lib/useSEO";
 import { motion, AnimatePresence } from "framer-motion";
@@ -435,21 +436,30 @@ export default function ApiExplorerPage() {
       <div className="absolute bottom-[20%] right-[10%] w-[700px] h-[700px] rounded-full bg-blue-500/5 blur-[160px] pointer-events-none animate-pulse duration-[12000ms]" />
 
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#060812]/80 backdrop-blur-xl border-b border-slate-800/60 shadow-lg px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 shadow-md">
+      <header className="sticky top-0 z-50 bg-[#060812]/80 backdrop-blur-xl border-b border-slate-800/60 shadow-lg px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="p-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 shadow-md flex-shrink-0">
             <Cpu className="w-4 h-4" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
+          <h1 className="text-base sm:text-xl font-bold tracking-tight bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent truncate">
             Pacific Sea Level API Explorer
           </h1>
         </div>
+
+        <a
+          href="/"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-850 text-xs font-semibold text-slate-300 hover:text-cyan-400 transition-all duration-300 shadow-md cursor-pointer group flex-shrink-0"
+          aria-label="Back to Story"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
+          <span className="hidden sm:inline">Back to Story</span>
+        </a>
       </header>
 
       {/* Desktop Main Grid */}
       <main
         id="main-content"
-        className="max-w-[1720px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:h-[calc(100vh-80px)] lg:overflow-hidden overflow-y-auto"
+        className="max-w-[1720px] mx-auto p-3 xs:p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:h-[calc(100vh-80px)] lg:overflow-hidden overflow-y-auto"
         tabIndex={-1}
       >
         {/* LEFT COLUMN: Endpoint Navigator */}

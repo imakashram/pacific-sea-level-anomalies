@@ -407,27 +407,28 @@ export default function HowItIsCalculatedPage() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] rounded-full bg-cyan-500/5 blur-[160px] pointer-events-none" />
 
       {/* Header Bar */}
-      <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-4 sm:px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
             <Calculator className="w-4 h-4" />
           </div>
-          <h1 className="text-xl font-bold font-serif text-slate-100 tracking-tight">
+          <h1 className="text-base sm:text-xl font-bold font-serif text-slate-100 tracking-tight">
             Methodology & Formulas
           </h1>
         </div>
 
         <a
           href="/"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-850 text-xs font-semibold text-slate-300 hover:text-cyan-400 transition-all duration-300 shadow-md cursor-pointer group"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-850 text-xs font-semibold text-slate-300 hover:text-cyan-400 transition-all duration-300 shadow-md cursor-pointer group"
+          aria-label="Back to Story"
         >
           <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
-          <span>Back to Story</span>
+          <span className="hidden sm:inline">Back to Story</span>
         </a>
       </header>
 
       {/* Main Container */}
-      <main id="main-content" className="max-w-[1300px] mx-auto p-6 lg:p-10 flex flex-col gap-8" tabIndex={-1}>
+      <main id="main-content" className="max-w-[1300px] mx-auto p-4 sm:p-6 lg:p-10 flex flex-col gap-8" tabIndex={-1}>
         {/* Introduction Header */}
         <div className="relative overflow-hidden bg-slate-900/20 border border-slate-800/80 p-8 rounded-3xl flex flex-col gap-6 shadow-xl backdrop-blur-sm">
           {/* Subtle decoration inside header */}
@@ -646,7 +647,7 @@ export default function HowItIsCalculatedPage() {
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/40" />
                           </div>
                         </div>
-                        <div className="text-xs md:text-sm font-bold text-cyan-400 py-1 tracking-tight select-all leading-normal">
+                        <div className="text-xs md:text-sm font-bold text-cyan-400 py-1 tracking-tight select-all leading-normal break-words whitespace-pre-wrap overflow-x-auto">
                           {item.formulaSimple}
                         </div>
                         <div className="text-[10px] text-slate-400/80 mt-1 flex items-center gap-1.5 font-sans">

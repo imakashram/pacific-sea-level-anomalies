@@ -216,17 +216,17 @@ export function HeroSection() {
 
         {/* Key Climate Telemetry Statistics Grid */}
         <motion.div
-          className="w-full border border-slate-800/60 py-8 bg-slate-950/40 backdrop-blur-md rounded-2xl px-8 shadow-xl"
+          className="w-full border border-slate-800/60 py-6 sm:py-8 bg-slate-950/40 backdrop-blur-md rounded-2xl px-4 sm:px-8 shadow-xl"
           variants={statsContainerVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {/* Metric 1: Overall Average Sea Level Rise */}
             <motion.div
               variants={statCardVariants}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="border-l-2 border-cyan-500 pl-4 py-1 cursor-default"
+              className="border-l-2 border-cyan-500 pl-3 sm:pl-4 py-1 cursor-default"
             >
               <div className="text-2xl font-serif font-bold text-foreground">
                 <AnimatedCounter value={avgRiseMeters * 100} prefix="+" suffix=" cm" />
@@ -235,12 +235,12 @@ export function HeroSection() {
                 Average Rise
               </div>
             </motion.div>
-
+ 
             {/* Metric 2: Multi-Decadal Shift (Decade 1 vs Decade 3) */}
             <motion.div
               variants={statCardVariants}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="border-l-2 border-orange-500 pl-4 py-1 cursor-default"
+              className="border-l-2 border-orange-500 pl-3 sm:pl-4 py-1 cursor-default"
             >
               <div className="text-2xl font-serif font-bold text-foreground">
                 <AnimatedCounter value={shift * 100} prefix="+" suffix=" cm" />
@@ -249,12 +249,12 @@ export function HeroSection() {
                 Decade Shift (D1-D3)
               </div>
             </motion.div>
-
+ 
             {/* Metric 3: Fastest Rising Pacific Island Nation */}
             <motion.div
               variants={statCardVariants}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="border-l-2 border-rose-500 pl-4 py-1 cursor-default"
+              className="border-l-2 border-rose-500 pl-3 sm:pl-4 py-1 cursor-default"
             >
               <div
                 className="text-2xl font-serif font-bold text-foreground truncate"
@@ -266,12 +266,12 @@ export function HeroSection() {
                 Fastest Rising (<AnimatedCounter value={fastest.slopeFullPeriod * 1000} prefix="+" suffix=" mm/yr" />)
               </div>
             </motion.div>
-
+ 
             {/* Metric 4: Most Volatile Pacific Island Nation */}
             <motion.div
               variants={statCardVariants}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="border-l-2 border-purple-500 pl-4 py-1 cursor-default"
+              className="border-l-2 border-purple-500 pl-3 sm:pl-4 py-1 cursor-default"
             >
               <div
                 className="text-2xl font-serif font-bold text-foreground truncate"
