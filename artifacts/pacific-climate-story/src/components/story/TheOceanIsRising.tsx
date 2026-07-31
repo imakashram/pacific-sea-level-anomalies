@@ -401,7 +401,7 @@ export function TheOceanIsRising() {
       {/* Interactive Main Composed Chart Container */}
       <motion.div
         ref={ref}
-        className="w-full h-[60vh] min-h-[460px] relative mb-12"
+        className="w-full relative mb-12 bg-card/10 backdrop-blur-md border border-slate-800/60 rounded-2xl p-6 md:p-8 shadow-2xl"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -494,7 +494,7 @@ export function TheOceanIsRising() {
         </div>
 
         {/* Recharts Render Area */}
-        <div className="w-full h-[76%] relative z-10">
+        <div className="w-full h-[400px] relative z-10">
           <div className="sr-only">
             This line chart visualizes the rising trend of annual Pacific sea level anomalies from 1993 to 2023.
             Over the 30-year period, sea levels exhibit a net rise of {totalRiseCm.toFixed(1)} cm and a decadal baseline shift of {shiftCm.toFixed(1)} cm, rising at a linear speed rate of {(reg.slope * 1000).toFixed(2)} mm/year.

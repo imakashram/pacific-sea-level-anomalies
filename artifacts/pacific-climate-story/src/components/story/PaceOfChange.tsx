@@ -1062,19 +1062,13 @@ export function PaceOfChange() {
                   <div className="w-full h-full" />
                 )}
               </div>
-            </motion.div>
 
-            {/* Interaction Helper Text */}
-            <motion.p
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { duration: 0.5 } },
-              }}
-              className="text-center text-xs text-muted-foreground mt-4 mb-10 font-sans select-none"
-            >
-              Hover over any bar to inspect that nation's 30-year sea level rise
-              pace and compare it to the global average.
-            </motion.p>
+              {/* Interaction Helper Text */}
+              <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
+                Hover over any bar to inspect that nation's 30-year sea level rise
+                pace and compare it to the global average.
+              </p>
+            </motion.div>
 
             {/* Visual 2: Acceleration Before & After 2008 */}
             <motion.div
@@ -1088,7 +1082,7 @@ export function PaceOfChange() {
               }}
               className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-2xl"
             >
-              <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
                 <div className="max-w-xl">
                   <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
                     Acceleration Before & After 2008
@@ -1098,7 +1092,7 @@ export function PaceOfChange() {
                     its 2008–2023 rise rate (right).
                   </p>
                 </div>
-                <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 self-end">
+                <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 md:mt-0 flex-shrink-0">
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
                     Accelerating
@@ -1110,20 +1104,14 @@ export function PaceOfChange() {
                 </div>
               </div>
               <SlopeChart data={sortedByAccel} />
-            </motion.div>
 
-            {/* Interaction Helper Text */}
-            <motion.p
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { duration: 0.5 } },
-              }}
-              className="text-center text-xs text-muted-foreground mt-4 font-sans select-none"
-            >
-              Hover over any line or label to isolate its trajectory and trace
-              how that nation's rate of rise accelerated or slowed between
-              epochs.
-            </motion.p>
+              {/* Interaction Helper Text */}
+              <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
+                Hover over any line or label to isolate its trajectory and trace
+                how that nation's rate of rise accelerated or slowed between
+                epochs.
+              </p>
+            </motion.div>
           </motion.div>
         )}
       </div>

@@ -218,18 +218,17 @@ export function PacificSubRegions() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="lg:col-span-7 flex flex-col gap-4"
+            className="lg:col-span-7"
           >
-            <div className="px-1 text-left select-none">
-              <h3 className="text-sm font-mono font-bold text-slate-100">
-                Decadal Shift Stepper
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Compare decadal average sea level shifts across Melanesia, Micronesia, and Polynesia.
-              </p>
-            </div>
-
             <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between h-full">
+              <div className="px-1 text-left select-none mb-6 pb-4 border-b border-white/5">
+                <h3 className="text-sm font-mono font-bold text-slate-100">
+                  Decadal Shift Stepper
+                </h3>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  Compare decadal average sea level shifts across Melanesia, Micronesia, and Polynesia.
+                </p>
+              </div>
               <div className="relative w-full h-[320px] flex items-center justify-center">
                 <svg
                   viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
@@ -543,6 +542,11 @@ export function PacificSubRegions() {
                   })}
                 </svg>
               </div>
+
+              {/* Interaction Helper Text */}
+              <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none leading-relaxed">
+                Click on any sub-region column (Melanesia, Micronesia, or Polynesia) to highlight its decadal escalation pathway. The right-hand panel dynamically displays the member nations and localized baseline anomalies for the active realm.
+              </p>
             </div>
           </motion.div>
 
@@ -552,25 +556,25 @@ export function PacificSubRegions() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.25 }}
-            className="lg:col-span-5 flex flex-col gap-4"
+            className="lg:col-span-5"
           >
-            <div className="px-1 text-left select-none">
-              <h3 className="text-sm font-mono font-bold text-slate-100 flex items-center gap-2">
-                <MapPin className={`w-3.5 h-3.5 ${REGION_THEMES[selectedCluster.region].text}`} />
-                {selectedCluster.region} ({selectedCluster.nationsCount} Nations)
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Recent average anomaly: <span className={`font-semibold ${REGION_THEMES[selectedCluster.region].text}`}>+{selectedCluster.latest2023AvgCm.toFixed(1)} cm</span> (2023 Avg)
-              </p>
-            </div>
+            <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between h-full">
+              <div className="px-1 text-left select-none mb-6 pb-4 border-b border-white/5">
+                <h3 className="text-sm font-mono font-bold text-slate-100 flex items-center gap-2">
+                  <MapPin className={`w-3.5 h-3.5 ${REGION_THEMES[selectedCluster.region].text}`} />
+                  {selectedCluster.region} ({selectedCluster.nationsCount} Nations)
+                </h3>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  Recent average anomaly: <span className={`font-semibold ${REGION_THEMES[selectedCluster.region].text}`}>+{selectedCluster.latest2023AvgCm.toFixed(1)} cm</span> (2023 Avg)
+                </p>
+              </div>
 
-            <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-center h-full">
               <motion.div
                 key={selectedRegion}
                 variants={listContainerVariants}
                 initial="hidden"
                 animate="visible"
-                className="flex flex-col gap-2 max-h-[380px] overflow-y-auto custom-scrollbar pr-1"
+                className="flex flex-col gap-2 max-h-[260px] overflow-y-auto custom-scrollbar pr-1"
               >
                 {selectedCluster.nations.map((n) => (
                   <motion.div
@@ -590,11 +594,6 @@ export function PacificSubRegions() {
             </div>
           </motion.div>
         </div>
-
-        {/* Interaction Helper Text */}
-        <p className="text-center text-xs text-muted-foreground mt-8 max-w-2xl mx-auto font-sans select-none leading-relaxed">
-          Click on any sub-region column (Melanesia, Micronesia, or Polynesia) to highlight its decadal escalation pathway. The right-hand panel dynamically displays the member nations and localized baseline anomalies for the active realm.
-        </p>
       </div>
     </StorySection>
   );
