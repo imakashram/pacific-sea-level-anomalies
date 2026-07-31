@@ -3,7 +3,7 @@ import { useInView } from "framer-motion";
 import { HeroSection } from "@/components/story/HeroSection";
 import { TheDataLandscape } from "@/components/story/TheDataLandscape";
 import { TheOceanIsRising } from "@/components/story/TheOceanIsRising";
-import { ChapterSubRegionalClusters } from "@/components/story/ChapterSubRegionalClusters";
+import { PacificSubRegions } from "@/components/story/PacificSubRegions";
 import { ENSOEffect } from "@/components/story/ENSOEffect";
 import { PaceOfChange } from "@/components/story/PaceOfChange";
 import { PatternsOverTime } from "@/components/story/PatternsOverTime";
@@ -57,7 +57,7 @@ export default function StoryPage() {
         <TheDataLandscape />
         <TheOceanIsRising />
         <PaceOfChange />
-        <ChapterSubRegionalClusters />
+        <PacificSubRegions />
         <ENSOEffect />
         <PatternsOverTime />
         <FutureOutlook />

@@ -27,6 +27,7 @@ import type {
   HealthStatus,
   HeatmapData,
   HeroSectionData,
+  RegionalCluster,
   RiskScoreData,
   SeaLevelAnomaliesOverview,
   ThresholdCrossingsData,
@@ -1419,6 +1420,83 @@ export function useGetWhatThisMeans<TData = Awaited<ReturnType<typeof getWhatThi
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetWhatThisMeansQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetSubRegionsUrl = () => {
+
+
+
+
+  return `/api/story/sub-regions`
+}
+
+/**
+ * @summary Get sub-regional climate risk data groups
+ */
+export const getSubRegions = async ( options?: RequestInit): Promise<RegionalCluster[]> => {
+
+  return customFetch<RegionalCluster[]>(getGetSubRegionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSubRegionsQueryKey = () => {
+    return [
+    `/api/story/sub-regions`
+    ] as const;
+    }
+
+
+export const getGetSubRegionsQueryOptions = <TData = Awaited<ReturnType<typeof getSubRegions>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSubRegions>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSubRegionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSubRegions>>> = ({ signal }) => getSubRegions({ signal });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSubRegions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSubRegionsQueryResult = NonNullable<Awaited<ReturnType<typeof getSubRegions>>>
+export type GetSubRegionsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get sub-regional climate risk data groups
+ */
+
+export function useGetSubRegions<TData = Awaited<ReturnType<typeof getSubRegions>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSubRegions>>, TError, TData>, }
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSubRegionsQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

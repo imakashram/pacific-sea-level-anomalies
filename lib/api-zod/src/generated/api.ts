@@ -410,3 +410,24 @@ export const GetWhatThisMeansResponse = zod.object({
 })
 
 
+/**
+ * @summary Get sub-regional climate risk data groups
+ */
+export const GetSubRegionsResponseItem = zod.object({
+  "region": zod.enum(['Melanesia', 'Micronesia', 'Polynesia']),
+  "nationsCount": zod.number(),
+  "d1AvgCm": zod.number(),
+  "d2AvgCm": zod.number(),
+  "d3AvgCm": zod.number(),
+  "shiftCm": zod.number(),
+  "avgSlopeMmYr": zod.number(),
+  "latest2023AvgCm": zod.number(),
+  "nations": zod.array(zod.object({
+  "code": zod.string(),
+  "name": zod.string()
+})),
+  "description": zod.string()
+})
+export const GetSubRegionsResponse = zod.array(GetSubRegionsResponseItem)
+
+

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import Papa from "papaparse";
+import { RegionalCluster } from "@workspace/api-zod";
 
 const router = Router();
 
@@ -816,6 +817,74 @@ function getAnnualDeviationData() {
   };
 }
 
+function getSubRegionsData(): RegionalCluster[] {
+  return [
+    {
+      region: "Melanesia",
+      nationsCount: 5,
+      d1AvgCm: 0.6,
+      d2AvgCm: 4.0,
+      d3AvgCm: 9.1,
+      shiftCm: 8.5,
+      avgSlopeMmYr: 4.72,
+      latest2023AvgCm: 12.0,
+      nations: [
+        { code: "PG", name: "Papua New Guinea" },
+        { code: "FJ", name: "Fiji" },
+        { code: "SB", name: "Solomon Islands" },
+        { code: "VU", name: "Vanuatu" },
+        { code: "NC", name: "New Caledonia" },
+      ],
+      description:
+        "Volcanic high islands experiencing the highest average linear trend rate (+4.72 mm/yr) and extreme surge amplitudes.",
+    },
+    {
+      region: "Micronesia",
+      nationsCount: 7,
+      d1AvgCm: -0.3,
+      d2AvgCm: 5.4,
+      d3AvgCm: 7.4,
+      shiftCm: 7.7,
+      avgSlopeMmYr: 4.1,
+      latest2023AvgCm: 10.0,
+      nations: [
+        { code: "KI", name: "Kiribati" },
+        { code: "NR", name: "Nauru" },
+        { code: "MP", name: "Northern Mariana Islands" },
+        { code: "MH", name: "Marshall Islands" },
+        { code: "FM", name: "Micronesia, Federated State of" },
+        { code: "GU", name: "Guam" },
+        { code: "PW", name: "Palau" },
+      ],
+      description:
+        "Low-lying coral atolls exceptionally susceptible to ENSO volatility and saltwater intrusion even at moderate sea level rises.",
+    },
+    {
+      region: "Polynesia",
+      nationsCount: 9,
+      d1AvgCm: -0.1,
+      d2AvgCm: 4.7,
+      d3AvgCm: 8.7,
+      shiftCm: 8.8,
+      avgSlopeMmYr: 4.19,
+      latest2023AvgCm: 10.0,
+      nations: [
+        { code: "AS", name: "American Samoa" },
+        { code: "WS", name: "Samoa" },
+        { code: "NU", name: "Niue" },
+        { code: "TV", name: "Tuvalu" },
+        { code: "CK", name: "Cook Islands" },
+        { code: "TK", name: "Tokelau" },
+        { code: "PF", name: "French Polynesia" },
+        { code: "WF", name: "Wallis and Futuna" },
+        { code: "TO", name: "Tonga" },
+      ],
+      description:
+        "Widespread archipelago cluster showing the largest net decadal shift (+8.8 cm) from baseline levels.",
+    },
+  ];
+}
+
 // ── Core endpoints ──────────────────────────────────────────────────────────
 
 router.get("/core/overview", (_req, res): void => {
@@ -902,6 +971,10 @@ router.get("/story/decade-analysis", (_req, res): void => {
 
 router.get("/story/annual-deviation", (_req, res): void => {
   res.json(getAnnualDeviationData());
+});
+
+router.get("/story/sub-regions", (_req, res): void => {
+  res.json(getSubRegionsData());
 });
 
 export default router;

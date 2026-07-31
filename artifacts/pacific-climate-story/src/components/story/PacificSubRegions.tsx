@@ -2,22 +2,7 @@ import { StorySection } from "./StorySection";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { MapPin, Gauge } from "lucide-react";
-
-/**
- * Data structure representing a sub-regional cluster analysis summary.
- */
-export interface RegionalCluster {
-  region: "Melanesia" | "Micronesia" | "Polynesia";
-  nationsCount: number;
-  d1AvgCm: number;
-  d2AvgCm: number;
-  d3AvgCm: number;
-  shiftCm: number;
-  avgSlopeMmYr: number;
-  latest2023AvgCm: number;
-  nations: Array<{ code: string; name: string }>;
-  description: string;
-}
+import { useGetSubRegions } from "@workspace/api-client-react";
 
 const REGION_THEMES: Record<
   string,
@@ -61,85 +46,28 @@ const REGION_THEMES: Record<
 };
 
 /**
- * Static 100% verified sub-regional cluster data
- * derived directly from sea_level_anomalies.csv dataset.
- */
-const CLUSTER_DATA: RegionalCluster[] = [
-  {
-    region: "Melanesia",
-    nationsCount: 5,
-    d1AvgCm: 0.6,
-    d2AvgCm: 4.0,
-    d3AvgCm: 9.1,
-    shiftCm: 8.5,
-    avgSlopeMmYr: 4.72,
-    latest2023AvgCm: 12.0,
-    nations: [
-      { code: "PG", name: "Papua New Guinea" },
-      { code: "FJ", name: "Fiji" },
-      { code: "SB", name: "Solomon Islands" },
-      { code: "VU", name: "Vanuatu" },
-      { code: "NC", name: "New Caledonia" },
-    ],
-    description:
-      "Volcanic high islands experiencing the highest average linear trend rate (+4.72 mm/yr) and extreme surge amplitudes.",
-  },
-  {
-    region: "Micronesia",
-    nationsCount: 7,
-    d1AvgCm: -0.3,
-    d2AvgCm: 5.4,
-    d3AvgCm: 7.4,
-    shiftCm: 7.7,
-    avgSlopeMmYr: 4.1,
-    latest2023AvgCm: 10.0,
-    nations: [
-      { code: "KI", name: "Kiribati" },
-      { code: "NR", name: "Nauru" },
-      { code: "MP", name: "Northern Mariana Islands" },
-      { code: "MH", name: "Marshall Islands" },
-      { code: "FM", name: "Micronesia, Federated State of" },
-      { code: "GU", name: "Guam" },
-      { code: "PW", name: "Palau" },
-    ],
-    description:
-      "Low-lying coral atolls exceptionally susceptible to ENSO volatility and saltwater intrusion even at moderate sea level rises.",
-  },
-  {
-    region: "Polynesia",
-    nationsCount: 9,
-    d1AvgCm: -0.1,
-    d2AvgCm: 4.7,
-    d3AvgCm: 8.7,
-    shiftCm: 8.8,
-    avgSlopeMmYr: 4.19,
-    latest2023AvgCm: 10.0,
-    nations: [
-      { code: "AS", name: "American Samoa" },
-      { code: "WS", name: "Samoa" },
-      { code: "NU", name: "Niue" },
-      { code: "TV", name: "Tuvalu" },
-      { code: "CK", name: "Cook Islands" },
-      { code: "TK", name: "Tokelau" },
-      { code: "PF", name: "French Polynesia" },
-      { code: "WF", name: "Wallis and Futuna" },
-      { code: "TO", name: "Tonga" },
-    ],
-    description:
-      "Widespread archipelago cluster showing the largest net decadal shift (+8.8 cm) from baseline levels.",
-  },
-];
-
-/**
- * ChapterSubRegionalClusters Component
+ * PacificSubRegions Component
  *
  * Uses a Bespoke Custom SVG "Sub-Regional Escalation Stepper Chart" specifically tailored for
  * comparing decadal climate shifts (D1 → D2 → D3) across Melanesia, Micronesia, and Polynesia.
  */
-export function ChapterSubRegionalClusters() {
+export function PacificSubRegions() {
+  const { data: CLUSTER_DATA, isLoading } = useGetSubRegions();
   const [selectedRegion, setSelectedRegion] = useState<
     "Melanesia" | "Micronesia" | "Polynesia"
   >("Melanesia");
+
+  if (isLoading || !CLUSTER_DATA) {
+    return (
+      <StorySection id="pacific-sub-regions" className="py-12 md:py-16">
+        <div className="max-w-5xl mx-auto h-[400px] flex items-center justify-center">
+          <div className="text-muted-foreground font-mono animate-pulse">
+            Loading Sub-Regional Climate Data...
+          </div>
+        </div>
+      </StorySection>
+    );
+  }
 
   const selectedCluster =
     CLUSTER_DATA.find((c) => c.region === selectedRegion) || CLUSTER_DATA[0];
@@ -166,7 +94,7 @@ export function ChapterSubRegionalClusters() {
   };
 
   return (
-    <StorySection id="chapter-clusters" className="py-12 md:py-16">
+    <StorySection id="pacific-sub-regions" className="py-12 md:py-16">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -176,27 +104,11 @@ export function ChapterSubRegionalClusters() {
           transition={{ duration: 0.8 }}
           className="mb-12 text-center flex flex-col items-center"
         >
-          <p className="text-xs font-mono tracking-[0.25em] text-cyan-400 uppercase mb-3 font-semibold">
-            Custom Analytics · Sub-Regional Escalation Stepper
-          </p>
           <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">
-            Sub-Regional Clusters
+            Pacific Sub-Regions
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Comparing climate vulnerability across the three geographic realms
-            of the Pacific:
-            <span className="text-emerald-400 font-semibold ml-1.5">
-              Melanesia
-            </span>
-            ,
-            <span className="text-cyan-400 font-semibold ml-1.5">
-              Micronesia
-            </span>
-            , and
-            <span className="text-purple-400 font-semibold ml-1.5">
-              Polynesia
-            </span>
-            .
+            Compare sea level patterns and climate risk across Melanesia, Micronesia, and Polynesia.
           </p>
         </motion.div>
 

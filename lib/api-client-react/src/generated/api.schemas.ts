@@ -308,3 +308,30 @@ export interface HeroSectionData {
   volatility: VolatilityData;
 }
 
+export interface RegionalClusterNation {
+  code: string;
+  name: string;
+}
+
+export type RegionalClusterRegion = typeof RegionalClusterRegion[keyof typeof RegionalClusterRegion];
+
+
+export const RegionalClusterRegion = {
+  Melanesia: 'Melanesia',
+  Micronesia: 'Micronesia',
+  Polynesia: 'Polynesia',
+} as const;
+
+export interface RegionalCluster {
+  region: RegionalClusterRegion;
+  nationsCount: number;
+  d1AvgCm: number;
+  d2AvgCm: number;
+  d3AvgCm: number;
+  shiftCm: number;
+  avgSlopeMmYr: number;
+  latest2023AvgCm: number;
+  nations: RegionalClusterNation[];
+  description: string;
+}
+
