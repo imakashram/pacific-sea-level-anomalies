@@ -478,35 +478,6 @@ export function FutureOutlook() {
               </div>
             </motion.div>
 
-            {/* Chart Header with title, subtitle, and legend below */}
-            <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
-              <div className="max-w-xl">
-                <h3 className="text-xs font-mono font-bold text-slate-100  tracking-wider">
-                  Decadal Projection (Through 2033)
-                </h3>
-                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                  Linear trend projection of regional anomalies with a shaded
-                  ±2σ confidence interval.
-                </p>
-              </div>
-
-              {/* Legend Controls */}
-              <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 self-end">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-3.5 h-0.5 bg-primary inline-block rounded" />
-                  Historical
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="w-3.5 h-0.5 border-t border-dashed border-[#f97316] inline-block" />
-                  Projection
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="w-3.5 h-2 bg-[#f97316]/15 border border-[#f97316]/30 inline-block rounded-[2px]" />
-                  ±2σ Band
-                </span>
-              </div>
-            </div>
-
             {/* Projection ComposedChart Container */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -520,8 +491,37 @@ export function FutureOutlook() {
                   setIsAnimationActive(false);
                 }, 2700);
               }}
-              className="bg-card/10 border border-border/30 rounded-2xl pt-6 px-6 pb-2 shadow-2xl"
+              className="bg-card/10 border border-border/30 rounded-2xl pt-6 px-6 pb-6 shadow-2xl"
             >
+              {/* Chart Header with title, subtitle, and legend below */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
+                <div className="max-w-xl">
+                  <h3 className="text-xs font-mono font-bold text-slate-100  tracking-wider">
+                    Decadal Projection (Through 2033)
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                    Linear trend projection of regional anomalies with a shaded
+                    ±2σ confidence interval.
+                  </p>
+                </div>
+
+                {/* Legend Controls */}
+                <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 self-end md:self-auto flex-shrink-0">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3.5 h-0.5 bg-primary inline-block rounded" />
+                    Historical
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3.5 h-0.5 border-t border-dashed border-[#f97316] inline-block" />
+                    Projection
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3.5 h-2 bg-[#f97316]/15 border border-[#f97316]/30 inline-block rounded-[2px]" />
+                    ±2σ Band
+                  </span>
+                </div>
+              </div>
+
               {/* Chart Body */}
               <div ref={chartRef} className="h-[380px]">
                 <div className="sr-only">
@@ -746,35 +746,29 @@ export function FutureOutlook() {
                   <div className="w-full h-full" />
                 )}
               </div>
-            </motion.div>
 
-            {/* Methodology Disclaimer Bar */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 }}
-              className="mt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] font-mono text-muted-foreground/55 text-center max-w-3xl mx-auto"
-            >
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 inline-block" />
-                <span>Model: OLS Linear Regression (1993–2023)</span>
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-400/80 inline-block" />
-                <span>Confidence: ±2× RMSE Residuals</span>
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80 inline-block" />
-                <span>R² Score: {(forecastData.r2 * 100).toFixed(1)}%</span>
-              </span>
-            </motion.div>
+              {/* Methodology Disclaimer Bar */}
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] font-mono text-muted-foreground/55 text-center max-w-3xl mx-auto">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 inline-block" />
+                  <span>Model: OLS Linear Regression (1993–2023)</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400/80 inline-block" />
+                  <span>Confidence: ±2× RMSE Residuals</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80 inline-block" />
+                  <span>R² Score: {(forecastData.r2 * 100).toFixed(1)}%</span>
+                </span>
+              </div>
 
-            {/* Interaction Helper Text */}
-            <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-              Hover over the line or shaded band to inspect historical anomalies
-              and future projected values with confidence intervals.
-            </p>
+              {/* Interaction Helper Text */}
+              <p className="text-center text-xs text-muted-foreground mt-3 font-sans select-none">
+                Hover over the line or shaded band to inspect historical anomalies
+                and future projected values with confidence intervals.
+              </p>
+            </motion.div>
           </>
         )}
       </div>
