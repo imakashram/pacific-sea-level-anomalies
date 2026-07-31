@@ -280,7 +280,7 @@ export function WhatThisMeans() {
 
   return (
     <>
-      <StorySection id="what-this-means" className="pb-12">
+      <StorySection id="what-this-means">
         <div className="max-w-5xl mx-auto">
           {/* Section Header */}
           <motion.div

@@ -483,7 +483,6 @@ export function PacificAtAGlance({
   return (
     <StorySection
       id="chapter-rankings"
-      className="pb-32"
       innerClassName="max-w-[95vw] mx-auto w-full px-4 lg:px-8"
     >
       <div className="w-full">

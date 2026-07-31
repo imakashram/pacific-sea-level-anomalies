@@ -17,7 +17,7 @@ export function StorySection({
   return (
     <motion.section
       id={id}
-      className={`min-h-screen w-full flex flex-col justify-center py-24 ${className}`}
+      className={`min-h-screen w-full flex flex-col justify-center py-16 md:py-24 ${className}`}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}

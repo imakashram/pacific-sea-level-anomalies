@@ -52,7 +52,7 @@ export default function StoryPage() {
   return (
     <div className="bg-background min-h-screen text-foreground font-sans relative">
       {!hideDecorations && <OceanDecorations />}
-      <main id="main-content" className="pt-8" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1}>
         <HeroSection />
         <TheDataLandscape />
         <TheOceanIsRising />

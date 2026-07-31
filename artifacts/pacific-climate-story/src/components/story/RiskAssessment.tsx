@@ -594,7 +594,7 @@ export function RiskAssessment() {
     : [];
 
   return (
-    <StorySection id="chapter-risk" className="py-12 md:py-16">
+    <StorySection id="chapter-risk">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <motion.div

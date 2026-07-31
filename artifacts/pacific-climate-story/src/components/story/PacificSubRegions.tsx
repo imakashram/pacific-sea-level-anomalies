@@ -101,7 +101,7 @@ export function PacificSubRegions() {
 
   if (isLoading || !CLUSTER_DATA) {
     return (
-      <StorySection id="pacific-sub-regions" className="py-12 md:py-16">
+      <StorySection id="pacific-sub-regions">
         <div className="max-w-5xl mx-auto h-[400px] flex items-center justify-center">
           <div className="text-muted-foreground font-mono animate-pulse">
             Loading Sub-Regional Climate Data...
@@ -136,7 +136,7 @@ export function PacificSubRegions() {
   };
 
   return (
-    <StorySection id="pacific-sub-regions" className="py-12 md:py-16">
+    <StorySection id="pacific-sub-regions">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <motion.div
