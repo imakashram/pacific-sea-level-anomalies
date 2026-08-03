@@ -389,7 +389,7 @@ export function PacificAtAGlance({
   activeTab: "explorer" | "table";
   setActiveTab: (tab: "explorer" | "table") => void;
 }) {
-  const { data: apiRankings, isLoading } = useGetPacificAtAGlance();
+  const { data: apiRankings, isLoading, isError, refetch } = useGetPacificAtAGlance();
   const { data: timeSeriesData } = useGetCoreSeaLevelByCountry();
   const { data: riskData } = useGetRiskAssessment();
 
@@ -753,8 +753,21 @@ export function PacificAtAGlance({
 
         {/* Tab Content Display Area */}
         <div id="view-mode-content" role="tabpanel" className="w-full">
-          {isLoading && !apiRankings ? (
+          {isLoading ? (
             <div className="h-[400px] bg-card/20 animate-pulse rounded-xl" />
+          ) : isError || !apiRankings ? (
+            <div className="h-[400px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-2xl p-6 select-none max-w-5xl mx-auto">
+              <div className="text-center">
+                <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
+                <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the sortable analytics metrics list from the database server.</p>
+              </div>
+              <button
+                onClick={() => refetch()}
+                className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
+              >
+                Retry Connection
+              </button>
+            </div>
           ) : (
             <AnimatePresence mode="wait">
               {activeTab === "table" ? (

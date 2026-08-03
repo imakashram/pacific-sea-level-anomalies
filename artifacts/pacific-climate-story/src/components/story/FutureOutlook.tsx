@@ -364,7 +364,7 @@ const FALLBACK_PROJECTED: ProjectedPoint[] = [
  * linear regression model with ±2σ residual error confidence intervals.
  */
 export function FutureOutlook() {
-  const { data: apiData, isLoading } = useGetFutureOutlook();
+  const { data: apiData, isLoading, isError, refetch } = useGetFutureOutlook();
   const chartRef = useRef<HTMLDivElement>(null);
   const [isChartInView, setIsChartInView] = useState(false);
   const [isAnimationActive, setIsAnimationActive] = useState(true);
@@ -485,6 +485,20 @@ export function FutureOutlook() {
           <div className="h-[480px] bg-card/20 animate-pulse rounded-xl" />
         ) : (
           <>
+            {isError && (
+              <div className="max-w-3xl mx-auto mb-8 text-xs bg-red-950/30 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 select-none">
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                  <span>Live connection to the database API failed. Displaying cached historic projections.</span>
+                </span>
+                <button
+                  onClick={() => refetch()}
+                  className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg font-semibold transition cursor-pointer text-[10px]"
+                >
+                  Retry Connection
+                </button>
+              </div>
+            )}
             {/* Metric Cards Grid (Trend Rate, R² Fit, 2030 Projection, 2033 Projection) */}
             <motion.div
               variants={cardContainerVariants}

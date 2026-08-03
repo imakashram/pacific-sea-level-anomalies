@@ -677,7 +677,7 @@ const FALLBACK_RISK_DATA = {
  * Combines a master horizontal bar chart with a detailed multi-vector spider/radar chart.
  */
 export function RiskAssessment() {
-  const { data: apiData, isLoading } = useGetRiskAssessment();
+  const { data: apiData, isLoading, isError, refetch } = useGetRiskAssessment();
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
   const isChartInView = true;
 
@@ -737,6 +737,20 @@ export function RiskAssessment() {
           <div className="h-[600px] bg-card/20 animate-pulse rounded-xl" />
         ) : (
           <>
+            {isError && (
+              <div className="max-w-3xl mx-auto mb-8 text-xs bg-red-950/30 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 select-none">
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                  <span>Live connection to the database API failed. Displaying cached historic risk index.</span>
+                </span>
+                <button
+                  onClick={() => refetch()}
+                  className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg font-semibold transition cursor-pointer text-[10px]"
+                >
+                  Retry Connection
+                </button>
+              </div>
+            )}
             {/* Risk Tier Summary Cards Grid */}
             <motion.div
               variants={cardContainerVariants}

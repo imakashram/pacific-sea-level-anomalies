@@ -19,7 +19,7 @@ function peakOfRow(row: (number | null)[]): number {
 }
 
 export function PatternsOverTime() {
-  const { data: heatmapData, isLoading } = useGetPatternsOverTime();
+  const { data: heatmapData, isLoading, isError, refetch } = useGetPatternsOverTime();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [sortKey, setSortKey] = useState<SortKey>("totalRise");
@@ -181,9 +181,22 @@ export function PatternsOverTime() {
           </p>
         </div>
 
-        {isLoading || !heatmapData ? (
+        {isLoading ? (
           <div className="h-[420px] flex items-center justify-center text-muted-foreground font-serif animate-pulse">
             Generating heatmap matrix...
+          </div>
+        ) : isError || !heatmapData ? (
+          <div className="h-[420px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-2xl p-6 select-none max-w-5xl mx-auto">
+            <div className="text-center">
+              <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
+              <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the country-by-year anomaly heatmap from the database server.</p>
+            </div>
+            <button
+              onClick={() => refetch()}
+              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
+            >
+              Retry Connection
+            </button>
           </div>
         ) : isInView ? (
           <div>

@@ -655,7 +655,7 @@ const paceCardVariants = {
  * Integrates metrics grid, long-term pace comparison, and decadal acceleration transitions.
  */
 export function PaceOfChange() {
-  const { data, isLoading } = useGetPaceOfChange();
+  const { data, isLoading, isError, refetch } = useGetPaceOfChange();
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
   const [isInView, setIsInView] = useState(false);
   const [isAnimationActive, setIsAnimationActive] = useState(true);
@@ -822,8 +822,21 @@ export function PaceOfChange() {
           </motion.div>
         </motion.div>
 
-        {isLoading || !data ? (
+        {isLoading ? (
           <div className="h-[400px] bg-card/20 animate-pulse rounded-xl" />
+        ) : isError ? (
+          <div className="h-[400px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-2xl p-6 select-none max-w-5xl mx-auto">
+            <div className="text-center">
+              <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
+              <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the pace of change acceleration metrics from the database server.</p>
+            </div>
+            <button
+              onClick={() => refetch()}
+              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
+            >
+              Retry Connection
+            </button>
+          </div>
         ) : (
           <motion.div
             initial="hidden"

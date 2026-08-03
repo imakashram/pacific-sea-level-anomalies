@@ -196,7 +196,7 @@ function TrendTooltip({
  * with moving average smoothing, linear regression trendline analysis, and milestone annotations.
  */
 export function TheOceanIsRising() {
-  const { data: trendData, isLoading: trendLoading } = useGetOceanRising();
+  const { data: trendData, isLoading: trendLoading, isError, refetch } = useGetOceanRising();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -501,9 +501,22 @@ export function TheOceanIsRising() {
             Major positive anomalies peak during El Niño events (such as 1997-1998 and 2015-2016), with a 5-year moving average showing a sustained upward trend.
           </div>
           {trendLoading ? (
-            <div className="w-full h-full flex items-center justify-center text-cyan-400/60 font-serif gap-2">
+            <div className="w-full h-full flex items-center justify-center text-cyan-400/60 font-serif gap-2 animate-pulse">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-bounce" />
               <span>Loading oceanic dataset...</span>
+            </div>
+          ) : isError ? (
+            <div className="w-full h-full flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-2xl p-6 select-none">
+              <div className="text-center">
+                <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
+                <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the Pacific sea level anomaly trajectory from the database server.</p>
+              </div>
+              <button
+                onClick={() => refetch()}
+                className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
+              >
+                Retry Connection
+              </button>
             </div>
           ) : isInView && formattedData ? (
             <ResponsiveContainer width="100%" height="100%">

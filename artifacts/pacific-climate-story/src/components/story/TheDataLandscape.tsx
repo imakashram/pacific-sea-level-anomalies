@@ -84,7 +84,7 @@ const itemVariants = {
  * explaining the reference baseline, observational volume, and multidecadal rise metrics.
  */
 export function TheDataLandscape() {
-  const { data: overview, isLoading } = useGetDataLandscape();
+  const { data: overview, isLoading, isError, refetch } = useGetDataLandscape();
 
   // 100% verified fallback metrics calculated directly from 1993-2023 Pacific SLA records
   const startYear = overview?.yearRange?.start ?? 1993;
@@ -114,6 +114,21 @@ export function TheDataLandscape() {
           average.
         </p>
       </motion.div>
+
+      {isError && (
+        <div className="max-w-3xl mx-auto mb-8 text-xs bg-red-950/30 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 select-none">
+          <span className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+            <span>Live connection to the database API failed. Displaying cached historic dataset.</span>
+          </span>
+          <button
+            onClick={() => refetch()}
+            className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg font-semibold transition cursor-pointer text-[10px]"
+          >
+            Retry Connection
+          </button>
+        </div>
+      )}
 
       {/* Primary Statistics Cards Grid */}
       <motion.div
