@@ -128,12 +128,19 @@ export function PatternsOverTime() {
                 aria-selected={isActive}
                 aria-controls="heatmap-grid"
                 onClick={() => setSortKey(key)}
-                className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-all duration-200 cursor-pointer ${
+                className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-colors cursor-pointer relative z-10 ${
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/10"
+                    ? "text-primary-foreground"
                     : "text-muted-foreground hover:text-white"
                 }`}
               >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeHeatmapTab"
+                    className="absolute inset-0 bg-primary rounded-md -z-10 shadow-md shadow-primary/10"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
                 {label}
               </button>
             );
@@ -214,9 +221,13 @@ export function PatternsOverTime() {
                     const country = heatmapData.countries[origIdx];
                     const row = heatmapData.matrix[origIdx];
                     return (
-                      <div
+                      <motion.div
                         key={country}
-                        className="flex items-center group/row transition-all duration-200 hover:relative hover:z-40 hover:scale-[1.01] hover:bg-slate-800/30 px-2 py-0.5 rounded-md group-hover/heatmap:opacity-30 hover:!opacity-100"
+                        layout="position"
+                        transition={{
+                          layout: { type: "spring", stiffness: 280, damping: 28 }
+                        }}
+                        className="flex items-center group/row transition-[opacity,transform,background-color] duration-200 hover:relative hover:z-40 hover:scale-[1.01] hover:bg-slate-800/30 px-2 py-0.5 rounded-md group-hover/heatmap:opacity-30 hover:!opacity-100"
                       >
                         <div className="w-44 flex-shrink-0 text-[11px] font-semibold text-muted-foreground group-hover/row:text-white transition-colors pr-2">
                           {country}
@@ -359,7 +370,7 @@ export function PatternsOverTime() {
                           {totalRiseOfRow(row) > 0 ? "+" : ""}
                           {(totalRiseOfRow(row) * 100).toFixed(0)}cm
                         </div>
-                      </div>
+                      </motion.div>
                     );
                   })}
                 </div>
