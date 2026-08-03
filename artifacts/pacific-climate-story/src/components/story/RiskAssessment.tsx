@@ -679,8 +679,7 @@ const FALLBACK_RISK_DATA = {
 export function RiskAssessment() {
   const { data: apiData, isLoading } = useGetRiskAssessment();
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
-  const [isChartInView, setIsChartInView] = useState(false);
-  const [isAnimationActive, setIsAnimationActive] = useState(true);
+  const isChartInView = true;
 
   const data = apiData ?? FALLBACK_RISK_DATA;
 
@@ -817,19 +816,7 @@ export function RiskAssessment() {
             {/* Master-Detail Dashboard: Ranked Bar Chart + Radar/Spider Chart Side-by-Side */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
               {/* Left Column: Ranked Bar Chart (Master List) */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.7, delay: 0.15 }}
-                onViewportEnter={() => {
-                  setIsChartInView(true);
-                  setTimeout(() => {
-                    setIsAnimationActive(false);
-                  }, 1800);
-                }}
-                className="lg:col-span-7 bg-card/10 border border-border/30 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between"
-              >
+              <div className="lg:col-span-7 bg-card/10 border border-border/30 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between">
                 <div>
                   <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
                     <h3 className="text-xs font-mono font-semibold  tracking-wider text-muted-foreground">
@@ -1110,9 +1097,7 @@ export function RiskAssessment() {
                               );
                             }}
                             cursor="pointer"
-                            isAnimationActive={isAnimationActive}
-                            animationDuration={1500}
-                            animationEasing="ease-out"
+                            isAnimationActive={false}
                           >
                             <LabelList
                               dataKey="riskScore"
@@ -1160,7 +1145,7 @@ export function RiskAssessment() {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Right Column: Radar/Spider Chart (Detail Vulnerability Vectors) */}
               <motion.div
