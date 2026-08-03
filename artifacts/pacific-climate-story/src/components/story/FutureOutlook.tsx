@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useGetFutureOutlook } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
 import {
@@ -14,8 +14,52 @@ import {
   ReferenceDot,
   ReferenceArea,
 } from "recharts";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, animate, Variants } from "framer-motion";
 import { Gauge, Calendar, ShieldAlert, History } from "lucide-react";
+
+interface AnimatedCounterProps {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  useLocale?: boolean;
+}
+
+function AnimatedCounter({
+  value,
+  decimals = 1,
+  prefix = "",
+  suffix = "",
+  useLocale = false,
+}: AnimatedCounterProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(motionValue, value, {
+      duration: 1.5,
+      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
+      onUpdate: (latest) => {
+        if (ref.current) {
+          if (useLocale) {
+            ref.current.textContent = `${prefix}${Math.floor(latest).toLocaleString()}${suffix}`;
+          } else {
+            ref.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
+          }
+        }
+      },
+    });
+    return () => controls.stop();
+  }, [value, decimals, prefix, suffix, useLocale, motionValue]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {useLocale ? Math.floor(value).toLocaleString() : value.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
 
 /**
  * Historical sea level observation entry.
@@ -149,38 +193,118 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   );
 }
 
-/**
- * Card theme color dictionary for dynamic metric card highlights.
- */
-const CARD_THEMES: Record<
-  string,
-  { text: string; bg: string; border: string; glow: string }
-> = {
+interface CardTheme {
+  text: string;
+  bg: string;
+  border: string;
+  hover: {
+    y: number;
+    borderColor: string;
+    backgroundColor: string;
+    boxShadow: string;
+  };
+}
+
+const CARD_THEMES: Record<string, CardTheme> = {
   teal: {
     text: "text-teal-400",
     bg: "bg-teal-500/10",
     border: "border-teal-500/20",
-    glow: "hover:border-teal-500/40 hover:shadow-teal-500/5 hover:bg-teal-950/5",
+    hover: {
+      y: -6,
+      borderColor: "rgba(20, 184, 166, 0.5)",
+      backgroundColor: "rgba(20, 184, 166, 0.05)",
+      boxShadow: "0 10px 25px -5px rgba(20, 184, 166, 0.08)",
+    },
   },
   cyan: {
     text: "text-cyan-400",
     bg: "bg-cyan-500/10",
     border: "border-cyan-500/20",
-    glow: "hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5",
+    hover: {
+      y: -6,
+      borderColor: "rgba(6, 182, 212, 0.5)",
+      backgroundColor: "rgba(6, 182, 212, 0.05)",
+      boxShadow: "0 10px 25px -5px rgba(6, 182, 212, 0.08)",
+    },
   },
   orange: {
     text: "text-orange-400",
     bg: "bg-orange-500/10",
     border: "border-orange-500/20",
-    glow: "hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5",
+    hover: {
+      y: -6,
+      borderColor: "rgba(249, 115, 22, 0.5)",
+      backgroundColor: "rgba(249, 115, 22, 0.05)",
+      boxShadow: "0 10px 25px -5px rgba(249, 115, 22, 0.08)",
+    },
   },
   red: {
     text: "text-red-400",
     bg: "bg-red-500/10",
     border: "border-red-500/20",
-    glow: "hover:border-red-500/40 hover:shadow-red-500/5 hover:bg-red-950/5",
+    hover: {
+      y: -6,
+      borderColor: "rgba(239, 68, 68, 0.5)",
+      backgroundColor: "rgba(239, 68, 68, 0.05)",
+      boxShadow: "0 10px 25px -5px rgba(239, 68, 68, 0.08)",
+    },
   },
 };
+
+// Framer Motion Animation Variants
+const cardContainerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 25 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 80,
+      damping: 14,
+    },
+  },
+};
+
+const gaugeIconVariants: Variants = {
+  hover: {
+    rotate: [0, -15, 15, -10, 10, 0],
+    transition: { duration: 0.8, ease: "easeInOut" as const },
+  },
+};
+
+const historyIconVariants: Variants = {
+  hover: {
+    rotate: -360,
+    transition: { duration: 1.2, ease: "easeInOut" as const },
+  },
+};
+
+const calendarIconVariants: Variants = {
+  hover: {
+    scale: 1.2,
+    y: -2,
+    transition: { type: "spring" as const, stiffness: 300, damping: 10 },
+  },
+};
+
+const shieldIconVariants: Variants = {
+  hover: {
+    scale: 1.15,
+    rotate: [0, -10, 10, -10, 10, 0],
+    transition: { duration: 0.6 },
+  },
+};
+
 
 /**
  * Static 100% verified fallback forecast data (1993-2023 historical + 2024-2033 projections)
@@ -363,30 +487,33 @@ export function FutureOutlook() {
           <>
             {/* Metric Cards Grid (Trend Rate, R² Fit, 2030 Projection, 2033 Projection) */}
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              variants={cardContainerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-50px" }}
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-10"
             >
               {/* Card 1: Linear Trend Rate */}
-              <div
-                className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${trendTheme.glow} hover:-translate-y-1`}
+              <motion.div
+                variants={cardVariants}
+                whileHover={trendTheme.hover}
+                className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
               >
                 <div className="flex items-center justify-between text-muted-foreground mb-1">
                   <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                     Trend Rate
                   </span>
-                  <div
+                  <motion.div
+                    variants={gaugeIconVariants}
                     className={`${trendTheme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
                   >
                     <Gauge className="w-4 h-4" />
-                  </div>
+                  </motion.div>
                 </div>
                 <div
                   className={`text-3xl font-serif font-bold tracking-tight ${trendTheme.text}`}
                 >
-                  +{forecastData.slopeMmPerYear.toFixed(2)}
+                  +<AnimatedCounter value={forecastData.slopeMmPerYear} decimals={2} />
                   <span className="text-sm font-sans text-muted-foreground ml-1">
                     mm/yr
                   </span>
@@ -394,26 +521,29 @@ export function FutureOutlook() {
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   Historical trend line slope
                 </div>
-              </div>
+              </motion.div>
 
               {/* Card 2: Historical Net Rise */}
-              <div
-                className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${riseTheme.glow} hover:-translate-y-1`}
+              <motion.div
+                variants={cardVariants}
+                whileHover={riseTheme.hover}
+                className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
               >
                 <div className="flex items-center justify-between text-muted-foreground mb-1">
                   <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                     Historical Net Rise
                   </span>
-                  <div
+                  <motion.div
+                    variants={historyIconVariants}
                     className={`${riseTheme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
                   >
                     <History className="w-4 h-4" />
-                  </div>
+                  </motion.div>
                 </div>
                 <div
                   className={`text-3xl font-serif font-bold tracking-tight ${riseTheme.text}`}
                 >
-                  +{totalHistRiseCm.toFixed(1)}
+                  +<AnimatedCounter value={totalHistRiseCm} decimals={1} />
                   <span className="text-sm font-sans text-muted-foreground ml-1">
                     cm
                   </span>
@@ -421,26 +551,29 @@ export function FutureOutlook() {
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   Net rise observed (1993–2023)
                 </div>
-              </div>
+              </motion.div>
 
               {/* Card 3: Projected Net Rise by 2030 */}
-              <div
-                className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${p2030Theme.glow} hover:-translate-y-1`}
+              <motion.div
+                variants={cardVariants}
+                whileHover={p2030Theme.hover}
+                className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
               >
                 <div className="flex items-center justify-between text-muted-foreground mb-1">
                   <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                     Projected by 2030
                   </span>
-                  <div
+                  <motion.div
+                    variants={calendarIconVariants}
                     className={`${p2030Theme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
                   >
                     <Calendar className="w-4 h-4" />
-                  </div>
+                  </motion.div>
                 </div>
                 <div
                   className={`text-3xl font-serif font-bold tracking-tight ${p2030Theme.text}`}
                 >
-                  +{(forecastData.projectedRise2030 * 100).toFixed(1)}
+                  +<AnimatedCounter value={forecastData.projectedRise2030 * 100} decimals={1} />
                   <span className="text-sm font-sans text-muted-foreground ml-1">
                     cm
                   </span>
@@ -448,26 +581,29 @@ export function FutureOutlook() {
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   Net increase from 2023 baseline
                 </div>
-              </div>
+              </motion.div>
 
               {/* Card 4: Projected Net Rise by 2033 */}
-              <div
-                className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${p2033Theme.glow} hover:-translate-y-1`}
+              <motion.div
+                variants={cardVariants}
+                whileHover={p2033Theme.hover}
+                className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
               >
                 <div className="flex items-center justify-between text-muted-foreground mb-1">
                   <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                     Projected by 2033
                   </span>
-                  <div
+                  <motion.div
+                    variants={shieldIconVariants}
                     className={`${p2033Theme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
                   >
                     <ShieldAlert className="w-4 h-4" />
-                  </div>
+                  </motion.div>
                 </div>
                 <div
                   className={`text-3xl font-serif font-bold tracking-tight ${p2033Theme.text}`}
                 >
-                  +{(forecastData.projectedRise2033 * 100).toFixed(1)}
+                  +<AnimatedCounter value={forecastData.projectedRise2033 * 100} decimals={1} />
                   <span className="text-sm font-sans text-muted-foreground ml-1">
                     cm
                   </span>
@@ -475,7 +611,7 @@ export function FutureOutlook() {
                 <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   Net 10-year increase (2023–2033)
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
 
             {/* Projection ComposedChart Container */}
