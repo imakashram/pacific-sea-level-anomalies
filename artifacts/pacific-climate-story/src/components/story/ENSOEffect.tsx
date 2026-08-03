@@ -1,12 +1,132 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useGetEnsoEffect } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants, useMotionValue, animate } from "framer-motion";
 import { TrendingUp, Globe, Activity, TrendingDown } from "lucide-react";
 
 const ELNINO_COLOR = "#f97316";
 const LANINA_COLOR = "#38bdf8";
 const NEUTRAL_COLOR = "#94a3b8";
+
+interface AnimatedCounterProps {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  useLocale?: boolean;
+}
+
+function AnimatedCounter({
+  value,
+  decimals = 1,
+  prefix = "",
+  suffix = "",
+  useLocale = false,
+}: AnimatedCounterProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(motionValue, value, {
+      duration: 1.5,
+      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
+      onUpdate: (latest) => {
+        if (ref.current) {
+          if (useLocale) {
+            ref.current.textContent = `${prefix}${Math.floor(latest).toLocaleString()}${suffix}`;
+          } else {
+            ref.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
+          }
+        }
+      },
+    });
+    return () => controls.stop();
+  }, [value, decimals, prefix, suffix, useLocale, motionValue]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {useLocale ? Math.floor(value).toLocaleString() : value.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
+
+// Framer Motion Animation Variants
+const cardContainerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 25 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 80,
+      damping: 14,
+    },
+  },
+};
+
+const trendingUpIconVariants: Variants = {
+  hover: {
+    y: -4,
+    scale: 1.15,
+    transition: { type: "spring" as const, stiffness: 300, damping: 10 },
+  },
+};
+
+const activityIconVariants: Variants = {
+  hover: {
+    scale: 1.25,
+    strokeWidth: 2.5,
+    transition: { repeat: Infinity, repeatType: "reverse" as const, duration: 0.6 },
+  },
+};
+
+const trendingDownIconVariants: Variants = {
+  hover: {
+    y: 4,
+    scale: 1.15,
+    transition: { type: "spring" as const, stiffness: 300, damping: 10 },
+  },
+};
+
+const globeIconVariants: Variants = {
+  hover: {
+    rotate: 360,
+    transition: { ease: "linear" as const, duration: 8, repeat: Infinity },
+  },
+};
+
+const listContainerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.03,
+    },
+  },
+};
+
+const rowVariants: Variants = {
+  hidden: { opacity: 0, y: 15 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
 
 export function ENSOEffect() {
   // Hook: ENSO Sensitivity
@@ -79,19 +199,37 @@ export function ENSOEffect() {
           >
             {/* Summary Highlights */}
             {ensoData && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12 text-left">
+              <motion.div
+                variants={cardContainerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12 text-left"
+              >
                 {/* Card 1: Most ENSO-Sensitive */}
-                <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5 hover:-translate-y-1">
+                <motion.div
+                  variants={cardVariants}
+                  whileHover={{
+                    y: -6,
+                    borderColor: "rgba(6, 182, 212, 0.5)",
+                    backgroundColor: "rgba(6, 182, 212, 0.05)",
+                    boxShadow: "0 10px 25px -5px rgba(6, 182, 212, 0.08)",
+                  }}
+                  className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
+                >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                       Most ENSO-Sensitive
                     </span>
-                    <div className="text-cyan-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                    <motion.div
+                      variants={trendingUpIconVariants}
+                      className="text-cyan-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       <TrendingUp className="w-4 h-4" />
-                    </div>
+                    </motion.div>
                   </div>
                   <div className="text-3xl font-serif font-bold tracking-tight text-cyan-400">
-                    +{(ensoData.nations[0]?.sensitivity * 100).toFixed(1)}
+                    +<AnimatedCounter value={ensoData.nations[0]?.sensitivity * 100} decimals={1} />
                     <span className="text-sm font-sans text-muted-foreground ml-1">
                       cm swing
                     </span>
@@ -99,23 +237,32 @@ export function ENSOEffect() {
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     Guam & Palau lead with highest variations
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Card 2: Least ENSO-Sensitive */}
-                <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-teal-500/40 hover:shadow-teal-500/5 hover:bg-teal-950/5 hover:-translate-y-1">
+                <motion.div
+                  variants={cardVariants}
+                  whileHover={{
+                    y: -6,
+                    borderColor: "rgba(20, 184, 166, 0.5)",
+                    backgroundColor: "rgba(20, 184, 166, 0.05)",
+                    boxShadow: "0 10px 25px -5px rgba(20, 184, 166, 0.08)",
+                  }}
+                  className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
+                >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                       Least ENSO-Sensitive
                     </span>
-                    <div className="text-teal-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                    <motion.div
+                      variants={activityIconVariants}
+                      className="text-teal-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       <Activity className="w-4 h-4" />
-                    </div>
+                    </motion.div>
                   </div>
                   <div className="text-3xl font-serif font-bold tracking-tight text-teal-400">
-                    {(
-                      ensoData.nations[ensoData.nations.length - 1]
-                        ?.sensitivity * 100
-                    ).toFixed(1)}
+                    <AnimatedCounter value={ensoData.nations[ensoData.nations.length - 1]?.sensitivity * 100} decimals={1} />
                     <span className="text-sm font-sans text-muted-foreground ml-1">
                       cm swing
                     </span>
@@ -123,20 +270,32 @@ export function ENSOEffect() {
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     New Caledonia & French Polynesia decoupled
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Card 3: El Niño Phase */}
-                <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5 hover:-translate-y-1">
+                <motion.div
+                  variants={cardVariants}
+                  whileHover={{
+                    y: -6,
+                    borderColor: "rgba(249, 115, 22, 0.5)",
+                    backgroundColor: "rgba(249, 115, 22, 0.05)",
+                    boxShadow: "0 10px 25px -5px rgba(249, 115, 22, 0.08)",
+                  }}
+                  className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
+                >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                       El Niño Phase
                     </span>
-                    <div className="text-orange-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                    <motion.div
+                      variants={trendingDownIconVariants}
+                      className="text-orange-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       <TrendingDown className="w-4 h-4" />
-                    </div>
+                    </motion.div>
                   </div>
                   <div className="text-3xl font-serif font-bold tracking-tight text-orange-400">
-                    {(ensoData.global.elNinoAvg * 100).toFixed(1)}
+                    <AnimatedCounter value={ensoData.global.elNinoAvg * 100} decimals={1} />
                     <span className="text-sm font-sans text-muted-foreground ml-1">
                       cm avg dip
                     </span>
@@ -144,20 +303,32 @@ export function ENSOEffect() {
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     Temporary dip fails to offset rising baseline
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Card 4: La Niña Phase */}
-                <div className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-sky-500/40 hover:shadow-sky-500/5 hover:bg-sky-950/5 hover:-translate-y-1">
+                <motion.div
+                  variants={cardVariants}
+                  whileHover={{
+                    y: -6,
+                    borderColor: "rgba(56, 189, 248, 0.5)",
+                    backgroundColor: "rgba(56, 189, 248, 0.05)",
+                    boxShadow: "0 10px 25px -5px rgba(56, 189, 248, 0.08)",
+                  }}
+                  className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
+                >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                       La Niña Phase
                     </span>
-                    <div className="text-sky-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                    <motion.div
+                      variants={globeIconVariants}
+                      className="text-sky-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       <Globe className="w-4 h-4" />
-                    </div>
+                    </motion.div>
                   </div>
                   <div className="text-3xl font-serif font-bold tracking-tight text-sky-400">
-                    +{(ensoData.global.laNinaAvg * 100).toFixed(1)}
+                    +<AnimatedCounter value={ensoData.global.laNinaAvg * 100} decimals={1} />
                     <span className="text-sm font-sans text-muted-foreground ml-1">
                       cm avg surge
                     </span>
@@ -165,33 +336,47 @@ export function ENSOEffect() {
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     Surges amplify and accelerate coastal risks
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
 
             {/* Controls for ENSO Fingerprint */}
             <div className="flex justify-end mb-6">
-              <div className="flex bg-card/30 p-1 rounded-lg border border-border/50 flex-shrink-0">
+              <div className="flex bg-card/30 p-1 rounded-lg border border-border/50 flex-shrink-0 relative overflow-hidden">
                 <button
                   onClick={() => setDisplayCount(10)}
                   aria-pressed={displayCount === 10}
-                  className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer ${
+                  className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer relative z-10 ${
                     displayCount === 10
-                      ? "bg-primary text-primary-foreground shadow-sm"
+                      ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
+                  {displayCount === 10 && (
+                    <motion.div
+                      layoutId="activeEnsoTab"
+                      className="absolute inset-0 bg-primary rounded-md -z-10 shadow-sm"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                   Top 10 Sensitive
                 </button>
                 <button
                   onClick={() => setDisplayCount(21)}
                   aria-pressed={displayCount === 21}
-                  className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer ${
+                  className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer relative z-10 ${
                     displayCount === 21
-                      ? "bg-primary text-primary-foreground shadow-sm"
+                      ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
+                  {displayCount === 21 && (
+                    <motion.div
+                      layoutId="activeEnsoTab"
+                      className="absolute inset-0 bg-primary rounded-md -z-10 shadow-sm"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                   All 21 Nations
                 </button>
               </div>
@@ -249,7 +434,10 @@ export function ENSOEffect() {
               </div>
 
               {/* Dumbbell Rows */}
-              <div className="space-y-4 relative">
+              <motion.div
+                variants={listContainerVariants}
+                className="space-y-4 relative"
+              >
                 {/* Zero reference vertical guide line */}
                 <div
                   className="absolute top-0 bottom-0 w-px bg-primary/25 border-r border-dashed border-primary/40 pointer-events-none z-0"
@@ -258,121 +446,161 @@ export function ENSOEffect() {
                   }}
                 />
 
-                {displayedNations.map((n, idx) => {
-                  const elCm = n.elNinoAvg * 100;
-                  const neuCm = n.neutralAvg * 100;
-                  const laCm = n.laNinaAvg * 100;
-                  const swingCm = n.sensitivity * 100;
+                <AnimatePresence mode="popLayout">
+                  {displayedNations.map((n, idx) => {
+                    const elCm = n.elNinoAvg * 100;
+                    const neuCm = n.neutralAvg * 100;
+                    const laCm = n.laNinaAvg * 100;
+                    const swingCm = n.sensitivity * 100;
 
-                  const elPct = getPct(elCm);
-                  const neuPct = getPct(neuCm);
-                  const laPct = getPct(laCm);
+                    const elPct = getPct(elCm);
+                    const neuPct = getPct(neuCm);
+                    const laPct = getPct(laCm);
 
-                  const minPct = Math.min(elPct, laPct);
-                  const maxPct = Math.max(elPct, laPct);
+                    const minPct = Math.min(elPct, laPct);
+                    const maxPct = Math.max(elPct, laPct);
 
-                  const isHovered = hoveredNation === n.code;
+                    const isHovered = hoveredNation === n.code;
 
-                  return (
-                    <div
-                      key={n.code}
-                      onMouseEnter={() => setHoveredNation(n.code)}
-                      onMouseMove={(e) => {
-                        const rect =
-                          e.currentTarget.parentElement?.getBoundingClientRect();
-                        if (rect) {
-                          setHoverCoords({
-                            x: e.clientX - rect.left,
-                            y: e.clientY - rect.top,
-                          });
-                        }
-                      }}
-                      onMouseLeave={() => {
-                        setHoveredNation(null);
-                        setHoverCoords(null);
-                      }}
-                      className={`relative flex flex-col sm:flex-row items-stretch sm:items-center py-2.5 sm:py-0 h-auto sm:h-10 px-3 rounded-xl transition-all duration-300 group gap-2 sm:gap-0 ${
-                        isHovered
-                          ? "bg-card/60 border border-primary/30 shadow-md scale-[1.01]"
-                          : "hover:bg-card/30 border border-transparent"
-                      }`}
-                    >
-                      {/* Country Name & Code */}
-                      <div className="w-full sm:w-[170px] flex items-center gap-2 flex-shrink-0 pr-2">
-                        <span className="text-xs font-mono font-semibold text-muted-foreground/60 w-5">
-                          #{idx + 1}
-                        </span>
-                        <span className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
-                          {n.country}
-                        </span>
-                        <span className="text-[10px] font-mono text-muted-foreground/60">
-                          ({n.code})
-                        </span>
-                      </div>
-
-                      {/* Dumbbell Plot Track Area and Badge (grouped together for responsive layout alignment) */}
-                      <div className="flex items-center w-full sm:flex-1 h-6 sm:h-full gap-3">
-                        <div className="relative flex-1 h-full flex items-center">
-                          {/* Connecting Line Track */}
-                          <div
-                            className="absolute h-1.5 rounded-full transition-all duration-300 shadow-sm"
-                            style={{
-                              left: `${minPct}%`,
-                              width: `${maxPct - minPct}%`,
-                              background: `linear-gradient(to right, ${ELNINO_COLOR}, ${NEUTRAL_COLOR}, ${LANINA_COLOR})`,
-                              opacity: isHovered ? 1 : 0.75,
-                            }}
-                          />
-
-                          {/* El Niño Dot */}
-                          <div
-                            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
-                            style={{
-                              left: `${elPct}%`,
-                              backgroundColor: ELNINO_COLOR,
-                              boxShadow: `0 0 10px ${ELNINO_COLOR}`,
-                            }}
-                            title={`El Niño: ${elCm >= 0 ? "+" : ""}${elCm.toFixed(1)} cm`}
-                          />
-
-                          {/* Neutral Dot */}
-                          <div
-                            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full border border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
-                            style={{
-                              left: `${neuPct}%`,
-                              backgroundColor: NEUTRAL_COLOR,
-                            }}
-                            title={`Neutral: ${neuCm >= 0 ? "+" : ""}${neuCm.toFixed(1)} cm`}
-                          />
-
-                          {/* La Niña Dot */}
-                          <div
-                            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-background cursor-pointer transition-transform duration-200 group-hover:scale-125 z-10"
-                            style={{
-                              left: `${laPct}%`,
-                              backgroundColor: LANINA_COLOR,
-                              boxShadow: `0 0 10px ${LANINA_COLOR}`,
-                            }}
-                            title={`La Niña: ${laCm >= 0 ? "+" : ""}${laCm.toFixed(1)} cm`}
-                          />
-                        </div>
-
-                        {/* Range Swing Badge */}
-                        <div className="w-[80px] sm:w-[90px] text-right flex-shrink-0 pl-3">
-                          <span
-                            className={`inline-block text-xs font-mono font-bold px-2 py-0.5 rounded-full border transition-all ${
-                              isHovered
-                                ? "bg-sky-500/20 text-sky-300 border-sky-400/40 shadow-sm"
-                                : "bg-card/40 text-sky-400/90 border-border/40"
-                            }`}
-                          >
-                            {swingCm.toFixed(1)} cm
+                    return (
+                      <motion.div
+                        key={n.code}
+                        variants={rowVariants}
+                        layout="position"
+                        initial="hidden"
+                        animate={{
+                          opacity: hoveredNation && hoveredNation !== n.code ? 0.35 : 1,
+                          y: 0,
+                          scale: isHovered ? 1.015 : 1,
+                        }}
+                        exit={{ opacity: 0, scale: 0.95, y: -15, transition: { duration: 0.15 } }}
+                        transition={{
+                          opacity: { duration: 0.2 },
+                          scale: { type: "spring", stiffness: 400, damping: 20 },
+                          y: { type: "spring", stiffness: 100, damping: 15, delay: idx * 0.015 },
+                          layout: { type: "spring", stiffness: 300, damping: 25 },
+                        }}
+                        onMouseEnter={() => setHoveredNation(n.code)}
+                        onMouseMove={(e) => {
+                          const rect =
+                            e.currentTarget.parentElement?.getBoundingClientRect();
+                          if (rect) {
+                            setHoverCoords({
+                              x: e.clientX - rect.left,
+                              y: e.clientY - rect.top,
+                            });
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredNation(null);
+                          setHoverCoords(null);
+                        }}
+                        className={`relative flex flex-col sm:flex-row items-stretch sm:items-center py-2.5 sm:py-0 h-auto sm:h-10 px-3 rounded-xl border gap-2 sm:gap-0 transition-[background-color,border-color,box-shadow] duration-200 group z-10 ${
+                          isHovered
+                            ? "bg-card/60 border-primary/30 shadow-md"
+                            : "border-transparent hover:bg-card/25"
+                        }`}
+                      >
+                        {/* Country Name & Code */}
+                        <div className="w-full sm:w-[170px] flex items-center gap-2 flex-shrink-0 pr-2">
+                          <span className="text-xs font-mono font-semibold text-muted-foreground/60 w-5">
+                            #{idx + 1}
+                          </span>
+                          <span className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+                            {n.country}
+                          </span>
+                          <span className="text-[10px] font-mono text-muted-foreground/60">
+                            ({n.code})
                           </span>
                         </div>
-                      </div>
-                    </div>
-                  );
-                })}
+
+                        {/* Dumbbell Plot Track Area and Badge (grouped together for responsive layout alignment) */}
+                        <div className="flex items-center w-full sm:flex-1 h-6 sm:h-full gap-3">
+                          <div className="relative flex-1 h-full flex items-center">
+                            {/* Connecting Line Track */}
+                            <motion.div
+                              className="absolute h-1.5 rounded-full shadow-sm"
+                              animate={{
+                                height: isHovered ? 6 : 4,
+                                opacity: isHovered ? 1 : 0.75,
+                              }}
+                              transition={{ duration: 0.2 }}
+                              style={{
+                                left: `${minPct}%`,
+                                width: `${maxPct - minPct}%`,
+                                background: `linear-gradient(to right, ${ELNINO_COLOR}, ${NEUTRAL_COLOR}, ${LANINA_COLOR})`,
+                              }}
+                            />
+
+                            {/* El Niño Dot */}
+                            <motion.div
+                              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-background cursor-pointer z-10"
+                              animate={{
+                                scale: isHovered ? 1.35 : 1,
+                                boxShadow: isHovered
+                                  ? `0 0 14px ${ELNINO_COLOR}`
+                                  : `0 0 6px ${ELNINO_COLOR}`,
+                              }}
+                              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                              style={{
+                                left: `${elPct}%`,
+                                backgroundColor: ELNINO_COLOR,
+                              }}
+                              title={`El Niño: ${elCm >= 0 ? "+" : ""}${elCm.toFixed(1)} cm`}
+                            />
+
+                            {/* Neutral Dot */}
+                            <motion.div
+                              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full border border-background cursor-pointer z-10"
+                              animate={{
+                                scale: isHovered ? 1.35 : 1,
+                                boxShadow: isHovered
+                                  ? `0 0 10px ${NEUTRAL_COLOR}`
+                                  : `0 0 0px ${NEUTRAL_COLOR}`,
+                              }}
+                              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                              style={{
+                                left: `${neuPct}%`,
+                                backgroundColor: NEUTRAL_COLOR,
+                              }}
+                              title={`Neutral: ${neuCm >= 0 ? "+" : ""}${neuCm.toFixed(1)} cm`}
+                            />
+
+                            {/* La Niña Dot */}
+                            <motion.div
+                              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-background cursor-pointer z-10"
+                              animate={{
+                                scale: isHovered ? 1.35 : 1,
+                                boxShadow: isHovered
+                                  ? `0 0 14px ${LANINA_COLOR}`
+                                  : `0 0 6px ${LANINA_COLOR}`,
+                              }}
+                              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                              style={{
+                                left: `${laPct}%`,
+                                backgroundColor: LANINA_COLOR,
+                              }}
+                              title={`La Niña: ${laCm >= 0 ? "+" : ""}${laCm.toFixed(1)} cm`}
+                            />
+                          </div>
+
+                          {/* Range Swing Badge */}
+                          <div className="w-[80px] sm:w-[90px] text-right flex-shrink-0 pl-3">
+                            <span
+                              className={`inline-block text-xs font-mono font-bold px-2 py-0.5 rounded-full border transition-all ${
+                                isHovered
+                                  ? "bg-sky-500/20 text-sky-300 border-sky-400/40 shadow-sm"
+                                  : "bg-card/40 text-sky-400/90 border-border/40"
+                              }`}
+                            >
+                              {swingCm.toFixed(1)} cm
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
 
 
                 {/* Floating Detailed Hover Tooltip (rendered outside rows loop) */}
@@ -414,15 +642,21 @@ export function ENSOEffect() {
                       return (
                         <motion.div
                           key="enso-tooltip"
-                          initial={{ opacity: 0, scale: 0.95 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.95 }}
-                          transition={{ duration: 0.1 }}
-                          className="absolute z-50 bg-[#0b1528]/95 border border-sky-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(56,189,248,0.15)] backdrop-blur-md min-w-[250px] w-max font-mono pointer-events-none text-left"
-                          style={{
-                            left: tooltipX,
-                            top: tooltipY,
+                          initial={{ opacity: 0, scale: 0.95, x: tooltipX, y: tooltipY }}
+                          animate={{
+                            opacity: 1,
+                            scale: 1,
+                            x: tooltipX,
+                            y: tooltipY,
                           }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{
+                            opacity: { duration: 0.15 },
+                            scale: { duration: 0.15 },
+                            x: { type: "spring", damping: 28, stiffness: 220 },
+                            y: { type: "spring", damping: 28, stiffness: 220 },
+                          }}
+                          className="absolute z-50 bg-[#0b1528]/95 border border-sky-500/30 p-4 rounded-xl shadow-[0_10px_30px_rgba(56,189,248,0.15)] backdrop-blur-md min-w-[250px] w-max font-mono pointer-events-none text-left left-0 top-0"
                         >
                           <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5 gap-4">
                             <span
@@ -471,7 +705,7 @@ export function ENSOEffect() {
                       );
                     })()}
                 </AnimatePresence>
-              </div>
+              </motion.div>
 
               {/* Expand view button */}
               <div className="mt-6 pt-4 border-t border-border/20 text-xs text-muted-foreground flex justify-end items-center">
