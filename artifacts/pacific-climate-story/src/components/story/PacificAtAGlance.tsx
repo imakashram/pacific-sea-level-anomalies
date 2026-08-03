@@ -5,7 +5,7 @@ import {
   useGetRiskAssessment,
 } from "@workspace/api-client-react";
 import { StorySection } from "./StorySection";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { Globe, Table } from "lucide-react";
 import { ExploreAnyNation } from "./ExploreAnyNation";
@@ -44,6 +44,28 @@ const RISK_COLORS: Record<string, string> = {
   High: "#f97316",
   Medium: "#eab308",
   Low: "#22c55e",
+};
+
+const tbodyVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.03,
+    },
+  },
+};
+
+const rowVariants: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 15,
+    },
+  },
 };
 
 /**
@@ -515,7 +537,7 @@ export function PacificAtAGlance({
           >
             {/* View Mode Switcher Pills */}
             <div
-              className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5 mb-2 max-w-[200px] w-full shadow-inner flex-shrink-0 select-none"
+              className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5 mb-2 max-w-[200px] w-full shadow-inner flex-shrink-0 select-none relative"
               role="tablist"
               aria-label="View mode"
               onKeyDown={handleTablistKeyDown}
@@ -526,12 +548,19 @@ export function PacificAtAGlance({
                 aria-selected={activeTab === "explorer"}
                 aria-controls="view-mode-content"
                 onClick={() => setActiveTab("explorer")}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer whitespace-nowrap relative z-10 ${
                   activeTab === "explorer"
-                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/10"
+                    ? "text-primary-foreground"
                     : "text-muted-foreground hover:text-white"
                 }`}
               >
+                {activeTab === "explorer" && (
+                  <motion.div
+                    layoutId="activeViewmodeTab"
+                    className="absolute inset-0 bg-primary rounded-md -z-10 shadow-md shadow-primary/10"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
                 <Globe className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
                 Visual
               </button>
@@ -541,12 +570,19 @@ export function PacificAtAGlance({
                 aria-selected={activeTab === "table"}
                 aria-controls="view-mode-content"
                 onClick={() => setActiveTab("table")}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer whitespace-nowrap relative z-10 ${
                   activeTab === "table"
-                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/10"
+                    ? "text-primary-foreground"
                     : "text-muted-foreground hover:text-white"
                 }`}
               >
+                {activeTab === "table" && (
+                  <motion.div
+                    layoutId="activeViewmodeTab"
+                    className="absolute inset-0 bg-primary rounded-md -z-10 shadow-md shadow-primary/10"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
                 <Table className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
                 Table
               </button>
@@ -834,7 +870,11 @@ export function PacificAtAGlance({
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <motion.tbody
+                        variants={tbodyVariants}
+                        initial="hidden"
+                        animate="show"
+                      >
                         {sortedData.map((row, i) => {
                           const sparkData = sparklineMap.get(row.code) ?? [];
                           const risk = riskMap.get(row.code);
@@ -847,9 +887,14 @@ export function PacificAtAGlance({
                             : "hsl(var(--primary))";
 
                           return (
-                            <tr
+                            <motion.tr
                               key={row.code}
-                              className={`border-b border-border/10 hover:bg-white/5 dark:hover:bg-white/5 transition-all duration-300 ${
+                              layout="position"
+                              variants={rowVariants}
+                              transition={{
+                                layout: { type: "spring", stiffness: 280, damping: 28 }
+                              }}
+                              className={`border-b border-border/10 hover:bg-white/5 dark:hover:bg-white/5 transition-[background-color,border-color] duration-300 ${
                                 isTop ? "bg-primary/5" : ""
                               }`}
                             >
@@ -917,10 +962,10 @@ export function PacificAtAGlance({
                                   {(row.decadeAcceleration * 100).toFixed(1)} cm
                                 </span>
                               </td>
-                            </tr>
+                            </motion.tr>
                           );
                         })}
-                      </tbody>
+                      </motion.tbody>
                     </table>
                   </div>
 

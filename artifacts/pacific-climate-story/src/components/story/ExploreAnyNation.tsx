@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   useGetExploreAnyNation,
   useGetPacificAtAGlance,
@@ -19,27 +19,131 @@ import {
   Cell,
   LabelList,
 } from "recharts";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants, animate, useMotionValue } from "framer-motion";
 import { Globe } from "lucide-react";
+
+interface AnimatedCounterProps {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  useLocale?: boolean;
+}
+
+function AnimatedCounter({
+  value,
+  decimals = 1,
+  prefix = "",
+  suffix = "",
+  useLocale = false,
+}: AnimatedCounterProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(motionValue, value, {
+      duration: 1.5,
+      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
+      onUpdate: (latest) => {
+        if (ref.current) {
+          if (useLocale) {
+            ref.current.textContent = `${prefix}${Math.floor(latest).toLocaleString()}${suffix}`;
+          } else {
+            ref.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
+          }
+        }
+      },
+    });
+    return () => controls.stop();
+  }, [value, decimals, prefix, suffix, useLocale, motionValue]);
+
+  return <span ref={ref}>{prefix}{value.toFixed(decimals)}{suffix}</span>;
+}
 
 /**
  * Props definition for the StatCard component.
  */
 interface StatCardProps {
   label: string;
-  value: string;
+  numericValue: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
   sub?: string;
   vs?: string;
   icon?: React.ReactNode;
   themeClass?: "primary" | "emerald" | "orange" | "purple";
 }
 
+const cardContainerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+  hover: (themeClass: "primary" | "emerald" | "orange" | "purple") => {
+    const glows = {
+      primary: {
+        y: -6,
+        borderColor: "rgba(56, 189, 248, 0.4)",
+        backgroundColor: "rgba(56, 189, 248, 0.08)",
+        boxShadow: "0 12px 24px -6px rgba(56, 189, 248, 0.15)",
+      },
+      emerald: {
+        y: -6,
+        borderColor: "rgba(52, 211, 153, 0.4)",
+        backgroundColor: "rgba(52, 211, 153, 0.08)",
+        boxShadow: "0 12px 24px -6px rgba(52, 211, 153, 0.15)",
+      },
+      orange: {
+        y: -6,
+        borderColor: "rgba(251, 146, 60, 0.4)",
+        backgroundColor: "rgba(251, 146, 60, 0.08)",
+        boxShadow: "0 12px 24px -6px rgba(251, 146, 60, 0.15)",
+      },
+      purple: {
+        y: -6,
+        borderColor: "rgba(192, 132, 252, 0.4)",
+        backgroundColor: "rgba(192, 132, 252, 0.08)",
+        boxShadow: "0 12px 24px -6px rgba(192, 132, 252, 0.15)",
+      },
+    };
+    return glows[themeClass];
+  }
+};
+
+const iconVariants: Variants = {
+  hover: (themeClass: "primary" | "emerald" | "orange" | "purple") => {
+    if (themeClass === "primary") return { y: [0, -3, 0], transition: { repeat: Infinity, duration: 1.2, ease: "easeInOut" as const } };
+    if (themeClass === "emerald") return { scale: 1.25, rotate: 15, transition: { type: "spring", stiffness: 300 } };
+    if (themeClass === "purple") return { rotate: 360, transition: { duration: 1, ease: "linear" as const } };
+    return { y: -4, scale: 1.15, transition: { type: "spring", stiffness: 300 } };
+  }
+};
+
 /**
  * Reusable StatCard component displaying key metrics with theme coloring and regional comparative badge.
  */
 function StatCard({
   label,
-  value,
+  numericValue,
+  decimals = 1,
+  prefix = "",
+  suffix = "",
   sub,
   vs,
   icon,
@@ -50,50 +154,57 @@ function StatCard({
       text: "text-primary",
       bg: "bg-primary/10",
       border: "border-primary/20",
-      glow: "hover:border-primary/40 hover:shadow-primary/5 hover:bg-primary/5",
     },
     emerald: {
       text: "text-emerald-400",
       bg: "bg-emerald-500/10",
       border: "border-emerald-500/20",
-      glow: "hover:border-emerald-500/40 hover:shadow-emerald-500/5 hover:bg-emerald-950/5",
     },
     orange: {
       text: "text-orange-400",
       bg: "bg-orange-500/10",
       border: "border-orange-500/20",
-      glow: "hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5",
     },
     purple: {
       text: "text-purple-400",
       bg: "bg-purple-500/10",
       border: "border-purple-500/20",
-      glow: "hover:border-purple-500/40 hover:shadow-purple-500/5 hover:bg-purple-950/5",
     },
   };
 
   const currentTheme = themes[themeClass];
 
   return (
-    <div
-      className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${currentTheme.glow} hover:-translate-y-1`}
+    <motion.div
+      variants={cardVariants}
+      custom={themeClass}
+      whileHover="hover"
+      className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
+      style={{ willChange: "transform, box-shadow, border-color" }}
     >
       <div className="flex items-center justify-between text-muted-foreground mb-1">
         <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
           {label}
         </span>
         {icon && (
-          <div
+          <motion.div
+            variants={iconVariants}
+            custom={themeClass}
             className={`${currentTheme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
           >
             {icon}
-          </div>
+          </motion.div>
         )}
       </div>
       <div
         className={`text-3xl font-serif font-bold tracking-tight ${currentTheme.text}`}
       >
-        {value}
+        <AnimatedCounter
+          value={numericValue}
+          decimals={decimals}
+          prefix={prefix}
+          suffix={suffix}
+        />
       </div>
       {(sub || vs) && (
         <div className="text-xs text-muted-foreground mt-1 leading-relaxed flex flex-col gap-0.5">
@@ -103,7 +214,7 @@ function StatCard({
           )}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -648,10 +759,19 @@ export function ExploreAnyNation({
             </div>
 
             {/* Key Stat Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <motion.div
+              key={profile.code}
+              variants={cardContainerVariants}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+            >
               <StatCard
                 label="Cumulative Rise"
-                value={`+${(profile.stats.cumulativeRise * 100).toFixed(1)} cm`}
+                numericValue={profile.stats.cumulativeRise * 100}
+                decimals={1}
+                prefix="+"
+                suffix=" cm"
                 themeClass="primary"
                 icon={
                   <svg
@@ -680,7 +800,9 @@ export function ExploreAnyNation({
               />
               <StatCard
                 label="Speed Rate"
-                value={`${(profile.stats.slope * 1000).toFixed(2)} mm/yr`}
+                numericValue={profile.stats.slope * 1000}
+                decimals={2}
+                suffix=" mm/yr"
                 themeClass="emerald"
                 icon={
                   <svg
@@ -709,7 +831,10 @@ export function ExploreAnyNation({
               />
               <StatCard
                 label="Volatility"
-                value={`±${(profile.stats.volatility * 100).toFixed(1)} cm`}
+                numericValue={profile.stats.volatility * 100}
+                decimals={1}
+                prefix="±"
+                suffix=" cm"
                 themeClass="purple"
                 icon={
                   <svg
@@ -738,7 +863,8 @@ export function ExploreAnyNation({
               />
               <StatCard
                 label="Peak Record"
-                value={`${profile.stats.peakYear}`}
+                numericValue={profile.stats.peakYear}
+                decimals={0}
                 themeClass="orange"
                 icon={
                   <svg
@@ -758,7 +884,7 @@ export function ExploreAnyNation({
                 sub={`Peak: +${(profile.stats.peakValue * 100).toFixed(1)} cm`}
                 vs={`Trough: ${profile.stats.troughYear} (${(profile.stats.troughValue * 100).toFixed(1)} cm)`}
               />
-            </div>
+            </motion.div>
 
             {/* Charts Grid: 30-Year Trajectory + Decadal Comparisons */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
