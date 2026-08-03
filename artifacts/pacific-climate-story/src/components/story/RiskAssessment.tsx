@@ -17,8 +17,52 @@ import {
   Label,
   ReferenceLine,
 } from "recharts";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence, useMotionValue, animate, Variants } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+
+interface AnimatedCounterProps {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  useLocale?: boolean;
+}
+
+function AnimatedCounter({
+  value,
+  decimals = 1,
+  prefix = "",
+  suffix = "",
+  useLocale = false,
+}: AnimatedCounterProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(motionValue, value, {
+      duration: 1.5,
+      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
+      onUpdate: (latest) => {
+        if (ref.current) {
+          if (useLocale) {
+            ref.current.textContent = `${prefix}${Math.floor(latest).toLocaleString()}${suffix}`;
+          } else {
+            ref.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
+          }
+        }
+      },
+    });
+    return () => controls.stop();
+  }, [value, decimals, prefix, suffix, useLocale, motionValue]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {useLocale ? Math.floor(value).toLocaleString() : value.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
 import {
   AlertOctagon,
   AlertTriangle,
@@ -44,7 +88,12 @@ interface RiskTheme {
   text: string;
   bg: string;
   border: string;
-  glow: string;
+  hover: {
+    y: number;
+    borderColor: string;
+    backgroundColor: string;
+    boxShadow: string;
+  };
   icon: LucideIcon;
 }
 
@@ -53,29 +102,100 @@ const RISK_THEMES: Record<string, RiskTheme> = {
     text: "text-red-400",
     bg: "bg-red-500/10",
     border: "border-red-500/20",
-    glow: "hover:border-red-500/40 hover:shadow-red-500/5 hover:bg-red-950/5",
+    hover: {
+      y: -6,
+      borderColor: "rgba(239, 68, 68, 0.5)",
+      backgroundColor: "rgba(239, 68, 68, 0.05)",
+      boxShadow: "0 10px 25px -5px rgba(239, 68, 68, 0.08)",
+    },
     icon: AlertOctagon,
   },
   High: {
     text: "text-orange-400",
     bg: "bg-orange-500/10",
     border: "border-orange-500/20",
-    glow: "hover:border-orange-500/40 hover:shadow-orange-500/5 hover:bg-orange-950/5",
+    hover: {
+      y: -6,
+      borderColor: "rgba(249, 115, 22, 0.5)",
+      backgroundColor: "rgba(249, 115, 22, 0.05)",
+      boxShadow: "0 10px 25px -5px rgba(249, 115, 22, 0.08)",
+    },
     icon: AlertTriangle,
   },
   Medium: {
     text: "text-yellow-400",
     bg: "bg-yellow-500/10",
     border: "border-yellow-500/20",
-    glow: "hover:border-yellow-500/40 hover:shadow-yellow-500/5 hover:bg-yellow-950/5",
+    hover: {
+      y: -6,
+      borderColor: "rgba(234, 179, 8, 0.5)",
+      backgroundColor: "rgba(234, 179, 8, 0.05)",
+      boxShadow: "0 10px 25px -5px rgba(234, 179, 8, 0.08)",
+    },
     icon: Activity,
   },
   Low: {
     text: "text-green-400",
     bg: "bg-green-500/10",
     border: "border-green-500/20",
-    glow: "hover:border-green-500/40 hover:shadow-green-500/5 hover:bg-green-950/5",
+    hover: {
+      y: -6,
+      borderColor: "rgba(34, 197, 94, 0.5)",
+      backgroundColor: "rgba(34, 197, 94, 0.05)",
+      boxShadow: "0 10px 25px -5px rgba(34, 197, 94, 0.08)",
+    },
     icon: Shield,
+  },
+};
+
+// Framer Motion Animation Variants
+const cardContainerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 25 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 80,
+      damping: 14,
+    },
+  },
+};
+
+const octagonIconVariants: Variants = {
+  hover: {
+    rotate: [0, -10, 10, -10, 10, 0],
+    transition: { duration: 0.6, ease: "easeInOut" as const },
+  },
+};
+
+const triangleIconVariants: Variants = {
+  hover: {
+    x: [0, -3, 3, -3, 3, 0],
+    transition: { duration: 0.5, ease: "easeInOut" as const },
+  },
+};
+
+const activityIconVariants: Variants = {
+  hover: {
+    scale: [1, 1.25, 0.9, 1.15, 1],
+    transition: { duration: 0.7, ease: "easeInOut" as const },
+  },
+};
+
+const shieldIconVariants: Variants = {
+  hover: {
+    scale: 1.2,
+    transition: { type: "spring" as const, stiffness: 300, damping: 10 },
   },
 };
 
@@ -620,10 +740,10 @@ export function RiskAssessment() {
           <>
             {/* Risk Tier Summary Cards Grid */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              variants={cardContainerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-50px" }}
               className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-8"
             >
               {(["Critical", "High", "Medium", "Low"] as const).map((level) => {
@@ -639,26 +759,37 @@ export function RiskAssessment() {
                 const theme = RISK_THEMES[level];
                 const Icon = theme.icon;
 
+                const iconVariants =
+                  level === "Critical"
+                    ? octagonIconVariants
+                    : level === "High"
+                      ? triangleIconVariants
+                      : level === "Medium"
+                        ? activityIconVariants
+                        : shieldIconVariants;
+
                 return (
                   <motion.div
                     key={level}
-                    className={`p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm ${theme.glow} hover:-translate-y-1`}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    variants={cardVariants}
+                    whileHover={theme.hover}
+                    className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 group shadow-sm cursor-default"
                   >
                     <div className="flex items-center justify-between text-muted-foreground mb-1">
                       <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
                         {level} Risk
                       </span>
-                      <Icon
-                        className={`w-4 h-4 ${theme.text} opacity-60 group-hover:opacity-100 transition-all duration-300`}
-                      />
+                      <motion.div
+                        variants={iconVariants}
+                        className={`${theme.text} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
+                      >
+                        <Icon className="w-4 h-4" />
+                      </motion.div>
                     </div>
                     <div
                       className={`text-4xl font-serif font-bold tracking-tight ${theme.text}`}
                     >
-                      {count}
+                      <AnimatedCounter value={count} decimals={0} />
                     </div>
                     <div className="text-xs text-muted-foreground/60 font-mono font-medium -mt-1">
                       {level === "Critical"
@@ -1051,166 +1182,188 @@ export function RiskAssessment() {
                     </p>
                   </div>
 
-                  {selectedCountry ? (
-                    <div className="flex flex-col gap-1">
-                      <div>
-                        <div
-                          className="text-4xl font-mono font-bold tracking-tight mb-0.5"
-                          style={{
-                            color: RISK_COLORS[selectedCountry.riskLevel],
-                          }}
-                        >
-                          {selectedCountry.riskScore}
-                          <span className="text-base font-mono text-muted-foreground ml-2">
-                            / 100
-                          </span>
-                        </div>
-                        <p
-                          className="text-xs font-mono font-semibold uppercase tracking-wider"
-                          style={{
-                            color: RISK_COLORS[selectedCountry.riskLevel],
-                          }}
-                        >
-                          {selectedCountry.riskLevel} Risk
-                        </p>
-                      </div>
-
-                      <div className="h-[360px] w-full flex items-center justify-center -mt-2">
-                        <div className="sr-only">
-                          This radar chart displays the relative risk component scores for the selected country, {selectedCountry.country}.
-                          It details the individual scores for sea level rise, rate of change (slope), volatility, and decadal acceleration, each normalized on a scale from 0 to 100.
-                        </div>
-                        <ResponsiveContainer width="100%" height="100%">
-                          <RadarChart
-                            data={radarData}
-                            outerRadius="84%"
-                            margin={{
-                              top: 10,
-                              right: 35,
-                              bottom: 10,
-                              left: 35,
+                  <AnimatePresence mode="wait">
+                    {selectedCountry ? (
+                      <motion.div
+                        key={selectedCode || "detail"}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -15 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        className="flex flex-col gap-1"
+                      >
+                        <div>
+                          <div
+                            className="text-4xl font-mono font-bold tracking-tight mb-0.5"
+                            style={{
+                              color: RISK_COLORS[selectedCountry.riskLevel],
                             }}
                           >
-                            <defs>
-                              <linearGradient
-                                id={`radar-grad-${selectedCountry.riskLevel}`}
-                                x1="0"
-                                y1="0"
-                                x2="0"
-                                y2="1"
-                              >
-                                <stop
-                                  offset="0%"
-                                  stopColor={
-                                    RISK_COLORS[selectedCountry.riskLevel]
-                                  }
-                                  stopOpacity={0.4}
-                                />
-                                <stop
-                                  offset="100%"
-                                  stopColor={
-                                    RISK_COLORS[selectedCountry.riskLevel]
-                                  }
-                                  stopOpacity={0.05}
-                                />
-                              </linearGradient>
-                            </defs>
-                            <PolarGrid stroke="hsl(var(--border)/0.5)" />
-                            <PolarAngleAxis
-                              dataKey="subject"
-                              tick={(polarProps: {
-                                x: number;
-                                y: number;
-                                cx: number;
-                                cy: number;
-                                payload: { value: string };
-                                textAnchor:
-                                | "end"
-                                | "inherit"
-                                | "middle"
-                                | "start"
-                                | undefined;
-                              }) => {
-                                const { x, y, cx, cy, payload, textAnchor } =
-                                  polarProps;
-                                const angle = Math.atan2(y - cy, x - cx);
-                                const offset = 8;
-                                const newX = x + Math.cos(angle) * offset;
-                                const newY = y + Math.sin(angle) * offset;
-                                return (
-                                  <g transform={`translate(${newX}, ${newY})`}>
-                                    <text
-                                      textAnchor={textAnchor}
-                                      fontSize={11}
-                                      fontFamily="monospace"
-                                      fill="hsl(var(--foreground))"
-                                      fontWeight={600}
-                                    >
-                                      {payload.value}
-                                    </text>
-                                  </g>
-                                );
-                              }}
-                            />
-                            <Radar
-                              name={selectedCountry.country}
-                              dataKey="value"
-                              stroke={RISK_COLORS[selectedCountry.riskLevel]}
-                              fill={`url(#radar-grad-${selectedCountry.riskLevel})`}
-                              fillOpacity={1}
-                              strokeWidth={2.5}
-                              dot={{
-                                fill: RISK_COLORS[selectedCountry.riskLevel],
-                                r: 4,
-                                strokeWidth: 2,
-                                stroke: "hsl(var(--background))",
-                              }}
-                            />
-                          </RadarChart>
-                        </ResponsiveContainer>
-                      </div>
+                            <AnimatedCounter value={selectedCountry.riskScore} decimals={1} />
+                            <span className="text-base font-mono text-muted-foreground ml-2">
+                              / 100
+                            </span>
+                          </div>
+                          <p
+                            className="text-xs font-mono font-semibold uppercase tracking-wider"
+                            style={{
+                              color: RISK_COLORS[selectedCountry.riskLevel],
+                            }}
+                          >
+                            {selectedCountry.riskLevel} Risk
+                          </p>
+                        </div>
 
-                      {/* Component breakdown mini cards */}
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-border/20">
-                        {radarData.map((item) => {
-                          const itemColor = getScoreColor(item.value);
-                          return (
-                            <div
-                              key={item.subject}
-                              className="bg-card/40 border border-border/30 rounded-lg p-2 text-center"
+                        <div className="h-[360px] w-full flex items-center justify-center -mt-2">
+                          <div className="sr-only">
+                            This radar chart displays the relative risk component scores for the selected country, {selectedCountry.country}.
+                            It details the individual scores for sea level rise, rate of change (slope), volatility, and decadal acceleration, each normalized on a scale from 0 to 100.
+                          </div>
+                          <ResponsiveContainer width="100%" height="100%">
+                            <RadarChart
+                              data={radarData}
+                              outerRadius="84%"
+                              margin={{
+                                top: 10,
+                                right: 35,
+                                bottom: 10,
+                                left: 35,
+                              }}
                             >
-                              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-                                {item.subject}
-                              </p>
-                              <p
-                                className="text-base font-mono font-bold mt-0.5"
-                                style={{ color: itemColor }}
+                              <defs>
+                                <linearGradient
+                                  id={`radar-grad-${selectedCountry.riskLevel}`}
+                                  x1="0"
+                                  y1="0"
+                                  x2="0"
+                                  y2="1"
+                                >
+                                  <stop
+                                    offset="0%"
+                                    stopColor={
+                                      RISK_COLORS[selectedCountry.riskLevel]
+                                    }
+                                    stopOpacity={0.4}
+                                  />
+                                  <stop
+                                    offset="100%"
+                                    stopColor={
+                                      RISK_COLORS[selectedCountry.riskLevel]
+                                    }
+                                    stopOpacity={0.05}
+                                  />
+                                </linearGradient>
+                              </defs>
+                              <PolarGrid stroke="hsl(var(--border)/0.5)" />
+                              <PolarAngleAxis
+                                dataKey="subject"
+                                tick={(polarProps: {
+                                  x: number;
+                                  y: number;
+                                  cx: number;
+                                  cy: number;
+                                  payload: { value: string };
+                                  textAnchor:
+                                  | "end"
+                                  | "inherit"
+                                  | "middle"
+                                  | "start"
+                                  | undefined;
+                                }) => {
+                                  const { x, y, cx, cy, payload, textAnchor } =
+                                    polarProps;
+                                  const angle = Math.atan2(y - cy, x - cx);
+                                  const offset = 8;
+                                  const newX = x + Math.cos(angle) * offset;
+                                  const newY = y + Math.sin(angle) * offset;
+                                  return (
+                                    <g transform={`translate(${newX}, ${newY})`}>
+                                      <text
+                                        textAnchor={textAnchor}
+                                        fontSize={11}
+                                        fontFamily="monospace"
+                                        fill="hsl(var(--foreground))"
+                                        fontWeight={600}
+                                      >
+                                        {payload.value}
+                                      </text>
+                                    </g>
+                                  );
+                                }}
+                              />
+                              <Radar
+                                name={selectedCountry.country}
+                                dataKey="value"
+                                stroke={RISK_COLORS[selectedCountry.riskLevel]}
+                                fill={`url(#radar-grad-${selectedCountry.riskLevel})`}
+                                fillOpacity={1}
+                                strokeWidth={2.5}
+                                dot={{
+                                  fill: RISK_COLORS[selectedCountry.riskLevel],
+                                  r: 4,
+                                  strokeWidth: 2,
+                                  stroke: "hsl(var(--background))",
+                                }}
+                              />
+                            </RadarChart>
+                          </ResponsiveContainer>
+                        </div>
+
+                        {/* Component breakdown mini cards */}
+                        <motion.div
+                          variants={cardContainerVariants}
+                          initial="hidden"
+                          animate="show"
+                          className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-border/20"
+                        >
+                          {radarData.map((item) => {
+                            const itemColor = getScoreColor(item.value);
+                            return (
+                              <motion.div
+                                key={item.subject}
+                                variants={cardVariants}
+                                className="bg-card/40 border border-border/30 rounded-lg p-2 text-center"
                               >
-                                {Math.round(item.value)}
-                                <span className="text-[9px] text-muted-foreground font-normal">
-                                  /100
-                                </span>
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-border/20 rounded-xl my-6 min-h-[300px]">
-                      <div className="w-12 h-12 rounded-full bg-muted/10 flex items-center justify-center mb-4">
-                        <AlertTriangle className="w-6 h-6 text-muted-foreground/50 animate-pulse" />
-                      </div>
-                      <p className="text-sm font-semibold text-foreground mb-1">
-                        No nation selected
-                      </p>
-                      <p className="text-xs text-muted-foreground max-w-[240px] leading-relaxed">
-                        Click on any nation's bar or label to view its detailed
-                        climate vulnerability vectors and index scores on the
-                        radar chart.
-                      </p>
-                    </div>
-                  )}
+                                <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+                                  {item.subject}
+                                </p>
+                                <p
+                                  className="text-base font-mono font-bold mt-0.5"
+                                  style={{ color: itemColor }}
+                                >
+                                  <AnimatedCounter value={item.value} decimals={0} />
+                                  <span className="text-[9px] text-muted-foreground font-normal">
+                                    /100
+                                  </span>
+                                </p>
+                              </motion.div>
+                            );
+                          })}
+                        </motion.div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="placeholder"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.25 }}
+                        className="flex-1 flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-border/20 rounded-xl my-6 min-h-[300px]"
+                      >
+                        <div className="w-12 h-12 rounded-full bg-muted/10 flex items-center justify-center mb-4">
+                          <AlertTriangle className="w-6 h-6 text-muted-foreground/50 animate-pulse" />
+                        </div>
+                        <p className="text-sm font-semibold text-foreground mb-1">
+                          No nation selected
+                        </p>
+                        <p className="text-xs text-muted-foreground max-w-[240px] leading-relaxed">
+                          Click on any nation's bar or label to view its detailed
+                          climate vulnerability vectors and index scores on the
+                          radar chart.
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </motion.div>
             </div>
