@@ -89,26 +89,6 @@ export const GetCoreRawDataResponse = zod.array(GetCoreRawDataResponseItem)
 
 
 /**
- * @summary Key headline metrics
- */
-export const GetCoreOverviewResponse = zod.object({
-  "totalCountries": zod.number(),
-  "yearRange": zod.object({
-  "start": zod.number(),
-  "end": zod.number()
-}),
-  "totalObservations": zod.number(),
-  "avgRiseMeters": zod.number(),
-  "maxRiseCountry": zod.string(),
-  "maxRiseValue": zod.number(),
-  "countriesAboveAvg": zod.number(),
-  "elNinoYear": zod.number(),
-  "recentDecadeAvg": zod.number(),
-  "baselineDecadeAvg": zod.number()
-})
-
-
-/**
  * @summary Sea level anomaly time series per country
  */
 export const GetCoreSeaLevelByCountryResponseItem = zod.object({
@@ -122,56 +102,6 @@ export const GetCoreSeaLevelByCountryResponseItem = zod.object({
   "trend": zod.enum(['rising', 'stable', 'variable'])
 })
 export const GetCoreSeaLevelByCountryResponse = zod.array(GetCoreSeaLevelByCountryResponseItem)
-
-
-/**
- * Time series with rolling avg, decade breakdown, stats, and rank vs peers
- * @summary Full deep-dive profile for a single country
- */
-export const GetCoreCountryProfileParams = zod.object({
-  "code": zod.coerce.string().describe('ISO country code (e.g. FJ, TV, WS)')
-})
-
-export const GetCoreCountryProfileResponse = zod.object({
-  "country": zod.string(),
-  "code": zod.string(),
-  "timeSeries": zod.array(zod.object({
-  "year": zod.number(),
-  "value": zod.number(),
-  "rollingAvg": zod.number()
-})),
-  "decadeBreakdown": zod.array(zod.object({
-  "label": zod.string(),
-  "avg": zod.number(),
-  "count": zod.number()
-})),
-  "stats": zod.object({
-  "mean": zod.number(),
-  "volatility": zod.number(),
-  "cumulativeRise": zod.number(),
-  "slope": zod.number(),
-  "peakValue": zod.number(),
-  "peakYear": zod.number(),
-  "troughValue": zod.number(),
-  "troughYear": zod.number(),
-  "observations": zod.number(),
-  "rankByCumulativeRise": zod.number(),
-  "totalCountries": zod.number()
-})
-})
-
-
-/**
- * @summary Aggregated annual sea level trend across all countries
- */
-export const GetCoreSeaLevelTrendResponseItem = zod.object({
-  "year": zod.number(),
-  "avgAnomaly": zod.number(),
-  "minAnomaly": zod.number(),
-  "maxAnomaly": zod.number(),
-  "countriesRising": zod.number()
-})
-export const GetCoreSeaLevelTrendResponse = zod.array(GetCoreSeaLevelTrendResponseItem)
 
 
 /**

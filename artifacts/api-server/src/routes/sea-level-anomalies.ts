@@ -62,6 +62,7 @@ function getRawData(): RawCsvRecord[] {
   return cachedRawData;
 }
 
+
 function stdDev(values: number[]): number {
   if (values.length === 0) return 0;
   const mean = values.reduce((s, v) => s + v, 0) / values.length;
@@ -908,31 +909,12 @@ function getSubRegionsData(): RegionalCluster[] {
   ];
 }
 
-// ── Core endpoints ──────────────────────────────────────────────────────────
-
-router.get("/core/overview", (_req, res): void => {
-  res.json(getOverviewData());
-});
-
 router.get("/core/raw-data", (_req, res): void => {
   res.json(getRawData());
 });
 
 router.get("/core/sea-level-by-country", (_req, res): void => {
   res.json(getSeaLevelByCountryData());
-});
-
-router.get("/core/country-profile/:code", (req, res): void => {
-  const result = getCountryProfileData(req.params.code);
-  if (!result) {
-    res.status(404).json({ error: `No data found for country code: ${req.params.code}` });
-  } else {
-    res.json(result);
-  }
-});
-
-router.get("/core/sea-level-trend", (_req, res): void => {
-  res.json(getSeaLevelTrendData());
 });
 
 

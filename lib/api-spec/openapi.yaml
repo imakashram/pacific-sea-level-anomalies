@@ -71,19 +71,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/RawCsvRecord"
-  /core/overview:
-    get:
-      operationId: getCoreOverview
-      tags: [core]
-      summary: Key headline metrics
-      responses:
-        "200":
-          description: Overview statistics
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SeaLevelAnomaliesOverview"
-
   /core/sea-level-by-country:
     get:
       operationId: getCoreSeaLevelByCountry
@@ -98,44 +85,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CountryTimeSeries"
-
-  /core/country-profile/{code}:
-    get:
-      operationId: getCoreCountryProfile
-      tags: [core]
-      summary: Full deep-dive profile for a single country
-      description: Time series with rolling avg, decade breakdown, stats, and rank vs peers
-      parameters:
-        - name: code
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ISO country code (e.g. FJ, TV, WS)
-      responses:
-        "200":
-          description: Country profile data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CountryProfile"
-        "404":
-          description: Country not found
-
-  /core/sea-level-trend:
-    get:
-      operationId: getCoreSeaLevelTrend
-      tags: [core]
-      summary: Aggregated annual sea level trend across all countries
-      responses:
-        "200":
-          description: Yearly trend data
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/TrendDataPoint"
 
   /story/hero-section:
     get:
@@ -991,6 +940,7 @@ components:
         - nations
         - description
 
+
     RawCsvRecord:
       type: object
       properties:
@@ -1073,3 +1023,4 @@ components:
         - Reporting Type
         - OBS_COMMENT
         - Comment
+

@@ -44,66 +44,12 @@ const ENDPOINTS: ApiEndpoint[] = [
     usedIn: [],
   },
   {
-    path: "/api/core/overview",
-    method: "GET",
-    description:
-      "Returns high-level statistics and metadata summaries for the complete climate anomalies dataset.",
-    category: "core",
-    usedIn: ["HeroSection", "TheDataLandscape", "WhatThisMeans"],
-  },
-  {
     path: "/api/core/sea-level-by-country",
     method: "GET",
     description:
       "Returns raw time-series data of annual sea level anomalies grouped by nation code.",
     category: "core",
     usedIn: ["PacificAtAGlance"],
-  },
-  {
-    path: "/api/core/country-profile/:code",
-    method: "GET",
-    description:
-      "Returns a comprehensive data profile for a single nation, including annual anomaly records, decadal shift benchmarks, ranking statistics, and local trends.",
-    category: "core",
-    usedIn: ["ExploreAnyNation"],
-    params: [
-      {
-        name: "code",
-        placeholder: "Country Code (e.g. PW, PG, TV)",
-        type: "dropdown",
-        options: [
-          "PW",
-          "PG",
-          "TV",
-          "MH",
-          "FM",
-          "KI",
-          "FJ",
-          "SB",
-          "VU",
-          "TO",
-          "WS",
-          "CK",
-          "NU",
-          "TK",
-          "WF",
-          "PF",
-          "NC",
-          "GU",
-          "MP",
-          "AS",
-          "NR",
-        ],
-      },
-    ],
-  },
-  {
-    path: "/api/core/sea-level-trend",
-    method: "GET",
-    description:
-      "Returns annual global sea level trend values across the Pacific.",
-    category: "core",
-    usedIn: ["TheOceanIsRising", "OceanDecorations"],
   },
 
   // Story
