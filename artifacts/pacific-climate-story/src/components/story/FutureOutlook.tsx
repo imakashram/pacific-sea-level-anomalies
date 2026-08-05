@@ -293,18 +293,49 @@ const shieldIconVariants: Variants = {
  * FutureOutlook Component
  *
  * Visualizes 10-year forward sea level projections (2024-2033) based on Ordinary Least Squares (OLS)
- * linear regression model with ±2σ residual error confidence intervals.
+ * linear regression model or IPCC SSP acceleration scenarios with ±2σ residual error confidence intervals.
  */
 export function FutureOutlook() {
   const { data: apiData, isLoading, isError } = useGetFutureOutlook();
   const chartRef = useRef<HTMLDivElement>(null);
   const [isChartInView, setIsChartInView] = useState(false);
   const [isAnimationActive, setIsAnimationActive] = useState(true);
+  const [scenario, setScenario] = useState<"linear" | "ssp126" | "ssp245" | "ssp585">("linear");
 
   const forecastData = apiData!;
 
+  const SCENARIOS = [
+    {
+      key: "linear" as const,
+      label: "Linear (OLS)",
+      accel: 0,
+      desc: "Extrapolates the historical 30-year trend line with no acceleration."
+    },
+    {
+      key: "ssp126" as const,
+      label: "IPCC SSP1-2.6",
+      accel: 0.05,
+      desc: "Low emission scenario aligning with Paris target (+1.8°C warming by 2100). Moderate acceleration."
+    },
+    {
+      key: "ssp245" as const,
+      label: "IPCC SSP2-4.5",
+      accel: 0.10,
+      desc: "Medium emission scenario aligning with current global policies (+2.7°C warming)."
+    },
+    {
+      key: "ssp585" as const,
+      label: "IPCC SSP5-8.5",
+      accel: 0.20,
+      desc: "High emission, fossil-fueled development scenario (+4.4°C warming). Significant acceleration."
+    }
+  ];
+
+  const activeScenario = SCENARIOS.find((s) => s.key === scenario) || SCENARIOS[0];
+  const accelMm = activeScenario.accel; // mm/yr^2
+
   // Format historical & projected series into unified Recharts dataset
-  const chartData: ForecastChartPoint[] = (() => {
+  const chartData = (() => {
     if (!apiData) return [];
     const historicalSeries = apiData.historical;
     const projectedSeries = apiData.projected;
@@ -313,7 +344,6 @@ export function FutureOutlook() {
     const lastHistCm = lastHist ? lastHist.avgAnomaly * 100 : null;
 
     return [
-      // 1. Historical Data Points (1993 to 2023)
       ...historicalSeries.map((h) => ({
         year: h.year,
         historical: h.avgAnomaly * 100,
@@ -323,7 +353,6 @@ export function FutureOutlook() {
         band: null,
         baseline2023: lastHistCm,
       })),
-      // 2. Transition Point (2023 Baseline anchor)
       ...(lastHist
         ? [
           {
@@ -337,20 +366,29 @@ export function FutureOutlook() {
           },
         ]
         : []),
-      // 3. Projected Data Points (2024 to 2033)
-      ...projectedSeries.map((p) => ({
-        year: p.year,
-        historical: null,
-        projected: p.projected * 100,
-        lower: p.lower * 100,
-        upper: p.upper * 100,
-        band: [p.lower * 100, p.upper * 100] as [number, number],
-        baseline2023: lastHistCm,
-      })),
+      ...projectedSeries.map((p) => {
+        const dt = p.year - 2023;
+        // quadratic offset in cm: 0.05 * accelMm * dt^2
+        const offsetCm = 0.05 * accelMm * dt * dt;
+        const projectedCm = p.projected * 100 + offsetCm;
+        
+        const linearProjCm = p.projected * 100;
+        const linearUpperCm = p.upper * 100;
+        const sigmaCm = linearUpperCm - linearProjCm;
+
+        return {
+          year: p.year,
+          historical: null,
+          projected: parseFloat(projectedCm.toFixed(4)),
+          lower: parseFloat((projectedCm - sigmaCm).toFixed(4)),
+          upper: parseFloat((projectedCm + sigmaCm).toFixed(4)),
+          band: [parseFloat((projectedCm - sigmaCm).toFixed(4)), parseFloat((projectedCm + sigmaCm).toFixed(4))] as [number, number],
+          baseline2023: lastHistCm,
+        };
+      }),
     ];
   })();
 
-  // Card theme selection helpers
   const getTrendTheme = (rate: number) => {
     if (rate >= 5.0) return CARD_THEMES.red;
     if (rate >= 3.5) return CARD_THEMES.orange;
@@ -380,10 +418,19 @@ export function FutureOutlook() {
       : 0;
   const totalHistRiseCm = totalHistRiseM * 100;
 
+  // Calculate dynamic projected net rise vs 2023 baseline in meters
+  const dt30 = 2030 - 2023; // 7 years
+  const dt33 = 2033 - 2023; // 10 years
+  const offset30m = 0.0005 * accelMm * dt30 * dt30;
+  const offset33m = 0.0005 * accelMm * dt33 * dt33;
+
+  const activeProjectedRise2030 = apiData ? apiData.projectedRise2030 + offset30m : 0;
+  const activeProjectedRise2033 = apiData ? apiData.projectedRise2033 + offset33m : 0;
+
   const trendTheme = getTrendTheme(apiData?.slopeMmPerYear ?? 0);
   const riseTheme = getRiseTheme(totalHistRiseCm);
-  const p2030Theme = getProjectedTheme((apiData?.projectedRise2030 ?? 0) * 1000);
-  const p2033Theme = getProjectedTheme((apiData?.projectedRise2033 ?? 0) * 1000);
+  const p2030Theme = getProjectedTheme(activeProjectedRise2030 * 1000);
+  const p2033Theme = getProjectedTheme(activeProjectedRise2033 * 1000);
 
   return (
     <StorySection id="chapter-forecast">
@@ -416,7 +463,7 @@ export function FutureOutlook() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, margin: "-50px" }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-10"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-10 text-left"
             >
               {/* Card 1: Linear Trend Rate */}
               <motion.div
@@ -498,7 +545,7 @@ export function FutureOutlook() {
                 <div
                   className={`text-3xl font-serif font-bold tracking-tight ${p2030Theme.text}`}
                 >
-                  +<AnimatedCounter value={forecastData.projectedRise2030 * 100} decimals={1} />
+                  +<AnimatedCounter value={activeProjectedRise2030 * 100} decimals={1} />
                   <span className="text-sm font-sans text-muted-foreground ml-1">
                     cm
                   </span>
@@ -528,7 +575,7 @@ export function FutureOutlook() {
                 <div
                   className={`text-3xl font-serif font-bold tracking-tight ${p2033Theme.text}`}
                 >
-                  +<AnimatedCounter value={forecastData.projectedRise2033 * 100} decimals={1} />
+                  +<AnimatedCounter value={activeProjectedRise2033 * 100} decimals={1} />
                   <span className="text-sm font-sans text-muted-foreground ml-1">
                     cm
                   </span>
@@ -547,7 +594,6 @@ export function FutureOutlook() {
               transition={{ duration: 0.8, delay: 0.3 }}
               onViewportEnter={() => {
                 setIsChartInView(true);
-                // Turn off isAnimationActive after all sequential animations finish (1500ms historical + 1000ms projection + buffer)
                 setTimeout(() => {
                   setIsAnimationActive(false);
                 }, 2700);
@@ -561,8 +607,7 @@ export function FutureOutlook() {
                     Decadal Projection (Through 2033)
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                    Linear trend projection of regional anomalies with a shaded
-                    ±2σ confidence interval.
+                    Linear trend projection of regional anomalies with a shaded ±2σ confidence interval.
                   </p>
                 </div>
 
@@ -583,11 +628,45 @@ export function FutureOutlook() {
                 </div>
               </div>
 
+              {/* Scenario Tab Selector */}
+              <div className="mb-4 flex justify-center">
+                <div className="flex flex-wrap gap-1.5 bg-slate-950/60 p-1 rounded-xl border border-slate-800/80 w-fit">
+                  {SCENARIOS.map((s) => {
+                    const isActive = s.key === scenario;
+                    return (
+                      <button
+                        key={s.key}
+                        onClick={() => setScenario(s.key)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all duration-300 ${
+                          isActive
+                            ? "bg-primary text-primary-foreground shadow-md"
+                            : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/40"
+                        }`}
+                        title={s.desc}
+                      >
+                        {s.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Active Scenario Description */}
+              <div className="mb-6 px-1 text-xs text-slate-400 font-sans leading-relaxed max-w-3xl text-left">
+                <span className="font-bold text-slate-200 mr-1.5">Active Scenario:</span>
+                {activeScenario.desc}
+                {accelMm > 0 && (
+                  <span className="text-amber-400/90 ml-1.5 font-mono">
+                    (Acceleration rate: +{accelMm.toFixed(2)} mm/yr²)
+                  </span>
+                )}
+              </div>
+
               {/* Chart Body */}
               <div ref={chartRef} className="h-[380px]">
                 <div className="sr-only">
-                  This projection chart shows the linear trend projection of regional sea level rise through 2033, based on historical observations from 1993 to 2023.
-                  The historical net rise of {totalHistRiseCm.toFixed(1)} cm is projected to continue, reaching a net increase of {(forecastData.projectedRise2030 * 100).toFixed(1)} cm by 2030, and further rising to {(forecastData.projectedRise2033 * 100).toFixed(1)} cm by 2033, relative to the baseline.
+                  This projection chart shows the sea level rise projection through 2033, based on historical observations from 1993 to 2023.
+                  The historical net rise of {totalHistRiseCm.toFixed(1)} cm is projected to continue, reaching a net increase of {(activeProjectedRise2030 * 100).toFixed(1)} cm by 2030, and further rising to {(activeProjectedRise2033 * 100).toFixed(1)} cm by 2033, relative to the baseline.
                   The shaded band represents the ±2 standard deviation confidence interval showing the range of expected outcomes.
                 </div>
                 {isChartInView ? (
@@ -812,15 +891,29 @@ export function FutureOutlook() {
               <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] font-mono text-muted-foreground/55 text-center max-w-3xl mx-auto">
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 inline-block" />
-                  <span>Model: OLS Linear Regression (1993–2023)</span>
+                  <span>
+                    {scenario === "linear" && "Model: OLS Linear Regression (1993–2023)"}
+                    {scenario === "ssp126" && "Model: IPCC SSP1-2.6 (Low Acceleration)"}
+                    {scenario === "ssp245" && "Model: IPCC SSP2-4.5 (Medium Acceleration)"}
+                    {scenario === "ssp585" && "Model: IPCC SSP5-8.5 (Extreme Acceleration)"}
+                  </span>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-400/80 inline-block" />
-                  <span>Confidence: ±2× RMSE Residuals</span>
+                  <span>
+                    {scenario === "linear"
+                      ? "Confidence: ±2× RMSE Residuals"
+                      : "Confidence: Projected ±2× RMSE Baseline"}
+                  </span>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80 inline-block" />
-                  <span>R² Score: {(apiData.r2 * 100).toFixed(1)}%</span>
+                  <span>
+                    {scenario === "linear" && `Historical R² Fit: ${(apiData.r2 * 100).toFixed(1)}%`}
+                    {scenario === "ssp126" && "Scenario Target: +1.8°C Warming (2100)"}
+                    {scenario === "ssp245" && "Scenario Target: +2.7°C Warming (2100)"}
+                    {scenario === "ssp585" && "Scenario Target: +4.4°C Warming (2100)"}
+                  </span>
                 </span>
               </div>
 

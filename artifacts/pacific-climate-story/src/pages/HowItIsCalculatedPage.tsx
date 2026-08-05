@@ -295,22 +295,23 @@ const CALCULATIONS: CalculationCard[] = [
   {
     id: "forecasting-model",
     category: "trends",
-    title: "15. Predictive Projection Model (2024–2033)",
-    question: "What is the predicted sea level height in the year 2033?",
+    title: "15. Predictive Projection Model & IPCC Scenarios (2024–2033)",
+    question: "What is the predicted sea level height in the year 2033 under different emissions scenarios?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "Projects future sea levels 10 years forward (up to the year 2033) based on historical rising speeds (linear regression), while showing the range of uncertainty.",
+      "Projects future sea levels 10 years forward (up to the year 2033). Users can toggle between the OLS linear baseline or IPCC SSP quadratic acceleration scenarios (SSP1-2.6, SSP2-4.5, SSP5-8.5), which add acceleration coefficients derived from climate projection models.",
     formulaSimple:
-      "Projected SLA(t) = Slope × t + Intercept ± 2σ",
+      "Projected Anomaly SLA(t) = OLS_Linear(t) + 0.05 × a_mm × (t - 2023)² ± 2σ",
     inputData:
-      "31-year historical annual averages (1993–2023)",
-    outputResult: "+15.2 cm projected mean by 2033 (+10.7 cm to +19.7 cm range)",
-    exampleNation: "10-Year Climate Forecast",
+      "Historical averages (1993–2023) & IPCC acceleration parameter (a_mm: Linear = 0, SSP1-2.6 = 0.05, SSP2-4.5 = 0.10, SSP5-8.5 = 0.20 mm/yr²)",
+    outputResult: "OLS Linear: +15.2 cm by 2033 | SSP5-8.5 (Extreme): +16.2 cm by 2033",
+    exampleNation: "10-Year Climate Forecast (with IPCC Accel)",
     steps: [
-      "Calculate annual averages across all Pacific territories for the historical period (1993–2023).",
-      "Fit an Ordinary Least Squares (OLS) linear regression model over the historical years.",
-      "Extrapolate the linear trend line 10 years into the future (2024–2033).",
-      "Apply a ±2σ (standard deviation of residuals) confidence interval to represent statistical uncertainty.",
+      "Fit an Ordinary Least Squares (OLS) linear regression model over the historical period (1993–2023).",
+      "Select an IPCC scenario acceleration rate: Linear (OLS) (a = 0 mm/yr²), SSP1-2.6 (a = 0.05 mm/yr²), SSP2-4.5 (a = 0.10 mm/yr²), or SSP5-8.5 (a = 0.20 mm/yr²).",
+      "Calculate the future baseline offset using the quadratic formula: ΔS_cm(t) = 0.05 × a_mm × (t - 2023)².",
+      "Add the quadratic offset to the OLS linear projection line.",
+      "Apply ±2σ standard deviation of the historical residuals as the confidence interval to represent statistical uncertainty.",
     ],
   },
   {
