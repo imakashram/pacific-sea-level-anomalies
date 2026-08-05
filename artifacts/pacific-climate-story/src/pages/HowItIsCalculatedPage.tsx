@@ -39,16 +39,16 @@ const CALCULATIONS: CalculationCard[] = [
     question: "Is the ocean level currently higher or lower than normal?",
     unit: "Centimeters (cm)",
     plainEnglish:
-      "This measures the height of the sea in a specific year and compares it to a 10-year baseline average (1993-2002). A positive number means the sea is higher than normal, and a negative number means it is lower.",
+      "This measures the height of the sea in a specific year and compares it to a baseline average. A positive number means the sea is higher than normal, and a negative number means it is lower.",
     formulaSimple:
-      "Anomaly (cm) = (Ocean Height - 1993–2002 Baseline Avg) × 100",
-    inputData: "Annual satellite & tidal height measurements (meters)",
-    outputResult: "+12.4 cm current anomaly",
+      "Anomaly (cm) = Anomaly (m) × 100",
+    inputData: "Annual satellite & tidal anomaly measurements (meters)",
+    outputResult: "+10.5 cm current anomaly (Year 2023)",
     exampleNation: "Pacific Regional Average",
     steps: [
-      "Find average ocean height from 1993 to 2002 (set as 0.0 cm baseline).",
-      "Subtract baseline average from current year height.",
-      "Multiply meters by 100 to convert to centimeters.",
+      "Retrieve the raw annual anomaly value (in meters) for the target year.",
+      "Multiply the value by 100 to convert from meters to centimeters.",
+      "Plot positive anomalies above the zero baseline and negative anomalies below.",
     ],
   },
   {
@@ -59,7 +59,7 @@ const CALCULATIONS: CalculationCard[] = [
     unit: "Centimeters (cm)",
     plainEnglish:
       "This compares the average sea level from the first decade of monitoring (1993–2002) directly to the average of the most recent decade (2014–2023). It tells us how much the baseline has risen over a generation.",
-    formulaSimple: "Decadal Shift = (2014–2023 Average) - (1993–2002 Average)",
+    formulaSimple: "Decadal Shift = (2014–2023 Average - 1993–2002 Average) × 100",
     inputData: "Decade 1 Mean (0.0 cm) vs Decade 3 Mean (+8.5 cm)",
     outputResult: "+8.5 cm regional shift",
     exampleNation: "Pacific Regional Average",
@@ -78,11 +78,11 @@ const CALCULATIONS: CalculationCard[] = [
     plainEnglish:
       "This calculates the average speed of sea-level rise by drawing a straight trend line through 30 years of annual measurements. For example, a rate of 4.8 mm/yr means the water rises about half a centimeter each year.",
     formulaSimple: "Speed Rate = OLS Trendline Slope × 1,000 mm/m",
-    inputData: "30 annual anomaly records (1993 to 2023)",
-    outputResult: "4.84 mm/yr (13% above regional average)",
+    inputData: "31 annual anomaly records (1993 to 2023)",
+    outputResult: "4.84 mm/yr (Palau) & 5.40 mm/yr (Papua New Guinea)",
     exampleNation: "Palau & Papua New Guinea",
     steps: [
-      "Plot all 30 annual water height points on a timeline.",
+      "Plot all 31 annual water height points on a timeline.",
       "Fit an Ordinary Least Squares (OLS) regression line.",
       "Multiply line slope by 1,000 to express speed in mm/year.",
     ],
@@ -103,7 +103,7 @@ const CALCULATIONS: CalculationCard[] = [
     steps: [
       "Calculate 30-year average sea level height for territory.",
       "Measure yearly deviations from average height.",
-      "Calculate sample standard deviation (σ) in ±cm.",
+      "Calculate population standard deviation (σ) in ±cm.",
     ],
   },
   {
@@ -113,13 +113,13 @@ const CALCULATIONS: CalculationCard[] = [
     question: "Is the speed of sea-level rise faster in recent years compared to the past?",
     unit: "Comparison (Accelerating vs Decelerating)",
     plainEnglish:
-      "This compares the rising speed (slope) of the first half of the 30-year period directly with the second half. If the slope of the second half is steeper, the rate of sea-level rise is accelerating.",
+      "This compares the rising speed (slope) of the first half of the 31-year period directly with the second half. If the slope of the second half is steeper, the rate of sea-level rise is accelerating.",
     formulaSimple: "Acceleration Check = (Second-Half Slope) > (First-Half Slope)",
     inputData: "First-half years (1993–2007) vs second-half years (2008–2023)",
     outputResult: "Accelerating (Second-half speed is higher than first-half)",
-    exampleNation: "Tuvalu & Marshall Islands",
+    exampleNation: "Kiribati & Solomon Islands",
     steps: [
-      "Divide the 30-year sea-level anomaly dataset into two equal halves (15 years each).",
+      "Divide the 31-year sea-level anomaly dataset into two periods (1993–2007 and 2008–2023).",
       "Fit a linear regression line to the first half (1993–2007) to calculate its slope.",
       "Fit a linear regression line to the second half (2008–2023) to calculate its slope.",
       "Compare the two slopes: if the second-half slope is greater, classify the territory as accelerating.",
@@ -133,8 +133,8 @@ const CALCULATIONS: CalculationCard[] = [
     unit: "Centimeters (+cm)",
     plainEnglish:
       "The single highest yearly sea level recorded during the 30 years of observation. It highlights the maximum high-water mark for that territory.",
-    formulaSimple: "Peak Record = Max(SLA₁, SLA₂, ..., SLA₃₀) × 100",
-    inputData: "30 annual anomaly records for territory",
+    formulaSimple: "Peak Record = Max(SLA₁, SLA₂, ..., SLA₃₁) × 100",
+    inputData: "31 annual anomaly records for territory",
     outputResult: "Peak: +20.0 cm (Year 2008)",
     exampleNation: "Palau Peak Record",
     steps: [
@@ -151,8 +151,8 @@ const CALCULATIONS: CalculationCard[] = [
     unit: "Centimeters (-cm)",
     plainEnglish:
       "The lowest yearly sea level drop recorded during extreme drought periods or dry climate phases (like El Niño).",
-    formulaSimple: "Trough Record = Min(SLA₁, SLA₂, ..., SLA₃₀) × 100",
-    inputData: "30 annual anomaly records for territory",
+    formulaSimple: "Trough Record = Min(SLA₁, SLA₂, ..., SLA₃₁) × 100",
+    inputData: "31 annual anomaly records for territory",
     outputResult: "Trough: -10.0 cm (Year 1993)",
     exampleNation: "Palau Trough Record",
     steps: [
@@ -169,9 +169,9 @@ const CALCULATIONS: CalculationCard[] = [
     unit: "Centimeters (cm)",
     plainEnglish:
       "This calculates the net change in sea level from the very first year of monitoring (1993) to the most recent year (2023). It represents the total accumulated height gain over the 30-year span.",
-    formulaSimple: "Cumulative Rise = (2023 Anomaly) - (1993 Anomaly)",
+    formulaSimple: "Cumulative Rise = (2023 Anomaly - 1993 Anomaly) × 100",
     inputData: "Earliest (1993) and latest (2023) sea level anomaly records",
-    outputResult: "+12.4 cm net rise",
+    outputResult: "+20.0 cm net rise (+12.4 cm regional average)",
     exampleNation: "Palau & Solomon Islands",
     steps: [
       "Identify the sea level anomaly value for the starting year (1993).",
@@ -190,7 +190,7 @@ const CALCULATIONS: CalculationCard[] = [
       "This measures the difference in average sea level anomalies between La Niña years and El Niño years. A larger value means the territory experiences dramatic sea level swings during different phases of the El Niño Southern Oscillation (ENSO) cycle.",
     formulaSimple: "ENSO Sensitivity = (La Niña Years Avg) - (El Niño Years Avg)",
     inputData: "Historical anomalies for classified El Niño (1997, 1998, 2015, 2016) and La Niña (2010, 2011, 2020, 2021) years",
-    outputResult: "+18.7 cm avg swing (representing extreme high/low variation)",
+    outputResult: "+17.5 cm avg swing (representing extreme high/low variation)",
     exampleNation: "Guam & Palau (Most Sensitive)",
     steps: [
       "Filter historical data into designated El Niño years and La Niña years.",
@@ -209,13 +209,13 @@ const CALCULATIONS: CalculationCard[] = [
       "A threat index from 0 to 100 that combines four critical factors: total cumulative rise, speed rate of the rise, year-to-year volatility, and decade-over-decade acceleration.",
     formulaSimple:
       "Risk Score = 40% Cumulative Rise + 30% Speed Rate + 15% Volatility + 15% Acceleration",
-    inputData: "Normalized percentile rankings across 21 Pacific nations",
-    outputResult: "89.5 Score (CRITICAL RISK LEVEL)",
-    exampleNation: "Tuvalu & Kiribati",
+    inputData: "Normalized values based on min/max across all 21 nations (Min-Max normalization)",
+    outputResult: "92.0 Score (CRITICAL RISK LEVEL)",
+    exampleNation: "Papua New Guinea & Solomon Islands",
     steps: [
       "Rank all 21 nations across cumulative rise, speed, volatility, and acceleration.",
       "Multiply rankings by safety impact weights.",
-      "Classify into Critical (≥80), High (65-79), Medium (45-64), or Low (<45).",
+      "Classify into Critical (≥80), High (60-79), Medium (40-59), or Low (<40).",
     ],
   },
   {
@@ -228,7 +228,7 @@ const CALCULATIONS: CalculationCard[] = [
       "Identifies the first calendar year when the sea level rose beyond benchmark heights (such as 10 cm or 20 cm above the starting baseline).",
     formulaSimple: "First Year (y*) where SLA(y*) ≥ Threshold Level",
     inputData: "Annual anomaly time series per territory",
-    outputResult: "Breached +10cm in Year 2012",
+    outputResult: "Breached +10cm in Year 2005",
     exampleNation: "Marshall Islands",
     steps: [
       "Define threshold level (+0.0 cm, +10.0 cm, or +20.0 cm).",
@@ -246,7 +246,7 @@ const CALCULATIONS: CalculationCard[] = [
       "Averages the sea level data of neighboring islands into three main sub-regions. This helps climate scientists track if certain sub-regions of the Pacific are rising faster than others.",
     formulaSimple: "Cluster Average = Mean of Member Territory Anomalies",
     inputData: "Territory groupings: Melanesia, Micronesia, Polynesia",
-    outputResult: "Micronesia Mean: +10.2 cm",
+    outputResult: "Micronesia Mean: +10.0 cm",
     exampleNation: "Micronesia Sub-Region",
     steps: [
       "Assign each territory to Melanesia, Micronesia, or Polynesia.",
@@ -265,7 +265,7 @@ const CALCULATIONS: CalculationCard[] = [
       "This measures how much the average sea level across the entire Pacific in a specific year differed from the grand 30-year average. It shows the net annual fluctuations, highlighting the extreme peaks of climate events.",
     formulaSimple: "Annual Deviation = (Annual Pacific Avg) - (30-Year Grand Avg)",
     inputData: "Yearly averages and the overall 30-year average across all territories",
-    outputResult: "+3.4 cm deviation (for a specific year)",
+    outputResult: "+6.0 cm deviation (Year 2023)",
     exampleNation: "Annual Telemetry & Hydro-Gauge",
     steps: [
       "Calculate the average sea level anomaly across all 21 nations for each calendar year.",
@@ -328,7 +328,7 @@ const CALCULATIONS: CalculationCard[] = [
     exampleNation: "Time Series & Explorer Charts",
     steps: [
       "Take anomaly values for 2 years prior, target year, and 2 years ahead.",
-      "Add the 5 annual anomaly values and divide by 5.",
+      "Add the 5 annual anomaly values and divide by 5 (dynamically truncating the window at the boundaries where years are missing).",
       "Render smoothed moving average line overlay on charts.",
     ],
   },
@@ -458,7 +458,7 @@ export default function HowItIsCalculatedPage() {
                 1 Meter = 100 cm
               </span>
               <p className="text-[11px] text-slate-400 leading-relaxed">
-                Raw height values are converted to centimeters so small shifts are easy to see (e.g. <strong className="text-slate-300">+12.4 cm</strong> instead of 0.124m).
+                Raw height values are converted to centimeters so small shifts are easy to see (e.g. <strong className="text-slate-300">+10.5 cm</strong> instead of 0.105m).
               </p>
             </div>
 
