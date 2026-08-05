@@ -130,7 +130,7 @@ const rowVariants: Variants = {
 
 export function ENSOEffect() {
   // Hook: ENSO Sensitivity
-  const { data: ensoData, isLoading, isError, refetch } = useGetEnsoEffect();
+  const { data: ensoData, isLoading, isError } = useGetEnsoEffect();
   const [displayCount, setDisplayCount] = useState<10 | 21>(10);
   const [hoveredNation, setHoveredNation] = useState<string | null>(null);
   const [hoverCoords, setHoverCoords] = useState<{
@@ -191,20 +191,7 @@ export function ENSOEffect() {
 
         {isLoading ? (
           <div className="h-[520px] bg-card/20 animate-pulse rounded-2xl" />
-        ) : isError ? (
-          <div className="h-[520px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-2xl p-6 select-none max-w-5xl mx-auto">
-            <div className="text-center">
-              <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
-              <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the ENSO climate sensitivity data from the database server.</p>
-            </div>
-            <button
-              onClick={() => refetch()}
-              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
-            >
-              Retry Connection
-            </button>
-          </div>
-        ) : (
+        ) : isError ? null : (
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}

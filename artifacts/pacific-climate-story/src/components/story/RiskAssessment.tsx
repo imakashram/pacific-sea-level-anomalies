@@ -325,7 +325,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
  * Combines a master horizontal bar chart with a detailed multi-vector spider/radar chart.
  */
 export function RiskAssessment() {
-  const { data: apiData, isLoading, isError, refetch } = useGetRiskAssessment();
+  const { data: apiData, isLoading, isError } = useGetRiskAssessment();
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
   const isChartInView = true;
 
@@ -383,20 +383,7 @@ export function RiskAssessment() {
 
         {isLoading ? (
           <div className="h-[600px] bg-card/20 animate-pulse rounded-xl" />
-        ) : isError || !apiData ? (
-          <div className="h-[600px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-3xl p-6 md:p-8 select-none shadow-2xl">
-            <div className="text-center">
-              <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
-              <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the risk assessment metrics from the database server.</p>
-            </div>
-            <button
-              onClick={() => refetch()}
-              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
-            >
-              Retry Connection
-            </button>
-          </div>
-        ) : (
+        ) : isError || !apiData ? null : (
           <>
             {/* Risk Tier Summary Cards Grid */}
             <motion.div

@@ -98,7 +98,7 @@ const statCardVariants = {
  */
 export function HeroSection() {
   // Fetch overview metrics & detailed stats via API hooks
-  const { data: heroData, isError, refetch } = useGetHeroSection();
+  const { data: heroData } = useGetHeroSection();
   const overview = heroData?.overview;
   const decadeData = heroData?.decadeAnalysis;
   const accelData = heroData?.acceleration;
@@ -215,20 +215,7 @@ export function HeroSection() {
           initial="hidden"
           animate="visible"
         >
-          {isError && (
-            <div className="mb-6 text-xs bg-red-950/30 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 select-none">
-              <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
-                <span>Live connection to the database API failed. Please try reconnecting to reload metrics.</span>
-              </span>
-              <button
-                onClick={() => refetch()}
-                className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg font-semibold transition cursor-pointer text-[10px]"
-              >
-                Retry Connection
-              </button>
-            </div>
-          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {!heroData ? (
               <>

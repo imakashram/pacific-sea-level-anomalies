@@ -94,7 +94,7 @@ const listItemVariants = {
  * comparing decadal climate shifts (D1 → D2 → D3) across Melanesia, Micronesia, and Polynesia.
  */
 export function PacificSubRegions() {
-  const { data: CLUSTER_DATA, isLoading, isError, refetch } = useGetSubRegions();
+  const { data: CLUSTER_DATA, isLoading, isError } = useGetSubRegions();
   const [selectedRegion, setSelectedRegion] = useState<
     "Melanesia" | "Micronesia" | "Polynesia"
   >("Melanesia");
@@ -112,22 +112,7 @@ export function PacificSubRegions() {
   }
 
   if (isError || !CLUSTER_DATA) {
-    return (
-      <StorySection id="pacific-sub-regions">
-        <div className="max-w-5xl mx-auto h-[400px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-2xl p-6 select-none">
-          <div className="text-center">
-            <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
-            <p className="text-xs text-muted-foreground max-w-sm">We were unable to load sub-regional climate risk data groups from the database server.</p>
-          </div>
-          <button
-            onClick={() => refetch()}
-            className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
-          >
-            Retry Connection
-          </button>
-        </div>
-      </StorySection>
-    );
+    return null;
   }
 
   const selectedCluster =

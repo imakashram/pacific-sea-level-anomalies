@@ -84,14 +84,13 @@ const itemVariants = {
  * explaining the reference baseline, observational volume, and multidecadal rise metrics.
  */
 export function TheDataLandscape() {
-  const { data: overview, isLoading, isError, refetch } = useGetDataLandscape();
+  const { data: overview, isLoading, isError } = useGetDataLandscape();
 
-  // 100% verified fallback metrics calculated directly from 1993-2023 Pacific SLA records
-  const startYear = overview?.yearRange?.start ?? 1993;
-  const endYear = overview?.yearRange?.end ?? 2023;
-  const totalObservations = overview?.totalObservations ?? 651;
-  const baselineVal = overview?.baselineDecadeAvg ?? 0;
-  const recentVal = overview?.recentDecadeAvg ?? 0.085;
+  const startYear = overview?.yearRange?.start;
+  const endYear = overview?.yearRange?.end;
+  const totalObservations = overview?.totalObservations;
+  const baselineVal = overview?.baselineDecadeAvg;
+  const recentVal = overview?.recentDecadeAvg;
 
   return (
     <StorySection id="the-data-landscape">
@@ -115,29 +114,20 @@ export function TheDataLandscape() {
         </p>
       </motion.div>
 
-      {isError && (
-        <div className="max-w-3xl mx-auto mb-8 text-xs bg-red-950/30 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 select-none">
-          <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
-            <span>Live connection to the database API failed. Displaying cached historic dataset.</span>
-          </span>
-          <button
-            onClick={() => refetch()}
-            className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg font-semibold transition cursor-pointer text-[10px]"
-          >
-            Retry Connection
-          </button>
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-[148px] bg-card/10 animate-pulse rounded-2xl border border-slate-800/40" />
+          ))}
         </div>
-      )}
-
-      {/* Primary Statistics Cards Grid */}
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-      >
+      ) : isError || !overview ? null : (
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
         {/* Card 1: Time Window */}
         <motion.div
           variants={itemVariants}
@@ -184,7 +174,7 @@ export function TheDataLandscape() {
             {isLoading && !overview ? (
               "..."
             ) : (
-              <AnimatedCounter value={totalObservations} useLocale={true} />
+              <AnimatedCounter value={totalObservations!} useLocale={true} />
             )}
           </span>
           <span className="text-xs text-slate-400">Datapoints processed</span>
@@ -211,7 +201,7 @@ export function TheDataLandscape() {
             {isLoading && !overview ? (
               "..."
             ) : (
-              <AnimatedCounter value={baselineVal * 100} suffix=" cm" />
+              <AnimatedCounter value={baselineVal! * 100} suffix=" cm" />
             )}
           </span>
           <span className="text-xs text-slate-400">
@@ -240,7 +230,7 @@ export function TheDataLandscape() {
             {isLoading && !overview ? (
               "..."
             ) : (
-              <AnimatedCounter value={recentVal * 100} prefix="+" suffix=" cm" />
+              <AnimatedCounter value={recentVal! * 100} prefix="+" suffix=" cm" />
             )}
           </span>
           <span className="text-xs text-slate-400">
@@ -248,6 +238,7 @@ export function TheDataLandscape() {
           </span>
         </motion.div>
       </motion.div>
+      )}
 
       {/* Action Links & Resources Bar */}
       <motion.div

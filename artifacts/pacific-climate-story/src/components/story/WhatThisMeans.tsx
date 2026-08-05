@@ -315,14 +315,7 @@ export function WhatThisMeans() {
                 <div key={i} className="h-[148px] bg-card/10 animate-pulse rounded-2xl border border-slate-800/40" />
               ))}
             </div>
-          ) : isError ? (
-            <div className="h-60 flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-2xl p-6 select-none max-w-5xl mx-auto">
-              <div className="text-center">
-                <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
-                <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the summary takeaways from the database server.</p>
-              </div>
-            </div>
-          ) : (
+          ) : isError ? null : (
             <motion.div
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"
               variants={gridContainerVariants}

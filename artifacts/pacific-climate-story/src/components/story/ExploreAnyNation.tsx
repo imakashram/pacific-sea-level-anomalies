@@ -465,7 +465,7 @@ export function ExploreAnyNation({
   const selectedCode = propsSelectedCode || localSelectedCode;
   const setSelectedCode = propsSetSelectedCode || localSetSelectedCode;
 
-  const { data: apiProfile, isLoading, isError, refetch } = useGetExploreAnyNation(selectedCode, {
+  const { data: apiProfile, isLoading, isError } = useGetExploreAnyNation(selectedCode, {
     query: {
       queryKey: ["countryProfile", selectedCode],
       enabled: !!selectedCode,
@@ -669,20 +669,7 @@ export function ExploreAnyNation({
       <div className="min-h-[580px] relative w-full">
         {isLoading ? (
           <div className="bg-card/10 animate-pulse rounded-2xl border border-border/20 h-[580px]" />
-        ) : isError || !apiProfile ? (
-          <div className="h-[580px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-3xl p-6 md:p-8 select-none shadow-2xl">
-            <div className="text-center">
-              <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
-              <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the climate profile details for the selected territory from the database server.</p>
-            </div>
-            <button
-              onClick={() => refetch()}
-              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
-            >
-              Retry Connection
-            </button>
-          </div>
-        ) : (
+        ) : isError || !apiProfile ? null : (
           <motion.div
             key="profile-card-static"
             initial={{ opacity: 0, y: 20 }}

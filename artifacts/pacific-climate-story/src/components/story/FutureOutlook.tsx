@@ -296,7 +296,7 @@ const shieldIconVariants: Variants = {
  * linear regression model with ±2σ residual error confidence intervals.
  */
 export function FutureOutlook() {
-  const { data: apiData, isLoading, isError, refetch } = useGetFutureOutlook();
+  const { data: apiData, isLoading, isError } = useGetFutureOutlook();
   const chartRef = useRef<HTMLDivElement>(null);
   const [isChartInView, setIsChartInView] = useState(false);
   const [isAnimationActive, setIsAnimationActive] = useState(true);
@@ -408,20 +408,7 @@ export function FutureOutlook() {
 
         {isLoading ? (
           <div className="h-[480px] bg-card/20 animate-pulse rounded-xl" />
-        ) : isError || !apiData ? (
-          <div className="h-[480px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-3xl p-6 md:p-8 select-none shadow-2xl">
-            <div className="text-center">
-              <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
-              <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the future outlook projections from the database server.</p>
-            </div>
-            <button
-              onClick={() => refetch()}
-              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
-            >
-              Retry Connection
-            </button>
-          </div>
-        ) : (
+        ) : isError || !apiData ? null : (
           <>
             {/* Metric Cards Grid (Trend Rate, R² Fit, 2030 Projection, 2033 Projection) */}
             <motion.div

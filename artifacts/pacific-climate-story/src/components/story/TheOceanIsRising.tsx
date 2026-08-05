@@ -196,7 +196,7 @@ function TrendTooltip({
  * with moving average smoothing, linear regression trendline analysis, and milestone annotations.
  */
 export function TheOceanIsRising() {
-  const { data: trendData, isLoading: trendLoading, isError, refetch } = useGetOceanRising();
+  const { data: trendData, isLoading: trendLoading, isError } = useGetOceanRising();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -517,20 +517,7 @@ export function TheOceanIsRising() {
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-bounce" />
               <span>Loading oceanic dataset...</span>
             </div>
-          ) : isError ? (
-            <div className="w-full h-full flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-2xl p-6 select-none">
-              <div className="text-center">
-                <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
-                <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the Pacific sea level anomaly trajectory from the database server.</p>
-              </div>
-              <button
-                onClick={() => refetch()}
-                className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
-              >
-                Retry Connection
-              </button>
-            </div>
-          ) : isInView && formattedData ? (
+          ) : isError ? null : isInView && formattedData ? (
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart
                 data={formattedData}
