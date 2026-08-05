@@ -385,6 +385,36 @@ export function WhatThisMeans() {
               )}
             </motion.div>
           )}
+
+          {/* Concluding call to action card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-12 p-8 bg-gradient-to-br from-cyan-950/20 to-slate-950/40 border border-cyan-500/10 rounded-3xl relative overflow-hidden text-left"
+          >
+            {/* Subtle ambient light */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none" />
+            
+            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center relative z-10">
+              <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl text-cyan-400 shrink-0">
+                <Waves className="w-6 h-6 animate-pulse" />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-xl font-serif font-bold text-slate-100">
+                  Adapting to a Shifting Tide
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  As sea levels breach critical thresholds, Pacific island nations are not just passive observers. 
+                  They are leading global calls for climate justice, advocating for the operationalization of 
+                  the UN's <strong>Loss and Damage Fund</strong>, and pioneering local adaptation efforts—from constructing 
+                  resilient seawalls and restoring protective mangrove buffers, to planning community-led relocations. 
+                  Preventing the high-emission future scenarios depends entirely on global policy actions taken today.
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </StorySection>
 

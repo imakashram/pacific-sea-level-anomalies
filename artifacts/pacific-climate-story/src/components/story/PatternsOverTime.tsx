@@ -434,7 +434,7 @@ export function PatternsOverTime() {
                       (Below Baseline)
                     </span>
                     <span className="text-slate-300 font-bold">
-                      0.0 cm (Baseline)
+                      0.0 cm (Baseline: 1993–2002 Average)
                     </span>
                     <span className="font-semibold">
                       +{(heatmapData.maxValue * 100).toFixed(0)} cm (Above
