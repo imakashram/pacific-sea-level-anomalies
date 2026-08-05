@@ -248,7 +248,7 @@ export function PacificSubRegions() {
                   Compare decadal average sea level shifts across Melanesia, Micronesia, and Polynesia.
                 </p>
               </div>
-              <div className="relative w-full h-[320px] flex items-center justify-center">
+              <div className="relative w-full h-[220px] flex items-center justify-center">
                 <svg
                   viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
                   className="w-full h-full overflow-visible"
@@ -561,11 +561,6 @@ export function PacificSubRegions() {
                   })}
                 </svg>
               </div>
-
-              {/* Interaction Helper Text */}
-              <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none leading-relaxed">
-                Click on any sub-region column (Melanesia, Micronesia, or Polynesia) to highlight its decadal escalation pathway. The right-hand panel dynamically displays the member nations and localized baseline anomalies for the active realm.
-              </p>
             </div>
           </motion.div>
 
@@ -613,6 +608,11 @@ export function PacificSubRegions() {
             </div>
           </motion.div>
         </div>
+
+        {/* Interaction Helper Text */}
+        <p className="text-center text-xs text-muted-foreground mt-8 font-sans select-none leading-relaxed max-w-3xl mx-auto">
+          Click on any sub-region column (Melanesia, Micronesia, or Polynesia) to highlight its decadal escalation pathway. The right-hand panel dynamically displays the member nations and localized baseline anomalies for the active realm.
+        </p>
       </div>
     </StorySection>
   );
