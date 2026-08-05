@@ -204,14 +204,14 @@ const CALCULATIONS: CalculationCard[] = [
     question: "How threatened is this island overall compared to others?",
     unit: "Score (0–100 Risk Level)",
     plainEnglish:
-      "A threat index from 0 to 100 that combines four critical factors: how fast the sea is rising, how wild the year-to-year swings are, how much it is speeding up, and how flat or low-lying the island is.",
+      "A threat index from 0 to 100 that combines four critical factors: total cumulative rise, speed rate of the rise, year-to-year volatility, and decade-over-decade acceleration.",
     formulaSimple:
-      "Risk Score = 35% Speed + 25% Volatility + 20% Acceleration + 20% Elevation",
+      "Risk Score = 40% Cumulative Rise + 30% Speed Rate + 15% Volatility + 15% Acceleration",
     inputData: "Normalized percentile rankings across 21 Pacific nations",
     outputResult: "89.5 Score (CRITICAL RISK LEVEL)",
     exampleNation: "Tuvalu & Kiribati",
     steps: [
-      "Rank all 21 nations across speed, volatility, acceleration, and elevation.",
+      "Rank all 21 nations across cumulative rise, speed, volatility, and acceleration.",
       "Multiply rankings by safety impact weights.",
       "Classify into Critical (≥80), High (65-79), Medium (45-64), or Low (<45).",
     ],
