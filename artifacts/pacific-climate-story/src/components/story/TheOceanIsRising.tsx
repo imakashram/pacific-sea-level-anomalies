@@ -226,11 +226,11 @@ export function TheOceanIsRising() {
           const intercept = (sumY - slope * sumX) / n;
           return { slope, intercept };
         })()
-      : { slope: 0.00428, intercept: 0 };
+      : { slope: 0, intercept: 0 };
 
   // Calculate Net 30y Rise & Decadal Shift
-  const startVal = data.length > 0 ? data[0].avgAnomaly : -0.019;
-  const endVal = data.length > 0 ? data[data.length - 1].avgAnomaly : 0.1048;
+  const startVal = data.length > 0 ? data[0].avgAnomaly : 0;
+  const endVal = data.length > 0 ? data[data.length - 1].avgAnomaly : 0;
   const totalRiseCm = (endVal - startVal) * 100;
 
   const firstDecadeAvg =
@@ -240,7 +240,7 @@ export function TheOceanIsRising() {
   const recentDecadeAvg =
     data.length >= 10
       ? data.slice(-10).reduce((acc, cur) => acc + cur.avgAnomaly, 0) / 10
-      : 0.0852;
+      : 0.0;
   const shiftCm = (recentDecadeAvg - firstDecadeAvg) * 100;
 
   // Format dataset with linear trendline and 5-year moving average
@@ -426,8 +426,12 @@ export function TheOceanIsRising() {
               <span className="text-[9px] text-teal-400/80 font-mono uppercase">
                 Linear Trend Rate
               </span>
-              <span className="text-sm font-mono font-bold text-teal-400">
-                <AnimatedCounter value={reg.slope * 1000} prefix="+" suffix=" mm/yr" decimals={2} />
+              <span className="text-sm font-mono font-bold text-teal-400 min-w-[70px]">
+                {trendLoading ? (
+                  <span className="w-12 h-4 bg-teal-400/10 animate-pulse rounded inline-block mt-1" />
+                ) : (
+                  <AnimatedCounter value={reg.slope * 1000} prefix="+" suffix=" mm/yr" decimals={2} />
+                )}
               </span>
             </div>
             <div className="w-px h-7 bg-slate-700/50 self-stretch" />
@@ -436,8 +440,12 @@ export function TheOceanIsRising() {
               <span className="text-[9px] text-cyan-400/80 font-mono uppercase">
                 30y Net Rise
               </span>
-              <span className="text-sm font-mono font-bold text-cyan-400">
-                <AnimatedCounter value={totalRiseCm} prefix="+" suffix=" cm" />
+              <span className="text-sm font-mono font-bold text-cyan-400 min-w-[60px]">
+                {trendLoading ? (
+                  <span className="w-10 h-4 bg-cyan-400/10 animate-pulse rounded inline-block mt-1" />
+                ) : (
+                  <AnimatedCounter value={totalRiseCm} prefix="+" suffix=" cm" />
+                )}
               </span>
             </div>
             <div className="w-px h-7 bg-slate-700/50 self-stretch" />
@@ -446,8 +454,12 @@ export function TheOceanIsRising() {
               <span className="text-[9px] text-orange-400/80 font-mono uppercase">
                 Decadal Shift
               </span>
-              <span className="text-sm font-mono font-bold text-orange-400">
-                <AnimatedCounter value={shiftCm} prefix="+" suffix=" cm" />
+              <span className="text-sm font-mono font-bold text-orange-400 min-w-[60px]">
+                {trendLoading ? (
+                  <span className="w-10 h-4 bg-orange-400/10 animate-pulse rounded inline-block mt-1" />
+                ) : (
+                  <AnimatedCounter value={shiftCm} prefix="+" suffix=" cm" />
+                )}
               </span>
             </div>
           </div>

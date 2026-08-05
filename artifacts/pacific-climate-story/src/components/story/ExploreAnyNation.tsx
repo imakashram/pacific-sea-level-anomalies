@@ -399,66 +399,6 @@ function CustomYAxisTick(props: {
 }
 
 /**
- * 100% verified fallback profile data for Palau (PW)
- * derived directly from sea_level_anomalies.csv observations.
- */
-const FALLBACK_PROFILE = {
-  country: "Palau",
-  code: "PW",
-  timeSeries: [
-    { year: 1993, value: -0.1, rollingAvg: -0.0667 },
-    { year: 1994, value: -0.1, rollingAvg: -0.05 },
-    { year: 1995, value: 0, rollingAvg: -0.06 },
-    { year: 1996, value: 0, rollingAvg: -0.04 },
-    { year: 1997, value: -0.1, rollingAvg: 0 },
-    { year: 1998, value: 0, rollingAvg: 0.02 },
-    { year: 1999, value: 0.1, rollingAvg: 0.04 },
-    { year: 2000, value: 0.1, rollingAvg: 0.04 },
-    { year: 2001, value: 0.1, rollingAvg: 0.04 },
-    { year: 2002, value: -0.1, rollingAvg: 0.02 },
-    { year: 2003, value: 0, rollingAvg: 0 },
-    { year: 2004, value: 0, rollingAvg: -0.02 },
-    { year: 2005, value: 0, rollingAvg: 0 },
-    { year: 2006, value: 0, rollingAvg: 0.04 },
-    { year: 2007, value: 0, rollingAvg: 0.06 },
-    { year: 2008, value: 0.2, rollingAvg: 0.08 },
-    { year: 2009, value: 0.1, rollingAvg: 0.1 },
-    { year: 2010, value: 0.1, rollingAvg: 0.12 },
-    { year: 2011, value: 0.1, rollingAvg: 0.1 },
-    { year: 2012, value: 0.1, rollingAvg: 0.08 },
-    { year: 2013, value: 0.1, rollingAvg: 0.04 },
-    { year: 2014, value: 0, rollingAvg: 0.02 },
-    { year: 2015, value: -0.1, rollingAvg: 0.02 },
-    { year: 2016, value: 0, rollingAvg: 0 },
-    { year: 2017, value: 0.1, rollingAvg: 0 },
-    { year: 2018, value: 0, rollingAvg: 0.04 },
-    { year: 2019, value: 0, rollingAvg: 0.08 },
-    { year: 2020, value: 0.1, rollingAvg: 0.1 },
-    { year: 2021, value: 0.2, rollingAvg: 0.12 },
-    { year: 2022, value: 0.2, rollingAvg: 0.15 },
-    { year: 2023, value: 0.1, rollingAvg: 0.1667 },
-  ],
-  decadeBreakdown: [
-    { label: "1993–2002", avg: -0.01, count: 10 },
-    { label: "2003–2012", avg: 0.06, count: 10 },
-    { label: "2013–2023", avg: 0.0636, count: 11 },
-  ],
-  stats: {
-    mean: 0.0387,
-    volatility: 0.0868,
-    cumulativeRise: 0.2,
-    slope: 0.00484,
-    peakValue: 0.2,
-    peakYear: 2008,
-    troughValue: -0.1,
-    troughYear: 1993,
-    observations: 31,
-    rankByCumulativeRise: 1,
-    totalCountries: 21,
-  },
-};
-
-/**
  * ExploreAnyNation Component
  *
  * Detailed deep-dive profile visualizer for individual Pacific Island countries and territories.
@@ -532,7 +472,7 @@ export function ExploreAnyNation({
     },
   });
 
-  const profile = apiProfile ?? FALLBACK_PROFILE;
+  const profile = apiProfile!;
 
   // Regional averages computed across all 21 territories
   const regionalAvg = rankings
@@ -546,13 +486,13 @@ export function ExploreAnyNation({
       }
     : null;
 
-  const peakYear = profile.stats.peakYear;
+  const peakYear = profile?.stats.peakYear;
 
   const [showMovingAvg, setShowMovingAvg] = useState(true);
   const [showTrendline, setShowTrendline] = useState(true);
 
   // Compute linear regression trendline for time series
-  const timeSeriesCm = profile.timeSeries
+  const timeSeriesCm = profile?.timeSeries
     ? (() => {
         const pts = profile.timeSeries;
         const n = pts.length;
@@ -585,7 +525,7 @@ export function ExploreAnyNation({
     : [];
 
   const decadeBreakdownCm =
-    profile.decadeBreakdown.map((d) => ({
+    profile?.decadeBreakdown.map((d) => ({
       ...d,
       avg: d.avg * 100,
     })) || [];
@@ -1301,7 +1241,7 @@ export function ExploreAnyNation({
                 </div>
 
                 {/* Decade Shift Delta Callout */}
-                {profile.decadeBreakdown.length >= 3 && (
+                {profile?.decadeBreakdown && profile.decadeBreakdown.length >= 3 && (
                   <div className="mt-8 flex items-center justify-between text-xs font-mono">
                     <div className="flex items-center gap-2">
                       <svg
@@ -1323,8 +1263,8 @@ export function ExploreAnyNation({
                     </div>
                     <span className="font-bold text-sky-400">
                       {(() => {
-                        const d1 = profile.decadeBreakdown[0]?.avg ?? 0;
-                        const d3 = profile.decadeBreakdown[2]?.avg ?? 0;
+                        const d1 = profile?.decadeBreakdown[0]?.avg ?? 0;
+                        const d3 = profile?.decadeBreakdown[2]?.avg ?? 0;
                         const delta = d3 - d1;
                         return `${delta > 0 ? "+" : ""}${(delta * 100).toFixed(1)} cm`;
                       })()}

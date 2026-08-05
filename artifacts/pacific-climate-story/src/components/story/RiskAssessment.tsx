@@ -317,358 +317,6 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
   );
 }
 
-/**
- * 100% verified fallback risk assessment dataset (21 Pacific island nations)
- * derived directly from sea_level_anomalies.csv observations.
- */
-const FALLBACK_COUNTRIES: RiskCountry[] = [
-  {
-    code: "PG",
-    country: "Papua New Guinea",
-    riskScore: 92,
-    riskLevel: "Critical",
-    cumulativeRise: 0.2,
-    slope: 5.403,
-    volatility: 0.0661,
-    decadeAcceleration: 0.1009,
-    components: {
-      riseScore: 100,
-      slopeScore: 100,
-      volatilityScore: 46.9,
-      accelerationScore: 100,
-    },
-  },
-  {
-    code: "SB",
-    country: "Solomon Islands",
-    riskScore: 86.5,
-    riskLevel: "Critical",
-    cumulativeRise: 0.2,
-    slope: 5.121,
-    volatility: 0.0711,
-    decadeAcceleration: 0.09,
-    components: {
-      riseScore: 100,
-      slopeScore: 87,
-      volatilityScore: 59.7,
-      accelerationScore: 76.5,
-    },
-  },
-  {
-    code: "PW",
-    country: "Palau",
-    riskScore: 83.4,
-    riskLevel: "Critical",
-    cumulativeRise: 0.2,
-    slope: 4.839,
-    volatility: 0.0868,
-    decadeAcceleration: 0.0736,
-    components: {
-      riseScore: 100,
-      slopeScore: 74.1,
-      volatilityScore: 100,
-      accelerationScore: 41.2,
-    },
-  },
-  {
-    code: "FM",
-    country: "Micronesia, Federated State of",
-    riskScore: 74,
-    riskLevel: "High",
-    cumulativeRise: 0.2,
-    slope: 4.637,
-    volatility: 0.0713,
-    decadeAcceleration: 0.0718,
-    components: {
-      riseScore: 100,
-      slopeScore: 64.8,
-      volatilityScore: 60.1,
-      accelerationScore: 37.3,
-    },
-  },
-  {
-    code: "VU",
-    country: "Vanuatu",
-    riskScore: 69.7,
-    riskLevel: "High",
-    cumulativeRise: 0.2,
-    slope: 4.597,
-    volatility: 0.0614,
-    decadeAcceleration: 0.0718,
-    components: {
-      riseScore: 100,
-      slopeScore: 63,
-      volatilityScore: 34.7,
-      accelerationScore: 37.3,
-    },
-  },
-  {
-    code: "NU",
-    country: "Niue",
-    riskScore: 41.1,
-    riskLevel: "Medium",
-    cumulativeRise: 0.1,
-    slope: 4.919,
-    volatility: 0.0559,
-    decadeAcceleration: 0.1,
-    components: {
-      riseScore: 0,
-      slopeScore: 77.8,
-      volatilityScore: 20.6,
-      accelerationScore: 98,
-    },
-  },
-  {
-    code: "WS",
-    country: "Samoa",
-    riskScore: 38.8,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 4.516,
-    volatility: 0.0711,
-    decadeAcceleration: 0.0918,
-    components: {
-      riseScore: 0,
-      slopeScore: 59.3,
-      volatilityScore: 59.7,
-      accelerationScore: 80.4,
-    },
-  },
-  {
-    code: "TV",
-    country: "Tuvalu",
-    riskScore: 38.3,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 4.395,
-    volatility: 0.0666,
-    decadeAcceleration: 0.1009,
-    components: {
-      riseScore: 0,
-      slopeScore: 53.7,
-      volatilityScore: 48.1,
-      accelerationScore: 100,
-    },
-  },
-  {
-    code: "CK",
-    country: "Cook Islands",
-    riskScore: 37.2,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 4.637,
-    volatility: 0.0549,
-    decadeAcceleration: 0.1009,
-    components: {
-      riseScore: 0,
-      slopeScore: 64.8,
-      volatilityScore: 18.2,
-      accelerationScore: 100,
-    },
-  },
-  {
-    code: "NR",
-    country: "Nauru",
-    riskScore: 35.4,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 4.476,
-    volatility: 0.0561,
-    decadeAcceleration: 0.1009,
-    components: {
-      riseScore: 0,
-      slopeScore: 57.4,
-      volatilityScore: 21.1,
-      accelerationScore: 100,
-    },
-  },
-  {
-    code: "WF",
-    country: "Wallis and Futuna",
-    riskScore: 27.6,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 4.153,
-    volatility: 0.0711,
-    decadeAcceleration: 0.0727,
-    components: {
-      riseScore: 0,
-      slopeScore: 42.6,
-      volatilityScore: 59.7,
-      accelerationScore: 39.2,
-    },
-  },
-  {
-    code: "NC",
-    country: "New Caledonia",
-    riskScore: 27.3,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 4.315,
-    volatility: 0.05,
-    decadeAcceleration: 0.09,
-    components: {
-      riseScore: 0,
-      slopeScore: 50,
-      volatilityScore: 5.5,
-      accelerationScore: 76.5,
-    },
-  },
-  {
-    code: "PF",
-    country: "French Polynesia",
-    riskScore: 24.5,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 4.153,
-    volatility: 0.0478,
-    decadeAcceleration: 0.0909,
-    components: {
-      riseScore: 0,
-      slopeScore: 42.6,
-      volatilityScore: 0,
-      accelerationScore: 78.4,
-    },
-  },
-  {
-    code: "AS",
-    country: "American Samoa",
-    riskScore: 24.3,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 3.831,
-    volatility: 0.0656,
-    decadeAcceleration: 0.0827,
-    components: {
-      riseScore: 0,
-      slopeScore: 27.8,
-      volatilityScore: 45.7,
-      accelerationScore: 60.8,
-    },
-  },
-  {
-    code: "KI",
-    country: "Kiribati",
-    riskScore: 24.1,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 3.911,
-    volatility: 0.0555,
-    decadeAcceleration: 0.0909,
-    components: {
-      riseScore: 0,
-      slopeScore: 31.5,
-      volatilityScore: 19.6,
-      accelerationScore: 78.4,
-    },
-  },
-  {
-    code: "FJ",
-    country: "Fiji",
-    riskScore: 21.5,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 4.153,
-    volatility: 0.0559,
-    decadeAcceleration: 0.0718,
-    components: {
-      riseScore: 0,
-      slopeScore: 42.6,
-      volatilityScore: 20.6,
-      accelerationScore: 37.3,
-    },
-  },
-  {
-    code: "MH",
-    country: "Marshall Islands",
-    riskScore: 17.3,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 3.831,
-    volatility: 0.0549,
-    decadeAcceleration: 0.0736,
-    components: {
-      riseScore: 0,
-      slopeScore: 27.8,
-      volatilityScore: 18.2,
-      accelerationScore: 41.2,
-    },
-  },
-  {
-    code: "GU",
-    country: "Guam",
-    riskScore: 15.1,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 3.548,
-    volatility: 0.0755,
-    decadeAcceleration: 0.0545,
-    components: {
-      riseScore: 0,
-      slopeScore: 14.8,
-      volatilityScore: 71,
-      accelerationScore: 0,
-    },
-  },
-  {
-    code: "TO",
-    country: "Tonga",
-    riskScore: 14.9,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 3.871,
-    volatility: 0.0498,
-    decadeAcceleration: 0.0709,
-    components: {
-      riseScore: 0,
-      slopeScore: 29.6,
-      volatilityScore: 4.9,
-      accelerationScore: 35.3,
-    },
-  },
-  {
-    code: "TK",
-    country: "Tokelau",
-    riskScore: 11.7,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 3.226,
-    volatility: 0.0561,
-    decadeAcceleration: 0.0809,
-    components: {
-      riseScore: 0,
-      slopeScore: 0,
-      volatilityScore: 21.1,
-      accelerationScore: 56.9,
-    },
-  },
-  {
-    code: "MP",
-    country: "Northern Mariana Islands",
-    riskScore: 8.7,
-    riskLevel: "Low",
-    cumulativeRise: 0.1,
-    slope: 3.427,
-    volatility: 0.0478,
-    decadeAcceleration: 0.0727,
-    components: {
-      riseScore: 0,
-      slopeScore: 9.3,
-      volatilityScore: 0,
-      accelerationScore: 39.2,
-    },
-  },
-];
-
-const FALLBACK_RISK_DATA = {
-  totalCountries: 21,
-  avgRiskScore: 38.7,
-  criticalCount: 3,
-  highCount: 2,
-  mediumCount: 1,
-  lowCount: 15,
-  countries: FALLBACK_COUNTRIES,
-};
 
 /**
  * RiskAssessment Component
@@ -681,9 +329,9 @@ export function RiskAssessment() {
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
   const isChartInView = true;
 
-  const data = apiData ?? FALLBACK_RISK_DATA;
+  const data = apiData!;
 
-  const selectedCountry = selectedCode
+  const selectedCountry = selectedCode && data
     ? data.countries.find((c) => c.code === selectedCode)
     : null;
 
@@ -733,24 +381,23 @@ export function RiskAssessment() {
           </p>
         </motion.div>
 
-        {isLoading && !apiData ? (
+        {isLoading ? (
           <div className="h-[600px] bg-card/20 animate-pulse rounded-xl" />
+        ) : isError || !apiData ? (
+          <div className="h-[600px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-3xl p-6 md:p-8 select-none shadow-2xl">
+            <div className="text-center">
+              <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
+              <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the risk assessment metrics from the database server.</p>
+            </div>
+            <button
+              onClick={() => refetch()}
+              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
+            >
+              Retry Connection
+            </button>
+          </div>
         ) : (
           <>
-            {isError && (
-              <div className="max-w-3xl mx-auto mb-8 text-xs bg-red-950/30 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 select-none">
-                <span className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
-                  <span>Live connection to the database API failed. Displaying cached historic risk index.</span>
-                </span>
-                <button
-                  onClick={() => refetch()}
-                  className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg font-semibold transition cursor-pointer text-[10px]"
-                >
-                  Retry Connection
-                </button>
-              </div>
-            )}
             {/* Risk Tier Summary Cards Grid */}
             <motion.div
               variants={cardContainerVariants}

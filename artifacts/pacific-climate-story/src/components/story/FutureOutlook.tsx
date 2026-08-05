@@ -61,23 +61,7 @@ function AnimatedCounter({
   );
 }
 
-/**
- * Historical sea level observation entry.
- */
-interface HistoricalPoint {
-  year: number;
-  avgAnomaly: number;
-}
 
-/**
- * Projected sea level entry with confidence interval.
- */
-interface ProjectedPoint {
-  year: number;
-  projected: number;
-  lower: number;
-  upper: number;
-}
 
 /**
  * Combined dataset point formatted for Recharts ComposedChart.
@@ -305,58 +289,6 @@ const shieldIconVariants: Variants = {
   },
 };
 
-
-/**
- * Static 100% verified fallback forecast data (1993-2023 historical + 2024-2033 projections)
- * derived directly from OLS linear regression on sea_level_anomalies.csv dataset.
- */
-const FALLBACK_HISTORICAL: HistoricalPoint[] = [
-  { year: 1993, avgAnomaly: -0.019 },
-  { year: 1994, avgAnomaly: -0.0048 },
-  { year: 1995, avgAnomaly: 0 },
-  { year: 1996, avgAnomaly: 0.019 },
-  { year: 1997, avgAnomaly: -0.019 },
-  { year: 1998, avgAnomaly: -0.0619 },
-  { year: 1999, avgAnomaly: 0.0143 },
-  { year: 2000, avgAnomaly: 0.0333 },
-  { year: 2001, avgAnomaly: 0.0238 },
-  { year: 2002, avgAnomaly: 0.0143 },
-  { year: 2003, avgAnomaly: 0.0095 },
-  { year: 2004, avgAnomaly: 0.0286 },
-  { year: 2005, avgAnomaly: 0.0286 },
-  { year: 2006, avgAnomaly: 0.0429 },
-  { year: 2007, avgAnomaly: 0.0619 },
-  { year: 2008, avgAnomaly: 0.081 },
-  { year: 2009, avgAnomaly: 0.0571 },
-  { year: 2010, avgAnomaly: 0.0238 },
-  { year: 2011, avgAnomaly: 0.0762 },
-  { year: 2012, avgAnomaly: 0.0667 },
-  { year: 2013, avgAnomaly: 0.0667 },
-  { year: 2014, avgAnomaly: 0.0524 },
-  { year: 2015, avgAnomaly: 0.0286 },
-  { year: 2016, avgAnomaly: 0.0333 },
-  { year: 2017, avgAnomaly: 0.1 },
-  { year: 2018, avgAnomaly: 0.0857 },
-  { year: 2019, avgAnomaly: 0.0905 },
-  { year: 2020, avgAnomaly: 0.1 },
-  { year: 2021, avgAnomaly: 0.1238 },
-  { year: 2022, avgAnomaly: 0.1333 },
-  { year: 2023, avgAnomaly: 0.1048 },
-];
-
-const FALLBACK_PROJECTED: ProjectedPoint[] = [
-  { year: 2024, projected: 0.1135, lower: 0.0689, upper: 0.1582 },
-  { year: 2025, projected: 0.1178, lower: 0.0731, upper: 0.1625 },
-  { year: 2026, projected: 0.1221, lower: 0.0774, upper: 0.1668 },
-  { year: 2027, projected: 0.1264, lower: 0.0817, upper: 0.1711 },
-  { year: 2028, projected: 0.1307, lower: 0.086, upper: 0.1754 },
-  { year: 2029, projected: 0.135, lower: 0.0903, upper: 0.1797 },
-  { year: 2030, projected: 0.1393, lower: 0.0946, upper: 0.1839 },
-  { year: 2031, projected: 0.1435, lower: 0.0988, upper: 0.1882 },
-  { year: 2032, projected: 0.1478, lower: 0.1031, upper: 0.1925 },
-  { year: 2033, projected: 0.1521, lower: 0.1074, upper: 0.1968 },
-];
-
 /**
  * FutureOutlook Component
  *
@@ -369,20 +301,13 @@ export function FutureOutlook() {
   const [isChartInView, setIsChartInView] = useState(false);
   const [isAnimationActive, setIsAnimationActive] = useState(true);
 
-  // Combine API data or fallback dataset seamlessly
-  const forecastData = apiData ?? {
-    slopeMmPerYear: 4.284,
-    r2: 0.7462,
-    projectedRise2030: 0.03,
-    projectedRise2033: 0.0428,
-    historical: FALLBACK_HISTORICAL,
-    projected: FALLBACK_PROJECTED,
-  };
+  const forecastData = apiData!;
 
   // Format historical & projected series into unified Recharts dataset
   const chartData: ForecastChartPoint[] = (() => {
-    const historicalSeries = forecastData.historical;
-    const projectedSeries = forecastData.projected;
+    if (!apiData) return [];
+    const historicalSeries = apiData.historical;
+    const projectedSeries = apiData.projected;
 
     const lastHist = historicalSeries[historicalSeries.length - 1];
     const lastHistCm = lastHist ? lastHist.avgAnomaly * 100 : null;
@@ -447,7 +372,7 @@ export function FutureOutlook() {
     return CARD_THEMES.teal;
   };
 
-  const historicalSeries = forecastData.historical;
+  const historicalSeries = apiData?.historical ?? [];
   const totalHistRiseM =
     historicalSeries.length > 1
       ? historicalSeries[historicalSeries.length - 1].avgAnomaly -
@@ -455,10 +380,10 @@ export function FutureOutlook() {
       : 0;
   const totalHistRiseCm = totalHistRiseM * 100;
 
-  const trendTheme = getTrendTheme(forecastData.slopeMmPerYear);
+  const trendTheme = getTrendTheme(apiData?.slopeMmPerYear ?? 0);
   const riseTheme = getRiseTheme(totalHistRiseCm);
-  const p2030Theme = getProjectedTheme(forecastData.projectedRise2030 * 1000);
-  const p2033Theme = getProjectedTheme(forecastData.projectedRise2033 * 1000);
+  const p2030Theme = getProjectedTheme((apiData?.projectedRise2030 ?? 0) * 1000);
+  const p2033Theme = getProjectedTheme((apiData?.projectedRise2033 ?? 0) * 1000);
 
   return (
     <StorySection id="chapter-forecast">
@@ -481,24 +406,23 @@ export function FutureOutlook() {
           </p>
         </motion.div>
 
-        {isLoading && !apiData ? (
+        {isLoading ? (
           <div className="h-[480px] bg-card/20 animate-pulse rounded-xl" />
+        ) : isError || !apiData ? (
+          <div className="h-[480px] flex flex-col items-center justify-center text-red-400/80 font-serif gap-4 bg-slate-900/10 border border-red-500/15 rounded-3xl p-6 md:p-8 select-none shadow-2xl">
+            <div className="text-center">
+              <p className="text-sm font-semibold mb-1 text-red-300">Connection to API failed</p>
+              <p className="text-xs text-muted-foreground max-w-sm">We were unable to load the future outlook projections from the database server.</p>
+            </div>
+            <button
+              onClick={() => refetch()}
+              className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl font-semibold transition cursor-pointer text-xs"
+            >
+              Retry Connection
+            </button>
+          </div>
         ) : (
           <>
-            {isError && (
-              <div className="max-w-3xl mx-auto mb-8 text-xs bg-red-950/30 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 select-none">
-                <span className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
-                  <span>Live connection to the database API failed. Displaying cached historic projections.</span>
-                </span>
-                <button
-                  onClick={() => refetch()}
-                  className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg font-semibold transition cursor-pointer text-[10px]"
-                >
-                  Retry Connection
-                </button>
-              </div>
-            )}
             {/* Metric Cards Grid (Trend Rate, R² Fit, 2030 Projection, 2033 Projection) */}
             <motion.div
               variants={cardContainerVariants}
@@ -909,7 +833,7 @@ export function FutureOutlook() {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80 inline-block" />
-                  <span>R² Score: {(forecastData.r2 * 100).toFixed(1)}%</span>
+                  <span>R² Score: {(apiData.r2 * 100).toFixed(1)}%</span>
                 </span>
               </div>
 

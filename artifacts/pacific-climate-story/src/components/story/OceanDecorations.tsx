@@ -11,42 +11,6 @@ import {
   useGetAnnualDeviation,
 } from "@workspace/api-client-react";
 
-/**
- * Static 31-year fallback dataset (1993–2023) used when API server data is loading or unavailable.
- */
-const FALLBACK_DATA = [
-  { year: 1993, avgAnomaly: -0.019, countriesRising: 0, enso: "neutral" },
-  { year: 1994, avgAnomaly: -0.0048, countriesRising: 0, enso: "neutral" },
-  { year: 1995, avgAnomaly: 0, countriesRising: 1, enso: "neutral" },
-  { year: 1996, avgAnomaly: 0.019, countriesRising: 4, enso: "neutral" },
-  { year: 1997, avgAnomaly: -0.019, countriesRising: 0, enso: "el-nino" },
-  { year: 1998, avgAnomaly: -0.0619, countriesRising: 1, enso: "el-nino" },
-  { year: 1999, avgAnomaly: 0.0143, countriesRising: 3, enso: "neutral" },
-  { year: 2000, avgAnomaly: 0.0333, countriesRising: 7, enso: "neutral" },
-  { year: 2001, avgAnomaly: 0.0238, countriesRising: 5, enso: "neutral" },
-  { year: 2002, avgAnomaly: 0.0143, countriesRising: 4, enso: "neutral" },
-  { year: 2003, avgAnomaly: 0.0095, countriesRising: 2, enso: "neutral" },
-  { year: 2004, avgAnomaly: 0.0286, countriesRising: 6, enso: "neutral" },
-  { year: 2005, avgAnomaly: 0.0286, countriesRising: 6, enso: "neutral" },
-  { year: 2006, avgAnomaly: 0.0429, countriesRising: 9, enso: "neutral" },
-  { year: 2007, avgAnomaly: 0.0619, countriesRising: 13, enso: "neutral" },
-  { year: 2008, avgAnomaly: 0.081, countriesRising: 15, enso: "neutral" },
-  { year: 2009, avgAnomaly: 0.0571, countriesRising: 12, enso: "neutral" },
-  { year: 2010, avgAnomaly: 0.0238, countriesRising: 5, enso: "la-nina" },
-  { year: 2011, avgAnomaly: 0.0762, countriesRising: 16, enso: "la-nina" },
-  { year: 2012, avgAnomaly: 0.0667, countriesRising: 14, enso: "neutral" },
-  { year: 2013, avgAnomaly: 0.0667, countriesRising: 14, enso: "neutral" },
-  { year: 2014, avgAnomaly: 0.0524, countriesRising: 11, enso: "neutral" },
-  { year: 2015, avgAnomaly: 0.0286, countriesRising: 9, enso: "el-nino" },
-  { year: 2016, avgAnomaly: 0.0333, countriesRising: 7, enso: "el-nino" },
-  { year: 2017, avgAnomaly: 0.1, countriesRising: 21, enso: "neutral" },
-  { year: 2018, avgAnomaly: 0.0857, countriesRising: 18, enso: "neutral" },
-  { year: 2019, avgAnomaly: 0.0905, countriesRising: 19, enso: "neutral" },
-  { year: 2020, avgAnomaly: 0.1, countriesRising: 21, enso: "la-nina" },
-  { year: 2021, avgAnomaly: 0.1238, countriesRising: 21, enso: "la-nina" },
-  { year: 2022, avgAnomaly: 0.1333, countriesRising: 21, enso: "neutral" },
-  { year: 2023, avgAnomaly: 0.1048, countriesRising: 21, enso: "neutral" },
-];
 
 /**
  * ENSO phase configuration mapping for colors and human-readable badges.
@@ -552,7 +516,7 @@ export function OceanDecorations() {
     const trendList = trendData ?? [];
     const devList = deviationData?.deviations ?? [];
 
-    let dataset = FALLBACK_DATA;
+    let dataset: any[] = [];
     if (trendList.length > 0) {
       dataset = trendList.map((t) => {
         const matchingDev = devList.find((d) => d.year === t.year);

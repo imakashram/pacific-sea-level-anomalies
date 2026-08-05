@@ -112,27 +112,21 @@ export function HeroSection() {
     restDelta: 0.001,
   });
 
-  // Calculate stats with 100% verified dataset fallback values (from 1993–2023 Pacific SLA records)
-  const avgRiseMeters = overview?.avgRiseMeters ?? 0.124;
+  // Calculate stats
+  const avgRiseMeters = overview?.avgRiseMeters;
   const d1Avg =
-    decadeData?.globalDecades.find((d) => d.key === "d1")?.avg ?? 0.0;
+    decadeData?.globalDecades.find((d) => d.key === "d1")?.avg;
   const d3Avg =
-    decadeData?.globalDecades.find((d) => d.key === "d3")?.avg ?? 0.0835;
-  const shift = d3Avg - d1Avg;
+    decadeData?.globalDecades.find((d) => d.key === "d3")?.avg;
+  const shift = d3Avg !== undefined && d1Avg !== undefined ? d3Avg - d1Avg : undefined;
 
   const fastest = accelData
     ?.slice()
-    .sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod)[0] ?? {
-    country: "Papua New Guinea",
-    slopeFullPeriod: 0.0054,
-  };
+    .sort((a, b) => b.slopeFullPeriod - a.slopeFullPeriod)[0];
 
   const mostVolatile = volData?.countries
     .slice()
-    .sort((a, b) => b.volatility - a.volatility)[0] ?? {
-    country: "Palau",
-    volatility: 0.087,
-  };
+    .sort((a, b) => b.volatility - a.volatility)[0];
 
   return (
     <section
@@ -225,7 +219,7 @@ export function HeroSection() {
             <div className="mb-6 text-xs bg-red-950/30 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 select-none">
               <span className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
-                <span>Live connection to the database API failed. Displaying cached historic dataset.</span>
+                <span>Live connection to the database API failed. Please try reconnecting to reload metrics.</span>
               </span>
               <button
                 onClick={() => refetch()}
@@ -236,67 +230,94 @@ export function HeroSection() {
             </div>
           )}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {/* Metric 1: Overall Average Sea Level Rise */}
-            <motion.div
-              variants={statCardVariants}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="border-l-2 border-cyan-500 pl-3 sm:pl-4 py-1 cursor-default"
-            >
-              <div className="text-2xl font-serif font-bold text-foreground">
-                <AnimatedCounter value={avgRiseMeters * 100} prefix="+" suffix=" cm" />
-              </div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                Average Rise
-              </div>
-            </motion.div>
- 
-            {/* Metric 2: Multi-Decadal Shift (Decade 1 vs Decade 3) */}
-            <motion.div
-              variants={statCardVariants}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="border-l-2 border-orange-500 pl-3 sm:pl-4 py-1 cursor-default"
-            >
-              <div className="text-2xl font-serif font-bold text-foreground">
-                <AnimatedCounter value={shift * 100} prefix="+" suffix=" cm" />
-              </div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                Decade Shift (D1-D3)
-              </div>
-            </motion.div>
- 
-            {/* Metric 3: Fastest Rising Pacific Island Nation */}
-            <motion.div
-              variants={statCardVariants}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="border-l-2 border-rose-500 pl-3 sm:pl-4 py-1 cursor-default"
-            >
-              <div
-                className="text-2xl font-serif font-bold text-foreground truncate"
-                title={fastest.country}
-              >
-                {fastest.country}
-              </div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                Fastest Rising (<AnimatedCounter value={fastest.slopeFullPeriod * 1000} prefix="+" suffix=" mm/yr" />)
-              </div>
-            </motion.div>
- 
-            {/* Metric 4: Most Volatile Pacific Island Nation */}
-            <motion.div
-              variants={statCardVariants}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="border-l-2 border-purple-500 pl-3 sm:pl-4 py-1 cursor-default"
-            >
-              <div
-                className="text-2xl font-serif font-bold text-foreground truncate"
-                title={mostVolatile.country}
-              >
-                {mostVolatile.country}
-              </div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                Most Volatile (±<AnimatedCounter value={mostVolatile.volatility * 100} prefix="" suffix=" cm" />)
-              </div>
-            </motion.div>
+            {!heroData ? (
+              <>
+                {/* Metric 1 Skeleton */}
+                <div className="border-l-2 border-cyan-500/30 pl-3 sm:pl-4 py-1 animate-pulse">
+                  <div className="h-7 w-24 bg-cyan-500/10 rounded mb-2" />
+                  <div className="h-3 w-16 bg-slate-800 rounded" />
+                </div>
+                {/* Metric 2 Skeleton */}
+                <div className="border-l-2 border-orange-500/30 pl-3 sm:pl-4 py-1 animate-pulse">
+                  <div className="h-7 w-20 bg-orange-500/10 rounded mb-2" />
+                  <div className="h-3 w-28 bg-slate-800 rounded" />
+                </div>
+                {/* Metric 3 Skeleton */}
+                <div className="border-l-2 border-rose-500/30 pl-3 sm:pl-4 py-1 animate-pulse">
+                  <div className="h-7 w-32 bg-rose-500/10 rounded mb-2" />
+                  <div className="h-3 w-24 bg-slate-800 rounded" />
+                </div>
+                {/* Metric 4 Skeleton */}
+                <div className="border-l-2 border-purple-500/30 pl-3 sm:pl-4 py-1 animate-pulse">
+                  <div className="h-7 w-28 bg-purple-500/10 rounded mb-2" />
+                  <div className="h-3 w-24 bg-slate-800 rounded" />
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Metric 1: Overall Average Sea Level Rise */}
+                <motion.div
+                  variants={statCardVariants}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="border-l-2 border-cyan-500 pl-3 sm:pl-4 py-1 cursor-default"
+                >
+                  <div className="text-2xl font-serif font-bold text-foreground">
+                    <AnimatedCounter value={(avgRiseMeters ?? 0) * 100} prefix="+" suffix=" cm" />
+                  </div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
+                    Average Rise
+                  </div>
+                </motion.div>
+
+                {/* Metric 2: Multi-Decadal Shift (Decade 1 vs Decade 3) */}
+                <motion.div
+                  variants={statCardVariants}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="border-l-2 border-orange-500 pl-3 sm:pl-4 py-1 cursor-default"
+                >
+                  <div className="text-2xl font-serif font-bold text-foreground">
+                    <AnimatedCounter value={(shift ?? 0) * 100} prefix="+" suffix=" cm" />
+                  </div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
+                    Decade Shift (D1-D3)
+                  </div>
+                </motion.div>
+
+                {/* Metric 3: Fastest Rising Pacific Island Nation */}
+                <motion.div
+                  variants={statCardVariants}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="border-l-2 border-rose-500 pl-3 sm:pl-4 py-1 cursor-default"
+                >
+                  <div
+                    className="text-2xl font-serif font-bold text-foreground truncate"
+                    title={fastest?.country}
+                  >
+                    {fastest?.country}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
+                    Fastest Rising (<AnimatedCounter value={(fastest?.slopeFullPeriod ?? 0) * 1000} prefix="+" suffix=" mm/yr" />)
+                  </div>
+                </motion.div>
+
+                {/* Metric 4: Most Volatile Pacific Island Nation */}
+                <motion.div
+                  variants={statCardVariants}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="border-l-2 border-purple-500 pl-3 sm:pl-4 py-1 cursor-default"
+                >
+                  <div
+                    className="text-2xl font-serif font-bold text-foreground truncate"
+                    title={mostVolatile?.country}
+                  >
+                    {mostVolatile?.country}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
+                    Most Volatile (±<AnimatedCounter value={(mostVolatile?.volatility ?? 0) * 100} prefix="" suffix=" cm" />)
+                  </div>
+                </motion.div>
+              </>
+            )}
           </div>
         </motion.div>
       </div>
