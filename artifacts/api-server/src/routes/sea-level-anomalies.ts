@@ -842,71 +842,81 @@ function getLatestCountryValue(code: string): number {
 }
 
 function getSubRegionsData(): RegionalCluster[] {
-  return [
+  const data = getData();
+  const seaLevel = data.filter((d) => d.indicator === "SEA_LVL");
+
+  const regions = [
     {
-      region: "Melanesia",
-      nationsCount: 5,
-      d1AvgCm: 0.6,
-      d2AvgCm: 4.0,
-      d3AvgCm: 9.1,
-      shiftCm: 8.5,
-      avgSlopeMmYr: 4.72,
-      latest2023AvgCm: 12.0,
-      nations: [
-        { code: "PG", name: "Papua New Guinea", value: getLatestCountryValue("PG") },
-        { code: "FJ", name: "Fiji", value: getLatestCountryValue("FJ") },
-        { code: "SB", name: "Solomon Islands", value: getLatestCountryValue("SB") },
-        { code: "VU", name: "Vanuatu", value: getLatestCountryValue("VU") },
-        { code: "NC", name: "New Caledonia", value: getLatestCountryValue("NC") },
-      ],
-      description:
-        "High islands with the fastest sea level rise and a higher risk of coastal flooding.",
+      region: "Melanesia" as const,
+      codes: ["PG", "FJ", "SB", "VU", "NC"],
+      description: "High islands with the fastest sea level rise and a higher risk of coastal flooding.",
     },
     {
-      region: "Micronesia",
-      nationsCount: 7,
-      d1AvgCm: -0.3,
-      d2AvgCm: 5.4,
-      d3AvgCm: 7.4,
-      shiftCm: 7.7,
-      avgSlopeMmYr: 4.1,
-      latest2023AvgCm: 10.0,
-      nations: [
-        { code: "KI", name: "Kiribati", value: getLatestCountryValue("KI") },
-        { code: "NR", name: "Nauru", value: getLatestCountryValue("NR") },
-        { code: "MP", name: "Northern Mariana Islands", value: getLatestCountryValue("MP") },
-        { code: "MH", name: "Marshall Islands", value: getLatestCountryValue("MH") },
-        { code: "FM", name: "Micronesia, Federated State of", value: getLatestCountryValue("FM") },
-        { code: "GU", name: "Guam", value: getLatestCountryValue("GU") },
-        { code: "PW", name: "Palau", value: getLatestCountryValue("PW") },
-      ],
-      description:
-        "Low-lying islands at greater risk from rising seas and saltwater entering the land.",
+      region: "Micronesia" as const,
+      codes: ["KI", "NR", "MP", "MH", "FM", "GU", "PW"],
+      description: "Low-lying islands at greater risk from rising seas and saltwater entering the land.",
     },
     {
-      region: "Polynesia",
-      nationsCount: 9,
-      d1AvgCm: -0.1,
-      d2AvgCm: 4.7,
-      d3AvgCm: 8.7,
-      shiftCm: 8.8,
-      avgSlopeMmYr: 4.19,
-      latest2023AvgCm: 10.0,
-      nations: [
-        { code: "AS", name: "American Samoa", value: getLatestCountryValue("AS") },
-        { code: "WS", name: "Samoa", value: getLatestCountryValue("WS") },
-        { code: "NU", name: "Niue", value: getLatestCountryValue("NU") },
-        { code: "TV", name: "Tuvalu", value: getLatestCountryValue("TV") },
-        { code: "CK", name: "Cook Islands", value: getLatestCountryValue("CK") },
-        { code: "TK", name: "Tokelau", value: getLatestCountryValue("TK") },
-        { code: "PF", name: "French Polynesia", value: getLatestCountryValue("PF") },
-        { code: "WF", name: "Wallis and Futuna", value: getLatestCountryValue("WF") },
-        { code: "TO", name: "Tonga", value: getLatestCountryValue("TO") },
-      ],
-      description:
-        "Island groups with the biggest increase in sea level over the last 30 years.",
+      region: "Polynesia" as const,
+      codes: ["AS", "WS", "NU", "TV", "CK", "TK", "PF", "WF", "TO"],
+      description: "Island groups with the biggest increase in sea level over the last 30 years.",
     },
   ];
+
+  return regions.map(({ region, codes, description }) => {
+    const regionData = seaLevel.filter((d) => codes.includes(d.code));
+
+    // Decade 1: 1993-2002
+    const d1 = regionData.filter((d) => d.year >= 1993 && d.year <= 2002);
+    const d1Avg = d1.length ? d1.reduce((sum, d) => sum + d.value, 0) / d1.length : 0;
+
+    // Decade 2: 2003-2012
+    const d2 = regionData.filter((d) => d.year >= 2003 && d.year <= 2012);
+    const d2Avg = d2.length ? d2.reduce((sum, d) => sum + d.value, 0) / d2.length : 0;
+
+    // Decade 3: 2013-2023
+    const d3 = regionData.filter((d) => d.year >= 2013 && d.year <= 2023);
+    const d3Avg = d3.length ? d3.reduce((sum, d) => sum + d.value, 0) / d3.length : 0;
+
+    // 2023 Avg
+    const y2023 = regionData.filter((d) => d.year === 2023);
+    const y2023Avg = y2023.length ? y2023.reduce((sum, d) => sum + d.value, 0) / y2023.length : 0;
+
+    // Average slope of countries in this region in mm/yr
+    const slopes = codes.map((code) => {
+      const pts = regionData.filter((d) => d.code === code).sort((a, b) => a.year - b.year);
+      const xs = pts.map((p) => p.year);
+      const ys = pts.map((p) => p.value);
+      return linearSlope(xs, ys) * 1000; // mm/yr
+    });
+    const avgSlope = slopes.reduce((sum, s) => sum + s, 0) / slopes.length;
+
+    // Shift in cm
+    const shift = (d3Avg - d1Avg) * 100;
+
+    const nations = codes.map((code) => {
+      const countryData = regionData.filter((d) => d.code === code);
+      const name = countryData[0]?.country ?? "";
+      return {
+        code,
+        name,
+        value: getLatestCountryValue(code),
+      };
+    });
+
+    return {
+      region,
+      nationsCount: codes.length,
+      d1AvgCm: parseFloat((d1Avg * 100).toFixed(1)),
+      d2AvgCm: parseFloat((d2Avg * 100).toFixed(1)),
+      d3AvgCm: parseFloat((d3Avg * 100).toFixed(1)),
+      shiftCm: parseFloat(shift.toFixed(1)),
+      avgSlopeMmYr: parseFloat(avgSlope.toFixed(2)),
+      latest2023AvgCm: parseFloat((y2023Avg * 100).toFixed(1)),
+      nations,
+      description,
+    };
+  });
 }
 
 router.get("/core/raw-data", (_req, res): void => {

@@ -450,7 +450,7 @@ export default function HowItIsCalculatedPage() {
           </div>
 
           {/* Neutral Cheat Sheet Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t border-slate-800/60">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-6 border-t border-slate-800/60">
             <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
                 <Scale className="w-3.5 h-3.5" /> Heights in Centimeters
@@ -496,6 +496,18 @@ export default function HowItIsCalculatedPage() {
               </span>
               <p className="text-[11px] text-slate-400 leading-relaxed">
                 Standard deviation measures how jumpy ocean levels are as they swing above and below the baseline (e.g. <strong className="text-slate-300">±8.7 cm</strong>).
+              </p>
+            </div>
+
+            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
+                Data Precision Limits
+              </span>
+              <span className="text-xs font-semibold text-slate-200">
+                10-cm Rounded Data
+              </span>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Raw data is rounded to the nearest 10 cm (about 4 in). While single island charts show stepped rises, combining all countries allows us to see smooth decimal trends.
               </p>
             </div>
           </div>
