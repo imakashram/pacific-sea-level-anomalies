@@ -233,7 +233,7 @@ export function PacificSubRegions() {
                   Compare how sea levels changed over the last 30 years in Melanesia, Micronesia, and Polynesia.
                 </p>
               </div>
-              <div className="relative w-full h-[220px] flex items-center justify-center">
+              <div className="relative w-full h-[200px] flex items-center justify-center">
                 <svg
                   viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
                   className="w-full h-full overflow-visible"
@@ -574,7 +574,7 @@ export function PacificSubRegions() {
                 variants={listContainerVariants}
                 initial="hidden"
                 animate="visible"
-                className="flex flex-col gap-2 max-h-[260px] overflow-y-auto custom-scrollbar pr-1"
+                className="flex flex-col gap-2 h-[200px] overflow-y-auto custom-scrollbar pr-1"
               >
                 {selectedCluster.nations.map((n) => (
                   <motion.div
