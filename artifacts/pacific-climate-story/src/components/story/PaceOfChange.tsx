@@ -224,11 +224,11 @@ function SlopeChart({
     <div className="relative w-full">
       {/* Screen Reader Alternative description */}
       <div className="sr-only">
-        This interactive slope chart visualizes and compares the pace of sea level rise in millimeters per year (mm/yr) for all 21 Pacific territories across two epochs: the first half from 1993 to 2007, and the second half from 2008 to 2023. High rise rates are highlighted. Most nations exhibit accelerating rates in the second half epoch.
+        This chart compares how fast sea levels were rising in 21 Pacific nations during two time periods: 1993–2007 and 2008–2023. The lines show whether sea level rise became faster or slower over time. Most nations experienced faster sea level rise after 2008.
       </div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full h-auto select-none"
+        className="w-full h-auto"
         style={{ maxHeight: 440 }}
         onMouseLeave={handleMouseLeave}
         role="img"
@@ -310,14 +310,14 @@ function SlopeChart({
         <text
           x={leftX - 75}
           y={topPad + plotH / 2}
-          fontSize={10}
+          fontSize={11}
+          fontWeight={600}
           fill="hsl(var(--muted-foreground))"
           transform={`rotate(-90 ${leftX - 75} ${topPad + plotH / 2})`}
           textAnchor="middle"
-          className="font-mono"
-          letterSpacing="0.05em"
+          className="font-sans"
         >
-          mm/yr
+          Millimeters per Year (mm/year)
         </text>
 
         {sortedLines.map((d) => {
@@ -522,8 +522,8 @@ function SlopeChart({
                 }`}
             >
               {hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
-                ? "Accelerating"
-                : "Slowing"}
+                ? "Rising Faster"
+                : "Rising Slower"}
             </span>
           </div>
 
@@ -533,7 +533,7 @@ function SlopeChart({
                 1993–2007 (Before)
               </span>
               <span className="font-bold text-slate-300 text-sm">
-                {(hoveredData.slopeFirstHalf * 1000).toFixed(2)} mm/yr
+                {(hoveredData.slopeFirstHalf * 1000).toFixed(2)} mm/year
               </span>
             </div>
 
@@ -542,7 +542,7 @@ function SlopeChart({
                 2008–2023 (After)
               </span>
               <span className="font-bold text-slate-300 text-sm">
-                {(hoveredData.slopeSecondHalf * 1000).toFixed(2)} mm/yr
+                {(hoveredData.slopeSecondHalf * 1000).toFixed(2)} mm/year
               </span>
             </div>
 
@@ -554,7 +554,7 @@ function SlopeChart({
                     : "text-red-300/90 font-medium"
                 }
               >
-                Pace Acceleration
+                Rate Change
               </span>
               <span
                 className={`font-bold text-sm ${hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf ? "text-cyan-300" : "text-red-300"}`}
@@ -566,7 +566,7 @@ function SlopeChart({
                   (hoveredData.slopeSecondHalf - hoveredData.slopeFirstHalf) *
                   1000
                 ).toFixed(2)}{" "}
-                mm/yr
+                mm/year
               </span>
             </div>
           </div>
@@ -1065,7 +1065,7 @@ export function PaceOfChange() {
               </p>
             </motion.div>
 
-            {/* Visual 2: Acceleration Before & After 2008 */}
+            {/* Visual 2: Sea Level Rise Before & After 2008 */}
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
@@ -1080,21 +1080,20 @@ export function PaceOfChange() {
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-white/5  px-1 text-left">
                 <div className="max-w-xl">
                   <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
-                    Acceleration Before & After 2008
+                    Sea Level Rise Before & After 2008
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                    Each line connects a nation's 1993–2007 rise rate (left) to
-                    its 2008–2023 rise rate (right).
+                    Each line shows how a nation's sea level rise changed between 1993–2007 and 2008–2023.
                   </p>
                 </div>
                 <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 md:mt-0 flex-shrink-0">
                   <span className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Accelerating
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block" />
+                    Rising Faster
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-destructive inline-block" />
-                    Slowing
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 inline-block" />
+                    Rising Slower
                   </span>
                 </div>
               </div>
@@ -1102,9 +1101,7 @@ export function PaceOfChange() {
 
               {/* Interaction Helper Text */}
               <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
-                Hover over any line or label to isolate its trajectory and trace
-                how that nation's rate of rise accelerated or slowed between
-                epochs.
+                Move your mouse over a line or country name to see how its sea level rise changed between the two time periods.
               </p>
             </motion.div>
           </motion.div>
