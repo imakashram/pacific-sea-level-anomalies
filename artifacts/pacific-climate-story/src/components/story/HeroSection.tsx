@@ -201,9 +201,9 @@ export function HeroSection() {
               variants={headerItemVariants}
               className="text-base md:text-xl text-muted-foreground leading-relaxed"
             >
-              30 years of sea-level records reveal a clear and persistent rise
-              across the Pacific, bringing growing challenges for many low-lying
-              island nations.
+              For the past 30 years, the sea has been rising across the Pacific.
+              Many low-lying islands now face more flooding, stronger coastal
+              damage, and a greater risk to the people who live there.
             </motion.p>
           </motion.div>
         </div>
@@ -252,7 +252,7 @@ export function HeroSection() {
                     <AnimatedCounter value={(avgRiseMeters ?? 0) * 100} prefix="+" suffix=" cm" />
                   </div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                    Average Rise
+                    Average Sea Level Rise
                   </div>
                 </motion.div>
 
@@ -266,7 +266,7 @@ export function HeroSection() {
                     <AnimatedCounter value={(shift ?? 0) * 100} prefix="+" suffix=" cm" />
                   </div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                    Decade Shift (D1-D3)
+                    Rise Over the Last 30 Years
                   </div>
                 </motion.div>
 
@@ -283,7 +283,7 @@ export function HeroSection() {
                     {fastest?.country}
                   </div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                    Fastest Rising (<AnimatedCounter value={(fastest?.slopeFullPeriod ?? 0) * 1000} prefix="+" suffix=" mm/yr" />)
+                    Fastest Sea Level Rise (<AnimatedCounter value={(fastest?.slopeFullPeriod ?? 0) * 1000} prefix="+" suffix=" mm/yr" />)
                   </div>
                 </motion.div>
 
@@ -300,7 +300,7 @@ export function HeroSection() {
                     {mostVolatile?.country}
                   </div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
-                    Most Volatile (±<AnimatedCounter value={(mostVolatile?.volatility ?? 0) * 100} prefix="" suffix=" cm" />)
+                    Biggest Sea Level Changes (±<AnimatedCounter value={(mostVolatile?.volatility ?? 0) * 100} prefix="" suffix=" cm" />)
                   </div>
                 </motion.div>
               </>
@@ -317,7 +317,7 @@ export function HeroSection() {
         transition={{ duration: 1.0, delay: 1.0, ease: [0.16, 1, 0.3, 1] as const }}
       >
         <span className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">
-          Scroll to explore the chapters
+          Scroll down to explore the story
         </span>
         <div className="w-5 h-9 border-2 border-primary/45 rounded-full flex justify-center p-1 mt-1">
           <motion.div
