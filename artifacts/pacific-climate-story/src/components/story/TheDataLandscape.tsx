@@ -7,7 +7,6 @@ import {
   Database,
   Waves,
   TrendingUp,
-  ExternalLink,
   Terminal,
   Calculator,
 } from "lucide-react";

@@ -953,8 +953,8 @@ export function PaceOfChange() {
                           style={{
                             textAnchor: "middle",
                             fill: "hsl(var(--muted-foreground))",
-                            fontSize: 10,
-                            fontFamily: "monospace",
+                            fontSize: 11,
+                            fontFamily: "sans-serif",
                             fontWeight: 600,
                           }}
                         />
@@ -969,19 +969,19 @@ export function PaceOfChange() {
                           fontSize: 10,
                           fontFamily: "monospace",
                         }}
-                        width={60}
+                        width={70}
                         interval={0}
                       >
                         <Label
                           value="Pacific Nation"
                           angle={-90}
                           position="insideLeft"
-                          offset={10}
+                          offset={15}
                           style={{
                             textAnchor: "middle",
                             fill: "hsl(var(--muted-foreground))",
-                            fontSize: 10,
-                            fontFamily: "monospace",
+                            fontSize: 11,
+                            fontFamily: "sans-serif",
                             fontWeight: 600,
                           }}
                         />

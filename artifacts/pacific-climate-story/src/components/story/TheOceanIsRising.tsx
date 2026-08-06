@@ -211,21 +211,21 @@ export function TheOceanIsRising() {
   const reg =
     data.length > 0
       ? (() => {
-          const n = data.length;
-          let sumX = 0,
-            sumY = 0,
-            sumXY = 0,
-            sumXX = 0;
-          for (let i = 0; i < n; i++) {
-            sumX += data[i].year;
-            sumY += data[i].avgAnomaly;
-            sumXY += data[i].year * data[i].avgAnomaly;
-            sumXX += data[i].year * data[i].year;
-          }
-          const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-          const intercept = (sumY - slope * sumX) / n;
-          return { slope, intercept };
-        })()
+        const n = data.length;
+        let sumX = 0,
+          sumY = 0,
+          sumXY = 0,
+          sumXX = 0;
+        for (let i = 0; i < n; i++) {
+          sumX += data[i].year;
+          sumY += data[i].avgAnomaly;
+          sumXY += data[i].year * data[i].avgAnomaly;
+          sumXX += data[i].year * data[i].year;
+        }
+        const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+        return { slope, intercept };
+      })()
       : { slope: 0, intercept: 0 };
 
   // Calculate Net 30y Rise & Decadal Shift
@@ -278,7 +278,7 @@ export function TheOceanIsRising() {
         movingAvg: count > 0 ? parseFloat((sum / count).toFixed(4)) : null,
       };
     });
-  }  return (
+  } return (
     <StorySection
       id="the-ocean-is-rising"
       className="relative overflow-visible"
@@ -299,9 +299,9 @@ export function TheOceanIsRising() {
           The Ocean Is Rising
         </h2>
         <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
-          Across 21 Pacific nations, sea levels have risen steadily over the
-          past 30 years. Short-term climate cycles create temporary ups and
-          downs, but the overall trend is still upward.
+          Across 21 Pacific nations, sea levels have continued to rise over the
+          past 30 years. Natural climate events cause the sea level to go up and
+          down for a short time, but overall it keeps rising.
         </p>
       </motion.div>
 
@@ -336,8 +336,7 @@ export function TheOceanIsRising() {
             Warm Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            A warm ocean event that temporarily lowers sea levels across much of the
-            western Pacific.
+            A natural warming of the Pacific Ocean that caused sea levels to temporarily drop in many western Pacific islands.
           </div>
         </motion.div>
 
@@ -364,8 +363,7 @@ export function TheOceanIsRising() {
             Cool Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            A cool ocean event that temporarily raises sea levels across much of the
-            western Pacific.
+            A natural cooling of the Pacific Ocean that caused sea levels to temporarily rise in many western Pacific islands.
           </div>
         </motion.div>
 
@@ -392,8 +390,7 @@ export function TheOceanIsRising() {
             Extreme Warm Event
           </div>
           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            An exceptionally strong El Niño that temporarily changed sea levels
-            across the Pacific.
+            A very strong El Niño that temporarily changed sea levels across the Pacific.
           </div>
         </motion.div>
       </motion.div>
@@ -410,12 +407,10 @@ export function TheOceanIsRising() {
         {/* Chart Title & Subtitle */}
         <div className="mb-6 relative z-10 text-left">
           <h3 className="text-xs font-mono font-bold text-slate-100">
-            30-Year Sea Level Anomaly & ENSO Events
+            30 Years of Sea Level Change & El Niño/La Niña
           </h3>
           <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed max-w-3xl">
-            Historical annual variations relative to the 1993–2002 baseline
-            average, overlaid with OLS regression and major El Niño/La Niña
-            phases.
+            This chart shows how sea levels changed each year from 1993 to 2023, compared with the 1993–2002 average. It also shows the overall trend line and the major El Niño and La Niña periods.
           </p>
         </div>
 
@@ -464,7 +459,7 @@ export function TheOceanIsRising() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-mono select-none">
+          <div className="flex items-center gap-4 text-xs font-mono">
             <span className="flex items-center gap-1.5 text-cyan-400">
               <span className="w-3.5 h-0.5 bg-cyan-400 inline-block rounded" />
               <span className="font-semibold">Annual</span>
@@ -473,9 +468,8 @@ export function TheOceanIsRising() {
             <button
               onClick={() => setShowMovingAvg(!showMovingAvg)}
               aria-pressed={showMovingAvg}
-              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${
-                showMovingAvg ? "opacity-100" : "opacity-40"
-              }`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${showMovingAvg ? "opacity-100" : "opacity-40"
+                }`}
             >
               <span className="w-3.5 h-0.5 bg-amber-400 inline-block rounded" />
               <span className="font-semibold">5-yr Avg</span>
@@ -484,9 +478,8 @@ export function TheOceanIsRising() {
             <button
               onClick={() => setShowRegression(!showRegression)}
               aria-pressed={showRegression}
-              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${
-                showRegression ? "opacity-100" : "opacity-40"
-              }`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${showRegression ? "opacity-100" : "opacity-40"
+                }`}
             >
               <span className="w-4 h-0 border-t-2 border-dotted border-teal-400 inline-block shrink-0" />
               <span className="font-semibold">Linear Trend</span>
@@ -495,12 +488,11 @@ export function TheOceanIsRising() {
             <button
               onClick={() => setShowEnso(!showEnso)}
               aria-pressed={showEnso}
-              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-orange-400 ${
-                showEnso ? "opacity-100" : "opacity-40"
-              }`}
+              className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-slate-300 ${showEnso ? "opacity-100" : "opacity-40"
+                }`}
             >
-              <span className="w-3.5 h-2 bg-orange-400/20 border border-orange-400/50 inline-block" />
-              <span className="font-semibold">ENSO Events</span>
+              <span className="w-3.5 h-2 bg-slate-400/20 border border-slate-400/50 inline-block" />
+              <span className="font-semibold">El Niño & La Niña</span>
             </button>
           </div>
         </div>
@@ -545,6 +537,7 @@ export function TheOceanIsRising() {
                 <XAxis
                   dataKey="year"
                   stroke="rgba(148, 163, 184, 0.3)"
+                  height={45}
                   tick={{
                     fill: "rgba(148, 163, 184, 0.7)",
                     fontSize: 11,
@@ -555,11 +548,14 @@ export function TheOceanIsRising() {
                   label={{
                     value: "Year",
                     position: "insideBottom",
-                    offset: -12,
-                    fill: "rgba(148, 163, 184, 0.5)",
-                    fontSize: 11,
-                    fontFamily: "monospace",
-                    style: { textAnchor: "middle" },
+                    offset: 0,
+                    style: {
+                      textAnchor: "middle",
+                      fill: "rgba(255, 255, 255, 0.6)",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      fontFamily: "sans-serif",
+                    },
                   }}
                 />
                 <YAxis
@@ -573,16 +569,19 @@ export function TheOceanIsRising() {
                     `${v > 0 ? "+" : ""}${(v * 100).toFixed(0)}`
                   }
                   tickLine={{ stroke: "rgba(148, 163, 184, 0.3)" }}
-                  width={60}
+                  width={65}
                   label={{
                     value: "Sea Level Anomaly (cm)",
                     angle: -90,
                     position: "insideLeft",
-                    offset: -10,
-                    fill: "rgba(148, 163, 184, 0.5)",
-                    fontSize: 11,
-                    fontFamily: "monospace",
-                    style: { textAnchor: "middle" },
+                    offset: 10,
+                    style: {
+                      textAnchor: "middle",
+                      fill: "rgba(255, 255, 255, 0.6)",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      fontFamily: "sans-serif",
+                    },
                   }}
                 />
                 <Tooltip
@@ -760,10 +759,8 @@ export function TheOceanIsRising() {
             </ResponsiveContainer>
           ) : null}
         </div>
-        <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-          Hover over the graph to inspect annual details. Click the legend
-          toggles above to filter analytical layers.
-        </p>
+        <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
+          Move your mouse over the chart to see details for each year. Use the buttons above to show or hide different lines.        </p>
       </motion.div>
     </StorySection>
   );

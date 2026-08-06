@@ -966,6 +966,7 @@ export function ExploreAnyNation({
                       <XAxis
                         dataKey="year"
                         stroke="rgba(255,255,255,0.3)"
+                        height={40}
                         tick={{
                           fontSize: 10,
                           fill: "rgba(255,255,255,0.5)",
@@ -975,13 +976,13 @@ export function ExploreAnyNation({
                         label={{
                           value: "Year",
                           position: "insideBottom",
-                          offset: -12,
+                          offset: 0,
                           style: {
                             textAnchor: "middle",
-                            fill: "rgba(255,255,255,0.4)",
-                            fontSize: 10,
-                            fontWeight: "bold",
-                            fontFamily: "monospace",
+                            fill: "rgba(255,255,255,0.6)",
+                            fontSize: 11,
+                            fontWeight: 600,
+                            fontFamily: "sans-serif",
                           },
                         }}
                       />
@@ -994,18 +995,18 @@ export function ExploreAnyNation({
                         }}
                         tickFormatter={(val: number) => val.toFixed(1)}
                         tickLine={false}
-                        width={55}
+                        width={65}
                         label={{
                           value: "Anomaly (cm)",
                           angle: -90,
                           position: "insideLeft",
-                          offset: 10,
+                          offset: 15,
                           style: {
                             textAnchor: "middle",
-                            fill: "rgba(255,255,255,0.4)",
-                            fontSize: 10,
-                            fontWeight: "bold",
-                            fontFamily: "monospace",
+                            fill: "rgba(255,255,255,0.6)",
+                            fontSize: 11,
+                            fontWeight: 600,
+                            fontFamily: "sans-serif",
                           },
                         }}
                       />
@@ -1164,10 +1165,10 @@ export function ExploreAnyNation({
                             offset: -12,
                             style: {
                               textAnchor: "middle",
-                              fill: "rgba(255,255,255,0.4)",
-                              fontSize: 10,
-                              fontWeight: "bold",
-                              fontFamily: "monospace",
+                              fill: "rgba(255,255,255,0.6)",
+                              fontSize: 11,
+                              fontWeight: 600,
+                              fontFamily: "sans-serif",
                             },
                           }}
                         />
@@ -1176,20 +1177,20 @@ export function ExploreAnyNation({
                           type="category"
                           stroke="rgba(255,255,255,0.3)"
                           tick={<CustomYAxisTick />}
-                          width={90}
+                          width={95}
                           tickLine={false}
                           axisLine={false}
                           label={{
                             value: "Decade",
                             angle: -90,
                             position: "insideLeft",
-                            offset: 10,
+                            offset: 15,
                             style: {
                               textAnchor: "middle",
-                              fill: "rgba(255,255,255,0.4)",
-                              fontSize: 10,
-                              fontWeight: "bold",
-                              fontFamily: "monospace",
+                              fill: "rgba(255,255,255,0.6)",
+                              fontSize: 11,
+                              fontWeight: 600,
+                              fontFamily: "sans-serif",
                             },
                           }}
                         />

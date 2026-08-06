@@ -565,9 +565,9 @@ export function RiskAssessment() {
                               style={{
                                 textAnchor: "middle",
                                 fill: "hsl(var(--muted-foreground))",
-                                fontSize: 10,
+                                fontSize: 11,
                                 fontWeight: 600,
-                                fontFamily: "monospace",
+                                fontFamily: "sans-serif",
                                 letterSpacing: "0.05em",
                               }}
                             />

@@ -717,10 +717,10 @@ export function FutureOutlook() {
                           offset: 0,
                           style: {
                             textAnchor: "middle",
-                            fill: "rgba(255, 255, 255, 0.4)",
-                            fontSize: 10,
-                            fontWeight: "bold",
-                            fontFamily: "monospace",
+                            fill: "rgba(255, 255, 255, 0.6)",
+                            fontSize: 11,
+                            fontWeight: 600,
+                            fontFamily: "sans-serif",
                           },
                         }}
                       />
@@ -748,10 +748,10 @@ export function FutureOutlook() {
                           offset: 20,
                           style: {
                             textAnchor: "middle",
-                            fill: "rgba(255, 255, 255, 0.4)",
-                            fontSize: 10,
-                            fontWeight: "bold",
-                            fontFamily: "monospace",
+                            fill: "rgba(255, 255, 255, 0.6)",
+                            fontSize: 11,
+                            fontWeight: 600,
+                            fontFamily: "sans-serif",
                           },
                         }}
                       />
