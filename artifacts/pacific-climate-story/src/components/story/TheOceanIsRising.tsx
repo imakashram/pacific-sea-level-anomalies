@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, animate } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import { StorySection } from "./StorySection";
 import { useGetOceanRising } from "@workspace/api-client-react";
 import {
@@ -16,43 +16,7 @@ import {
 } from "recharts";
 import { Waves, Sun, CloudRain, Flame } from "lucide-react";
 
-interface AnimatedCounterProps {
-  value: number;
-  decimals?: number;
-  prefix?: string;
-  suffix?: string;
-}
 
-function AnimatedCounter({
-  value,
-  decimals = 1,
-  prefix = "",
-  suffix = "",
-}: AnimatedCounterProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const motionValue = useMotionValue(0);
-
-  useEffect(() => {
-    const controls = animate(motionValue, value, {
-      duration: 1.5,
-      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
-      onUpdate: (latest) => {
-        if (ref.current) {
-          ref.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`;
-        }
-      },
-    });
-    return () => controls.stop();
-  }, [value, decimals, prefix, suffix, motionValue]);
-
-  return (
-    <span ref={ref}>
-      {prefix}
-      {value.toFixed(decimals)}
-      {suffix}
-    </span>
-  );
-}
 
 const containerVariants = {
   hidden: {},
@@ -414,51 +378,8 @@ export function TheOceanIsRising() {
           </p>
         </div>
 
-        {/* Analytics Summary Header & Layer Toggles */}
-        <div className="flex flex-wrap items-center justify-between gap-6 border-b border-cyan-500/10 pb-6 mb-6 relative z-10">
-          <div className="flex flex-wrap items-center gap-5 sm:gap-6 bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-2">
-            <div className="flex flex-col">
-              <span className="text-[9px] text-teal-400/80 font-mono uppercase">
-                Linear Trend Rate
-              </span>
-              <span className="text-sm font-mono font-bold text-teal-400 min-w-[70px]">
-                {trendLoading ? (
-                  <span className="w-12 h-4 bg-teal-400/10 animate-pulse rounded inline-block mt-1" />
-                ) : (
-                  <AnimatedCounter value={reg.slope * 1000} prefix="+" suffix=" mm/yr" decimals={2} />
-                )}
-              </span>
-            </div>
-            <div className="w-px h-7 bg-slate-700/50 self-stretch" />
-
-            <div className="flex flex-col">
-              <span className="text-[9px] text-cyan-400/80 font-mono uppercase">
-                30y Net Rise
-              </span>
-              <span className="text-sm font-mono font-bold text-cyan-400 min-w-[60px]">
-                {trendLoading ? (
-                  <span className="w-10 h-4 bg-cyan-400/10 animate-pulse rounded inline-block mt-1" />
-                ) : (
-                  <AnimatedCounter value={totalRiseCm} prefix="+" suffix=" cm" />
-                )}
-              </span>
-            </div>
-            <div className="w-px h-7 bg-slate-700/50 self-stretch" />
-
-            <div className="flex flex-col">
-              <span className="text-[9px] text-orange-400/80 font-mono uppercase">
-                Decadal Shift
-              </span>
-              <span className="text-sm font-mono font-bold text-orange-400 min-w-[60px]">
-                {trendLoading ? (
-                  <span className="w-10 h-4 bg-orange-400/10 animate-pulse rounded inline-block mt-1" />
-                ) : (
-                  <AnimatedCounter value={shiftCm} prefix="+" suffix=" cm" />
-                )}
-              </span>
-            </div>
-          </div>
-
+        {/* Layer Toggles */}
+        <div className="flex flex-wrap items-center justify-end gap-6 border-b border-cyan-500/10 pb-6 mb-6 relative z-10">
           <div className="flex items-center gap-4 text-xs font-mono">
             <span className="flex items-center gap-1.5 text-cyan-400">
               <span className="w-3.5 h-0.5 bg-cyan-400 inline-block rounded" />
