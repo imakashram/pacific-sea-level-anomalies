@@ -340,12 +340,12 @@ function SlopeChart({
             : "hsl(var(--destructive))";
           const strokeWidth = shouldHighlight ? 2.5 : 1.0;
           const strokeOpacity = isHovered
-              ? 1.0
-              : isAnyHovered
-                ? 0.08
-                : isKeyCountry
-                  ? 0.85
-                  : 0.15;
+            ? 1.0
+            : isAnyHovered
+              ? 0.08
+              : isKeyCountry
+                ? 0.85
+                : 0.15;
           const dotRadius = shouldHighlight ? 5.5 : 3.5;
           const textOpacity = shouldHighlight ? 1.0 : isAnyHovered ? 0.1 : 0.4;
 
@@ -516,11 +516,10 @@ function SlopeChart({
               {hoveredData.country}
             </span>
             <span
-              className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${
-                hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
-                  ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
-                  : "bg-red-500/20 text-red-400 border-red-500/30"
-              }`}
+              className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
+                ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
+                : "bg-red-500/20 text-red-400 border-red-500/30"
+                }`}
             >
               {hoveredData.slopeSecondHalf > hoveredData.slopeFirstHalf
                 ? "Accelerating"
@@ -594,30 +593,29 @@ function BarChartTooltip({ active, payload }: any) {
           {d.country}
         </span>
         <span
-          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${
-            d.accelerating
-              ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
-              : "bg-slate-500/20 text-slate-400 border-slate-500/30"
-          }`}
+          className={`text-[9px] px-2.5 py-0.5 rounded-full uppercase font-bold tracking-wider border ${d.accelerating
+            ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
+            : "bg-slate-500/20 text-slate-400 border-slate-500/30"
+            }`}
         >
           {d.accelerating ? "Accelerating" : "Stable"}
         </span>
       </div>
       <div className="space-y-2 text-xs">
         <div className="flex justify-between items-center gap-4">
-          <span className="text-slate-400/90 font-medium">30-Year Trend</span>
+          <span className="text-slate-400/90 font-medium">30-Year Average Rise</span>
           <span className="font-bold text-slate-300 text-sm">
             {val >= 0 ? "+" : ""}
-            {val.toFixed(2)} mm/yr
+            {val.toFixed(2)} mm/year
           </span>
         </div>
 
         <div className="flex justify-between items-center gap-4 pt-1.5 border-t border-white/5 mt-1">
-          <span className="text-slate-400/90 font-medium">Vs. Global Avg</span>
+          <span className="text-slate-400/90 font-medium">Compared with Global Average</span>
           <span
             className={`font-bold ${isAboveAvg ? "text-rose-400" : "text-slate-400"}`}
           >
-            {ratio.toFixed(1)}x baseline
+            {ratio.toFixed(1)}x higher
           </span>
         </div>
       </div>
@@ -677,8 +675,8 @@ export function PaceOfChange() {
   const acceleratingCount = data?.filter((d) => d.accelerating).length ?? 0;
   const avgDelta = data
     ? (data.reduce((s, d) => s + (d.slopeSecondHalf - d.slopeFirstHalf), 0) /
-        data.length) *
-      1000
+      data.length) *
+    1000
     : 0;
 
   const mostAccel = sortedByAccel[0];
@@ -699,10 +697,9 @@ export function PaceOfChange() {
             The Pace Of Change
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed mb-4 max-w-3xl">
-            Sea levels are not only rising - they're rising faster. By comparing
-            the first 15 years with the most recent 15 years, this analysis
-            reveals how the rate of change has accelerated across Pacific
-            nations.
+            Sea levels are not only rising - they are rising faster. This
+            compares the first 15 years with the last 15 years to show where sea
+            level rise has speeded up across the Pacific.
           </p>
         </motion.div>
 
@@ -721,7 +718,7 @@ export function PaceOfChange() {
           >
             <div className="flex items-center justify-between text-muted-foreground mb-1">
               <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                Nations accelerating
+                Nations Rising Faster
               </span>
               <div className="text-red-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
                 <TrendingUp className="w-4 h-4" />
@@ -737,7 +734,7 @@ export function PaceOfChange() {
               )}
             </div>
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-              Nations where sea level rise is speeding up
+              Nations where sea levels are rising faster
             </div>
           </motion.div>
 
@@ -775,14 +772,14 @@ export function PaceOfChange() {
             </div>
           </motion.div>
 
-          {/* Card 3: Most Accelerating */}
+          {/* Card 3: Biggest Increase */}
           <motion.div
             variants={paceCardVariants}
             className="p-6 bg-card/25 backdrop-blur-md border border-slate-800/60 rounded-2xl flex flex-col gap-2 transition-all duration-300 group shadow-sm hover:border-cyan-500/40 hover:shadow-cyan-500/5 hover:bg-cyan-950/5 hover:-translate-y-1"
           >
             <div className="flex items-center justify-between text-muted-foreground mb-1">
               <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                Most Accelerating
+                Biggest Increase
               </span>
               <div className="text-cyan-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
                 <ArrowUpRight className="w-4 h-4" />
@@ -794,7 +791,7 @@ export function PaceOfChange() {
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
               {isLoading || !mostAccel
                 ? "Checking territories..."
-                : `Pace jumped from ${(mostAccel.slopeFirstHalf * 1000).toFixed(2)} to ${(mostAccel.slopeSecondHalf * 1000).toFixed(2)} mm/yr - a ${((mostAccel.slopeSecondHalf - mostAccel.slopeFirstHalf) * 1000).toFixed(2)} mm/yr increase.`}
+                : `Sea level rise increased from ${(mostAccel.slopeFirstHalf * 1000).toFixed(2)} to ${(mostAccel.slopeSecondHalf * 1000).toFixed(2)} mm/yr - an increase of ${((mostAccel.slopeSecondHalf - mostAccel.slopeFirstHalf) * 1000).toFixed(2)} mm/yr.`}
             </div>
           </motion.div>
 
@@ -805,7 +802,7 @@ export function PaceOfChange() {
           >
             <div className="flex items-center justify-between text-muted-foreground mb-1">
               <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                Most Stable Pace
+                Most Stable
               </span>
               <div className="text-teal-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
                 <Shield className="w-4 h-4" />
@@ -817,7 +814,7 @@ export function PaceOfChange() {
             <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
               {isLoading || !mostStable
                 ? "Checking territories..."
-                : `Pace shifted from ${(mostStable.slopeFirstHalf * 1000).toFixed(2)} to ${(mostStable.slopeSecondHalf * 1000).toFixed(2)} mm/yr.`}
+                : `Sea level rise changed from ${(mostStable.slopeFirstHalf * 1000).toFixed(2)} to ${(mostStable.slopeSecondHalf * 1000).toFixed(2)} mm/yr.`}
             </div>
           </motion.div>
         </motion.div>
@@ -856,20 +853,19 @@ export function PaceOfChange() {
               }}
               className="bg-card/10 border border-border/30 rounded-2xl p-6 mb-10 shadow-2xl"
             >
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-white/5 px-1 text-left">
                 <div className="max-w-xl">
                   <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
-                    30-Year Pace Comparison
+                    30 Years of Sea Level Rise
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                    Linear regression slope (mm/yr) calculated over the entire
-                    30-year observation period (1993–2023).
+                    Shows the average speed of sea level rise in each Pacific nation from 1993 to 2023.
                   </p>
                 </div>
                 <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground mt-1 md:mt-0 flex-shrink-0">
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Accelerating
+                    Rising Faster
                   </span>
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
@@ -947,7 +943,7 @@ export function PaceOfChange() {
                         tickFormatter={(v) => `${(v * 1000).toFixed(1)}`}
                       >
                         <Label
-                          value="Pace of Sea Level Rise (mm/yr)"
+                          value="Sea Level Rise (mm/year)"
                           position="insideBottom"
                           offset={-20}
                           style={{
@@ -973,7 +969,7 @@ export function PaceOfChange() {
                         interval={0}
                       >
                         <Label
-                          value="Pacific Nation"
+                          value="Pacific Nations"
                           angle={-90}
                           position="insideLeft"
                           offset={15}
@@ -1051,7 +1047,7 @@ export function PaceOfChange() {
                               fontFamily="monospace"
                               fontWeight={600}
                             >
-                              Global Avg (3.3 mm/yr)
+                              Global Average (3.3 mm/yr)
                             </text>
                           );
                         }}
@@ -1064,9 +1060,8 @@ export function PaceOfChange() {
               </div>
 
               {/* Interaction Helper Text */}
-              <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-                Hover over any bar to inspect that nation's 30-year sea level rise
-                pace and compare it to the global average.
+              <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
+                Move your mouse over a bar to see how fast sea levels have risen in that nation over the past 30 years and compare it with the global average.
               </p>
             </motion.div>
 
@@ -1082,7 +1077,7 @@ export function PaceOfChange() {
               }}
               className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-2xl"
             >
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-white/5 select-none px-1 text-left">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-4 border-b border-white/5  px-1 text-left">
                 <div className="max-w-xl">
                   <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
                     Acceleration Before & After 2008
@@ -1106,7 +1101,7 @@ export function PaceOfChange() {
               <SlopeChart data={sortedByAccel} />
 
               {/* Interaction Helper Text */}
-              <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
+              <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
                 Hover over any line or label to isolate its trajectory and trace
                 how that nation's rate of rise accelerated or slowed between
                 epochs.
