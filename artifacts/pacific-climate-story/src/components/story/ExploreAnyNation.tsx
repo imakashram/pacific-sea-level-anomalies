@@ -997,7 +997,7 @@ export function ExploreAnyNation({
                         tickLine={false}
                         width={65}
                         label={{
-                          value: "Anomaly (cm)",
+                          value: "Sea Level Change (cm)",
                           angle: -90,
                           position: "insideLeft",
                           offset: 15,
@@ -1160,7 +1160,7 @@ export function ExploreAnyNation({
                           axisLine={false}
                           tickFormatter={(v: number) => v.toFixed(1)}
                           label={{
-                            value: "Avg Anomaly (cm)",
+                            value: "Average Sea Level Change (cm)",
                             position: "insideBottom",
                             offset: -12,
                             style: {

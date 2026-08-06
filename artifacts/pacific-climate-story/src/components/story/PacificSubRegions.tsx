@@ -151,10 +151,10 @@ export function PacificSubRegions() {
           className="mb-12 text-center flex flex-col items-center"
         >
           <h2 className="text-5xl md:text-6xl font-serif font-bold mb-4">
-            Pacific Sub-Regions
+            Pacific Regions
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Compare sea level patterns and climate risk across Melanesia, Micronesia, and Polynesia.
+            Compare how sea levels are rising and the climate risks across Melanesia, Micronesia, and Polynesia.
           </p>
         </motion.div>
 
@@ -204,7 +204,7 @@ export function PacificSubRegions() {
                 </div>
 
                 <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-muted-foreground">Decadal Shift:</span>
+                  <span className="text-muted-foreground">30-Year Rise:</span>
                   <span className={`font-bold ${theme.text}`}>
                     +{cluster.shiftCm.toFixed(1)} cm
                   </span>
@@ -225,12 +225,12 @@ export function PacificSubRegions() {
             className="lg:col-span-7"
           >
             <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between h-full">
-              <div className="px-1 text-left select-none mb-6 pb-4 border-b border-white/5">
+              <div className="px-1 text-left mb-6 pb-4 border-b border-white/5">
                 <h3 className="text-sm font-mono font-bold text-slate-100">
-                  Decadal Shift Stepper
+                  Sea Level Rise Over Time
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                  Compare decadal average sea level shifts across Melanesia, Micronesia, and Polynesia.
+                  Compare how sea levels changed over the last 30 years in Melanesia, Micronesia, and Polynesia.
                 </p>
               </div>
               <div className="relative w-full h-[220px] flex items-center justify-center">
@@ -238,7 +238,7 @@ export function PacificSubRegions() {
                   viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
                   className="w-full h-full overflow-visible"
                   role="img"
-                  aria-label="Interactive stepper chart comparing decadal average sea level shifts across the Melanesia, Micronesia, and Polynesia sub-regions."
+                  aria-label="Interactive stepper chart comparing 30-year sea level rise across the Melanesia, Micronesia, and Polynesia regions."
                 >
                   <defs>
                     {/* SVG Gradients for each region */}
@@ -278,13 +278,14 @@ export function PacificSubRegions() {
                   <text
                     x="12"
                     y={SVG_HEIGHT / 2 - 10}
-                    fill="rgba(148, 163, 184, 0.5)"
-                    fontSize="14"
-                    fontFamily="monospace"
+                    fill="rgba(255, 255, 255, 0.6)"
+                    fontSize="16"
+                    fontWeight="600"
+                    fontFamily="sans-serif"
                     transform={`rotate(-90, 12, ${SVG_HEIGHT / 2 - 10})`}
                     textAnchor="middle"
                   >
-                    Sea Level Anomaly (cm)
+                    Sea Level Change (cm)
                   </text>
 
                   {/* Horizontal Gridlines & Y-Axis Baseline References */}
@@ -306,7 +307,7 @@ export function PacificSubRegions() {
                           x="60"
                           y={y + 4}
                           fill="rgba(148, 163, 184, 0.7)"
-                          fontSize="13"
+                          fontSize="16"
                           fontFamily="monospace"
                           textAnchor="end"
                         >
@@ -419,10 +420,10 @@ export function PacificSubRegions() {
                         />
                         {/* Decade bracket on left */}
                         <text
-                          x={cx - 15}
-                          y={yD1 + 4}
+                          x={cx - 16}
+                          y={yD1 + 5}
                           fill={isSelected ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)"}
-                          fontSize="12"
+                          fontSize="15"
                           fontFamily="monospace"
                           textAnchor="end"
                         >
@@ -430,10 +431,10 @@ export function PacificSubRegions() {
                         </text>
                         {/* Value on right */}
                         <text
-                          x={cx + 15}
-                          y={yD1 + 4}
+                          x={cx + 16}
+                          y={yD1 + 5}
                           fill={isSelected ? "#ffffff" : "rgba(255,255,255,0.7)"}
-                          fontSize="12"
+                          fontSize="15"
                           fontFamily="monospace"
                           textAnchor="start"
                         >
@@ -453,10 +454,10 @@ export function PacificSubRegions() {
                         />
                         {/* Decade bracket on left */}
                         <text
-                          x={cx - 15}
-                          y={yD2 + 4}
+                          x={cx - 16}
+                          y={yD2 + 5}
                           fill={isSelected ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)"}
-                          fontSize="12"
+                          fontSize="15"
                           fontFamily="monospace"
                           textAnchor="end"
                         >
@@ -464,10 +465,10 @@ export function PacificSubRegions() {
                         </text>
                         {/* Value on right */}
                         <text
-                          x={cx + 15}
-                          y={yD2 + 4}
+                          x={cx + 16}
+                          y={yD2 + 5}
                           fill={isSelected ? "#ffffff" : "rgba(255,255,255,0.7)"}
-                          fontSize="12"
+                          fontSize="15"
                           fontFamily="monospace"
                           textAnchor="start"
                         >
@@ -485,10 +486,10 @@ export function PacificSubRegions() {
                         />
                         {/* Decade bracket on left */}
                         <text
-                          x={cx - 15}
-                          y={yD3 + 4}
+                          x={cx - 16}
+                          y={yD3 + 5}
                           fill={isSelected ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)"}
-                          fontSize="12"
+                          fontSize="15"
                           fontFamily="monospace"
                           textAnchor="end"
                         >
@@ -497,19 +498,19 @@ export function PacificSubRegions() {
                         {/* Endpoint Milestone Badge */}
                         <rect
                           x={cx + 14}
-                          y={yD3 - 12}
-                          width="66"
-                          height="22"
+                          y={yD3 - 14}
+                          width="78"
+                          height="26"
                           rx="6"
                           fill="#0b1528"
                           stroke={theme.hex}
                           strokeWidth="1"
                         />
                         <text
-                          x={cx + 47}
-                          y={yD3 + 4}
+                          x={cx + 53}
+                          y={yD3 + 5}
                           fill={theme.hex}
-                          fontSize="13"
+                          fontSize="16"
                           fontFamily="monospace"
                           fontWeight="bold"
                           textAnchor="middle"
@@ -520,11 +521,11 @@ export function PacificSubRegions() {
                         {/* Realm Column Title Label */}
                         <text
                           x={cx}
-                          y={SVG_HEIGHT - 22}
+                          y={SVG_HEIGHT - 25}
                           fill={
                             isSelected ? theme.hex : "rgba(255,255,255,0.6)"
                           }
-                          fontSize="15"
+                          fontSize="18"
                           fontFamily="monospace"
                           fontWeight="bold"
                           textAnchor="middle"
@@ -535,7 +536,7 @@ export function PacificSubRegions() {
                           x={cx}
                           y={SVG_HEIGHT - 6}
                           fill="rgba(148, 163, 184, 0.7)"
-                          fontSize="12"
+                          fontSize="15"
                           fontFamily="monospace"
                           textAnchor="middle"
                         >
@@ -558,13 +559,13 @@ export function PacificSubRegions() {
             className="lg:col-span-5"
           >
             <div className="bg-card/10 border border-border/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between h-full">
-              <div className="px-1 text-left select-none mb-6 pb-4 border-b border-white/5">
+              <div className="px-1 text-left mb-6 pb-4 border-b border-white/5">
                 <h3 className="text-sm font-mono font-bold text-slate-100 flex items-center gap-2">
                   <MapPin className={`w-3.5 h-3.5 ${REGION_THEMES[selectedCluster.region].text}`} />
                   {selectedCluster.region} ({selectedCluster.nationsCount} Nations)
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                  Recent average anomaly: <span className={`font-semibold ${REGION_THEMES[selectedCluster.region].text}`}>+{selectedCluster.latest2023AvgCm.toFixed(1)} cm</span> (2023 Avg)
+                  Average sea level change in 2023: <span className={`font-semibold ${REGION_THEMES[selectedCluster.region].text}`}>+{selectedCluster.latest2023AvgCm.toFixed(1)} cm</span>
                 </p>
               </div>
 
@@ -595,8 +596,8 @@ export function PacificSubRegions() {
         </div>
 
         {/* Interaction Helper Text */}
-        <p className="text-center text-xs text-muted-foreground mt-8 font-sans select-none leading-relaxed max-w-3xl mx-auto">
-          Click on any sub-region column (Melanesia, Micronesia, or Polynesia) to highlight its decadal escalation pathway. The right-hand panel dynamically displays the member nations and localized baseline anomalies for the active realm.
+        <p className="text-center text-xs text-muted-foreground mt-8 font-sans leading-relaxed max-w-3xl mx-auto">
+          Click on a region (Melanesia, Micronesia, or Polynesia) to see how sea levels changed over time. The panel on the right shows the countries in that region and their sea level values.
         </p>
       </div>
     </StorySection>

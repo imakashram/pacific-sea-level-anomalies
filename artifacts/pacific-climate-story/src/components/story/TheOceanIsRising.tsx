@@ -492,7 +492,7 @@ export function TheOceanIsRising() {
                   tickLine={{ stroke: "rgba(148, 163, 184, 0.3)" }}
                   width={65}
                   label={{
-                    value: "Sea Level Anomaly (cm)",
+                    value: "Sea Level Change (cm)",
                     angle: -90,
                     position: "insideLeft",
                     offset: 10,

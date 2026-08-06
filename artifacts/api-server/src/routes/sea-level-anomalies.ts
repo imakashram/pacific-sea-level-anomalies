@@ -860,7 +860,7 @@ function getSubRegionsData(): RegionalCluster[] {
         { code: "NC", name: "New Caledonia", value: getLatestCountryValue("NC") },
       ],
       description:
-        "High volcanic islands facing the fastest sea level rise and extreme surge risks.",
+        "High islands with the fastest sea level rise and a higher risk of coastal flooding.",
     },
     {
       region: "Micronesia",
@@ -881,7 +881,7 @@ function getSubRegionsData(): RegionalCluster[] {
         { code: "PW", name: "Palau", value: getLatestCountryValue("PW") },
       ],
       description:
-        "Low-lying coral atolls vulnerable to climate shifts and saltwater intrusion.",
+        "Low-lying islands at greater risk from rising seas and saltwater entering the land.",
     },
     {
       region: "Polynesia",
@@ -904,7 +904,7 @@ function getSubRegionsData(): RegionalCluster[] {
         { code: "TO", name: "Tonga", value: getLatestCountryValue("TO") },
       ],
       description:
-        "Widespread island groups showing the largest overall decadal shift.",
+        "Island groups with the biggest increase in sea level over the last 30 years.",
     },
   ];
 }

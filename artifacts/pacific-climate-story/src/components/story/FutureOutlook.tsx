@@ -742,7 +742,7 @@ export function FutureOutlook() {
                         tickLine={false}
                         axisLine={false}
                         label={{
-                          value: "Sea Level Anomaly (cm)",
+                          value: "Sea Level Change (cm)",
                           angle: -90,
                           position: "insideLeft",
                           offset: 20,
