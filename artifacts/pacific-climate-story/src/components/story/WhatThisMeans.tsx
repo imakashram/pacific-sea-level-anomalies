@@ -17,7 +17,6 @@ import {
   Gauge,
   type LucideIcon,
 } from "lucide-react";
-import { Footer } from "./Footer";
 
 /**
  * Props definition for the AnimatedCount component.
@@ -418,7 +417,6 @@ export function WhatThisMeans() {
         </div>
       </StorySection>
 
-      <Footer />
     </>
   );
 }

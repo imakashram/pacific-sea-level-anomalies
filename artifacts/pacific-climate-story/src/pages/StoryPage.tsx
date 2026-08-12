@@ -12,6 +12,8 @@ import { RiskAssessment } from "@/components/story/RiskAssessment";
 
 import { PacificAtAGlance } from "@/components/story/PacificAtAGlance";
 import { WhatThisMeans } from "@/components/story/WhatThisMeans";
+import { DataMethodology } from "@/components/story/DataMethodology";
+import { Footer } from "@/components/story/Footer";
 import { OceanDecorations } from "@/components/story/OceanDecorations";
 import { useSEO } from "@/lib/useSEO";
 
@@ -67,6 +69,8 @@ export default function StoryPage() {
           <PacificAtAGlance activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
         <WhatThisMeans />
+        <DataMethodology />
+        <Footer />
       </main>
     </div>
   );
