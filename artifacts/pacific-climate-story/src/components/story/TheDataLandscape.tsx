@@ -278,16 +278,16 @@ export function TheDataLandscape() {
         </a>
       </motion.div>
 
-      {/* Data Precision Disclaimer Card */}
+      {/* Data Precision Disclaimer */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className="max-w-5xl mx-auto mt-8 p-4 bg-slate-900/40 border border-slate-800/80 rounded-2xl flex flex-col items-center gap-2 text-center backdrop-blur-sm"
+        className="max-w-5xl mx-auto mt-8 text-left"
       >
-        <div className="text-xs text-muted-foreground leading-relaxed max-w-3xl">
-          <strong className="text-cyan-400 font-semibold block mb-1">Note on Data Measurements</strong>
+        <div className="text-xs text-muted-foreground leading-relaxed">
+          <strong className="text-foreground font-semibold mr-1.5">Note on Data Measurements:</strong>
           The official sea level records used here are rounded to the nearest 10 centimeters (about 4 inches). Because of this rounding, the rise for individual countries goes up in steps of exactly 10 or 20 cm. However, when we average the data across all 21 countries, it smooths out into the precise decimal numbers shown on our charts.
         </div>
       </motion.div>

@@ -89,9 +89,9 @@ export function PatternsOverTime() {
     decade2013Idx > 0 ? ((decade2013Idx + numYears) / 2 / numYears) * 100 : 83;
 
   const sortOptions: { key: SortKey; label: string }[] = [
-    { key: "totalRise", label: "Total Rise" },
-    { key: "avg", label: "Avg Anomaly" },
-    { key: "peak", label: "Peak Value" },
+    { key: "totalRise", label: "Total Sea Level Rise" },
+    { key: "avg", label: "Average Sea Level" },
+    { key: "peak", label: "Highest Sea Level" },
   ];
 
   return (
@@ -101,14 +101,12 @@ export function PatternsOverTime() {
           Patterns Over Time
         </h2>
         <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
-          Every Pacific nation, every year, in a single view. The transition
-          from cooler to warmer anomalies reveals how sea levels have changed
-          across decades.
+          See sea level changes for every Pacific nation from 1993 to 2023 in one view. The colors show how sea levels changed over time, from lower to higher levels.
         </p>
       </div>
 
       {/* Sort Controls */}
-      <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mx-auto mb-6 bg-slate-900/40 border border-white/5 rounded-xl px-4 py-2 w-fit select-none">
+      <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mx-auto mb-6 bg-slate-900/40 border border-white/5 rounded-xl px-4 py-2 w-fit">
         <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
           Sort by:
         </span>
@@ -128,11 +126,10 @@ export function PatternsOverTime() {
                 aria-selected={isActive}
                 aria-controls="heatmap-grid"
                 onClick={() => setSortKey(key)}
-                className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-colors cursor-pointer relative z-10 ${
-                  isActive
-                    ? "text-primary-foreground"
-                    : "text-muted-foreground hover:text-white"
-                }`}
+                className={`text-xs px-3.5 py-1.5 rounded-md font-medium transition-colors cursor-pointer relative z-10 ${isActive
+                  ? "text-primary-foreground"
+                  : "text-muted-foreground hover:text-white"
+                  }`}
               >
                 {isActive && (
                   <motion.div
@@ -170,14 +167,12 @@ export function PatternsOverTime() {
         className="max-w-5xl mx-auto w-full border border-border/30 rounded-xl p-6 bg-card/30 backdrop-blur-md relative z-10"
       >
         {/* Chart Header */}
-        <div className="mb-6 pb-4 border-b border-white/5 text-left select-none">
+        <div className="mb-6 pb-4 border-b border-white/5 text-left">
           <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
-            Sea Level Anomaly Heatmap (1993–2023)
+            Sea Level Change Heatmap (1993–2023)
           </h3>
           <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-            Visualizing yearly deviations in centimeters relative to the
-            baseline. Cool blue tones represent below-baseline anomalies, while
-            warm rose tones indicate above-baseline sea level rise.
+            This heatmap shows sea level changes for each year from 1993 to 2023. Blue colors show lower sea levels, while red colors show higher sea levels compared with the 1993–2002 average.
           </p>
         </div>
 
@@ -193,7 +188,7 @@ export function PatternsOverTime() {
                 {/* Decade labels above */}
                 <div className="flex mb-2 px-2">
                   <div className="w-44 flex-shrink-0" />
-                  <div className="flex-1 flex relative h-4 select-none">
+                  <div className="flex-1 flex relative h-4">
                     <span
                       className="text-[9px] uppercase tracking-wider text-blue-400/70 font-semibold absolute -translate-x-1/2 whitespace-nowrap"
                       style={{ left: `${d1Center}%` }}
@@ -307,10 +302,10 @@ export function PatternsOverTime() {
                                   backgroundColor:
                                     val !== null
                                       ? getColor(
-                                          val,
-                                          heatmapData.minValue,
-                                          heatmapData.maxValue,
-                                        )
+                                        val,
+                                        heatmapData.minValue,
+                                        heatmapData.maxValue,
+                                      )
                                       : "transparent",
                                 }}
                                 initial={{ opacity: 0, scaleY: 0 }}
@@ -333,7 +328,7 @@ export function PatternsOverTime() {
                                     <span
                                       className={`text-[10px] font-mono px-2 py-0.5 ${badgeBg} ${badgeText} border ${badgeBorder} rounded-full uppercase`}
                                     >
-                                      Annual Anomaly
+                                      Annual Record
                                     </span>
                                   </div>
                                   <div className="space-y-2 text-xs">
@@ -349,7 +344,7 @@ export function PatternsOverTime() {
                                       <span
                                         className={`${cellTextColor}/90 font-medium`}
                                       >
-                                        Anomaly
+                                        Sea Level
                                       </span>
                                       <span
                                         className={`font-mono font-bold text-sm ${cellTextColor}`}
@@ -376,7 +371,7 @@ export function PatternsOverTime() {
                 </div>
 
                 {/* Year/Boundary labels below */}
-                <div className="flex mt-2 px-2 select-none relative">
+                <div className="flex mt-2 px-2 relative">
                   <div className="w-44 flex-shrink-0" />
                   <div className="flex-1 flex relative h-6">
                     {/* Start year */}
@@ -417,39 +412,38 @@ export function PatternsOverTime() {
             </div>
 
             {/* Color legend */}
-            <div className="mt-4 max-w-2xl mx-auto select-none">
-              <div className="flex flex-col gap-3">
-                {/* The continuous color scale bar */}
-                <div className="relative max-w-md mx-auto w-full">
-                  {/* The bar itself (sharp/unrounded with middle baseline tick) */}
-                  <div className="h-4 bg-gradient-to-r from-cyan-400/80 via-slate-500/25 to-rose-400/80 border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] relative">
-                    {/* Vertical line indicator for Baseline (middle) */}
-                    <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-slate-200 z-10 -translate-x-1/2" />
+            <div className="mt-6 flex px-2">
+              {/* Left spacer matching country name column width */}
+              <div className="w-44 flex-shrink-0" />
+
+              {/* Color scale wrapper centered under the year blocks */}
+              <div className="flex-1 max-w-xl mx-auto w-full">
+                <div className="flex flex-col gap-2">
+                  {/* The continuous color scale bar */}
+                  <div className="relative w-full">
+                    {/* The bar itself (sharp/unrounded with middle baseline tick) */}
+                    <div className="h-4 bg-gradient-to-r from-cyan-400/80 via-slate-500/25 to-rose-400/80 border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] relative">
+                      {/* Vertical line indicator for Baseline (middle) */}
+                      <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-slate-200 z-10 -translate-x-1/2" />
+                    </div>
                   </div>
 
-                  {/* Scale labels / ticks */}
-                  <div className="flex justify-between items-center text-[10px] font-mono text-muted-foreground mt-2 px-1">
-                    <span className="font-semibold">
-                      -{Math.abs(heatmapData.minValue * 100).toFixed(0)} cm
-                      (Below Baseline)
-                    </span>
-                    <span className="text-slate-300 font-bold">
-                      0.0 cm (Baseline: 1993–2002 Average)
-                    </span>
-                    <span className="font-semibold">
-                      +{(heatmapData.maxValue * 100).toFixed(0)} cm (Above
-                      Baseline)
-                    </span>
+                  {/* Scale labels */}
+                  <div className="grid grid-cols-3 text-[10px] font-mono text-muted-foreground mt-1">
+                    <span className="text-left font-semibold">-{Math.abs(heatmapData.minValue * 100).toFixed(0)} cm (Lower than Average)</span>
+                    <span className="text-center text-slate-300 font-bold">0.0 cm (1993–2002 Average)</span>
+                    <span className="text-right font-semibold">+{(heatmapData.maxValue * 100).toFixed(0)} cm (Higher than Average)</span>
                   </div>
                 </div>
               </div>
+
+              {/* Right spacer matching summary values column width */}
+              <div className="w-16 flex-shrink-0" />
             </div>
 
             {/* Interaction Helper Text */}
-            <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-              Hover over any year block to inspect annual sea level anomalies.
-              Use the sort controls above to arrange nations by average anomaly,
-              peak deviation, or total rise.
+            <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
+              Move your mouse over a year to see the sea level for that nation. Use the options above to sort countries by total rise, average sea level, or highest sea level.
             </p>
           </div>
         ) : (
