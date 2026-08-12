@@ -15,7 +15,8 @@ function totalRiseOfRow(row: (number | null)[]): number {
   return valid[valid.length - 1] - valid[0];
 }
 function peakOfRow(row: (number | null)[]): number {
-  return Math.max(...row.filter((v): v is number => v !== null));
+  const valid = row.filter((v): v is number => v !== null);
+  return valid.length ? Math.max(...valid) : 0;
 }
 
 export function PatternsOverTime() {
@@ -360,10 +361,18 @@ export function PatternsOverTime() {
                             );
                           })}
                         </div>
-                        {/* Row total */}
+                        {/* Sorted metric value display */}
                         <div className="w-16 flex-shrink-0 text-right text-[10px] font-mono pl-2 text-muted-foreground/60 group-hover/row:text-white transition-colors">
-                          {totalRiseOfRow(row) > 0 ? "+" : ""}
-                          {(totalRiseOfRow(row) * 100).toFixed(0)}cm
+                          {(() => {
+                            const val =
+                              sortKey === "avg"
+                                ? avgOfRow(row)
+                                : sortKey === "peak"
+                                  ? peakOfRow(row)
+                                  : totalRiseOfRow(row);
+                            const cm = val * 100;
+                            return `${cm > 0 ? "+" : ""}${cm.toFixed(0)}cm`;
+                          })()}
                         </div>
                       </motion.div>
                     );
