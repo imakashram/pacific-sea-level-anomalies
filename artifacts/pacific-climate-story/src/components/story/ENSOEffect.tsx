@@ -403,31 +403,34 @@ export function ENSOEffect() {
                 {/* Left spacer matching row label width */}
                 <div className="w-full sm:w-[170px] sm:flex-shrink-0 pr-2 hidden sm:block" />
 
-                {/* Ticks container matching track area */}
-                <div className="relative flex-1 h-full">
-                  {ticks.map((t) => {
-                    const leftPct = getPct(t);
-                    return (
-                      <div
-                        key={t}
-                        className="absolute transform -translate-x-1/2 flex flex-col items-center top-0"
-                        style={{ left: `${leftPct}%` }}
-                      >
-                        <span
-                          className={t === 0 ? "font-bold text-primary" : ""}
-                        >
-                          {t > 0 ? `+${t}` : t}cm
-                        </span>
+                {/* Container matching track area and badge */}
+                <div className="flex items-center w-full sm:flex-1 h-full gap-3">
+                  {/* Ticks container matching track area */}
+                  <div className="relative flex-1 h-full">
+                    {ticks.map((t) => {
+                      const leftPct = getPct(t);
+                      return (
                         <div
-                          className={`w-px h-2 mt-1 ${t === 0 ? "bg-primary" : "bg-border/60"}`}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
+                          key={t}
+                          className="absolute transform -translate-x-1/2 flex flex-col items-center top-0"
+                          style={{ left: `${leftPct}%` }}
+                        >
+                          <span
+                            className={t === 0 ? "font-bold text-primary" : ""}
+                          >
+                            {t > 0 ? `+${t}` : t}cm
+                          </span>
+                          <div
+                            className={`w-px h-2 mt-1 ${t === 0 ? "bg-primary" : "bg-border/60"}`}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
 
-                {/* Right spacer matching badge width */}
-                <div className="w-[80px] sm:w-[90px] flex-shrink-0" />
+                  {/* Right spacer matching badge width */}
+                  <div className="w-[80px] sm:w-[90px] flex-shrink-0 pl-3" />
+                </div>
               </div>
 
               {/* Dumbbell Rows */}

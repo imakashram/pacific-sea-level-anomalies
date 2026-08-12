@@ -172,13 +172,13 @@
 /* Responsive ENSO Dumbbell Chart styling variables */
 .dumbbell-panel {
   --left-offset: 12px;
-  --total-subtraction: 104px;
+  --total-subtraction: 116px;
 }
 
 @media (min-width: 640px) {
   .dumbbell-panel {
     --left-offset: 182px;
-    --total-subtraction: 274px;
+    --total-subtraction: 296px;
   }
 }
 
