@@ -182,9 +182,7 @@ export function ENSOEffect() {
               The ENSO Effect
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              El Niño and La Niña create natural swings in Pacific sea levels.
-              Explore how these climate cycles influence short-term anomalies
-              alongside the long-term trend of rising seas.
+              El Niño and La Niña are natural climate events that cause sea levels in the Pacific to rise and fall for a short time. This section shows how these events affect sea levels alongside the long-term rise.
             </p>
           </div>
         </motion.div>
@@ -206,7 +204,7 @@ export function ENSOEffect() {
                 viewport={{ once: true, margin: "-50px" }}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12 text-left"
               >
-                {/* Card 1: Most ENSO-Sensitive */}
+                {/* Card 1: Most Affected by El Niño & La Niña */}
                 <motion.div
                   variants={cardVariants}
                   whileHover={{
@@ -219,7 +217,7 @@ export function ENSOEffect() {
                 >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                      Most ENSO-Sensitive
+                      Most Affected by El Niño & La Niña
                     </span>
                     <motion.div
                       variants={trendingUpIconVariants}
@@ -231,15 +229,15 @@ export function ENSOEffect() {
                   <div className="text-3xl font-serif font-bold tracking-tight text-cyan-400">
                     +<AnimatedCounter value={ensoData.nations[0]?.sensitivity * 100} decimals={1} />
                     <span className="text-sm font-sans text-muted-foreground ml-1">
-                      cm swing
+                      cm change
                     </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    Guam & Palau lead with highest variations
+                    Guam and Palau show the biggest sea level changes during El Niño and La Niña.
                   </div>
                 </motion.div>
 
-                {/* Card 2: Least ENSO-Sensitive */}
+                {/* Card 2: Least Affected by El Niño & La Niña */}
                 <motion.div
                   variants={cardVariants}
                   whileHover={{
@@ -252,7 +250,7 @@ export function ENSOEffect() {
                 >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                      Least ENSO-Sensitive
+                      Least Affected by El Niño & La Niña
                     </span>
                     <motion.div
                       variants={activityIconVariants}
@@ -264,15 +262,15 @@ export function ENSOEffect() {
                   <div className="text-3xl font-serif font-bold tracking-tight text-teal-400">
                     <AnimatedCounter value={ensoData.nations[ensoData.nations.length - 1]?.sensitivity * 100} decimals={1} />
                     <span className="text-sm font-sans text-muted-foreground ml-1">
-                      cm swing
+                      cm change
                     </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    New Caledonia & French Polynesia decoupled
+                    New Caledonia and French Polynesia show little or no change during these events.
                   </div>
                 </motion.div>
 
-                {/* Card 3: El Niño Phase */}
+                {/* Card 3: During El Niño */}
                 <motion.div
                   variants={cardVariants}
                   whileHover={{
@@ -285,7 +283,7 @@ export function ENSOEffect() {
                 >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                      El Niño Phase
+                      During El Niño
                     </span>
                     <motion.div
                       variants={trendingDownIconVariants}
@@ -294,18 +292,19 @@ export function ENSOEffect() {
                       <TrendingDown className="w-4 h-4" />
                     </motion.div>
                   </div>
-                  <div className="text-3xl font-serif font-bold tracking-tight text-orange-400">
-                    <AnimatedCounter value={ensoData.global.elNinoAvg * 100} decimals={1} />
-                    <span className="text-sm font-sans text-muted-foreground ml-1">
-                      cm avg dip
+                  <div className="text-3xl font-serif font-bold tracking-tight text-orange-400 flex flex-wrap items-baseline gap-x-1.5">
+                    <span className="text-sm font-sans font-semibold text-muted-foreground">Average drop:</span>
+                    <span>
+                      <AnimatedCounter value={ensoData.global.elNinoAvg * 100} decimals={1} />
+                      <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
                     </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    Temporary dip fails to offset rising baseline
+                    Sea levels fall for a short time, but the long-term rise continues.
                   </div>
                 </motion.div>
 
-                {/* Card 4: La Niña Phase */}
+                {/* Card 4: During La Niña */}
                 <motion.div
                   variants={cardVariants}
                   whileHover={{
@@ -318,7 +317,7 @@ export function ENSOEffect() {
                 >
                   <div className="flex items-center justify-between text-muted-foreground mb-1">
                     <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                      La Niña Phase
+                      During La Niña
                     </span>
                     <motion.div
                       variants={globeIconVariants}
@@ -327,14 +326,15 @@ export function ENSOEffect() {
                       <Globe className="w-4 h-4" />
                     </motion.div>
                   </div>
-                  <div className="text-3xl font-serif font-bold tracking-tight text-sky-400">
-                    +<AnimatedCounter value={ensoData.global.laNinaAvg * 100} decimals={1} />
-                    <span className="text-sm font-sans text-muted-foreground ml-1">
-                      cm avg surge
+                  <div className="text-3xl font-serif font-bold tracking-tight text-sky-400 flex flex-wrap items-baseline gap-x-1.5">
+                    <span className="text-sm font-sans font-semibold text-muted-foreground">Average rise:</span>
+                    <span>
+                      +<AnimatedCounter value={ensoData.global.laNinaAvg * 100} decimals={1} />
+                      <span className="text-sm font-sans text-muted-foreground ml-1">cm</span>
                     </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    Surges amplify and accelerate coastal risks
+                    Higher sea levels increase the risk of coastal flooding.
                   </div>
                 </motion.div>
               </motion.div>
@@ -346,11 +346,10 @@ export function ENSOEffect() {
                 <button
                   onClick={() => setDisplayCount(10)}
                   aria-pressed={displayCount === 10}
-                  className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer relative z-10 ${
-                    displayCount === 10
+                  className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer relative z-10 ${displayCount === 10
                       ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
-                  }`}
+                    }`}
                 >
                   {displayCount === 10 && (
                     <motion.div
@@ -364,11 +363,10 @@ export function ENSOEffect() {
                 <button
                   onClick={() => setDisplayCount(21)}
                   aria-pressed={displayCount === 21}
-                  className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer relative z-10 ${
-                    displayCount === 21
+                  className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer relative z-10 ${displayCount === 21
                       ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
-                  }`}
+                    }`}
                 >
                   {displayCount === 21 && (
                     <motion.div
@@ -385,24 +383,23 @@ export function ENSOEffect() {
             {/* Dumbbell Chart Panel */}
             <div className="w-full border border-border/30 rounded-xl p-6 bg-card/30 backdrop-blur-md relative z-10 dumbbell-panel">
               {/* Chart Header */}
-              <div className="mb-6 pb-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-end justify-between gap-4 select-none">
+              <div className="mb-6 pb-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div className="text-left flex-1">
                   <h3 className="text-xs font-mono font-bold text-slate-100 tracking-wider">
-                    ENSO Deviation Range (1993–2023)
+                    Sea Level Changes During El Niño & La Niña (1993–2023)
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed max-w-2xl">
-                    Average sea level anomalies during El Niño, Neutral, and La Niña
-                    phases, showing the total swing range in centimeters.
+                    Shows the average sea level during El Niño, Neutral, and La Niña years, and the total difference between the highest and lowest levels.
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-sky-400 font-mono text-[10px] sm:mb-1 flex-shrink-0 self-end sm:self-auto">
                   <span className="w-6 h-0.5 bg-gradient-to-r from-orange-500 via-slate-400 to-sky-400 inline-block" />
-                  <span>Connecting line = Total ENSO swing range</span>
+                  <span>Connecting line = Total sea level change during El Niño & La Niña</span>
                 </div>
               </div>
 
               {/* X-Axis Scale Header */}
-              <div className="flex items-center w-full h-8 border-b border-border/30 mb-4 text-xs font-mono text-muted-foreground select-none px-3 gap-0">
+              <div className="flex items-center w-full h-8 border-b border-border/30 mb-4 text-xs font-mono text-muted-foreground px-3 gap-0">
                 {/* Left spacer matching row label width */}
                 <div className="w-full sm:w-[170px] sm:flex-shrink-0 pr-2 hidden sm:block" />
 
@@ -495,11 +492,10 @@ export function ENSOEffect() {
                           setHoveredNation(null);
                           setHoverCoords(null);
                         }}
-                        className={`relative flex flex-col sm:flex-row items-stretch sm:items-center py-2.5 sm:py-0 h-auto sm:h-10 px-3 rounded-xl border gap-2 sm:gap-0 transition-[background-color,border-color,box-shadow] duration-200 group z-10 ${
-                          isHovered
+                        className={`relative flex flex-col sm:flex-row items-stretch sm:items-center py-2.5 sm:py-0 h-auto sm:h-10 px-3 rounded-xl border gap-2 sm:gap-0 transition-[background-color,border-color,box-shadow] duration-200 group z-10 ${isHovered
                             ? "bg-card/60 border-primary/30 shadow-md"
                             : "border-transparent hover:bg-card/25"
-                        }`}
+                          }`}
                       >
                         {/* Country Name & Code */}
                         <div className="w-full sm:w-[170px] flex items-center gap-2 flex-shrink-0 pr-2">
@@ -587,11 +583,10 @@ export function ENSOEffect() {
                           {/* Range Swing Badge */}
                           <div className="w-[80px] sm:w-[90px] text-right flex-shrink-0 pl-3">
                             <span
-                              className={`inline-block text-xs font-mono font-bold px-2 py-0.5 rounded-full border transition-all ${
-                                isHovered
+                              className={`inline-block text-xs font-mono font-bold px-2 py-0.5 rounded-full border transition-all ${isHovered
                                   ? "bg-sky-500/20 text-sky-300 border-sky-400/40 shadow-sm"
                                   : "bg-card/40 text-sky-400/90 border-border/40"
-                              }`}
+                                }`}
                             >
                               {swingCm.toFixed(1)} cm
                             </span>
@@ -736,11 +731,8 @@ export function ENSOEffect() {
               </div>
 
               {/* Interaction Helper Text */}
-              <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-                Hover over any country to highlight its range. The width of the
-                gradient bar shows the total sea level swing between climate
-                phases. Larger bars indicate higher vulnerability to El Niño and
-                La Niña cycles.
+              <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
+                Move your mouse over a nation to see its sea level change. The length of the colored bar shows the total change between El Niño and La Niña. Longer bars mean bigger changes in sea level.
               </p>
             </div>
           </motion.div>
