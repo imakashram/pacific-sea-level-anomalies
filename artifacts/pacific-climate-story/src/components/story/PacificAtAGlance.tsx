@@ -283,7 +283,7 @@ export function PacificAtAGlance({
               The Pacific at a Glance
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
-              Explore the complete Pacific record.
+              Explore the full sea level data for the Pacific.
             </p>
           </motion.div>
         </div>
@@ -299,7 +299,7 @@ export function PacificAtAGlance({
           >
             {/* View Mode Switcher Pills */}
             <div
-              className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5 mb-2 max-w-[200px] w-full shadow-inner flex-shrink-0 select-none relative"
+              className="flex bg-slate-950/60 p-0.5 rounded-lg border border-white/5 mb-2 max-w-[220px] w-full shadow-inner flex-shrink-0 relative"
               role="tablist"
               aria-label="View mode"
               onKeyDown={handleTablistKeyDown}
@@ -310,11 +310,10 @@ export function PacificAtAGlance({
                 aria-selected={activeTab === "explorer"}
                 aria-controls="view-mode-content"
                 onClick={() => setActiveTab("explorer")}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer whitespace-nowrap relative z-10 ${
-                  activeTab === "explorer"
+                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer whitespace-nowrap relative z-10 ${activeTab === "explorer"
                     ? "text-primary-foreground"
                     : "text-muted-foreground hover:text-white"
-                }`}
+                  }`}
               >
                 {activeTab === "explorer" && (
                   <motion.div
@@ -324,7 +323,7 @@ export function PacificAtAGlance({
                   />
                 )}
                 <Globe className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
-                Visual
+                Dashboard
               </button>
               <button
                 id="tab-viewmode-table"
@@ -332,11 +331,10 @@ export function PacificAtAGlance({
                 aria-selected={activeTab === "table"}
                 aria-controls="view-mode-content"
                 onClick={() => setActiveTab("table")}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer whitespace-nowrap relative z-10 ${
-                  activeTab === "table"
+                className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer whitespace-nowrap relative z-10 ${activeTab === "table"
                     ? "text-primary-foreground"
                     : "text-muted-foreground hover:text-white"
-                }`}
+                  }`}
               >
                 {activeTab === "table" && (
                   <motion.div
@@ -377,9 +375,8 @@ export function PacificAtAGlance({
                     </span>
                   </div>
                   <svg
-                    className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${
-                      isDropdownOpen ? "rotate-180 text-foreground" : ""
-                    }`}
+                    className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isDropdownOpen ? "rotate-180 text-foreground" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -422,11 +419,10 @@ export function PacificAtAGlance({
                                 setSelectedCountryCode(r.code);
                                 setIsDropdownOpen(false);
                               }}
-                              className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer text-left ${
-                                selectedCountryCode === r.code
+                              className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer text-left ${selectedCountryCode === r.code
                                   ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/15"
                                   : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                              }`}
+                                }`}
                             >
                               <span>
                                 {r.country}{" "}
@@ -520,241 +516,240 @@ export function PacificAtAGlance({
           ) : isError || !apiRankings ? null : (
             <AnimatePresence mode="wait">
               {activeTab === "table" ? (
-              <motion.div
-                key="table-view"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-                className="flex flex-col gap-6 w-full animate-in fade-in duration-300"
-              >
-                {/* Sortable Table Container */}
-                <div className="bg-card/20 rounded-xl border border-border/50 overflow-hidden shadow-2xl">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left border-collapse">
-                      <caption className="sr-only">
-                        Comparison of Pacific nations across multiple sea level anomaly metrics, including average anomaly, volatility, cumulative rise, linear trend speed, peak anomaly, and decadal acceleration.
-                      </caption>
-                      <thead className="sticky top-0 z-20 text-xs uppercase bg-background/95 backdrop-blur-xl text-muted-foreground border-b border-border/50 shadow-sm">
-                        <tr>
-                          <th scope="col" className="px-4 py-3 font-semibold">Trend</th>
-                          <th
-                            scope="col"
-                            className="px-4 py-3 font-semibold text-left"
-                            aria-sort={sortField === "country" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => handleSort("country")}
-                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                <motion.div
+                  key="table-view"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="flex flex-col gap-6 w-full animate-in fade-in duration-300"
+                >
+                  {/* Sortable Table Container */}
+                  <div className="bg-card/20 rounded-xl border border-border/50 overflow-hidden shadow-2xl">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm text-left border-collapse">
+                        <caption className="sr-only">
+                          Comparison of Pacific nations across multiple sea level anomaly metrics, including average anomaly, volatility, cumulative rise, linear trend speed, peak anomaly, and decadal acceleration.
+                        </caption>
+                        <thead className="sticky top-0 z-20 text-xs uppercase bg-background/95 backdrop-blur-xl text-muted-foreground border-b border-border/50 shadow-sm">
+                          <tr>
+                            <th scope="col" className="px-4 py-3 font-semibold">Trend</th>
+                            <th
+                              scope="col"
+                              className="px-4 py-3 font-semibold text-left"
+                              aria-sort={sortField === "country" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                             >
-                              Nation <SortIcon field="country" />
-                            </button>
-                          </th>
-                          <th scope="col" className="px-4 py-3 font-semibold">Risk</th>
-                          <th
-                            scope="col"
-                            className="px-4 py-3 font-semibold text-left"
-                            aria-sort={sortField === "mean" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => handleSort("mean")}
-                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              <button
+                                type="button"
+                                onClick={() => handleSort("country")}
+                                className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              >
+                                Nation <SortIcon field="country" />
+                              </button>
+                            </th>
+                            <th scope="col" className="px-4 py-3 font-semibold">Risk</th>
+                            <th
+                              scope="col"
+                              className="px-4 py-3 font-semibold text-left"
+                              aria-sort={sortField === "mean" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                             >
-                              Avg Anomaly <SortIcon field="mean" />
-                            </button>
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-4 py-3 font-semibold text-left"
-                            aria-sort={sortField === "volatility" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => handleSort("volatility")}
-                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              <button
+                                type="button"
+                                onClick={() => handleSort("mean")}
+                                className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              >
+                                Avg Anomaly <SortIcon field="mean" />
+                              </button>
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-4 py-3 font-semibold text-left"
+                              aria-sort={sortField === "volatility" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                             >
-                              Volatility <SortIcon field="volatility" />
-                            </button>
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-4 py-3 font-semibold text-left"
-                            aria-sort={sortField === "cumulativeRise" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => handleSort("cumulativeRise")}
-                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              <button
+                                type="button"
+                                onClick={() => handleSort("volatility")}
+                                className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              >
+                                Volatility <SortIcon field="volatility" />
+                              </button>
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-4 py-3 font-semibold text-left"
+                              aria-sort={sortField === "cumulativeRise" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                             >
-                              Cumul. Rise <SortIcon field="cumulativeRise" />
-                            </button>
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-4 py-3 font-semibold text-left"
-                            aria-sort={sortField === "slope" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => handleSort("slope")}
-                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              <button
+                                type="button"
+                                onClick={() => handleSort("cumulativeRise")}
+                                className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              >
+                                Cumul. Rise <SortIcon field="cumulativeRise" />
+                              </button>
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-4 py-3 font-semibold text-left"
+                              aria-sort={sortField === "slope" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                             >
-                              Speed <SortIcon field="slope" />
-                            </button>
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-4 py-3 font-semibold text-left"
-                            aria-sort={sortField === "peakValue" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => handleSort("peakValue")}
-                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              <button
+                                type="button"
+                                onClick={() => handleSort("slope")}
+                                className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              >
+                                Speed <SortIcon field="slope" />
+                              </button>
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-4 py-3 font-semibold text-left"
+                              aria-sort={sortField === "peakValue" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                             >
-                              Peak <SortIcon field="peakValue" />
-                            </button>
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-4 py-3 font-semibold text-left"
-                            aria-sort={sortField === "decadeAcceleration" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => handleSort("decadeAcceleration")}
-                              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              <button
+                                type="button"
+                                onClick={() => handleSort("peakValue")}
+                                className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              >
+                                Peak <SortIcon field="peakValue" />
+                              </button>
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-4 py-3 font-semibold text-left"
+                              aria-sort={sortField === "decadeAcceleration" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                             >
-                              D1→D3 <SortIcon field="decadeAcceleration" />
-                            </button>
-                          </th>
-                        </tr>
-                      </thead>
-                      <motion.tbody
-                        variants={tbodyVariants}
-                        initial="hidden"
-                        animate="show"
-                      >
-                        {sortedData.map((row, i) => {
-                          const sparkData = sparklineMap.get(row.code) ?? [];
-                          const risk = riskMap.get(row.code);
-                          const isTop =
-                            i === 0 &&
-                            sortField === "cumulativeRise" &&
-                            sortDir === "desc";
-                          const riskColor = risk
-                            ? RISK_COLORS[risk.riskLevel]
-                            : "hsl(var(--primary))";
+                              <button
+                                type="button"
+                                onClick={() => handleSort("decadeAcceleration")}
+                                className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer w-full text-left font-semibold uppercase"
+                              >
+                                D1→D3 <SortIcon field="decadeAcceleration" />
+                              </button>
+                            </th>
+                          </tr>
+                        </thead>
+                        <motion.tbody
+                          variants={tbodyVariants}
+                          initial="hidden"
+                          animate="show"
+                        >
+                          {sortedData.map((row, i) => {
+                            const sparkData = sparklineMap.get(row.code) ?? [];
+                            const risk = riskMap.get(row.code);
+                            const isTop =
+                              i === 0 &&
+                              sortField === "cumulativeRise" &&
+                              sortDir === "desc";
+                            const riskColor = risk
+                              ? RISK_COLORS[risk.riskLevel]
+                              : "hsl(var(--primary))";
 
-                          return (
-                            <motion.tr
-                              key={row.code}
-                              layout="position"
-                              variants={rowVariants}
-                              transition={{
-                                layout: { type: "spring", stiffness: 280, damping: 28 }
-                              }}
-                              className={`border-b border-border/10 hover:bg-white/5 dark:hover:bg-white/5 transition-[background-color,border-color] duration-300 ${
-                                isTop ? "bg-primary/5" : ""
-                              }`}
-                            >
-                              <td className="px-4 py-2">
-                                {sparkData.length > 0 ? (
-                                  <MiniSparkline
-                                    data={sparkData}
-                                    color={riskColor}
-                                  />
-                                ) : (
-                                  <div className="w-20 h-8 bg-card/30 rounded" />
-                                )}
-                              </td>
-                              <th scope="row" className="px-4 py-3 font-medium text-foreground text-left whitespace-nowrap">
-                                {row.country}
-                                <span className="ml-2 text-xs text-muted-foreground/50 font-mono">
-                                  {row.code}
-                                </span>
-                              </th>
-                              <td className="px-4 py-3">
-                                {risk && (
+                            return (
+                              <motion.tr
+                                key={row.code}
+                                layout="position"
+                                variants={rowVariants}
+                                transition={{
+                                  layout: { type: "spring", stiffness: 280, damping: 28 }
+                                }}
+                                className={`border-b border-border/10 hover:bg-white/5 dark:hover:bg-white/5 transition-[background-color,border-color] duration-300 ${isTop ? "bg-primary/5" : ""
+                                  }`}
+                              >
+                                <td className="px-4 py-2">
+                                  {sparkData.length > 0 ? (
+                                    <MiniSparkline
+                                      data={sparkData}
+                                      color={riskColor}
+                                    />
+                                  ) : (
+                                    <div className="w-20 h-8 bg-card/30 rounded" />
+                                  )}
+                                </td>
+                                <th scope="row" className="px-4 py-3 font-medium text-foreground text-left whitespace-nowrap">
+                                  {row.country}
+                                  <span className="ml-2 text-xs text-muted-foreground/50 font-mono">
+                                    {row.code}
+                                  </span>
+                                </th>
+                                <td className="px-4 py-3">
+                                  {risk && (
+                                    <span
+                                      className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold tracking-wider shadow-sm"
+                                      style={{
+                                        color: riskColor,
+                                        backgroundColor: `${riskColor}20`,
+                                        border: `1px solid ${riskColor}40`,
+                                      }}
+                                    >
+                                      {risk.riskLevel}
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-3 text-cyan-400/90 font-mono">
+                                  {(row.mean * 100).toFixed(1)} cm
+                                </td>
+                                <td className="px-4 py-3 text-purple-400/90 font-mono">
+                                  ±{(row.volatility * 100).toFixed(1)} cm
+                                </td>
+                                <td className="px-4 py-3 font-bold text-cyan-400 font-mono">
+                                  {row.cumulativeRise > 0 ? "+" : ""}
+                                  {(row.cumulativeRise * 100).toFixed(1)} cm
+                                </td>
+                                <td className="px-4 py-3 text-teal-400/90 font-mono">
+                                  {(row.slope * 1000).toFixed(2)}{" "}
+                                  <span className="text-xs">mm/yr</span>
+                                </td>
+                                <td className="px-4 py-3 text-rose-400/90 font-mono whitespace-nowrap">
+                                  {(row.peakValue * 100).toFixed(1)} cm
+                                  <span className="text-xs opacity-60 ml-1.5 text-muted-foreground">
+                                    ({row.peakYear})
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3">
                                   <span
-                                    className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold tracking-wider shadow-sm"
+                                    className="font-mono text-sm font-semibold"
                                     style={{
-                                      color: riskColor,
-                                      backgroundColor: `${riskColor}20`,
-                                      border: `1px solid ${riskColor}40`,
+                                      color:
+                                        row.decadeAcceleration > 0
+                                          ? "#f97316"
+                                          : "#22c55e",
                                     }}
                                   >
-                                    {risk.riskLevel}
+                                    {row.decadeAcceleration > 0 ? "+" : ""}
+                                    {(row.decadeAcceleration * 100).toFixed(1)} cm
                                   </span>
-                                )}
-                              </td>
-                              <td className="px-4 py-3 text-cyan-400/90 font-mono">
-                                {(row.mean * 100).toFixed(1)} cm
-                              </td>
-                              <td className="px-4 py-3 text-purple-400/90 font-mono">
-                                ±{(row.volatility * 100).toFixed(1)} cm
-                              </td>
-                              <td className="px-4 py-3 font-bold text-cyan-400 font-mono">
-                                {row.cumulativeRise > 0 ? "+" : ""}
-                                {(row.cumulativeRise * 100).toFixed(1)} cm
-                              </td>
-                              <td className="px-4 py-3 text-teal-400/90 font-mono">
-                                {(row.slope * 1000).toFixed(2)}{" "}
-                                <span className="text-xs">mm/yr</span>
-                              </td>
-                              <td className="px-4 py-3 text-rose-400/90 font-mono whitespace-nowrap">
-                                {(row.peakValue * 100).toFixed(1)} cm
-                                <span className="text-xs opacity-60 ml-1.5 text-muted-foreground">
-                                  ({row.peakYear})
-                                </span>
-                              </td>
-                              <td className="px-4 py-3">
-                                <span
-                                  className="font-mono text-sm font-semibold"
-                                  style={{
-                                    color:
-                                      row.decadeAcceleration > 0
-                                        ? "#f97316"
-                                        : "#22c55e",
-                                  }}
-                                >
-                                  {row.decadeAcceleration > 0 ? "+" : ""}
-                                  {(row.decadeAcceleration * 100).toFixed(1)} cm
-                                </span>
-                              </td>
-                            </motion.tr>
-                          );
-                        })}
-                      </motion.tbody>
-                    </table>
-                  </div>
-
-                  {sortedData.length === 0 && (
-                    <div className="py-16 text-center text-muted-foreground/50 italic">
-                      No nations match your search.
+                                </td>
+                              </motion.tr>
+                            );
+                          })}
+                        </motion.tbody>
+                      </table>
                     </div>
-                  )}
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="explorer-view"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-              >
-                <ExploreAnyNation
-                  isNested={true}
-                  selectedCode={selectedCountryCode}
-                  setSelectedCode={setSelectedCountryCode}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        )}
+
+                    {sortedData.length === 0 && (
+                      <div className="py-16 text-center text-muted-foreground/50 italic">
+                        No nations match your search.
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="explorer-view"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <ExploreAnyNation
+                    isNested={true}
+                    selectedCode={selectedCountryCode}
+                    setSelectedCode={setSelectedCountryCode}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
         </div>
       </div>
     </StorySection>

@@ -477,13 +477,13 @@ export function ExploreAnyNation({
   // Regional averages computed across all 21 territories
   const regionalAvg = rankings
     ? {
-        cumulativeRise:
-          rankings.reduce((s, r) => s + r.cumulativeRise, 0) / rankings.length,
-        slope: rankings.reduce((s, r) => s + r.slope, 0) / rankings.length,
-        volatility:
-          rankings.reduce((s, r) => s + r.volatility, 0) / rankings.length,
-        mean: rankings.reduce((s, r) => s + r.mean, 0) / rankings.length,
-      }
+      cumulativeRise:
+        rankings.reduce((s, r) => s + r.cumulativeRise, 0) / rankings.length,
+      slope: rankings.reduce((s, r) => s + r.slope, 0) / rankings.length,
+      volatility:
+        rankings.reduce((s, r) => s + r.volatility, 0) / rankings.length,
+      mean: rankings.reduce((s, r) => s + r.mean, 0) / rankings.length,
+    }
     : null;
 
   const peakYear = profile?.stats.peakYear;
@@ -494,34 +494,34 @@ export function ExploreAnyNation({
   // Compute linear regression trendline for time series
   const timeSeriesCm = profile?.timeSeries
     ? (() => {
-        const pts = profile.timeSeries;
-        const n = pts.length;
-        let sumX = 0,
-          sumY = 0,
-          sumXY = 0,
-          sumXX = 0;
+      const pts = profile.timeSeries;
+      const n = pts.length;
+      let sumX = 0,
+        sumY = 0,
+        sumXY = 0,
+        sumXX = 0;
 
-        for (let i = 0; i < n; i++) {
-          const x = pts[i].year;
-          const y = pts[i].value * 100;
-          sumX += x;
-          sumY += y;
-          sumXY += x * y;
-          sumXX += x * x;
-        }
+      for (let i = 0; i < n; i++) {
+        const x = pts[i].year;
+        const y = pts[i].value * 100;
+        sumX += x;
+        sumY += y;
+        sumXY += x * y;
+        sumXX += x * x;
+      }
 
-        const slope =
-          n > 0 ? (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) : 0;
-        const intercept = n > 0 ? (sumY - slope * sumX) / n : 0;
+      const slope =
+        n > 0 ? (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) : 0;
+      const intercept = n > 0 ? (sumY - slope * sumX) / n : 0;
 
-        return pts.map((d) => ({
-          ...d,
-          value: d.value * 100,
-          rollingAvg:
-            d.rollingAvg !== undefined ? d.rollingAvg * 100 : undefined,
-          linearTrend: parseFloat((slope * d.year + intercept).toFixed(2)),
-        }));
-      })()
+      return pts.map((d) => ({
+        ...d,
+        value: d.value * 100,
+        rollingAvg:
+          d.rollingAvg !== undefined ? d.rollingAvg * 100 : undefined,
+        linearTrend: parseFloat((slope * d.year + intercept).toFixed(2)),
+      }));
+    })()
     : [];
 
   const decadeBreakdownCm =
@@ -534,14 +534,12 @@ export function ExploreAnyNation({
     val: number,
     avg: number,
     unit: string,
-    higherIsBad = true,
   ) => {
     const diff = val - avg;
     const pct = Math.abs(diff / avg) * 100;
-    const dir = diff > 0 ? "above" : "below";
-    const icon = diff > 0 === higherIsBad ? "⚠" : "✓";
+    const dir = diff > 0 ? "higher" : "lower";
     const decimals = unit.trim() === "cm" ? 1 : 3;
-    return `${icon} ${pct.toFixed(0)}% ${dir} regional avg (${avg.toFixed(decimals)}${unit})`;
+    return `${pct.toFixed(0)}% ${dir} than the Pacific average (${avg.toFixed(decimals)}${unit})`;
   };
 
   const mainContent = (
@@ -582,13 +580,12 @@ export function ExploreAnyNation({
                 <Globe className="w-4 h-4 text-primary flex-shrink-0" />
                 <span>
                   {rankings.find((r) => r.code === selectedCode)?.country ||
-                     "Select Territory"}
+                    "Select Territory"}
                 </span>
               </div>
               <svg
-                className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${
-                  isOpen ? "rotate-180 text-foreground" : ""
-                }`}
+                className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isOpen ? "rotate-180 text-foreground" : ""
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -631,11 +628,10 @@ export function ExploreAnyNation({
                             setSelectedCode(r.code);
                             setIsOpen(false);
                           }}
-                          className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer text-left ${
-                            selectedCode === r.code
-                              ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/15"
-                              : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                          }`}
+                          className={`flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer text-left ${selectedCode === r.code
+                            ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/15"
+                            : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                            }`}
                         >
                           <span>{r.country}</span>
                           {selectedCode === r.code && (
@@ -690,11 +686,10 @@ export function ExploreAnyNation({
               </div>
 
               <div className="text-xs md:text-sm text-muted-foreground bg-card/30 border border-border/40 rounded-xl px-4 py-2 shadow-inner">
-                Ranked{" "}
                 <span className="font-bold text-primary">
                   #{profile.stats.rankByCumulativeRise}
                 </span>{" "}
-                of {profile.stats.totalCountries} by cumulative rise
+                of {profile.stats.totalCountries} for total rise
               </div>
             </div>
 
@@ -707,7 +702,7 @@ export function ExploreAnyNation({
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
             >
               <StatCard
-                label="Cumulative Rise"
+                label="Total Rise"
                 numericValue={profile.stats.cumulativeRise * 100}
                 decimals={1}
                 prefix="+"
@@ -731,18 +726,18 @@ export function ExploreAnyNation({
                 vs={
                   regionalAvg
                     ? vsStr(
-                        profile.stats.cumulativeRise * 100,
-                        regionalAvg.cumulativeRise * 100,
-                        " cm",
-                      )
+                      profile.stats.cumulativeRise * 100,
+                      regionalAvg.cumulativeRise * 100,
+                      " cm",
+                    )
                     : undefined
                 }
               />
               <StatCard
-                label="Speed Rate"
+                label="Rise Rate"
                 numericValue={profile.stats.slope * 1000}
                 decimals={2}
-                suffix=" mm/yr"
+                suffix=" mm/yr."
                 themeClass="emerald"
                 icon={
                   <svg
@@ -762,15 +757,15 @@ export function ExploreAnyNation({
                 vs={
                   regionalAvg
                     ? vsStr(
-                        profile.stats.slope * 1000,
-                        regionalAvg.slope * 1000,
-                        " mm/yr",
-                      )
+                      profile.stats.slope * 1000,
+                      regionalAvg.slope * 1000,
+                      " mm/year",
+                    )
                     : undefined
                 }
               />
               <StatCard
-                label="Volatility"
+                label="Year-to-Year Change"
                 numericValue={profile.stats.volatility * 100}
                 decimals={1}
                 prefix="±"
@@ -794,15 +789,15 @@ export function ExploreAnyNation({
                 vs={
                   regionalAvg
                     ? vsStr(
-                        profile.stats.volatility * 100,
-                        regionalAvg.volatility * 100,
-                        " cm",
-                      )
+                      profile.stats.volatility * 100,
+                      regionalAvg.volatility * 100,
+                      " cm",
+                    )
                     : undefined
                 }
               />
               <StatCard
-                label="Peak Record"
+                label="Highest Level"
                 numericValue={profile.stats.peakYear}
                 decimals={0}
                 themeClass="orange"
@@ -821,8 +816,8 @@ export function ExploreAnyNation({
                     />
                   </svg>
                 }
-                sub={`Peak: +${(profile.stats.peakValue * 100).toFixed(1)} cm`}
-                vs={`Trough: ${profile.stats.troughYear} (${(profile.stats.troughValue * 100).toFixed(1)} cm)`}
+                sub={`Highest: +${(profile.stats.peakValue * 100).toFixed(1)} cm`}
+                vs={`Lowest: ${profile.stats.troughYear} (${(profile.stats.troughValue * 100).toFixed(1)} cm)`}
               />
             </motion.div>
 
@@ -838,10 +833,10 @@ export function ExploreAnyNation({
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 pb-3 border-b border-white/5 gap-3">
                   <div className="flex flex-col gap-1">
                     <h4 className="text-xs font-bold tracking-wider text-muted-foreground font-mono">
-                      30-Year Anomaly Trajectory
+                      30 Years of Sea Level Change
                     </h4>
                     <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">
-                      Annual sea level anomalies and moving average trends.
+                      30-year period, yearly data, 5-year average, and overall trend.
                     </p>
                   </div>
                   <div className="flex items-center gap-4 text-xs font-mono">
@@ -852,9 +847,8 @@ export function ExploreAnyNation({
                     <button
                       onClick={() => setShowMovingAvg(!showMovingAvg)}
                       aria-pressed={showMovingAvg}
-                      className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${
-                        showMovingAvg ? "opacity-100" : "opacity-40"
-                      }`}
+                      className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-amber-400 ${showMovingAvg ? "opacity-100" : "opacity-40"
+                        }`}
                     >
                       <span className="w-3.5 h-0.5 bg-amber-400 inline-block rounded" />
                       <span className="font-semibold">5-yr Avg</span>
@@ -862,9 +856,8 @@ export function ExploreAnyNation({
                     <button
                       onClick={() => setShowTrendline(!showTrendline)}
                       aria-pressed={showTrendline}
-                      className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${
-                        showTrendline ? "opacity-100" : "opacity-40"
-                      }`}
+                      className={`flex items-center gap-1.5 transition-opacity cursor-pointer text-teal-400 ${showTrendline ? "opacity-100" : "opacity-40"
+                        }`}
                     >
                       <span className="w-4 h-0 border-t-2 border-dotted border-teal-400 inline-block shrink-0" />
                       <span className="font-semibold">Linear Trend</span>
@@ -1119,12 +1112,12 @@ export function ExploreAnyNation({
                 className="bg-card/10 border border-border/30 rounded-2xl p-5 shadow-sm flex flex-col justify-start gap-3"
               >
                 <div>
-                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
+                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 text-left">
                     <h4 className="text-xs font-bold tracking-wider text-muted-foreground font-mono">
-                      Decadal Comparisons
+                      Compare 3 Decades
                     </h4>
                     <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">
-                      Decadal averages comparing D1, D2, and D3 epochs.
+                      Compares the average sea level across the three 10-year periods: D1, D2, and D3.
                     </p>
                   </div>
                   <div className="h-[180px]">
@@ -1263,9 +1256,8 @@ export function ExploreAnyNation({
             </div>
 
             {/* Interaction Helper Text */}
-            <p className="text-center text-xs text-muted-foreground mt-6 font-sans select-none">
-              Hover over the charts to inspect anomalies. Use the controls above
-              to toggle trendlines.
+            <p className="text-center text-xs text-muted-foreground mt-6 font-sans">
+              Move your mouse over the charts to see sea level details. Use the options above to show or hide the trend lines.
             </p>
           </motion.div>
         )}
