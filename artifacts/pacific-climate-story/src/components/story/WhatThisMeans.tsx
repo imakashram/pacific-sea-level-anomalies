@@ -215,9 +215,9 @@ export function WhatThisMeans() {
     {
       value: acceleratingCount,
       of: totalCount,
-      label: "Nations Accelerating",
+      label: "Nations Rising Faster",
       color: "text-[#f43f5e]",
-      desc: "are not just rising but rising faster",
+      desc: "Sea levels are rising faster in these nations.",
       decimals: 0,
       prefix: "",
       suffix: "",
@@ -226,9 +226,9 @@ export function WhatThisMeans() {
     {
       value: shift * 100,
       of: null,
-      label: "Baseline Shift",
+      label: "30-Year Rise",
       color: "text-[#f97316]",
-      desc: "average rise from Decade 1 to Decade 3",
+      desc: "Average increase from the first decade to the third.",
       decimals: 1,
       prefix: "+",
       suffix: " cm",
@@ -237,9 +237,9 @@ export function WhatThisMeans() {
     {
       value: crossedZero,
       of: null,
-      label: "Nations Above Zero",
+      label: "Nations Above Average",
       color: "text-[#eab308]",
-      desc: "have crossed into persistent positive anomaly",
+      desc: "All 21 nations now show higher sea levels than the 1993–2002 average.",
       decimals: 0,
       prefix: "",
       suffix: "",
@@ -248,9 +248,9 @@ export function WhatThisMeans() {
     {
       value: crossedTenth,
       of: null,
-      label: "Nations at +10 cm",
+      label: "Nations With +10 cm Rise",
       color: "text-[#ef4444]",
-      desc: "have breached the 10 cm threshold",
+      desc: "All 21 nations have reached +10 cm.",
       decimals: 0,
       prefix: "",
       suffix: "",
@@ -259,9 +259,9 @@ export function WhatThisMeans() {
     {
       value: maxRiseVal * 100,
       of: null,
-      label: "Peak Nation Rise",
+      label: "Biggest Rise",
       color: "text-[#38bdf8]",
-      desc: `highest single-nation cumulative rise (${maxRiseCountry})`,
+      desc: `${maxRiseCountry || "Palau"} has the biggest total rise.`,
       decimals: 0,
       prefix: "+",
       suffix: " cm",
@@ -272,10 +272,10 @@ export function WhatThisMeans() {
       of: null,
       label: "Fastest Rise",
       color: "text-[#2dd4bf]",
-      desc: `${highestSlope?.country ?? ""} - fastest upward trend`,
+      desc: `${highestSlope?.country ?? "Papua New Guinea"} has the fastest rise.`,
       decimals: 2,
       prefix: "+",
-      suffix: " mm/yr",
+      suffix: " mm/year",
       icon: Gauge,
     },
   ];
@@ -302,8 +302,7 @@ export function WhatThisMeans() {
               variants={childVariants}
               className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto"
             >
-              Over 30 years of observations across 21 Pacific nations reveal a
-              persistent rise in sea level anomalies.
+              30 years of data from 21 Pacific nations show that sea levels have continued to rise.
             </motion.p>
           </motion.div>
 
@@ -385,35 +384,7 @@ export function WhatThisMeans() {
             </motion.div>
           )}
 
-          {/* Concluding call to action card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-12 p-8 bg-gradient-to-br from-cyan-950/20 to-slate-950/40 border border-cyan-500/10 rounded-3xl relative overflow-hidden text-left"
-          >
-            {/* Subtle ambient light */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none" />
-            
-            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center relative z-10">
-              <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl text-cyan-400 shrink-0">
-                <Waves className="w-6 h-6 animate-pulse" />
-              </div>
-              <div className="space-y-3">
-                <h3 className="text-xl font-serif font-bold text-slate-100">
-                  Adapting to a Shifting Tide
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  As sea levels breach critical thresholds, Pacific island nations are not just passive observers. 
-                  They are leading global calls for climate justice, advocating for the operationalization of 
-                  the UN's <strong>Loss and Damage Fund</strong>, and pioneering local adaptation efforts—from constructing 
-                  resilient seawalls and restoring protective mangrove buffers, to planning community-led relocations. 
-                  Preventing the high-emission future scenarios depends entirely on global policy actions taken today.
-                </p>
-              </div>
-            </div>
-          </motion.div>
+
         </div>
       </StorySection>
 
