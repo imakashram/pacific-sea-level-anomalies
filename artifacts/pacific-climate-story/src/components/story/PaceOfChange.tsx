@@ -1101,7 +1101,7 @@ export function PaceOfChange() {
 
               {/* Interaction Helper Text */}
               <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
-                Move your mouse over a line or country name to see how its sea level rise changed between the two time periods.
+                Move your mouse over a line or nation name to see how its sea level rise changed between the two time periods.
               </p>
             </motion.div>
           </motion.div>

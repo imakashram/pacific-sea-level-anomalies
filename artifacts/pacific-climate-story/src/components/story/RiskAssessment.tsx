@@ -375,9 +375,7 @@ export function RiskAssessment() {
             Risk Assessment
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            A composite risk score (0–100) combining cumulative rise, rate of
-            change, volatility, and decade-over-decade acceleration. This is the
-            full picture of existential threat by nation.
+            Each nation gets a risk score from 0 to 100. The score looks at total sea level rise, how fast it is rising, how much it changes from year to year, and whether the rise is getting faster.
           </p>
         </motion.div>
 
@@ -424,7 +422,7 @@ export function RiskAssessment() {
                   >
                     <div className="flex items-center justify-between text-muted-foreground mb-1">
                       <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors duration-300">
-                        {level} Risk
+                        {level === "Critical" ? "Very High" : level} Risk
                       </span>
                       <motion.div
                         variants={iconVariants}
@@ -440,21 +438,21 @@ export function RiskAssessment() {
                     </div>
                     <div className="text-xs text-muted-foreground/60 font-mono font-medium -mt-1">
                       {level === "Critical"
-                        ? "Score ≥ 80"
+                        ? "Score 80–100"
                         : level === "High"
                           ? "Score 60–79"
                           : level === "Medium"
                             ? "Score 40–59"
-                            : "Score < 40"}
+                            : "Score 0–39"}
                     </div>
                     <span className="text-xs text-muted-foreground mt-1 leading-relaxed">
                       {level === "Critical"
-                        ? "Existential and immediate threat levels."
+                        ? "Very high risk from rising sea levels."
                         : level === "High"
-                          ? "Significant coastal vulnerability observed."
+                          ? "High risk from rising sea levels and coastal flooding."
                           : level === "Medium"
-                            ? "Moderate susceptibility to storm surges."
-                            : "Relatively stable elevation profiles."}
+                            ? "Some risk from rising sea levels and coastal flooding."
+                            : "Lower risk from rising sea levels."}
                     </span>
                   </motion.div>
                 );
@@ -466,7 +464,7 @@ export function RiskAssessment() {
               {/* Left Column: Ranked Bar Chart (Master List) */}
               <div className="lg:col-span-7 bg-card/10 border border-border/30 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between">
                 <div>
-                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
+                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 text-left">
                     <h3 className="text-xs font-mono font-semibold  tracking-wider text-muted-foreground">
                       Composite Risk Score by Nation
                     </h3>
@@ -804,14 +802,14 @@ export function RiskAssessment() {
                 className="lg:col-span-5 bg-card/10 border border-border/30 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between min-h-[560px]"
               >
                 <div>
-                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 select-none text-left">
+                  <div className="flex flex-col gap-1 mb-4 pb-3 border-b border-white/5 text-left">
                     <h3 className="text-xs font-mono font-semibold  tracking-wider text-muted-foreground">
                       {selectedCountry
                         ? `${selectedCountry.country} (${selectedCountry.code})`
-                        : "Nation Detail Breakdown"}
+                        : "Nation Details"}
                     </h3>
                     <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                      Vulnerability vectors mapping localized exposure.
+                      See the main risk factors for each nation.
                     </p>
                   </div>
 
@@ -987,12 +985,10 @@ export function RiskAssessment() {
                           <AlertTriangle className="w-6 h-6 text-muted-foreground/50 animate-pulse" />
                         </div>
                         <p className="text-sm font-semibold text-foreground mb-1">
-                          No nation selected
+                          No Nation Selected
                         </p>
                         <p className="text-xs text-muted-foreground max-w-[240px] leading-relaxed">
-                          Click on any nation's bar or label to view its detailed
-                          climate vulnerability vectors and index scores on the
-                          radar chart.
+                          Click on any nation’s bar or name to see its main risk factors and scores in the radar chart.
                         </p>
                       </motion.div>
                     )}
@@ -1002,9 +998,8 @@ export function RiskAssessment() {
             </div>
 
             {/* Interaction Helper Text */}
-            <p className="text-center text-xs text-muted-foreground mt-4 font-sans select-none">
-              Click on any nation's bar or label to view its detailed climate
-              vulnerability vectors and index scores on the radar chart.
+            <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
+              Click on any nation’s bar or name to see its main risk factors and scores in the radar chart.
             </p>
           </>
         )}
