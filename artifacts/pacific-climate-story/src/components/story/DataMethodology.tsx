@@ -6,7 +6,6 @@ import {
   Terminal,
   ExternalLink,
   ChevronRight,
-  TrendingUp,
 } from "lucide-react";
 
 export function DataMethodology() {
@@ -54,95 +53,6 @@ export function DataMethodology() {
         <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
           Learn how we collected, analyzed, and used 30 years of sea level data from across the Pacific Ocean.
         </p>
-      </motion.div>
-
-      {/* Grid Content */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-      >
-        {/* Left Column: Data Source */}
-        <motion.div
-          variants={itemVariants}
-          className="p-8 bg-card/10 border border-slate-800/50 rounded-3xl backdrop-blur-md flex flex-col gap-6"
-        >
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl text-cyan-400">
-              <Database className="w-6 h-6" />
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-slate-100">
-              Observational Dataset
-            </h3>
-          </div>
-
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            The climate story is built upon a multi-decadal time-series dataset measuring Sea Level Anomalies across the Pacific. This data is collected and managed by the <strong>Pacific Community (SPC)</strong> and made public via the <strong>Pacific Data Hub</strong>.
-          </p>
-
-          <ul className="space-y-3.5 text-xs text-muted-foreground">
-            <li className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-              <span>
-                <strong>30-Year Coverage:</strong> Consistent annual telemetry spanning from 1993 through 2023.
-              </span>
-            </li>
-            <li className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-              <span>
-                <strong>21 Territories:</strong> Spatial observations representing Melanesia, Micronesia, and Polynesia.
-              </span>
-            </li>
-            <li className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-              <span>
-                <strong>Baseline Reference:</strong> The first ten years of data (1993–2002) form the zero-level average baseline to evaluate changes.
-              </span>
-            </li>
-          </ul>
-        </motion.div>
-
-        {/* Right Column: Analytical Framework */}
-        <motion.div
-          variants={itemVariants}
-          className="p-8 bg-card/10 border border-slate-800/50 rounded-3xl backdrop-blur-md flex flex-col gap-6"
-        >
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl text-cyan-400">
-              <TrendingUp className="w-6 h-6" />
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-slate-100">
-              Methodology & Trends
-            </h3>
-          </div>
-
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            We apply established statistical methods to transform raw telemetry data into clear, actionable climate insights. Calculations are processed on both national and regional levels.
-          </p>
-
-          <ul className="space-y-3.5 text-xs text-muted-foreground">
-            <li className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-              <span>
-                <strong>Speed Rate:</strong> Computed using Ordinary Least Squares (OLS) linear trendlines to find annual average rise in mm/year.
-              </span>
-            </li>
-            <li className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-              <span>
-                <strong>Volatility:</strong> Calculated using the standard deviation (σ) of anomalies to capture annual fluctuation intensity.
-              </span>
-            </li>
-            <li className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-              <span>
-                <strong>IPCC SSP Scenarios:</strong> Future projections (2024–2033) apply quadratic acceleration offsets matching low, mid, and high emission paths.
-              </span>
-            </li>
-          </ul>
-        </motion.div>
       </motion.div>
 
       {/* Directory Cards */}
