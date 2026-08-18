@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 interface StorySectionProps {
   children: ReactNode;
@@ -17,7 +18,10 @@ export function StorySection({
   return (
     <motion.section
       id={id}
-      className={`min-h-screen w-full flex flex-col justify-center py-16 md:py-24 ${className}`}
+      className={cn(
+        "min-h-[70vh] w-full flex flex-col justify-start py-12 md:py-16",
+        className
+      )}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}

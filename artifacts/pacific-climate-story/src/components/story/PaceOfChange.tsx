@@ -683,7 +683,7 @@ export function PaceOfChange() {
   const mostStable = sortedByAccel[sortedByAccel.length - 1];
 
   return (
-    <StorySection id="pace-of-change">
+    <StorySection id="pace-of-change" className="pt-4 md:pt-6">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <motion.div

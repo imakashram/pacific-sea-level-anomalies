@@ -131,7 +131,7 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="min-h-screen w-full flex flex-col justify-between relative overflow-hidden px-6 md:px-12 pt-16 pb-6 md:pt-20 md:pb-8"
+      className="min-h-[70vh] w-full flex flex-col justify-between relative overflow-hidden px-6 md:px-12 pt-16 pb-6 md:pt-20 md:pb-8"
     >
       {/* Background ambient lighting effects */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
