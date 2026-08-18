@@ -27,7 +27,7 @@ export function Footer() {
   return (
     <div className="max-w-5xl mx-auto w-full px-6 md:px-12 pb-16">
       <motion.footer
-        className="pt-12 border-t border-border/30 text-center flex flex-col items-center gap-3"
+        className="pt-6 border-t border-border/30 text-center flex flex-col items-center gap-3"
         variants={footerContainerVariants}
         initial="hidden"
         animate="visible"
