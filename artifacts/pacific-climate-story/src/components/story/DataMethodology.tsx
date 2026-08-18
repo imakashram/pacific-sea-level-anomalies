@@ -57,7 +57,7 @@ export function DataMethodology() {
 
       {/* Directory Cards */}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -69,21 +69,14 @@ export function DataMethodology() {
           target="_blank"
           rel="noopener noreferrer"
           variants={itemVariants}
-          whileHover={{ y: -6, borderColor: "rgba(6, 182, 212, 0.4)" }}
-          className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl flex flex-col gap-4 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
+          whileHover={{ y: -3, borderColor: "rgba(6, 182, 212, 0.4)" }}
+          className="px-4 py-2.5 bg-slate-900/40 border border-slate-800/80 rounded-xl inline-flex items-center gap-3 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
         >
-          <div className="flex items-center justify-between text-cyan-400">
-            <Calculator className="w-6 h-6" />
-            <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-200" />
-          </div>
-          <div>
-            <h4 className="text-lg font-bold font-serif text-slate-100 group-hover:text-cyan-300 transition-colors">
-              Methodology & Formulas
-            </h4>
-            <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-              Examine detailed step-by-step math, formulas, and worked examples for all 16 calculated climate indicators.
-            </p>
-          </div>
+          <Calculator className="w-4 h-4 text-cyan-400 shrink-0" />
+          <span className="text-sm font-bold font-serif text-slate-100 group-hover:text-cyan-300 transition-colors">
+            Methodology & Formulas
+          </span>
+          <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-200 shrink-0" />
         </motion.a>
 
         {/* Card 2: API Explorer */}
@@ -92,21 +85,14 @@ export function DataMethodology() {
           target="_blank"
           rel="noopener noreferrer"
           variants={itemVariants}
-          whileHover={{ y: -6, borderColor: "rgba(6, 182, 212, 0.4)" }}
-          className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl flex flex-col gap-4 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
+          whileHover={{ y: -3, borderColor: "rgba(6, 182, 212, 0.4)" }}
+          className="px-4 py-2.5 bg-slate-900/40 border border-slate-800/80 rounded-xl inline-flex items-center gap-3 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
         >
-          <div className="flex items-center justify-between text-cyan-400">
-            <Terminal className="w-6 h-6" />
-            <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-200" />
-          </div>
-          <div>
-            <h4 className="text-lg font-bold font-serif text-slate-100 group-hover:text-cyan-300 transition-colors">
-              API Explorer
-            </h4>
-            <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-              Query and extract raw, decadal, and trend analysis datasets. Fully documented endpoints with live JSON responses.
-            </p>
-          </div>
+          <Terminal className="w-4 h-4 text-cyan-400 shrink-0" />
+          <span className="text-sm font-bold font-serif text-slate-100 group-hover:text-cyan-300 transition-colors">
+            API Explorer
+          </span>
+          <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-200 shrink-0" />
         </motion.a>
 
         {/* Card 3: Pacific Data Hub */}
@@ -115,23 +101,16 @@ export function DataMethodology() {
           target="_blank"
           rel="noopener noreferrer"
           variants={itemVariants}
-          whileHover={{ y: -6, borderColor: "rgba(6, 182, 212, 0.4)" }}
-          className="p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl flex flex-col gap-4 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
+          whileHover={{ y: -3, borderColor: "rgba(6, 182, 212, 0.4)" }}
+          className="px-4 py-2.5 bg-slate-900/40 border border-slate-800/80 rounded-xl inline-flex items-center gap-3 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
         >
-          <div className="flex items-center justify-between text-cyan-400">
-            <Database className="w-6 h-6" />
-            <div className="flex items-center gap-1">
-              <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400" />
-              <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-200" />
-            </div>
-          </div>
-          <div>
-            <h4 className="text-lg font-bold font-serif text-slate-100 group-hover:text-cyan-300 transition-colors">
-              Pacific Data Hub
-            </h4>
-            <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-              Visit the authoritative repository managed by the Pacific Community (SPC) to view the source telemetry.
-            </p>
+          <Database className="w-4 h-4 text-cyan-400 shrink-0" />
+          <span className="text-sm font-bold font-serif text-slate-100 group-hover:text-cyan-300 transition-colors">
+            Pacific Data Hub
+          </span>
+          <div className="flex items-center gap-1 shrink-0">
+            <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400" />
+            <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-200" />
           </div>
         </motion.a>
       </motion.div>
