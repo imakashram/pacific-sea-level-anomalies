@@ -597,7 +597,7 @@ export function PacificSubRegions() {
 
         {/* Interaction Helper Text */}
         <p className="text-center text-xs text-muted-foreground mt-8 font-sans leading-relaxed max-w-3xl mx-auto">
-          Click on a region (Melanesia, Micronesia, or Polynesia) to see how sea levels changed over time. The panel on the right shows the countries in that region and their sea level values.
+          Click on a region (Melanesia, Micronesia, or Polynesia) to see how sea levels changed over time. The panel on the right shows the nations in that region and their sea level values.
         </p>
       </div>
     </StorySection>

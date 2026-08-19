@@ -288,7 +288,7 @@ export function TheDataLandscape() {
       >
         <div className="text-xs text-muted-foreground leading-relaxed">
           <strong className="text-foreground font-semibold mr-1.5">Note on Data Measurements:</strong>
-          The official sea level records used here are rounded to the nearest 10 centimeters (about 4 inches). Because of this rounding, the rise for individual countries goes up in steps of exactly 10 or 20 cm. However, when we average the data across all 21 countries, it smooths out into the precise decimal numbers shown on our charts.
+          The official sea level records used here are rounded to the nearest 10 centimeters (about 4 inches). Because of this rounding, the rise for individual nations goes up in steps of exactly 10 or 20 cm. However, when we average the data across all 21 nations, it smooths out into the precise decimal numbers shown on our charts.
         </div>
       </motion.div>
     </StorySection>

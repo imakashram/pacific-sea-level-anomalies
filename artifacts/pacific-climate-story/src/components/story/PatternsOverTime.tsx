@@ -452,7 +452,7 @@ export function PatternsOverTime() {
 
             {/* Interaction Helper Text */}
             <p className="text-center text-xs text-muted-foreground mt-4 font-sans">
-              Move your mouse over a year to see the sea level for that nation. Use the options above to sort countries by total rise, average sea level, or highest sea level.
+              Move your mouse over a year to see the sea level for that nation. Use the options above to sort nations by total rise, average sea level, or highest sea level.
             </p>
           </div>
         ) : (

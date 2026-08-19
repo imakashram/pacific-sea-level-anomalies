@@ -51,7 +51,75 @@ export function DataMethodology() {
           Data & Methodology
         </h2>
         <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed mx-auto">
-          Learn how we collected, analyzed, and used 30 years of sea level data from across the Pacific Ocean.
+          A transparent look at the calculations, data structures, and methodology behind our sea-level rise analysis.
+        </p>
+      </motion.div>
+
+      {/* About the Project */}
+      <motion.div
+        className="max-w-2xl mx-auto mb-8 text-center flex flex-col items-center gap-1.5"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <span className="text-xs font-semibold text-cyan-500/80 uppercase tracking-wider">
+          About the Project
+        </span>
+        <p className="text-xs text-muted-foreground/80 leading-relaxed max-w-xl">
+          This project is an interactive climate data visualization exploring sea level anomalies across the Pacific Island Countries and Territories (PICTs). It is built using <span className="font-semibold text-slate-200">React</span>, <span className="font-semibold text-slate-200">Tailwind CSS</span>, <span className="font-semibold text-slate-200">Framer Motion</span>, <span className="font-semibold text-slate-200">Recharts</span>, and <span className="font-semibold text-slate-200">D3.js</span> for the interactive visualizations and storytelling, supported by an <span className="font-semibold text-slate-200">Express.js</span> API backend. Built for the{" "}
+          <a
+            href="https://pacificdatavizchallenge.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
+          >
+            Pacific Dataviz Challenge 2026
+          </a>
+          , this project uses Pacific climate data to create an interactive visual story. The source code is available on{" "}
+          <a
+            href="https://github.com/imakashram/pacific-sea-level-anomalies"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
+          >
+            GitHub
+          </a>
+          .
+        </p>
+      </motion.div>
+
+      {/* AI Disclosure */}
+      <motion.div
+        className="max-w-2xl mx-auto mb-6 text-center flex flex-col items-center gap-1.5"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <span className="text-xs font-semibold text-cyan-500/80 uppercase tracking-wider">
+          AI Disclosure
+        </span>
+        <p className="text-xs text-muted-foreground/80 leading-relaxed max-w-xl">
+          This project was developed with assistance from{" "}
+          <a
+            href="https://antigravity.google"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
+          >
+            Antigravity
+          </a>{" "}
+          with{" "}
+          <a
+            href="https://gemini.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
+          >
+            Google Gemini
+          </a>{" "}
+          for code support, technical exploration, and design assistance. The concept, visual storytelling, data visualization, interaction design, and creative direction were independently developed by the author. All AI-assisted outputs were reviewed and refined by the author.
         </p>
       </motion.div>
 
@@ -67,9 +135,19 @@ export function DataMethodology() {
           Disclaimer
         </span>
         <p className="text-xs text-muted-foreground/80 leading-relaxed max-w-xl">
-          This project is for educational and informational purposes only. The visualizations and analysis use publicly available data to help understand Pacific climate trends. While care has been taken to ensure accuracy, there may be errors or limitations. This project is not an official scientific, policy, or forecasting source.
+          This project is for educational and informational purposes only. The visualizations and analysis use publicly available data from the{" "}
+          <a
+            href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_CLIMATE_CHANGE&df[ag]=SPC&df[vs]=1.0&av=true&dq=A.SEA_LVL.&pd=,&to[TIME_PERIOD]=false"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-500/80 hover:text-amber-400 underline underline-offset-4 decoration-amber-500/30 hover:decoration-amber-400/60 transition-colors duration-200"
+          >
+            Pacific Data Hub [Sea level anomalies]
+          </a>{" "}
+          to help understand Pacific climate trends. While care has been taken to ensure accuracy, there may be errors or limitations. This project is not an official scientific, policy, or forecasting source.
         </p>
       </motion.div>
+
 
       {/* Directory Cards */}
       <motion.div
