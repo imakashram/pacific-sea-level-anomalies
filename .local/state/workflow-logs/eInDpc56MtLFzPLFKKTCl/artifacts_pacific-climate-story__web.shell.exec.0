@@ -1,0 +1,133 @@
+
+> @workspace/pacific-climate-story@0.0.0 dev /home/runner/workspace/artifacts/pacific-climate-story
+> vite --config vite.config.ts --host 0.0.0.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J
+  [32m[1mVITE[22m v7.3.3[39m  [2mready in [0m[1m2340[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m18313[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://172.24.0.2:[1m18313[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m9:37:18 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/story/Chapter1DataLandscape.tsx, /src/components/story/Chapter2RisingTide.tsx, /src/components/story/Chapter3ElNino.tsx, /src/components/story/ChapterDecadeAnalysis.tsx, /src/components/story/ChapterRateOfChange.tsx, /src/components/story/ChapterVolatility.tsx, /src/components/story/ChapterAcceleration.tsx, /src/components/story/Chapter4NationsSideBySide.tsx, /src/components/story/Chapter5Heatmap.tsx, /src/components/story/Chapter6Takeaways.tsx, /src/components/story/ChapterRankings.tsx, /src/components/story/ChapterForecast.tsx, /src/components/story/ChapterThresholdCrossings.tsx, /src/components/story/ChapterCumulativeRise.tsx, /src/components/story/ChapterCountryExplorer.tsx, /src/components/story/ChapterRiskDashboard.tsx, /src/components/story/ChapterRegionalClusters.tsx, /src/components/story/HeroSection.tsx, /src/components/story/LiveDataTicker.tsx[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m9:37:18 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/story/Chapter1DataLandscape.tsx, /src/components/story/Chapter2RisingTide.tsx, /src/components/story/Chapter3ElNino.tsx, /src/components/story/ChapterDecadeAnalysis.tsx, /src/components/story/ChapterRateOfChange.tsx, /src/components/story/ChapterVolatility.tsx, /src/components/story/ChapterAcceleration.tsx, /src/components/story/Chapter4NationsSideBySide.tsx, /src/components/story/Chapter5Heatmap.tsx, /src/components/story/Chapter6Takeaways.tsx, /src/components/story/ChapterRankings.tsx, /src/components/story/ChapterForecast.tsx, /src/components/story/ChapterThresholdCrossings.tsx, /src/components/story/ChapterCumulativeRise.tsx, /src/components/story/ChapterCountryExplorer.tsx, /src/components/story/ChapterRiskDashboard.tsx, /src/components/story/ChapterRegionalClusters.tsx, /src/components/story/HeroSection.tsx, /src/components/story/LiveDataTicker.tsx[22m [33m(x2)[39m
+[2m9:37:18 AM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Failed to load url /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.ts (resolved id: /home/runner/workspace/lib/api-client-react/src/generated/api.ts) in /home/runner/workspace/lib/api-client-react/src/index.ts. Does the file exist?
+[2m9:37:18 AM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Failed to load url /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.schemas.ts (resolved id: /home/runner/workspace/lib/api-client-react/src/generated/api.schemas.ts) in /home/runner/workspace/lib/api-client-react/src/index.ts. Does the file exist?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m9:40:17 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/StoryPage.tsx, /src/index.css[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m9:40:25 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/story/ChapterNav.tsx[22m
+[41m[30m ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL [39m[49m [31m@workspace/pacific-climate-story@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`[39m
+[31mExit status 143[39m
