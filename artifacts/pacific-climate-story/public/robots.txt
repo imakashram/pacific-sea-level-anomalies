@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pacificocean.insightcrust.com/sitemap.xml
+Sitemap: https://pacific-sea-level-story.onrender.com/sitemap.xml

@@ -26,6 +26,6 @@ This document provides a list of all important project URLs, including local dev
 
 | URL                                                  | Description                                                                                                            |
 | :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
-| `https://pacificocean.insightcrust.com/`             | **Live Website** – Public version of the interactive climate data visualization.                                       |
-| `https://pacificocean.insightcrust.com/api-explorer` | **Live API Explorer** – Explore and test API endpoints on the production server.                                       |
-| `https://pacificocean.insightcrust.com/methodology`  | **Live Methodology** – Learn about the project's calculations, trends, prediction models, and risk assessment methods. |
+| `https://pacific-sea-level-story.onrender.com/`             | **Live Website** – Public version of the interactive climate data visualization.                                       |
+| `https://pacific-sea-level-story.onrender.com/api-explorer` | **Live API Explorer** – Explore and test API endpoints on the production server.                                       |
+| `https://pacific-sea-level-story.onrender.com/methodology`  | **Live Methodology** – Learn about the project's calculations, trends, prediction models, and risk assessment methods. |

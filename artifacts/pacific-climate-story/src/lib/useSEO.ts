@@ -16,7 +16,7 @@ const DEFAULT_DESCRIPTION =
 const DEFAULT_KEYWORDS =
   "climate change, sea level rise, Pacific Ocean, El Nino, climate anomalies, global warming, environment data, interactive climate visualization";
 
-const BASE_URL = "https://pacificocean.insightcrust.com";
+const BASE_URL = "https://pacific-sea-level-story.onrender.com";
 
 /**
  * Custom React hook to dynamically manage document head metadata for SEO optimization.
