@@ -27,6 +27,10 @@ app.use(
 );
 app.use(cors());
 
+app.get("/", (_req, res) => {
+  res.json({ message: "Pacific Sea Level Anomalies API is running. Use /api/healthz to check status." });
+});
+
 app.use("/api", router);
 
 export default app;
