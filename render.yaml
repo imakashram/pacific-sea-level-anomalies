@@ -13,8 +13,9 @@ services:
         value: production
 
   # 2. Frontend Story (Static Site)
-  - type: static
+  - type: web
     name: pacific-sea-level-story
+    runtime: static
     plan: free
     buildCommand: pnpm install --frozen-lockfile && pnpm build:story
     staticPublishPath: artifacts/pacific-climate-story/dist/public
