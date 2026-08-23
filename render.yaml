@@ -1,5 +1,6 @@
-# Render Blueprint specification for the Express API server
+# Render Blueprint specification for the Express API server and React static frontend
 services:
+  # 1. Express API Backend
   - type: web
     name: pacific-sea-level-api
     runtime: node
@@ -13,3 +14,21 @@ services:
         value: 5001
       - key: NODE_ENV
         value: production
+
+  # 2. React Vite Frontend (Static Site)
+  - type: static
+    name: pacific-sea-level-frontend
+    # Build the story frontend
+    buildCommand: pnpm install && pnpm run build:story
+    # Output folder
+    publishPath: artifacts/pacific-climate-story/dist/public
+    routes:
+      # Rewrite /api/* requests to the Express API backend URL
+      # (Note: If your API URL on Render differs, update the host here)
+      - type: rewrite
+        source: /api/*
+        destination: https://pacific-sea-level-api.onrender.com/api/*
+      # Support client-side routing fallback for Single Page Application
+      - type: rewrite
+        source: /*
+        destination: /index.html
