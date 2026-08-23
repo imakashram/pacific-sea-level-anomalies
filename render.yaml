@@ -16,7 +16,6 @@ services:
   - type: web
     name: pacific-sea-level-story
     runtime: static
-    plan: free
     buildCommand: pnpm install --frozen-lockfile && pnpm build:story
     staticPublishPath: artifacts/pacific-climate-story/dist/public
     envVars:
