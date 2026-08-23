@@ -1,0 +1,27 @@
+services:
+  # 1. API Server (Node.js Web Service)
+  - type: web
+    name: pacific-sea-level-api
+    runtime: node
+    plan: free
+    buildCommand: pnpm install --frozen-lockfile && pnpm build:api
+    startCommand: pnpm start --filter @workspace/api-server
+    envVars:
+      - key: PORT
+        value: 5001
+      - key: NODE_ENV
+        value: production
+
+  # 2. Frontend Story (Static Site)
+  - type: static
+    name: pacific-sea-level-story
+    plan: free
+    buildCommand: pnpm install --frozen-lockfile && pnpm build:story
+    staticPublishPath: artifacts/pacific-climate-story/dist/public
+    envVars:
+      - key: VITE_API_URL
+        value: https://pacific-sea-level-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
