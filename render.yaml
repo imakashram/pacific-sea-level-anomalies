@@ -16,12 +16,13 @@ services:
         value: production
 
   # 2. React Vite Frontend (Static Site)
-  - type: static
+  - type: web
     name: pacific-sea-level-frontend
+    runtime: static
     # Build the story frontend
     buildCommand: pnpm install && pnpm run build:story
     # Output folder
-    publishPath: artifacts/pacific-climate-story/dist/public
+    staticPublishPath: artifacts/pacific-climate-story/dist/public
     routes:
       # Rewrite /api/* requests to the Express API backend URL
       # (Note: If your API URL on Render differs, update the host here)
