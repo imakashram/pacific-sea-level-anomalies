@@ -3,6 +3,7 @@ services:
   - type: web
     name: pacific-sea-level-api
     runtime: node
+    plan: free
     # Build using root monorepo setup
     buildCommand: pnpm install && pnpm run build:api
     # Run the compiled ES module server
