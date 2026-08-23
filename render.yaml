@@ -5,7 +5,7 @@ services:
     runtime: node
     plan: free
     buildCommand: pnpm install --frozen-lockfile && pnpm build:api
-    startCommand: pnpm start --filter @workspace/api-server
+    startCommand: node --enable-source-maps artifacts/api-server/dist/index.mjs
     envVars:
       - key: PORT
         value: 5001
