@@ -34,6 +34,7 @@ export default function NotFoundPage() {
 
           <Link
             href="/"
+            id="btn-back-to-story"
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-slate-100 text-xs font-semibold transition cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />

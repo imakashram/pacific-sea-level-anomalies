@@ -422,6 +422,7 @@ export default function HowItIsCalculatedPage() {
 
         <a
           href="/"
+          id="btn-back-to-story"
           className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-850 text-xs font-semibold text-slate-300 hover:text-cyan-400 transition-all duration-300 shadow-md cursor-pointer group"
           aria-label="Back to Story"
         >
@@ -537,6 +538,7 @@ export default function HowItIsCalculatedPage() {
               return (
                 <button
                   key={tab.id}
+                  id={`tab-category-${tab.id}`}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer border ${isActive
                     ? "bg-cyan-500/10 border-cyan-500/30 text-cyan-400 shadow-md"
