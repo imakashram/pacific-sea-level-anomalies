@@ -1,0 +1,5 @@
+# Redirect rule to proxy API calls to the production Express server
+/api/*  https://pacificocean.insightcrust.com/api/:splat  200
+
+# Fallback rule for wouter/React Router single-page application routing
+/*      /index.html                                     200
