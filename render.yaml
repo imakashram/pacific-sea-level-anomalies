@@ -23,6 +23,12 @@ services:
     buildCommand: pnpm install && pnpm run build:story
     # Output folder
     staticPublishPath: artifacts/pacific-climate-story/dist/public
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: pacific-sea-level-api
+          type: web
+          property: host
     routes:
       # Rewrite /api/* requests to the Express API backend URL
       # (Note: If your API URL on Render differs, update the host here)
