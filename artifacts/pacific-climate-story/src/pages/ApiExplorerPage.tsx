@@ -181,6 +181,16 @@ const ENDPOINTS: ApiEndpoint[] = [
   },
 ];
 
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    return envUrl.startsWith("http://") || envUrl.startsWith("https://")
+      ? envUrl
+      : `https://${envUrl}`;
+  }
+  return typeof window !== "undefined" ? window.location.origin : "";
+};
+
 export default function ApiExplorerPage() {
   useSEO({
     title: "API Explorer | Pacific Sea Level Anomalies",
@@ -224,7 +234,8 @@ export default function ApiExplorerPage() {
     selectedApi.params?.forEach((p) => {
       url = url.replace(`:${p.name}`, paramValues[p.name] || "");
     });
-    return url;
+    const base = getApiBaseUrl().replace(/\/$/, "");
+    return `${base}${url}`;
   };
 
   const handleFetch = async () => {
@@ -343,7 +354,8 @@ export default function ApiExplorerPage() {
   const formattedJson = JSON.stringify(getFilteredJsonResponse(), null, 2);
 
   const getCodeSnippet = (lang: "curl" | "js" | "python", url: string) => {
-    const absoluteUrl = `${window.location.origin}${url}`;
+    const base = getApiBaseUrl().replace(/\/$/, "");
+    const absoluteUrl = `${base}${url}`;
     switch (lang) {
       case "curl":
         return `curl -X GET "${absoluteUrl}" \\\n  -H "Accept: application/json"`;
