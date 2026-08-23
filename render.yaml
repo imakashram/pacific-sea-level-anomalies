@@ -1,0 +1,14 @@
+# Render Blueprint specification for the Express API server
+services:
+  - type: web
+    name: pacific-sea-level-api
+    runtime: node
+    # Build using root monorepo setup
+    buildCommand: pnpm install && pnpm run build:api
+    # Run the compiled ES module server
+    startCommand: node --enable-source-maps artifacts/api-server/dist/index.mjs
+    envVars:
+      - key: PORT
+        value: 5001
+      - key: NODE_ENV
+        value: production
