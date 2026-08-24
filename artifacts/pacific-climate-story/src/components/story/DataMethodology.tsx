@@ -157,20 +157,23 @@ export function DataMethodology() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        {/* Card 1: Methodology */}
+        {/* Card 1: Pacific Data Hub */}
         <motion.a
-          href="/methodology"
+          href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_CLIMATE_CHANGE&df[ag]=SPC&df[vs]=1.0&av=true&dq=A.SEA_LVL.&pd=,&to[TIME_PERIOD]=false"
           target="_blank"
           rel="noopener noreferrer"
           variants={itemVariants}
           whileHover={{ y: -2, borderColor: "rgba(6, 182, 212, 0.4)" }}
           className="px-3 py-1.5 bg-slate-900/40 border border-slate-800/80 rounded-lg inline-flex items-center gap-2 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
         >
-          <Calculator className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+          <Database className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
           <span className="text-xs font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
-            Methodology & Formulas
+            Pacific Data Hub
           </span>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all duration-200 shrink-0" />
+          <div className="flex items-center gap-0.5 shrink-0">
+            <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-cyan-400" />
+            <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all duration-200" />
+          </div>
         </motion.a>
 
         {/* Card 2: API Explorer */}
@@ -189,23 +192,20 @@ export function DataMethodology() {
           <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all duration-200 shrink-0" />
         </motion.a>
 
-        {/* Card 3: Pacific Data Hub */}
+        {/* Card 3: Methodology */}
         <motion.a
-          href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_CLIMATE_CHANGE&df[ag]=SPC&df[vs]=1.0&av=true&dq=A.SEA_LVL.&pd=,&to[TIME_PERIOD]=false"
+          href="/methodology"
           target="_blank"
           rel="noopener noreferrer"
           variants={itemVariants}
           whileHover={{ y: -2, borderColor: "rgba(6, 182, 212, 0.4)" }}
           className="px-3 py-1.5 bg-slate-900/40 border border-slate-800/80 rounded-lg inline-flex items-center gap-2 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
         >
-          <Database className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+          <Calculator className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
           <span className="text-xs font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
-            Pacific Data Hub
+            Methodology & Formulas
           </span>
-          <div className="flex items-center gap-0.5 shrink-0">
-            <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-cyan-400" />
-            <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all duration-200" />
-          </div>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all duration-200 shrink-0" />
         </motion.a>
       </motion.div>
     </StorySection>

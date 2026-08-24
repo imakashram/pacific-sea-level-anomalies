@@ -391,15 +391,15 @@ export function WhatThisMeans() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="mt-12 max-w-4xl mx-auto text-center space-y-5"
+              className="mt-12 max-w-4xl mx-auto text-left space-y-3"
             >
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-teal-400">
-                Conclusion: The Urgent Path Forward
+              <h3 className="text-lg font-bold text-teal-400">
+                Conclusion
               </h3>
-              <p className="text-base text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 The data shows a clear and worrying reality. Over the past 30 years, sea levels have risen across all 21 Pacific island nations we studied, and the water is rising faster and faster each year. This is not a distant future problem - it is happening right now, threatening homes, clean drinking water, and entire cultures.
               </p>
-              <p className="text-base text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 We cannot afford to wait. We must take immediate action to protect these low-lying islands by building stronger coastal defenses, protecting natural barriers like mangroves, and securing freshwater sources. Globally, we must drastically cut greenhouse gas emissions to stop further warming. The survival of these frontline communities depends entirely on the urgent decisions we make today.
               </p>
             </motion.div>
