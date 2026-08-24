@@ -60,13 +60,13 @@ const CALCULATIONS: CalculationCard[] = [
     plainEnglish:
       "This compares the average sea level from the first decade of monitoring (1993–2002) directly to the average of the most recent decade (2014–2023). It tells us how much the baseline has risen over a generation.",
     formulaSimple: "Decadal Shift = (2014–2023 Average - 1993–2002 Average) × 100",
-    inputData: "Decade 1 Mean (0.0 cm) vs Decade 3 Mean (+8.5 cm)",
+    inputData: "Decade 1 Mean (0.0 cm) vs Recent Decade Mean (+8.5 cm)",
     outputResult: "+8.5 cm regional shift",
     exampleNation: "Pacific Regional Average",
     steps: [
       "Calculate average ocean anomaly from 1993 to 2002.",
       "Calculate average ocean anomaly from 2014 to 2023.",
-      "Subtract Decade 1 mean from Decade 3 mean.",
+      "Subtract Decade 1 mean from Recent Decade mean.",
     ],
   },
   {
@@ -405,17 +405,17 @@ export default function HowItIsCalculatedPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070913] text-[#f8fafc] font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200 relative overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200 relative overflow-x-hidden">
       {/* Background ambient glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] rounded-full bg-cyan-500/5 blur-[160px] pointer-events-none" />
 
       {/* Header Bar */}
-      <header className="sticky top-0 z-50 bg-[#070913]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-md px-4 sm:px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border shadow-md px-4 sm:px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
             <Calculator className="w-4 h-4" />
           </div>
-          <h1 className="text-base sm:text-xl font-bold font-serif text-slate-100 tracking-tight">
+          <h1 className="text-base sm:text-xl font-bold font-serif text-foreground tracking-tight">
             Methodology & Formulas
           </h1>
         </div>
@@ -423,7 +423,7 @@ export default function HowItIsCalculatedPage() {
         <a
           href="/"
           id="btn-back-to-story"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-850 text-xs font-semibold text-slate-300 hover:text-cyan-400 transition-all duration-300 shadow-md cursor-pointer group"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-card border border-border hover:border-cyan-500/35 hover:bg-card/80 text-xs font-semibold text-muted-foreground hover:text-cyan-400 transition-all duration-300 shadow-md cursor-pointer group"
           aria-label="Back to Story"
         >
           <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
@@ -434,7 +434,7 @@ export default function HowItIsCalculatedPage() {
       {/* Main Container */}
       <main id="main-content" className="max-w-[1300px] mx-auto p-4 sm:p-6 lg:p-10 flex flex-col gap-8" tabIndex={-1}>
         {/* Introduction Header */}
-        <div className="relative overflow-hidden bg-slate-900/20 border border-slate-800/80 p-8 rounded-3xl flex flex-col gap-6 shadow-xl backdrop-blur-sm">
+        <div className="relative overflow-hidden bg-card/20 border border-border p-8 rounded-3xl flex flex-col gap-6 shadow-xl backdrop-blur-sm">
           {/* Subtle decoration inside header */}
           <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none" />
 
@@ -442,72 +442,72 @@ export default function HowItIsCalculatedPage() {
             <div className="flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-wider uppercase mb-1">
               <Sparkles className="w-3.5 h-3.5" /> Reference Documentation
             </div>
-            <h2 className="text-3xl font-bold font-serif text-slate-100 leading-tight">
+            <h2 className="text-3xl font-bold font-serif text-foreground leading-tight">
               Calculation Methodology Guide
             </h2>
-            <p className="text-xs text-slate-400 mt-2 max-w-none leading-relaxed">
+            <p className="text-xs text-muted-foreground mt-2 max-w-none leading-relaxed">
               Below is a step-by-step guide explaining all calculated metrics, formulas, and statistical transformations used in the Pacific Climate Story.
             </p>
           </div>
 
           {/* Neutral Cheat Sheet Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-6 border-t border-slate-800/60">
-            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-6 border-t border-border/60">
+            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
                 <Scale className="w-3.5 h-3.5" /> Heights in Centimeters
               </span>
-              <span className="text-xs font-semibold text-slate-200">
+              <span className="text-xs font-semibold text-foreground">
                 1 Meter = 100 cm
               </span>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Raw height values are converted to centimeters so small shifts are easy to see (e.g. <strong className="text-slate-300">+10.5 cm</strong> instead of 0.105m).
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                Raw height values are converted to centimeters so small shifts are easy to see (e.g. <strong className="text-foreground">+10.5 cm</strong> instead of 0.105m).
               </p>
             </div>
 
-            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
+            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
                 <TrendingUp className="w-3.5 h-3.5" /> Speed in Millimeters
               </span>
-              <span className="text-xs font-semibold text-slate-200">
+              <span className="text-xs font-semibold text-foreground">
                 1 Meter = 1,000 mm
               </span>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Yearly rise speeds use linear trend-fitting and are written in millimeters (e.g. <strong className="text-slate-300">4.8 mm/yr</strong>).
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                Yearly rise speeds use linear trend-fitting and are written in millimeters (e.g. <strong className="text-foreground">4.8 mm/yr</strong>).
               </p>
             </div>
 
-            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
+            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
                 <Activity className="w-3.5 h-3.5" /> Baseline = 1993–2002
               </span>
-              <span className="text-xs font-semibold text-slate-200">
+              <span className="text-xs font-semibold text-foreground">
                 10-Year Reference Average
               </span>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                The average sea level from 1993 to 2002 acts as the zero-line benchmark (<strong className="text-slate-300">0.0 cm</strong>) for measuring anomalies.
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                The average sea level from 1993 to 2002 acts as the zero-line benchmark (<strong className="text-foreground">0.0 cm</strong>) for measuring anomalies.
               </p>
             </div>
 
-            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
+            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
                 <Waves className="w-3.5 h-3.5" /> Volatility = ±cm deviation
               </span>
-              <span className="text-xs font-semibold text-slate-200">
+              <span className="text-xs font-semibold text-foreground">
                 Year-Over-Year Swings
               </span>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Standard deviation measures how jumpy ocean levels are as they swing above and below the baseline (e.g. <strong className="text-slate-300">±8.7 cm</strong>).
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                Standard deviation measures how jumpy ocean levels are as they swing above and below the baseline (e.g. <strong className="text-foreground">±8.7 cm</strong>).
               </p>
             </div>
 
-            <div className="bg-slate-950/40 p-4.5 rounded-2xl border border-slate-900 flex flex-col gap-1.5 hover:border-slate-800/80 transition-colors">
+            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
               <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
                 Data Precision Limits
               </span>
-              <span className="text-xs font-semibold text-slate-200">
+              <span className="text-xs font-semibold text-foreground">
                 10-cm Rounded Data
               </span>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
                 Raw data is rounded to the nearest 10 cm (about 4 in). While single island charts show stepped rises, combining all countries allows us to see smooth decimal trends.
               </p>
             </div>
@@ -515,10 +515,10 @@ export default function HowItIsCalculatedPage() {
         </div>
 
         {/* Filters and Search Bar Container */}
-        <div className="flex flex-col gap-5 bg-slate-900/10 border border-slate-800/60 p-6 rounded-3xl backdrop-blur-sm">
+        <div className="flex flex-col gap-5 bg-card/10 border border-border/60 p-6 rounded-3xl backdrop-blur-sm">
           {/* Search bar */}
           <div className="relative w-full max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               id="search-calculations"
@@ -526,12 +526,12 @@ export default function HowItIsCalculatedPage() {
               aria-label="Search calculation metrics"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800/80 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500/40 transition shadow-inner placeholder:text-slate-500"
+              className="w-full bg-card border border-border/85 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-cyan-500/40 transition shadow-inner placeholder:text-muted-foreground"
             />
           </div>
 
           {/* Interactive Navigation Tabs */}
-          <div className="flex flex-wrap gap-2 border-t border-slate-850/60 pt-4">
+          <div className="flex flex-wrap gap-2 border-t border-border/60 pt-4">
             {tabs.map((tab) => {
               const TabIcon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -542,12 +542,12 @@ export default function HowItIsCalculatedPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer border ${isActive
                     ? "bg-cyan-500/10 border-cyan-500/30 text-cyan-400 shadow-md"
-                    : "bg-slate-900/40 border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200"
+                    : "bg-card/45 border-border hover:border-cyan-500/30 text-muted-foreground hover:text-cyan-400"
                     }`}
                 >
                   <TabIcon className="w-3.5 h-3.5" />
                   <span>{tab.name}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${isActive ? "bg-cyan-500/20 text-cyan-300" : "bg-slate-950 text-slate-500"
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${isActive ? "bg-cyan-500/20 text-cyan-300" : "bg-slate-950 text-muted-foreground/60"
                     }`}>
                     {tab.count}
                   </span>
@@ -573,13 +573,13 @@ export default function HowItIsCalculatedPage() {
                   <motion.div
                     key={item.id}
                     variants={itemVariants}
-                    className="bg-slate-900/25 border border-slate-800/80 p-6 lg:p-8 rounded-3xl flex flex-col gap-6 transition-all duration-300 hover:border-cyan-500/25 hover:bg-slate-900/35 shadow-lg group relative overflow-hidden"
+                    className="bg-card/25 border border-border/80 p-6 lg:p-8 rounded-3xl flex flex-col gap-6 transition-all duration-300 hover:border-cyan-500/25 hover:bg-card/35 shadow-lg group relative overflow-hidden"
                   >
                     {/* Visual Tab Category Tag Badge inside Card */}
                     <div className="absolute right-0 top-0 w-32 h-32 rounded-full bg-cyan-500/[0.01] blur-2xl pointer-events-none group-hover:bg-cyan-500/[0.02]" />
 
                     {/* Card Title Row */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/40 pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/40 pb-4">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <span className={`text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md ${item.category === "core"
@@ -599,27 +599,27 @@ export default function HowItIsCalculatedPage() {
                                   : "Statistical Distribution"}
                           </span>
                         </div>
-                        <h3 className="text-xl font-bold font-serif text-slate-100 group-hover:text-cyan-300 transition-colors">
+                        <h3 className="text-xl font-bold font-serif text-foreground group-hover:text-cyan-300 transition-colors">
                           {item.title}
                         </h3>
-                        <p className="text-xs text-slate-400 flex items-center gap-1.5 mt-1">
+                        <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1">
                           <HelpCircle className="w-3.5 h-3.5 text-cyan-400/80 flex-shrink-0" />
                           <span className="italic leading-normal">{item.question}</span>
                         </p>
                       </div>
-                      <span className="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-900 text-cyan-400 font-mono text-xs font-semibold self-start sm:self-auto shadow-inner">
+                      <span className="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-border/60 text-cyan-400 font-mono text-xs font-semibold self-start sm:self-auto shadow-inner">
                         Unit: {item.unit}
                       </span>
                     </div>
 
                     {/* Plain-English Explanation Banner */}
-                    <div className="bg-slate-950/60 border border-slate-800/60 p-5 rounded-2xl flex items-start gap-3.5 border-l-2 border-l-cyan-500/60 shadow-md">
+                    <div className="bg-slate-950/60 border border-border/60 p-5 rounded-2xl flex items-start gap-3.5 border-l-2 border-l-cyan-500/60 shadow-md">
                       <BookOpen className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
                       <div className="flex flex-col gap-0.5">
                         <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500 font-mono">
                           IN PLAIN ENGLISH
                         </span>
-                        <p className="text-xs text-slate-300 leading-relaxed font-normal">
+                        <p className="text-xs text-foreground leading-relaxed font-normal">
                           {item.plainEnglish}
                         </p>
                       </div>
@@ -627,14 +627,14 @@ export default function HowItIsCalculatedPage() {
 
                     {/* 3-Step Simple Procedure */}
                     <div className="flex flex-col gap-3">
-                      <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500 font-mono">
+                      <span className="text-[9px] uppercase font-bold tracking-wider text-muted-foreground font-mono">
                         HOW WE CALCULATE IT
                       </span>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
                         {item.steps.map((stepDesc, sIdx) => (
                           <div
                             key={sIdx}
-                            className="bg-slate-950/20 border border-slate-900/60 p-4 rounded-xl flex flex-col gap-1.5 hover:bg-slate-950/30 transition-colors"
+                            className="bg-card/45 border border-border/60 p-4 rounded-xl flex flex-col gap-1.5 hover:bg-card/75 transition-colors"
                           >
                             <div className="flex items-center justify-between">
                               <span className="text-[9px] font-mono font-bold text-slate-500">
@@ -642,7 +642,7 @@ export default function HowItIsCalculatedPage() {
                               </span>
                               <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400/70" />
                             </div>
-                            <p className="text-[11px] text-slate-300 leading-relaxed font-normal">
+                            <p className="text-[11px] text-foreground leading-relaxed font-normal">
                               {stepDesc}
                             </p>
                           </div>
@@ -653,8 +653,8 @@ export default function HowItIsCalculatedPage() {
                     {/* Simple Formula & Worked Example Box */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
                       {/* Formula Box */}
-                      <div className="bg-slate-950/60 border border-slate-800/60 rounded-2xl p-4.5 flex flex-col gap-2.5 font-mono shadow-inner group">
-                        <div className="flex items-center justify-between pb-1.5 border-b border-slate-800/30">
+                      <div className="bg-slate-950/60 border border-border/60 rounded-2xl p-4.5 flex flex-col gap-2.5 font-mono shadow-inner group">
+                        <div className="flex items-center justify-between pb-1.5 border-b border-border/30">
                           <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500">
                             FORMULA
                           </span>
@@ -667,24 +667,24 @@ export default function HowItIsCalculatedPage() {
                         <div className="text-xs md:text-sm font-bold text-cyan-400 py-1 tracking-tight select-all leading-normal break-words whitespace-pre-wrap overflow-x-auto">
                           {item.formulaSimple}
                         </div>
-                        <div className="text-[10px] text-slate-400/80 mt-1 flex items-center gap-1.5 font-sans">
+                        <div className="text-[10px] text-muted-foreground/80 mt-1 flex items-center gap-1.5 font-sans">
                           <span className="font-semibold text-slate-500">Data Source:</span>
                           <span>{item.inputData}</span>
                         </div>
                       </div>
 
                       {/* Worked Example */}
-                      <div className="bg-slate-950/40 border border-slate-800/60 p-4.5 rounded-2xl flex flex-col gap-2.5 justify-between">
+                      <div className="bg-card/40 border border-border/60 p-4.5 rounded-2xl flex flex-col gap-2.5 justify-between">
                         <div>
                           <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500 font-mono block mb-1">
                             WORKED EXAMPLE
                           </span>
-                          <span className="text-[11px] text-slate-400 leading-relaxed">
-                            Application to <strong className="text-slate-300">{item.exampleNation}</strong>:
+                          <span className="text-[11px] text-muted-foreground leading-relaxed">
+                            Application to <strong className="text-foreground">{item.exampleNation}</strong>:
                           </span>
                         </div>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-slate-400 font-medium">Result:</span>
+                          <span className="text-xs text-muted-foreground font-medium">Result:</span>
                           <span className="px-3 py-1 rounded-xl bg-cyan-500/10 border border-cyan-500/20 font-mono text-xs font-bold text-cyan-300 shadow-md">
                             {item.outputResult}
                           </span>
@@ -699,14 +699,14 @@ export default function HowItIsCalculatedPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="flex flex-col items-center justify-center p-16 text-center bg-slate-900/10 border border-slate-800/60 rounded-3xl gap-4 backdrop-blur-sm"
+                className="flex flex-col items-center justify-center p-16 text-center bg-card/10 border border-border/60 rounded-3xl gap-4 backdrop-blur-sm"
               >
                 <div className="p-4 bg-cyan-500/10 rounded-full text-cyan-400 border border-cyan-500/20 shadow-md">
                   <AlertTriangle className="w-7 h-7" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-200">No calculation metrics found</h3>
-                  <p className="text-xs text-slate-400 mt-1.5 max-w-sm leading-relaxed">
+                  <h3 className="text-lg font-bold text-foreground">No calculation metrics found</h3>
+                  <p className="text-xs text-muted-foreground mt-1.5 max-w-sm leading-relaxed">
                     No metrics match your search query "{searchQuery}" in this category. Try adjusting your query or switching tabs.
                   </p>
                 </div>
