@@ -1,5 +1,7 @@
 # About the Project
 
+Note: Kindly wait a few more seconds for the data to load on the website, as it is hosted on Render’s free tier, which may take a little longer to initialize.
+
 **Pacific Sea Level Anomalies** is an interactive climate data visualization project that explores how sea levels have changed across the Pacific Island Countries and Territories (PICTs). The project uses data from the **Pacific Community (SPC) Climate Change Indicators Database** to show historical sea-level changes, compare trends across decades, examine the effects of El Niño–Southern Oscillation (ENSO), identify countries that are more vulnerable, and estimate future sea-level changes.
 
 The project includes:
