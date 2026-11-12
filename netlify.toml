@@ -1,0 +1,13 @@
+[build]
+  command = "pnpm run build"
+  publish = "artifacts/pacific-climate-story/dist/public"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Static API files will be served directly from CDN; SPA routes rewrite to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+

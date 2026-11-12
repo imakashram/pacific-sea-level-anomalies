@@ -17,6 +17,16 @@ const DEFAULT_JSON_ACCEPT = "application/json, application/problem+json";
 
 let _baseUrl: string | null = null;
 let _authTokenGetter: AuthTokenGetter | null = null;
+let _staticDataFallback: Record<string, unknown> | null = null;
+
+/**
+ * Configure an in-memory dictionary of static API responses.
+ * When matching paths are requested, responses are served instantly
+ * without network delay or waiting for sleeping servers.
+ */
+export function setStaticDataFallback(data: Record<string, unknown> | null): void {
+  _staticDataFallback = data;
+}
 
 /**
  * Set a base URL that is prepended to every relative request URL
@@ -336,10 +346,44 @@ export async function customFetch<T = unknown>(
   input: RequestInfo | URL,
   options: CustomFetchOptions = {},
 ): Promise<T> {
+  const method = resolveMethod(input, options.method);
+
+  // If pre-baked static data fallback is configured, check for an instant match
+  if ((method === "GET" || method === "HEAD") && _staticDataFallback) {
+    const rawUrl = resolveUrl(input);
+    let path = rawUrl;
+    try {
+      if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://")) {
+        path = new URL(rawUrl).pathname;
+      }
+    } catch {}
+    path = path.split("?")[0];
+    const normalized = path.startsWith("/") ? path : `/${path}`;
+    const withApi = normalized.startsWith("/api/") ? normalized : `/api${normalized}`;
+
+    const candidates = [
+      normalized,
+      normalized.toLowerCase(),
+      withApi,
+      withApi.toLowerCase(),
+    ];
+
+    for (const key of candidates) {
+      if (Object.prototype.hasOwnProperty.call(_staticDataFallback, key)) {
+        const data = _staticDataFallback[key];
+        if (data !== undefined) {
+          const cloned =
+            typeof structuredClone === "function"
+              ? structuredClone(data)
+              : JSON.parse(JSON.stringify(data));
+          return cloned as T;
+        }
+      }
+    }
+  }
+
   input = applyBaseUrl(input);
   const { responseType = "auto", headers: headersInit, ...init } = options;
-
-  const method = resolveMethod(input, init.method);
 
   if (init.body != null && (method === "GET" || method === "HEAD")) {
     throw new TypeError(`customFetch: ${method} requests cannot have a body.`);
