@@ -420,15 +420,25 @@ export default function HowItIsCalculatedPage() {
           </h1>
         </div>
 
-        <a
-          href="/"
-          id="btn-back-to-story"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-card border border-border hover:border-cyan-500/35 hover:bg-card/80 text-xs font-semibold text-muted-foreground hover:text-cyan-400 transition-all duration-300 shadow-md cursor-pointer group"
-          aria-label="Back to Story"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
-          <span className="hidden sm:inline">Back to Story</span>
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="/behind-the-story"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-card border border-border hover:border-cyan-500/35 hover:bg-card/80 text-xs font-semibold text-muted-foreground hover:text-cyan-400 transition-all duration-300 shadow-sm cursor-pointer"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="hidden sm:inline">Behind the Story</span>
+          </a>
+
+          <a
+            href="/"
+            id="btn-back-to-story"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/20 text-xs font-semibold text-cyan-300 hover:text-cyan-200 transition-all duration-300 shadow-md cursor-pointer group"
+            aria-label="Back to Story"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
+            <span className="hidden sm:inline">Back to Story</span>
+          </a>
+        </div>
       </header>
 
       {/* Main Container */}

@@ -5,6 +5,7 @@ import NotFoundPage from "@/pages/NotFoundPage";
 import StoryPage from "@/pages/StoryPage";
 import ApiExplorerPage from "@/pages/ApiExplorerPage";
 import HowItIsCalculatedPage from "@/pages/HowItIsCalculatedPage";
+import BehindTheStoryPage from "@/pages/BehindTheStoryPage";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,8 @@ function Router() {
       <Route path="/how-it-is-calculated" component={HowItIsCalculatedPage} />
       <Route path="/calculations" component={HowItIsCalculatedPage} />
       <Route path="/methodology" component={HowItIsCalculatedPage} />
+      <Route path="/behind-the-story" component={BehindTheStoryPage} />
+      <Route path="/story-approach" component={BehindTheStoryPage} />
       <Route component={NotFoundPage} />
     </Switch>
   );

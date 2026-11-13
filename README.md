@@ -13,22 +13,24 @@ This document provides a list of all important project URLs, including local dev
 
 # Local Development URLs
 
-| URL                                  | Description                                                                                                                                                                        |
-| :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `http://localhost:5173/`             | **Climate Story** – Main local development site for the interactive climate visualization.                                                                                         |
-| `http://localhost:5173/api-explorer` | **API Explorer** – Test, explore, and interact with the available API endpoints. (Also available at `/explorer`)                                                                   |
-| `http://localhost:5173/methodology`  | **Methodology** – Explains the calculations, formulas, trend analysis, and prediction methods used in the project. (Also available at `/calculations` and `/how-it-is-calculated`) |
-| `http://localhost:5001/api`          | **Backend API** – Local Express.js server providing all API endpoints.                                                                                                             |
+| URL                                      | Description                                                                                                                                                                        |
+| :--------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `http://localhost:5173/`                 | **Climate Story** – Main local development site for the interactive climate visualization.                                                                                         |
+| `http://localhost:5173/api-explorer`     | **API Explorer** – Test, explore, and interact with the available API endpoints. (Also available at `/explorer`)                                                                   |
+| `http://localhost:5173/methodology`      | **Methodology** – Explains the calculations, formulas, trend analysis, and prediction methods used in the project. (Also available at `/calculations` and `/how-it-is-calculated`) |
+| `http://localhost:5173/behind-the-story` | **Behind the Story** – The author's personal approach, research journey, and story design behind turning 30 years of climate data into an interactive visual narrative.          |
+| `http://localhost:5001/api`              | **Backend API** – Local Express.js server providing all API endpoints.                                                                                                             |
 
 ---
 
 # Production URLs
 
-| URL                                                  | Description                                                                                                            |
-| :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
-| `https://pacific-sea-level-story.onrender.com/`             | **Live Website** – Public version of the interactive climate data visualization.                                       |
-| `https://pacific-sea-level-story.onrender.com/api-explorer` | **Live API Explorer** – Explore and test API endpoints on the production server.                                       |
-| `https://pacific-sea-level-story.onrender.com/methodology`  | **Live Methodology** – Learn about the project's calculations, trends, prediction models, and risk assessment methods. |
+| URL                                                      | Description                                                                                                                               |
+| :------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| `https://pacific-sea-level-story.onrender.com/`                 | **Live Website** – Public version of the interactive climate data visualization.                                                          |
+| `https://pacific-sea-level-story.onrender.com/api-explorer`     | **Live API Explorer** – Explore and test API endpoints on the production server.                                                          |
+| `https://pacific-sea-level-story.onrender.com/methodology`      | **Live Methodology** – Learn about the project's calculations, trends, prediction models, and risk assessment methods.                    |
+| `https://pacific-sea-level-story.onrender.com/behind-the-story` | **Live Behind the Story** – Read about the concept, creative direction, data exploration, and development journey behind the story.        |
 
 ---
 

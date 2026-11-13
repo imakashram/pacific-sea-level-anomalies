@@ -6,6 +6,7 @@ import {
   Terminal,
   ExternalLink,
   ChevronRight,
+  BookOpen,
 } from "lucide-react";
 
 export function DataMethodology() {
@@ -224,6 +225,22 @@ export function DataMethodology() {
           <Calculator className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
           <span className="text-xs font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
             Methodology & Formulas
+          </span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all duration-200 shrink-0" />
+        </motion.a>
+
+        {/* Card 4: Behind the Story */}
+        <motion.a
+          href="/behind-the-story"
+          target="_blank"
+          rel="noopener noreferrer"
+          variants={itemVariants}
+          whileHover={{ y: -2, borderColor: "rgba(6, 182, 212, 0.4)" }}
+          className="px-3 py-1.5 bg-slate-900/40 border border-slate-800/80 rounded-lg inline-flex items-center gap-2 group transition-all duration-300 hover:bg-cyan-950/10 cursor-pointer"
+        >
+          <BookOpen className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+          <span className="text-xs font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
+            Behind the Story
           </span>
           <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all duration-200 shrink-0" />
         </motion.a>
