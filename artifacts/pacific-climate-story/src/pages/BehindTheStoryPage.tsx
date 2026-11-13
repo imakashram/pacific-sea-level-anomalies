@@ -457,7 +457,7 @@ export default function BehindTheStoryPage() {
               Along with the data exploration, analysis, and visualization work, I also worked on the engineering needed to bring the complete experience together.
             </p>
             <p>
-              The project uses React, Tailwind CSS, Framer Motion, Recharts, and D3.js, supported by an Express.js API backend.
+              The project uses React, Tailwind CSS, Framer Motion, Recharts, and D3.js, supported by an Express.js API backend, and is hosted on Netlify and Render.
             </p>
             <p>My work included:</p>
 
@@ -470,7 +470,7 @@ export default function BehindTheStoryPage() {
               <li>Validating data structures.</li>
               <li>Creating API documentation and an API Explorer.</li>
               <li>Improving responsive layouts and accessibility.</li>
-              <li>Working on deployment and performance improvements.</li>
+              <li>Working on deployment and performance improvements across Netlify and Render.</li>
             </ul>
 
             <p>

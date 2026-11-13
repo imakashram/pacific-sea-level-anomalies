@@ -68,7 +68,7 @@ export function DataMethodology() {
           About the Project
         </span>
         <p className="text-xs text-muted-foreground/80 leading-relaxed max-w-xl">
-          This project is an interactive climate data visualization exploring sea level anomalies across the Pacific Island Countries and Territories (PICTs). It is built using <span className="font-semibold text-slate-200">React</span>, <span className="font-semibold text-slate-200">Tailwind CSS</span>, <span className="font-semibold text-slate-200">Framer Motion</span>, <span className="font-semibold text-slate-200">Recharts</span>, and <span className="font-semibold text-slate-200">D3.js</span> for the interactive visualizations and storytelling, supported by an <span className="font-semibold text-slate-200">Express.js</span> API backend. Built for the{" "}
+          This project is an interactive climate data visualization exploring sea level anomalies across the Pacific Island Countries and Territories (PICTs). It is built using <span className="font-semibold text-slate-200">React</span>, <span className="font-semibold text-slate-200">Tailwind CSS</span>, <span className="font-semibold text-slate-200">Framer Motion</span>, <span className="font-semibold text-slate-200">Recharts</span>, and <span className="font-semibold text-slate-200">D3.js</span> for the interactive visualizations and storytelling, supported by an <span className="font-semibold text-slate-200">Express.js</span> API backend, and is hosted on <span className="font-semibold text-slate-200">Netlify</span> and <span className="font-semibold text-slate-200">Render</span>. Built for the{" "}
           <a
             href="https://pacificdatavizchallenge.org/"
             target="_blank"
