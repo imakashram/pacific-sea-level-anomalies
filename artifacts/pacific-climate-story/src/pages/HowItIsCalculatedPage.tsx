@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Calculator,
   TrendingUp,
@@ -13,6 +13,11 @@ import {
   Sparkles,
   AlertTriangle,
   ArrowLeft,
+  Copy,
+  Check,
+  Hash,
+  ArrowUp,
+  X,
 } from "lucide-react";
 import { useSEO } from "@/lib/useSEO";
 import { motion, AnimatePresence } from "framer-motion";
@@ -40,8 +45,7 @@ const CALCULATIONS: CalculationCard[] = [
     unit: "Centimeters (cm)",
     plainEnglish:
       "This measures the height of the sea in a specific year and compares it to a baseline average. A positive number means the sea is higher than normal, and a negative number means it is lower.",
-    formulaSimple:
-      "Anomaly (cm) = Anomaly (m) × 100",
+    formulaSimple: "Anomaly (cm) = Anomaly (m) × 100",
     inputData: "Annual satellite & tidal anomaly measurements (meters)",
     outputResult: "+10.5 cm current anomaly (Year 2023)",
     exampleNation: "Pacific Regional Average",
@@ -95,8 +99,7 @@ const CALCULATIONS: CalculationCard[] = [
     unit: "± Centimeters (±cm)",
     plainEnglish:
       "This measures how much sea levels bounce up and down around their long-term average. High volatility means the island experiences extreme highs and lows due to seasonal changes and storms.",
-    formulaSimple:
-      "Volatility = Standard Deviation (σ) of Annual Anomalies × 100",
+    formulaSimple: "Volatility = Standard Deviation (σ) of Annual Anomalies × 100",
     inputData: "Yearly variance from 30-year average line",
     outputResult: "±8.7 cm (41% above regional avg)",
     exampleNation: "Palau (Most Volatile Nation)",
@@ -189,7 +192,8 @@ const CALCULATIONS: CalculationCard[] = [
     plainEnglish:
       "This measures the difference in average sea level anomalies between La Niña years and El Niño years. A larger value means the territory experiences dramatic sea level swings during different phases of the El Niño Southern Oscillation (ENSO) cycle.",
     formulaSimple: "ENSO Sensitivity = (La Niña Years Avg) - (El Niño Years Avg)",
-    inputData: "Historical anomalies for classified El Niño (1997, 1998, 2015, 2016) and La Niña (2010, 2011, 2020, 2021) years",
+    inputData:
+      "Historical anomalies for classified El Niño (1997, 1998, 2015, 2016) and La Niña (2010, 2011, 2020, 2021) years",
     outputResult: "+17.5 cm avg swing (representing extreme high/low variation)",
     exampleNation: "Guam & Palau (Most Sensitive)",
     steps: [
@@ -209,7 +213,8 @@ const CALCULATIONS: CalculationCard[] = [
       "A threat index from 0 to 100 that combines four critical factors: total cumulative rise, speed rate of the rise, year-to-year volatility, and decade-over-decade acceleration.",
     formulaSimple:
       "Risk Score = 40% Cumulative Rise + 30% Speed Rate + 15% Volatility + 15% Acceleration",
-    inputData: "Normalized values based on min/max across all 21 nations (Min-Max normalization)",
+    inputData:
+      "Normalized values based on min/max across all 21 nations (Min-Max normalization)",
     outputResult: "92.0 Score (CRITICAL RISK LEVEL)",
     exampleNation: "Papua New Guinea & Solomon Islands",
     steps: [
@@ -296,7 +301,8 @@ const CALCULATIONS: CalculationCard[] = [
     id: "forecasting-model",
     category: "trends",
     title: "15. Predictive Projection Model & IPCC Scenarios (2024–2033)",
-    question: "What is the predicted sea level height in the year 2033 under different emissions scenarios?",
+    question:
+      "What is the predicted sea level height in the year 2033 under different emissions scenarios?",
     unit: "Centimeters (cm)",
     plainEnglish:
       "Projects future sea levels 10 years forward (up to the year 2033). Users can toggle between the OLS linear baseline or IPCC SSP quadratic acceleration scenarios (SSP1-2.6, SSP2-4.5, SSP5-8.5), which add acceleration coefficients derived from climate projection models.",
@@ -304,7 +310,8 @@ const CALCULATIONS: CalculationCard[] = [
       "Projected Anomaly SLA(t) = OLS_Linear(t) + 0.05 × a_mm × (t - 2023)² ± 2σ",
     inputData:
       "Historical averages (1993–2023) & IPCC acceleration parameter (a_mm: Linear = 0, SSP1-2.6 = 0.05, SSP2-4.5 = 0.10, SSP5-8.5 = 0.20 mm/yr²)",
-    outputResult: "OLS Linear: +15.2 cm by 2033 | SSP5-8.5 (Extreme): +16.2 cm by 2033",
+    outputResult:
+      "OLS Linear: +15.2 cm by 2033 | SSP5-8.5 (Extreme): +16.2 cm by 2033",
     exampleNation: "10-Year Climate Forecast (with IPCC Accel)",
     steps: [
       "Fit an Ordinary Least Squares (OLS) linear regression model over the historical period (1993–2023).",
@@ -318,7 +325,8 @@ const CALCULATIONS: CalculationCard[] = [
     id: "rolling-average",
     category: "trends",
     title: "16. 5-Year Rolling Moving Average (SMA)",
-    question: "How do we filter out temporary yearly bounces in charts to see the real trend?",
+    question:
+      "How do we filter out temporary yearly bounces in charts to see the real trend?",
     unit: "Centimeters (cm)",
     plainEnglish:
       "Smooths out sharp, temporary swings (like a single stormy year) by averaging each year with the two years before and after it, revealing the clear long-term direction of rise.",
@@ -338,33 +346,79 @@ const CALCULATIONS: CalculationCard[] = [
 export default function HowItIsCalculatedPage() {
   useSEO({
     title: "Methodology & Formulas | Pacific Sea Level Anomalies",
-    description: "Learn about the methodology and calculations behind the Pacific Sea Level Anomalies data story. Examine formulas for Sea Level Anomaly, Decadal Shift, Speed Rate, and Volatility.",
+    description:
+      "Learn about the methodology and calculations behind the Pacific Sea Level Anomalies data story. Examine formulas for Sea Level Anomaly, Decadal Shift, Speed Rate, and Volatility.",
     canonicalPath: "/methodology",
-    keywords: "climate calculations, sea level anomaly formulas, climate change statistics, climate methodology",
+    keywords:
+      "climate calculations, sea level anomaly formulas, climate change statistics, climate methodology",
     schema: {
       "@context": "https://schema.org",
       "@type": "TechArticle",
-      "headline": "Calculation Methodology for Pacific Sea Level Anomalies",
-      "description": "Step-by-step mathematical guide detailing formulas, statistics, and calculations used to measure climate indicators and decadal shifts.",
-      "author": {
+      headline: "Calculation Methodology for Pacific Sea Level Anomalies",
+      description:
+        "Step-by-step mathematical guide detailing formulas, statistics, and calculations used to measure climate indicators and decadal shifts.",
+      author: {
         "@type": "Person",
-        "name": "Akash Ram"
+        name: "Akash Ram",
       },
-      "about": {
+      about: {
         "@type": "Thing",
-        "name": "Mathematical calculations of ocean height anomalies"
-      }
-    }
+        name: "Mathematical calculations of ocean height anomalies",
+      },
+    },
   });
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"all" | "core" | "trends" | "risk" | "spread">("all");
+  const [activeTab, setActiveTab] = useState<
+    "all" | "core" | "trends" | "risk" | "spread"
+  >("all");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleCopyFormula = (id: string, formula: string) => {
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(formula);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    }
+  };
+
+  const handleCopyLink = (id: string) => {
+    const url = `${window.location.origin}${window.location.pathname}#${id}`;
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(url);
+      setCopiedLinkId(id);
+      setTimeout(() => setCopiedLinkId(null), 2000);
+    }
+  };
+
+  const scrollToElement = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const filteredCalculations = CALCULATIONS.filter((item) => {
     const matchesSearch =
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.plainEnglish.toLowerCase().includes(searchQuery.toLowerCase());
+      item.plainEnglish.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.formulaSimple.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.exampleNation.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesTab = activeTab === "all" || item.category === activeTab;
     return matchesSearch && matchesTab;
   });
@@ -380,37 +434,82 @@ export default function HowItIsCalculatedPage() {
   const tabs = [
     { id: "all", name: "All Metrics", count: counts.all, icon: Layers },
     { id: "core", name: "Core Indicators", count: counts.core, icon: Scale },
-    { id: "trends", name: "Trends & Forecasts", count: counts.trends, icon: TrendingUp },
-    { id: "risk", name: "Risk & Climate Impact", count: counts.risk, icon: Waves },
-    { id: "spread", name: "Statistical Spread", count: counts.spread, icon: Activity },
+    {
+      id: "trends",
+      name: "Trends & Forecasts",
+      count: counts.trends,
+      icon: TrendingUp,
+    },
+    {
+      id: "risk",
+      name: "Risk & Climate Impact",
+      count: counts.risk,
+      icon: Waves,
+    },
+    {
+      id: "spread",
+      name: "Statistical Spread",
+      count: counts.spread,
+      icon: Activity,
+    },
   ] as const;
+
+  const getCategoryStyles = (category: CalculationCard["category"]) => {
+    switch (category) {
+      case "core":
+        return {
+          label: "Core Indicator",
+          badge:
+            "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+          border: "group-hover:border-emerald-500/30",
+        };
+      case "trends":
+        return {
+          label: "Trend & Forecast",
+          badge: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
+          border: "group-hover:border-cyan-500/30",
+        };
+      case "risk":
+        return {
+          label: "Risk & Climate Impact",
+          badge: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+          border: "group-hover:border-rose-500/30",
+        };
+      case "spread":
+        return {
+          label: "Statistical Distribution",
+          badge: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+          border: "group-hover:border-indigo-500/30",
+        };
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05,
+        staggerChildren: 0.04,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 12 },
     show: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring" as const, stiffness: 110, damping: 14 },
+      transition: { type: "spring" as const, stiffness: 120, damping: 15 },
     },
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-200 relative overflow-x-hidden">
       {/* Background ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] rounded-full bg-cyan-500/5 blur-[160px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full bg-cyan-500/5 blur-[160px] pointer-events-none" />
 
       {/* Header Bar */}
-      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border shadow-md px-4 sm:px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border shadow-md px-4 sm:px-6 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
             <Calculator className="w-4 h-4" />
@@ -423,7 +522,7 @@ export default function HowItIsCalculatedPage() {
         <div className="flex items-center gap-2">
           <a
             href="/behind-the-story"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-card border border-border hover:border-cyan-500/35 hover:bg-card/80 text-xs font-semibold text-muted-foreground hover:text-cyan-400 transition-all duration-300 shadow-sm cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-card border border-border hover:border-cyan-500/35 hover:bg-card/80 text-xs font-semibold text-muted-foreground hover:text-cyan-400 transition-all duration-300 shadow-sm cursor-pointer"
           >
             <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
             <span className="hidden sm:inline">Behind the Story</span>
@@ -432,7 +531,7 @@ export default function HowItIsCalculatedPage() {
           <a
             href="/"
             id="btn-back-to-story"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/20 text-xs font-semibold text-cyan-300 hover:text-cyan-200 transition-all duration-300 shadow-md cursor-pointer group"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/20 text-xs font-semibold text-cyan-300 hover:text-cyan-200 transition-all duration-300 shadow-md cursor-pointer group"
             aria-label="Back to Story"
           >
             <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
@@ -442,106 +541,162 @@ export default function HowItIsCalculatedPage() {
       </header>
 
       {/* Main Container */}
-      <main id="main-content" className="max-w-[1300px] mx-auto p-4 sm:p-6 lg:p-10 flex flex-col gap-8" tabIndex={-1}>
-        {/* Introduction Header */}
-        <div className="relative overflow-hidden bg-card/20 border border-border p-8 rounded-3xl flex flex-col gap-6 shadow-xl backdrop-blur-sm">
-          {/* Subtle decoration inside header */}
-          <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none" />
+      <main
+        id="main-content"
+        className="max-w-[1280px] mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6"
+        tabIndex={-1}
+      >
+        {/* Introduction & Key Principles */}
+        <section className="relative overflow-hidden bg-gradient-to-b from-card/40 to-card/20 border border-border/80 p-6 sm:p-8 rounded-3xl flex flex-col gap-6 shadow-xl backdrop-blur-sm">
+          <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none" />
 
-          <div>
-            <div className="flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-wider uppercase mb-1">
-              <Sparkles className="w-3.5 h-3.5" /> Reference Documentation
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-wider uppercase mb-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Reference Documentation</span>
             </div>
-            <h2 className="text-3xl font-bold font-serif text-foreground leading-tight">
+            <h2 className="text-2xl sm:text-3xl font-bold font-serif text-foreground leading-tight">
               Calculation Methodology Guide
             </h2>
-            <p className="text-xs text-muted-foreground mt-2 max-w-none leading-relaxed">
-              Below is a step-by-step guide explaining all calculated metrics, formulas, and statistical transformations used in the Pacific Climate Story.
+            <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-relaxed">
+              Below is a step-by-step guide explaining all calculated metrics,
+              formulas, and statistical transformations used in the Pacific
+              Climate Story.
             </p>
           </div>
 
-          {/* Neutral Cheat Sheet Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-6 border-t border-border/60">
-            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
-                <Scale className="w-3.5 h-3.5" /> Heights in Centimeters
-              </span>
-              <span className="text-xs font-semibold text-foreground">
-                1 Meter = 100 cm
-              </span>
+          {/* Key Reference Principles Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5 pt-5 border-t border-border/50">
+            {/* Principle 1 */}
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-border/50 hover:border-border transition-colors flex flex-col justify-between gap-2">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
+                  <Scale className="w-3.5 h-3.5 shrink-0" />
+                  Heights in Centimeters
+                </span>
+                <span className="text-xs font-bold text-foreground">
+                  1 Meter = 100 cm
+                </span>
+              </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
-                Raw height values are converted to centimeters so small shifts are easy to see (e.g. <strong className="text-foreground">+10.5 cm</strong> instead of 0.105m).
+                Raw height values are converted to centimeters so small shifts
+                are easy to see (e.g.{" "}
+                <strong className="text-foreground">+10.5 cm</strong> instead of
+                0.105m).
               </p>
             </div>
 
-            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
-                <TrendingUp className="w-3.5 h-3.5" /> Speed in Millimeters
-              </span>
-              <span className="text-xs font-semibold text-foreground">
-                1 Meter = 1,000 mm
-              </span>
+            {/* Principle 2 */}
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-border/50 hover:border-border transition-colors flex flex-col justify-between gap-2">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
+                  <TrendingUp className="w-3.5 h-3.5 shrink-0" />
+                  Speed in Millimeters
+                </span>
+                <span className="text-xs font-bold text-foreground">
+                  1 Meter = 1,000 mm
+                </span>
+              </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
-                Yearly rise speeds use linear trend-fitting and are written in millimeters (e.g. <strong className="text-foreground">4.8 mm/yr</strong>).
+                Yearly rise speeds use linear trend-fitting and are written in
+                millimeters (e.g.{" "}
+                <strong className="text-foreground">4.8 mm/yr</strong>).
               </p>
             </div>
 
-            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
-                <Activity className="w-3.5 h-3.5" /> Baseline = 1993–2002
-              </span>
-              <span className="text-xs font-semibold text-foreground">
-                10-Year Reference Average
-              </span>
+            {/* Principle 3 */}
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-border/50 hover:border-border transition-colors flex flex-col justify-between gap-2">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
+                  <Activity className="w-3.5 h-3.5 shrink-0" />
+                  Baseline = 1993–2002
+                </span>
+                <span className="text-xs font-bold text-foreground">
+                  10-Year Reference Average
+                </span>
+              </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
-                The average sea level from 1993 to 2002 acts as the zero-line benchmark (<strong className="text-foreground">0.0 cm</strong>) for measuring anomalies.
+                The average sea level from 1993 to 2002 acts as the zero-line
+                benchmark (<strong className="text-foreground">0.0 cm</strong>)
+                for measuring anomalies.
               </p>
             </div>
 
-            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
-                <Waves className="w-3.5 h-3.5" /> Volatility = ±cm deviation
-              </span>
-              <span className="text-xs font-semibold text-foreground">
-                Year-Over-Year Swings
-              </span>
+            {/* Principle 4 */}
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-border/50 hover:border-border transition-colors flex flex-col justify-between gap-2">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
+                  <Waves className="w-3.5 h-3.5 shrink-0" />
+                  Volatility = ±cm deviation
+                </span>
+                <span className="text-xs font-bold text-foreground">
+                  Year-Over-Year Swings
+                </span>
+              </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
-                Standard deviation measures how jumpy ocean levels are as they swing above and below the baseline (e.g. <strong className="text-foreground">±8.7 cm</strong>).
+                Standard deviation measures how jumpy ocean levels are as they
+                swing above and below the baseline (e.g.{" "}
+                <strong className="text-foreground">±8.7 cm</strong>).
               </p>
             </div>
 
-            <div className="bg-card/40 p-4.5 rounded-2xl border border-border/60 flex flex-col gap-1.5 hover:border-border transition-colors">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
-                Data Precision Limits
-              </span>
-              <span className="text-xs font-semibold text-foreground">
-                10-cm Rounded Data
-              </span>
+            {/* Principle 5 */}
+            <div className="bg-slate-950/40 p-4 rounded-2xl border border-border/50 hover:border-border transition-colors flex flex-col justify-between gap-2 sm:col-span-2 lg:col-span-1">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 font-mono">
+                  Data Precision Limits
+                </span>
+                <span className="text-xs font-bold text-foreground">
+                  10-cm Rounded Data
+                </span>
+              </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
-                Raw data is rounded to the nearest 10 cm (about 4 in). While single island charts show stepped rises, combining all countries allows us to see smooth decimal trends.
+                Raw data is rounded to the nearest 10 cm (about 4 in). While
+                single island charts show stepped rises, combining all countries
+                allows us to see smooth decimal trends.
               </p>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Filters and Search Bar Container */}
-        <div className="flex flex-col gap-5 bg-card/10 border border-border/60 p-6 rounded-3xl backdrop-blur-sm">
-          {/* Search bar */}
-          <div className="relative w-full max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              id="search-calculations"
-              placeholder="Search calculation metrics (e.g. speed, volatility, risk)..."
-              aria-label="Search calculation metrics"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-card border border-border/85 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-cyan-500/40 transition shadow-inner placeholder:text-muted-foreground"
-            />
+        {/* Filters, Search & Quick Jump Bar */}
+        <section className="bg-card/20 border border-border/70 p-5 rounded-3xl backdrop-blur-sm flex flex-col gap-4 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            {/* Search bar */}
+            <div className="relative w-full md:max-w-md">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                type="text"
+                id="search-calculations"
+                placeholder="Search calculation metrics (e.g. speed, volatility, risk)..."
+                aria-label="Search calculation metrics"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-slate-950/70 border border-border/80 rounded-xl pl-10 pr-9 py-2 text-xs text-foreground focus:outline-none focus:border-cyan-500/50 transition placeholder:text-muted-foreground"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                  title="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Result count indicator */}
+            <div className="text-xs text-muted-foreground font-mono shrink-0">
+              Showing{" "}
+              <span className="font-bold text-cyan-300">
+                {filteredCalculations.length}
+              </span>{" "}
+              of {CALCULATIONS.length} metrics
+            </div>
           </div>
 
-          {/* Interactive Navigation Tabs */}
-          <div className="flex flex-wrap gap-2 border-t border-border/60 pt-4">
+          {/* Interactive Category Filter Tabs */}
+          <div className="flex flex-wrap gap-2 border-t border-border/50 pt-3">
             {tabs.map((tab) => {
               const TabIcon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -550,25 +705,58 @@ export default function HowItIsCalculatedPage() {
                   key={tab.id}
                   id={`tab-category-${tab.id}`}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer border ${isActive
-                    ? "bg-cyan-500/10 border-cyan-500/30 text-cyan-400 shadow-md"
-                    : "bg-card/45 border-border hover:border-cyan-500/30 text-muted-foreground hover:text-cyan-400"
-                    }`}
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer border ${
+                    isActive
+                      ? "bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shadow-sm"
+                      : "bg-card/40 border-border/70 hover:border-cyan-500/30 text-muted-foreground hover:text-cyan-400"
+                  }`}
                 >
                   <TabIcon className="w-3.5 h-3.5" />
                   <span>{tab.name}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${isActive ? "bg-cyan-500/20 text-cyan-300" : "bg-slate-950 text-muted-foreground/60"
-                    }`}>
+                  <span
+                    className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                      isActive
+                        ? "bg-cyan-500/25 text-cyan-200"
+                        : "bg-slate-950 text-muted-foreground/70"
+                    }`}
+                  >
                     {tab.count}
                   </span>
                 </button>
               );
             })}
           </div>
-        </div>
 
-        {/* Calculation Cards Grid / Stack */}
-        <div className="relative min-h-[300px]">
+          {/* Quick Jump Pill Navigation */}
+          {filteredCalculations.length > 0 && (
+            <div className="flex flex-col gap-2 border-t border-border/40 pt-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <Hash className="w-3 h-3 text-cyan-400" />
+                  Quick Jump to Formula
+                </span>
+                <span className="text-[10px] text-muted-foreground/70 hidden sm:inline">
+                  Click any metric to scroll directly
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
+                {filteredCalculations.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToElement(item.id)}
+                    className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-slate-950/50 border border-border/50 hover:border-cyan-500/40 hover:bg-cyan-500/10 text-muted-foreground hover:text-cyan-300 transition-all cursor-pointer truncate max-w-[240px]"
+                    title={item.title}
+                  >
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* Calculation Cards Stream */}
+        <section className="relative min-h-[300px]">
           <AnimatePresence mode="wait">
             {filteredCalculations.length > 0 ? (
               <motion.div
@@ -577,132 +765,162 @@ export default function HowItIsCalculatedPage() {
                 initial="hidden"
                 animate="show"
                 exit="hidden"
-                className="grid grid-cols-1 gap-6"
+                className="flex flex-col gap-5"
               >
-                {filteredCalculations.map((item) => (
-                  <motion.div
-                    key={item.id}
-                    variants={itemVariants}
-                    className="bg-card/25 border border-border/80 p-6 lg:p-8 rounded-3xl flex flex-col gap-6 transition-all duration-300 hover:border-cyan-500/25 hover:bg-card/35 shadow-lg group relative overflow-hidden"
-                  >
-                    {/* Visual Tab Category Tag Badge inside Card */}
-                    <div className="absolute right-0 top-0 w-32 h-32 rounded-full bg-cyan-500/[0.01] blur-2xl pointer-events-none group-hover:bg-cyan-500/[0.02]" />
-
-                    {/* Card Title Row */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/40 pb-4">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className={`text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md ${item.category === "core"
-                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                            : item.category === "trends"
-                              ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
-                              : item.category === "risk"
-                                ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                                : "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
-                            }`}>
-                            {item.category === "core"
-                              ? "Core Indicator"
-                              : item.category === "trends"
-                                ? "Trend & Forecast"
-                                : item.category === "risk"
-                                  ? "Risk & Climate Impact"
-                                  : "Statistical Distribution"}
+                {filteredCalculations.map((item) => {
+                  const categoryStyle = getCategoryStyles(item.category);
+                  return (
+                    <motion.article
+                      key={item.id}
+                      id={item.id}
+                      variants={itemVariants}
+                      className={`scroll-mt-20 bg-gradient-to-b from-card/40 to-card/20 border border-border/70 hover:border-cyan-500/35 rounded-2xl p-5 sm:p-7 flex flex-col gap-5 shadow-lg backdrop-blur-sm transition-all duration-300 relative group overflow-hidden ${categoryStyle.border}`}
+                    >
+                      {/* Top Header Row: Category Badge, Unit & Anchor Link */}
+                      <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-border/40 pb-3.5">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md border font-mono ${categoryStyle.badge}`}
+                          >
+                            {categoryStyle.label}
                           </span>
                         </div>
-                        <h3 className="text-xl font-bold font-serif text-foreground group-hover:text-cyan-300 transition-colors">
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-mono font-medium px-2.5 py-1 rounded-md bg-slate-950/80 border border-border/60 text-cyan-300 shadow-inner">
+                            Unit: {item.unit}
+                          </span>
+                          <button
+                            onClick={() => handleCopyLink(item.id)}
+                            title="Copy link to this formula"
+                            className="flex items-center gap-1 text-[11px] font-mono text-muted-foreground hover:text-cyan-300 px-2 py-1 rounded-md bg-card/60 border border-border/50 hover:border-cyan-500/30 transition-colors cursor-pointer"
+                          >
+                            <Hash className="w-3 h-3 text-cyan-400" />
+                            <span>{item.id}</span>
+                            {copiedLinkId === item.id ? (
+                              <Check className="w-3 h-3 text-emerald-400 ml-0.5" />
+                            ) : (
+                              <Copy className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity ml-0.5" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Title & Plain English Explanation */}
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-xl sm:text-2xl font-bold font-serif text-foreground group-hover:text-cyan-300 transition-colors tracking-tight">
                           {item.title}
                         </h3>
-                        <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1">
-                          <HelpCircle className="w-3.5 h-3.5 text-cyan-400/80 flex-shrink-0" />
-                          <span className="italic leading-normal">{item.question}</span>
-                        </p>
-                      </div>
-                      <span className="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-border/60 text-cyan-400 font-mono text-xs font-semibold self-start sm:self-auto shadow-inner">
-                        Unit: {item.unit}
-                      </span>
-                    </div>
 
-                    {/* Plain-English Explanation Banner */}
-                    <div className="bg-slate-950/60 border border-border/60 p-5 rounded-2xl flex items-start gap-3.5 border-l-2 border-l-cyan-500/60 shadow-md">
-                      <BookOpen className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                      <div className="flex flex-col gap-0.5">
-                        <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500 font-mono">
-                          IN PLAIN ENGLISH
-                        </span>
-                        <p className="text-xs text-foreground leading-relaxed font-normal">
+                        <p className="text-xs sm:text-sm font-medium text-cyan-400/90 flex items-start gap-1.5 leading-relaxed">
+                          <HelpCircle className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                          <span className="italic">{item.question}</span>
+                        </p>
+
+                        <p className="text-xs sm:text-sm text-foreground/85 leading-relaxed mt-1">
                           {item.plainEnglish}
                         </p>
                       </div>
-                    </div>
 
-                    {/* 3-Step Simple Procedure */}
-                    <div className="flex flex-col gap-3">
-                      <span className="text-[9px] uppercase font-bold tracking-wider text-muted-foreground font-mono">
-                        HOW WE CALCULATE IT
-                      </span>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-                        {item.steps.map((stepDesc, sIdx) => (
-                          <div
-                            key={sIdx}
-                            className="bg-card/45 border border-border/60 p-4 rounded-xl flex flex-col gap-1.5 hover:bg-card/75 transition-colors"
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-[9px] font-mono font-bold text-slate-500">
-                                STEP {sIdx + 1}
-                              </span>
-                              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400/70" />
-                            </div>
-                            <p className="text-[11px] text-foreground leading-relaxed font-normal">
-                              {stepDesc}
+                      {/* Unified Formula & Worked Example Grid */}
+                      <div className="rounded-xl border border-border/60 bg-slate-950/70 overflow-hidden divide-y lg:divide-y-0 lg:divide-x divide-border/50 grid grid-cols-1 lg:grid-cols-12 shadow-inner">
+                        {/* Formula Section (7 cols) */}
+                        <div className="lg:col-span-7 p-4 sm:p-5 flex flex-col justify-between gap-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1.5">
+                              <Calculator className="w-3.5 h-3.5 text-cyan-400" />
+                              Formula
+                            </span>
+                            <button
+                              onClick={() =>
+                                handleCopyFormula(item.id, item.formulaSimple)
+                              }
+                              className="flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded bg-card/60 hover:bg-card border border-border/60 hover:border-cyan-500/40 text-muted-foreground hover:text-cyan-300 transition-colors cursor-pointer"
+                              title="Copy formula text"
+                            >
+                              {copiedId === item.id ? (
+                                <>
+                                  <Check className="w-3 h-3 text-emerald-400" />
+                                  <span className="text-emerald-400 font-semibold">
+                                    Copied!
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-3 h-3" />
+                                  <span>Copy</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+
+                          <div className="text-xs sm:text-sm font-bold text-cyan-300 font-mono tracking-tight select-all py-1 break-words">
+                            {item.formulaSimple}
+                          </div>
+
+                          <div className="text-[11px] text-muted-foreground flex items-baseline gap-1.5 border-t border-border/30 pt-2 font-sans">
+                            <span className="text-slate-400 font-semibold shrink-0">
+                              Data Source:
+                            </span>
+                            <span className="leading-normal">
+                              {item.inputData}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Worked Example Section (5 cols) */}
+                        <div className="lg:col-span-5 p-4 sm:p-5 bg-card/20 flex flex-col justify-between gap-3">
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground font-mono block mb-1">
+                              Worked Example
+                            </span>
+                            <p className="text-xs text-foreground/80 leading-relaxed">
+                              Application to{" "}
+                              <strong className="text-foreground">
+                                {item.exampleNation}
+                              </strong>
+                              :
                             </p>
                           </div>
-                        ))}
-                      </div>
-                    </div>
 
-                    {/* Simple Formula & Worked Example Box */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
-                      {/* Formula Box */}
-                      <div className="bg-slate-950/60 border border-border/60 rounded-2xl p-4.5 flex flex-col gap-2.5 font-mono shadow-inner group">
-                        <div className="flex items-center justify-between pb-1.5 border-b border-border/30">
-                          <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500">
-                            FORMULA
-                          </span>
-                          <div className="flex gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500/40" />
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500/40" />
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/40" />
+                          <div className="flex items-center gap-2 pt-2 border-t border-border/30">
+                            <span className="text-xs text-muted-foreground font-semibold shrink-0">
+                              Result:
+                            </span>
+                            <span className="px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/25 font-mono text-xs font-bold text-cyan-300 shadow-sm break-words">
+                              {item.outputResult}
+                            </span>
                           </div>
                         </div>
-                        <div className="text-xs md:text-sm font-bold text-cyan-400 py-1 tracking-tight select-all leading-normal break-words whitespace-pre-wrap overflow-x-auto">
-                          {item.formulaSimple}
-                        </div>
-                        <div className="text-[10px] text-muted-foreground/80 mt-1 flex items-center gap-1.5 font-sans">
-                          <span className="font-semibold text-slate-500">Data Source:</span>
-                          <span>{item.inputData}</span>
-                        </div>
                       </div>
 
-                      {/* Worked Example */}
-                      <div className="bg-card/40 border border-border/60 p-4.5 rounded-2xl flex flex-col gap-2.5 justify-between">
-                        <div>
-                          <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500 font-mono block mb-1">
-                            WORKED EXAMPLE
-                          </span>
-                          <span className="text-[11px] text-muted-foreground leading-relaxed">
-                            Application to <strong className="text-foreground">{item.exampleNation}</strong>:
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-muted-foreground font-medium">Result:</span>
-                          <span className="px-3 py-1 rounded-xl bg-cyan-500/10 border border-cyan-500/20 font-mono text-xs font-bold text-cyan-300 shadow-md">
-                            {item.outputResult}
-                          </span>
+                      {/* Step-by-Step Procedure */}
+                      <div className="flex flex-col gap-2.5 pt-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground font-mono">
+                          How We Calculate It (Step-by-Step)
+                        </span>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                          {item.steps.map((stepDesc, sIdx) => (
+                            <div
+                              key={sIdx}
+                              className="p-3.5 rounded-xl bg-card/30 border border-border/50 hover:bg-card/50 transition-colors flex flex-col gap-1.5"
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                                  Step {sIdx + 1}
+                                </span>
+                                <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400/60" />
+                              </div>
+                              <p className="text-xs text-foreground/90 leading-relaxed">
+                                {stepDesc}
+                              </p>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.article>
+                  );
+                })}
               </motion.div>
             ) : (
               <motion.div
@@ -715,9 +933,12 @@ export default function HowItIsCalculatedPage() {
                   <AlertTriangle className="w-7 h-7" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">No calculation metrics found</h3>
+                  <h3 className="text-lg font-bold text-foreground">
+                    No calculation metrics found
+                  </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 max-w-sm leading-relaxed">
-                    No metrics match your search query "{searchQuery}" in this category. Try adjusting your query or switching tabs.
+                    No metrics match your search query "{searchQuery}" in this
+                    category. Try adjusting your query or switching tabs.
                   </p>
                 </div>
                 <button
@@ -732,7 +953,18 @@ export default function HowItIsCalculatedPage() {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </section>
+
+        {/* Floating Scroll to Top Button */}
+        {showScrollTop && (
+          <button
+            onClick={scrollToTop}
+            aria-label="Back to top"
+            className="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 shadow-xl backdrop-blur-md transition-all duration-300 cursor-pointer hover:scale-105 group"
+          >
+            <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
+          </button>
+        )}
       </main>
     </div>
   );
