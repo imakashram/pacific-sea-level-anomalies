@@ -103,7 +103,7 @@ export function DataMethodology() {
         </span>
         <div className="text-xs text-muted-foreground/80 leading-relaxed max-w-xl space-y-2">
           <p>
-            This project was mainly created and developed by the author through extensive research, hard work, and experimentation. AI tools, including{" "}
+            This project was mainly created and developed by the author through extensive data exploration, analysis, and experimentation. AI tools, including{" "}
             <a
               href="https://antigravity.google/"
               target="_blank"
@@ -124,7 +124,7 @@ export function DataMethodology() {
             , were used only for limited code support, technical guidance, and design suggestions.
           </p>
           <p>
-            The main idea, research, visual storytelling, data visualization, interaction design, creative direction, and most of the development were done independently by the author. The project involved continuous improvements, testing, and refinements throughout the development process.
+            The main idea, data analysis, visual storytelling, data visualization, interaction design, creative direction, and most of the development were done independently by the author. The project involved continuous improvements, testing, and refinements throughout the development process.
           </p>
           <p>
             The development history and progress can be viewed through the{" "}

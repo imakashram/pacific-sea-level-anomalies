@@ -18,7 +18,7 @@ This document provides a list of all important project URLs, including local dev
 | `http://localhost:5173/`                 | **Climate Story** – Main local development site for the interactive climate visualization.                                                                                         |
 | `http://localhost:5173/api-explorer`     | **API Explorer** – Test, explore, and interact with the available API endpoints. (Also available at `/explorer`)                                                                   |
 | `http://localhost:5173/methodology`      | **Methodology** – Explains the calculations, formulas, trend analysis, and prediction methods used in the project. (Also available at `/calculations` and `/how-it-is-calculated`) |
-| `http://localhost:5173/behind-the-story` | **Behind the Story** – The author's personal approach, research journey, and story design behind turning 30 years of climate data into an interactive visual narrative.          |
+| `http://localhost:5173/behind-the-story` | **Behind the Story** – The author's personal approach, data exploration, and story design behind turning 30 years of climate data into an interactive visual narrative.          |
 | `http://localhost:5001/api`              | **Backend API** – Local Express.js server providing all API endpoints.                                                                                                             |
 
 ---
@@ -36,9 +36,9 @@ This document provides a list of all important project URLs, including local dev
 
 ## AI Disclosure
 
-This project was mainly created and developed by the author through extensive research, hard work, and experimentation. AI tools, including [Antigravity](https://antigravity.google/) and [Google Gemini](https://gemini.google.com/), were used only for limited code support, technical guidance, and design suggestions.
+This project was mainly created and developed by the author through extensive data exploration, analysis, and experimentation. AI tools, including [Antigravity](https://antigravity.google/) and [Google Gemini](https://gemini.google.com/), were used only for limited code support, technical guidance, and design suggestions.
 
-The main idea, research, visual storytelling, data visualization, interaction design, creative direction, and most of the development were done independently by the author. The project involved continuous improvements, testing, and refinements throughout the development process.
+The main idea, data analysis, visual storytelling, data visualization, interaction design, creative direction, and most of the development were done independently by the author. The project involved continuous improvements, testing, and refinements throughout the development process.
 
 The development history and progress can be viewed through the [GitHub commit history](https://github.com/imakashram/pacific-sea-level-anomalies/commits/master/), which shows the ongoing work and updates made to the project.
 

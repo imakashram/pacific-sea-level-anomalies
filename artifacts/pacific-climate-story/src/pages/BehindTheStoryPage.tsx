@@ -2,12 +2,8 @@ import { useEffect } from "react";
 import {
   BookOpen,
   ArrowLeft,
-  Sparkles,
-  Compass,
   Lightbulb,
-  Code,
   LineChart,
-  CheckCircle2,
   Calculator,
   Globe2,
 } from "lucide-react";
@@ -15,15 +11,17 @@ import { useSEO } from "@/lib/useSEO";
 import { motion } from "framer-motion";
 
 const CHAPTERS = [
+  { num: "00", title: "Hero Section", desc: "Setting the stage, storytelling hook, key metrics, and premise" },
   { num: "01", title: "The Data Landscape", desc: "Setting the context, time horizon, and baseline" },
   { num: "02", title: "The Ocean Is Rising", desc: "Long-term trends, 5-year smoothing, and ENSO signals" },
-  { num: "03", title: "Explore Any Nation", desc: "Drilling down into individual Pacific island nations" },
-  { num: "04", title: "The Pace of Change", desc: "Decadal acceleration and changing velocity of rise" },
-  { num: "05", title: "Pacific Regions", desc: "Melanesia, Micronesia, and Polynesia comparisons" },
-  { num: "06", title: "The ENSO Effect", desc: "El Niño vs La Niña short-term sea-level sensitivity" },
-  { num: "07", title: "Patterns Over Time", desc: "30-year 651-observation macro-pattern heatmap" },
-  { num: "08", title: "Future Outlook", desc: "Projection trajectories and uncertainty ranges to 2033" },
-  { num: "09", title: "Risk Assessment & What This Means", desc: "Multi-factor vulnerability composite score & human impact" },
+  { num: "03", title: "The Pace Of Change", desc: "Decadal acceleration and changing velocity of rise" },
+  { num: "04", title: "Pacific Regions", desc: "Melanesia, Micronesia, and Polynesia comparisons" },
+  { num: "05", title: "The ENSO Effect", desc: "El Niño vs La Niña short-term sea-level sensitivity" },
+  { num: "06", title: "Patterns Over Time", desc: "30-year 651-observation macro-pattern heatmap" },
+  { num: "07", title: "Future Outlook", desc: "Projection trajectories and uncertainty ranges to 2033" },
+  { num: "08", title: "Risk Assessment", desc: "Multi-factor vulnerability composite score & nation rankings" },
+  { num: "09", title: "The Pacific at a Glance", desc: "Interactive nation drilldown & full tabular dataset" },
+  { num: "10", title: "What This Means", desc: "Human reality, coastal impacts, and closing perspective" },
 ];
 
 export default function BehindTheStoryPage() {
@@ -35,10 +33,10 @@ export default function BehindTheStoryPage() {
   useSEO({
     title: "Behind the Story: My Approach | Pacific Sea Level Anomalies",
     description:
-      "Turning 30 years of Pacific climate data into an interactive visual story: the author's research journey, design choices, methodology, and creative direction.",
+      "Turning 30 years of Pacific climate data into an interactive visual story: analytical exploration, design choices, methodology, and creative direction.",
     canonicalPath: "/behind-the-story",
     keywords:
-      "climate storytelling, data visualization design, Pacific sea level rise, research methodology, interactive data story",
+      "climate storytelling, data visualization design, Pacific sea level rise, data analysis, interactive data story",
     schema: {
       "@context": "https://schema.org",
       "@type": "Article",
@@ -97,33 +95,22 @@ export default function BehindTheStoryPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="relative overflow-hidden bg-gradient-to-br from-card/40 via-card/20 to-transparent border border-border/70 p-6 sm:p-10 rounded-3xl shadow-xl backdrop-blur-sm"
+          className="space-y-6"
         >
-          <div className="flex items-center gap-2 mb-4">
-            <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-[11px] font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-3 h-3" /> Behind the Story
-            </span>
-            <span className="text-xs text-muted-foreground">
-              • A project by{" "}
-              <a
-                href="https://www.linkedin.com/in/imakashram/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors"
-              >
-                Akash Ram
-              </a>
-            </span>
-          </div>
+          <p className="text-center text-xs sm:text-sm text-muted-foreground mb-4">
+            <span className="font-semibold text-foreground">Pacific Sea Level Anomalies</span>
+            {" — A Project by "}
+            <a
+              href="https://www.linkedin.com/in/imakashram/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors"
+            >
+              Akash Ram
+            </a>
+          </p>
 
-          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-foreground tracking-tight leading-tight mb-3">
-            My Approach to the Story
-          </h1>
-          <h2 className="text-lg sm:text-2xl font-serif text-cyan-400/90 font-medium tracking-tight mb-6">
-            Pacific Sea Level Anomalies: Turning 30 years of Pacific climate data into an interactive story
-          </h2>
-
-          <div className="space-y-4 text-sm sm:text-base text-muted-foreground/95 leading-relaxed font-sans border-t border-border/40 pt-6">
+          <div className="space-y-4 text-sm sm:text-base text-muted-foreground/95 leading-relaxed font-sans">
             <p>
               When I started this project, I didn't want to create just another data dashboard filled with charts and numbers. I wanted to tell a story through data — a story that could help people understand what is happening across the Pacific, how sea levels are changing, and why these changes matter to the communities living there.
             </p>
@@ -164,14 +151,12 @@ export default function BehindTheStoryPage() {
               I wanted people to understand these differences rather than look at one overall number and move on.
             </p>
 
-            <div className="p-5 my-3 rounded-2xl bg-cyan-950/20 border border-cyan-500/30 shadow-inner">
-              <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider block mb-1">
-                The Guiding Question
-              </span>
-              <p className="text-base sm:text-lg font-serif italic text-slate-100">
-                "How can I turn 30 years of Pacific sea-level data into a story that people can understand, explore, and connect with?"
-              </p>
-            </div>
+            <p>
+              So I started with a bigger question:
+            </p>
+            <p className="font-bold text-foreground">
+              “How can I turn 30 years of Pacific sea-level data into a story that people can understand, explore, and connect with?”
+            </p>
 
             <p>
               This question became the starting point for the entire project.
@@ -204,24 +189,14 @@ export default function BehindTheStoryPage() {
               I wanted to understand more than just whether sea levels were rising. I explored several questions:
             </p>
 
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-3 pt-1">
-              {[
-                "How much have sea levels changed over the last 30 years?",
-                "Which nations are experiencing the fastest rise?",
-                "Are sea levels changing at the same rate across the Pacific?",
-                "How do El Niño and La Niña affect sea-level patterns?",
-                "Which nations have experienced greater changes over time?",
-                "How has the speed of sea-level rise changed between different periods?",
-                "What might future sea-level levels look like if current trends continue?",
-              ].map((q, idx) => (
-                <li
-                  key={idx}
-                  className="flex items-start gap-2 p-3 rounded-xl bg-card/40 border border-border/60 text-xs sm:text-sm text-slate-200"
-                >
-                  <Compass className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                  <span>{q}</span>
-                </li>
-              ))}
+            <ul className="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm text-slate-200">
+              <li>How much have sea levels changed over the last 30 years?</li>
+              <li>Which nations are experiencing the fastest rise?</li>
+              <li>Are sea levels changing at the same rate across the Pacific?</li>
+              <li>How do El Niño and La Niña affect sea-level patterns?</li>
+              <li>Which nations have experienced greater changes over time?</li>
+              <li>How has the speed of sea-level rise changed between different periods?</li>
+              <li>What might future sea-level levels look like if current trends continue?</li>
             </ul>
 
             <p>
@@ -252,7 +227,7 @@ export default function BehindTheStoryPage() {
           </div>
           <div className="space-y-3.5 text-sm sm:text-base text-muted-foreground/90 leading-relaxed">
             <p>
-              Instead of putting everything on one dashboard, I divided the experience into nine chapters.
+              Instead of putting everything on one dashboard, I divided the experience into eleven sequential chapters.
             </p>
             <p>
               I wanted each chapter to introduce a new question and help the reader understand another part of the bigger picture.
@@ -276,6 +251,9 @@ export default function BehindTheStoryPage() {
                     <h5 className="font-serif font-bold text-base sm:text-lg text-foreground">{ch.title}</h5>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    {ch.num === "00" && (
+                      <>The opening hook sets the tone, introducing readers to the urgency and scale of 30 years of Pacific sea-level observations with key high-level indicators, interactive visual cues, and the storytelling premise.</>
+                    )}
                     {ch.num === "01" && (
                       <>I begin by introducing the dataset and giving readers an overview of what they are about to explore. This section presents the time period, number of observations, baseline, and other important information. The purpose is to establish context before showing the findings.</>
                     )}
@@ -283,25 +261,28 @@ export default function BehindTheStoryPage() {
                       <>This is where the main story begins. I wanted to show how sea levels have changed across the Pacific over the last 30 years. The interactive line chart presents annual observations, a five-year average, and the overall trend. I also included major El Niño and La Niña periods to help readers understand how natural climate events can cause temporary changes while the longer-term trend continues.</>
                     )}
                     {ch.num === "03" && (
-                      <>After showing the overall picture, I wanted readers to explore the data at a country level. The Pacific is not one uniform region. Different nations experience different sea-level patterns. This section gives readers a way to investigate individual countries rather than relying only on regional averages.</>
-                    )}
-                    {ch.num === "04" && (
                       <>I wanted to go one step further than showing how much sea levels have risen. I wanted to understand whether the rate of change was increasing or decreasing. This section compares different periods and highlights nations where the pace of sea-level rise has changed. The comparison shows that 11 out of 21 nations are experiencing a faster rate of rise, while individual countries have very different results.</>
                     )}
-                    {ch.num === "05" && (
+                    {ch.num === "04" && (
                       <>I also wanted to bring a geographical perspective into the story. The Pacific is divided into three broad regions in this section: Melanesia, Micronesia, and Polynesia. Readers can compare their average rise rates, explore changes over time, and see which nations belong to each region. This helps connect individual country observations with a broader regional picture.</>
                     )}
-                    {ch.num === "06" && (
+                    {ch.num === "05" && (
                       <>Sea levels are influenced by more than long-term changes. El Niño and La Niña are natural climate events that can affect sea levels across the Pacific. I created this section to explore how different nations respond to these events and how their sea-level patterns differ between El Niño, neutral, and La Niña periods. It adds another layer to the story by showing that short-term variability and long-term sea-level rise need to be understood together.</>
                     )}
-                    {ch.num === "07" && (
+                    {ch.num === "06" && (
                       <>Looking at 21 nations across 30 years creates a large amount of information. I wanted to find a way to see all those changes together. That is why I introduced a heatmap showing annual sea-level anomalies across all the nations. Readers can also sort the countries by total rise, average sea level, or highest sea level. Instead of examining one chart at a time, people can discover patterns across the complete dataset in one view.</>
                     )}
-                    {ch.num === "08" && (
+                    {ch.num === "07" && (
                       <>After exploring historical observations, I wanted to give the story a forward-looking perspective. This section uses historical trends and selected projection scenarios to explore possible sea-level changes through 2033. It includes expected values and a shaded range to communicate uncertainty. The intention is not to present the projection as a guaranteed outcome, but to help readers understand what different future trajectories could look like.</>
                     )}
+                    {ch.num === "08" && (
+                      <>Here I brought the analytical factors together into a structured risk evaluation. The risk assessment uses a combined score based on cumulative sea-level rise, rate of change, volatility, and decadal acceleration. Readers can compare the scores of all 21 nations and explore the main contributing factors for an individual country.</>
+                    )}
                     {ch.num === "09" && (
-                      <>Finally, I wanted to bring the different findings together. The risk assessment uses a combined score based on cumulative sea-level rise, rate of change, volatility, and decadal acceleration. Readers can compare the scores of all 21 nations and explore the main contributing factors for an individual country. The final section brings the story back to its central message: sea-level changes are not just numbers in a dataset. They have wider implications for coastal communities, freshwater resources, homes, and the future of Pacific island nations. I wanted the experience to end with a better understanding of why these changes deserve attention.</>
+                      <>After exploring the broader regional patterns, I wanted readers to explore the data at a country level and examine the complete record. This dual-purpose section allows readers to either investigate individual Pacific island nations in detail with tailored charts and historical summaries, or switch to a full sortable data table across all 21 nations.</>
+                    )}
+                    {ch.num === "10" && (
+                      <>The final chapter brings the story back to its central message: sea-level changes are not just numbers in a dataset. They have wider implications for coastal communities, freshwater resources, homes, and the future of Pacific island nations. I wanted the experience to end with a better understanding of why these changes deserve attention.</>
                     )}
                   </p>
                 </div>
@@ -397,25 +378,18 @@ export default function BehindTheStoryPage() {
               That is why I introduced interactions throughout the experience. Readers can:
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-2">
-              {[
-                "Explore individual Pacific nations.",
-                "Search and compare countries.",
-                "Sort countries using different measurements.",
-                "Move over charts to see detailed information.",
-                "Switch between different chart views.",
-                "Explore El Niño and La Niña periods.",
-                "Compare regional patterns.",
-                "Investigate historical changes across decades.",
-                "Examine individual risk scores and their contributing factors.",
-                "Export country-level data as a CSV file.",
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2 p-2.5 rounded-lg bg-card/25 border border-border/50 text-xs sm:text-sm text-slate-200">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
+            <ul className="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm text-slate-200">
+              <li>Explore individual Pacific nations.</li>
+              <li>Search and compare countries.</li>
+              <li>Sort countries using different measurements.</li>
+              <li>Move over charts to see detailed information.</li>
+              <li>Switch between different chart views.</li>
+              <li>Explore El Niño and La Niña periods.</li>
+              <li>Compare regional patterns.</li>
+              <li>Investigate historical changes across decades.</li>
+              <li>Examine individual risk scores and their contributing factors.</li>
+              <li>Export country-level data as a CSV file.</li>
+            </ul>
 
             <p>
               I wanted these interactions to feel useful rather than decorative.
@@ -480,31 +454,24 @@ export default function BehindTheStoryPage() {
           </div>
           <div className="space-y-3.5 text-sm sm:text-base text-muted-foreground/90 leading-relaxed">
             <p>
-              Along with the research and visualization work, I also worked on the engineering needed to bring the complete experience together.
+              Along with the data exploration, analysis, and visualization work, I also worked on the engineering needed to bring the complete experience together.
             </p>
             <p>
               The project uses React, Tailwind CSS, Framer Motion, Recharts, and D3.js, supported by an Express.js API backend.
             </p>
             <p>My work included:</p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-2">
-              {[
-                "Structuring the application and its components.",
-                "Building the individual story sections.",
-                "Creating interactive data visualizations.",
-                "Preparing and processing climate data.",
-                "Developing API endpoints.",
-                "Validating data structures.",
-                "Creating API documentation and an API Explorer.",
-                "Improving responsive layouts and accessibility.",
-                "Working on deployment and performance improvements.",
-              ].map((t, idx) => (
-                <div key={idx} className="flex items-center gap-2 p-2.5 rounded-lg bg-card/25 border border-border/50 text-xs sm:text-sm text-slate-200">
-                  <Code className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                  <span>{t}</span>
-                </div>
-              ))}
-            </div>
+            <ul className="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm text-slate-200">
+              <li>Structuring the application and its components.</li>
+              <li>Building the individual story sections.</li>
+              <li>Creating interactive data visualizations.</li>
+              <li>Preparing and processing climate data.</li>
+              <li>Developing API endpoints.</li>
+              <li>Validating data structures.</li>
+              <li>Creating API documentation and an API Explorer.</li>
+              <li>Improving responsive layouts and accessibility.</li>
+              <li>Working on deployment and performance improvements.</li>
+            </ul>
 
             <p>
               I wanted the application to be more than a set of static pages. It needed to support multiple visualizations, different ways of exploring the data, and a smooth experience across devices.
@@ -537,14 +504,14 @@ export default function BehindTheStoryPage() {
               I regularly went back to earlier sections and asked myself whether they were doing their job properly:
             </p>
 
-            <div className="p-4 rounded-xl bg-card/30 border border-border/70 space-y-1.5 text-xs sm:text-sm font-serif italic text-cyan-200">
-              <p>• Could the chart be clearer?</p>
-              <p>• Could the explanation be shorter?</p>
-              <p>• Was the interaction useful?</p>
-              <p>• Was the section in the right place?</p>
-              <p>• Was I showing too much information at once?</p>
-              <p>• Could I communicate the same finding in a better way?</p>
-            </div>
+            <ul className="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm text-slate-200">
+              <li>Could the chart be clearer?</li>
+              <li>Could the explanation be shorter?</li>
+              <li>Was the interaction useful?</li>
+              <li>Was the section in the right place?</li>
+              <li>Was I showing too much information at once?</li>
+              <li>Could I communicate the same finding in a better way?</li>
+            </ul>
 
             <p>
               I redesigned charts, changed layouts, refined calculations, improved descriptions, and removed unnecessary elements.
@@ -574,23 +541,16 @@ export default function BehindTheStoryPage() {
               By the end, I wanted the project to bring several things together in one place:
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-2">
-              {[
-                "Scientific data exploration.",
-                "Meaningful analytical comparisons.",
-                "Interactive data visualization.",
-                "Storytelling through multiple chapters.",
-                "Clear explanations of complex information.",
-                "Transparent methodology.",
-                "Future-oriented exploration.",
-                "A complete, responsive web experience.",
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2 p-2.5 rounded-lg bg-card/25 border border-border/50 text-xs sm:text-sm text-slate-200">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
+            <ul className="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm text-slate-200">
+              <li>Scientific data exploration.</li>
+              <li>Meaningful analytical comparisons.</li>
+              <li>Interactive data visualization.</li>
+              <li>Storytelling through multiple chapters.</li>
+              <li>Clear explanations of complex information.</li>
+              <li>Transparent methodology.</li>
+              <li>Future-oriented exploration.</li>
+              <li>A complete, responsive web experience.</li>
+            </ul>
 
             <p>
               I wanted every part of the project to support the same goal: helping people understand the changing sea levels across the Pacific.
@@ -678,11 +638,9 @@ export default function BehindTheStoryPage() {
             From Data to Understanding
           </h2>
           <div className="space-y-3.5 text-sm sm:text-base text-muted-foreground/90 leading-relaxed">
-            <div className="p-6 my-4 rounded-2xl bg-gradient-to-r from-cyan-950/30 via-slate-900/40 to-transparent border border-cyan-500/30">
-              <p className="text-lg sm:text-xl font-serif italic text-cyan-200">
-                "Data should not just be seen. It should be understood."
-              </p>
-            </div>
+            <p className="font-bold text-foreground py-1">
+              “Data should not just be seen. It should be understood.”
+            </p>
 
             <p>
               My approach to <em className="text-foreground">Pacific Sea Level Anomalies</em> was based on one simple belief.
@@ -706,16 +664,16 @@ export default function BehindTheStoryPage() {
         </section>
 
         {/* Development, Authorship & AI Assistance */}
-        <section id="authorship" className="p-6 sm:p-8 rounded-3xl bg-card/25 border border-border/80 space-y-4">
-          <h3 className="text-lg sm:text-xl font-serif font-bold text-cyan-300">
+        <section id="authorship" className="space-y-4 pt-6 border-t border-border/60">
+          <h3 className="text-xl sm:text-2xl font-serif font-bold text-foreground">
             Development, Authorship & AI Assistance
           </h3>
-          <div className="space-y-3 text-xs sm:text-sm text-muted-foreground/90 leading-relaxed">
+          <div className="space-y-3.5 text-sm sm:text-base text-muted-foreground/90 leading-relaxed">
             <p>
-              This project involved substantial independent work across research, data exploration, storytelling, visualization, design, and software development.
+              This project involved substantial independent work across data analysis, exploration, storytelling, visualization, design, and software development.
             </p>
             <p>
-              I drove the main idea, research direction, narrative structure, visualization choices, interaction design, and most of the implementation. I also spent considerable time experimenting with different approaches, reviewing the results, and improving the experience throughout development.
+              I drove the main idea, analytical direction, narrative structure, visualization choices, interaction design, and most of the implementation. I also spent considerable time experimenting with different approaches, reviewing the results, and improving the experience throughout development.
             </p>
             <p>
               I used AI tools, including <a href="https://antigravity.google/" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">Antigravity</a> and <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">Google Gemini</a>, for limited code support, technical guidance, and design suggestions in selected parts of the process.
@@ -727,10 +685,10 @@ export default function BehindTheStoryPage() {
               The development history also reflects the continuous work and improvements made throughout the project.
             </p>
             <p className="font-medium text-foreground pt-1">
-              This is primarily my own research, thinking, experimentation, and development, with AI used as a supporting tool rather than a replacement for my work.
+              This is primarily my own analysis, exploration, experimentation, and development, with AI used as a supporting tool rather than a replacement for my work.
             </p>
-            <div className="pt-3 border-t border-border/50 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-              <span className="italic text-cyan-400">
+            <div className="pt-4 border-t border-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm">
+              <span className="text-cyan-400">
                 Concept, analysis, design, and development by{" "}
                 <a
                   href="https://www.linkedin.com/in/imakashram/"
@@ -743,12 +701,12 @@ export default function BehindTheStoryPage() {
                 .
               </span>
               <a
-                href="https://github.com/imakashram/pacific-sea-level-anomalies/commits/master/"
+                href="https://github.com/imakashram/pacific-sea-level-anomalies"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30"
               >
-                View GitHub commit history →
+                View on GitHub →
               </a>
             </div>
           </div>
@@ -761,7 +719,7 @@ export default function BehindTheStoryPage() {
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-xs font-semibold text-cyan-300 hover:text-cyan-200 transition-all shadow-md cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Return to Interactive Climate Story</span>
+            <span>Back to Story</span>
           </a>
 
           <a
@@ -769,7 +727,7 @@ export default function BehindTheStoryPage() {
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-card hover:bg-card/80 border border-border hover:border-cyan-500/35 text-xs font-semibold text-muted-foreground hover:text-cyan-300 transition-all shadow-sm cursor-pointer"
           >
             <Calculator className="w-4 h-4" />
-            <span>View Calculation Methodology & Formulas</span>
+            <span>Methodology & Formulas</span>
           </a>
         </div>
       </main>
