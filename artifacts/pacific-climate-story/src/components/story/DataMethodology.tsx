@@ -91,7 +91,7 @@ export function DataMethodology() {
 
       {/* AI Disclosure */}
       <motion.div
-        className="max-w-2xl mx-auto mb-6 text-center flex flex-col items-center gap-1.5"
+        className="max-w-2xl mx-auto mb-6 text-center flex flex-col items-center gap-2"
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -100,27 +100,47 @@ export function DataMethodology() {
         <span className="text-xs font-semibold text-cyan-500/80 uppercase tracking-wider">
           AI Disclosure
         </span>
-        <p className="text-xs text-muted-foreground/80 leading-relaxed max-w-xl">
-          This project was developed with assistance from{" "}
-          <a
-            href="https://antigravity.google"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
-          >
-            Antigravity
-          </a>{" "}
-          with{" "}
-          <a
-            href="https://gemini.google.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
-          >
-            Google Gemini
-          </a>{" "}
-          for code support, technical exploration, and design assistance. The concept, visual storytelling, data visualization, interaction design, and creative direction were independently developed by the author. All AI-assisted outputs were reviewed and refined by the author.
-        </p>
+        <div className="text-xs text-muted-foreground/80 leading-relaxed max-w-xl space-y-2">
+          <p>
+            This project was mainly created and developed by the author through extensive research, hard work, and experimentation. AI tools, including{" "}
+            <a
+              href="https://antigravity.google/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
+            >
+              Antigravity
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://gemini.google.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
+            >
+              Google Gemini
+            </a>
+            , were used only for limited code support, technical guidance, and design suggestions.
+          </p>
+          <p>
+            The main idea, research, visual storytelling, data visualization, interaction design, creative direction, and most of the development were done independently by the author. The project involved continuous improvements, testing, and refinements throughout the development process.
+          </p>
+          <p>
+            The development history and progress can be viewed through the{" "}
+            <a
+              href="https://github.com/imakashram/pacific-sea-level-anomalies/commits/master/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300/60 transition-colors duration-200"
+            >
+              GitHub commit history
+            </a>
+            , which shows the ongoing work and updates made to the project.
+          </p>
+          <p>
+            All AI-assisted suggestions and outputs were reviewed, modified, and refined by the author to match the original vision of the project.
+          </p>
+        </div>
       </motion.div>
 
       {/* Disclaimer */}

@@ -29,3 +29,15 @@ This document provides a list of all important project URLs, including local dev
 | `https://pacific-sea-level-story.onrender.com/`             | **Live Website** – Public version of the interactive climate data visualization.                                       |
 | `https://pacific-sea-level-story.onrender.com/api-explorer` | **Live API Explorer** – Explore and test API endpoints on the production server.                                       |
 | `https://pacific-sea-level-story.onrender.com/methodology`  | **Live Methodology** – Learn about the project's calculations, trends, prediction models, and risk assessment methods. |
+
+---
+
+## AI Disclosure
+
+This project was mainly created and developed by the author through extensive research, hard work, and experimentation. AI tools, including [Antigravity](https://antigravity.google/) and [Google Gemini](https://gemini.google.com/), were used only for limited code support, technical guidance, and design suggestions.
+
+The main idea, research, visual storytelling, data visualization, interaction design, creative direction, and most of the development were done independently by the author. The project involved continuous improvements, testing, and refinements throughout the development process.
+
+The development history and progress can be viewed through the [GitHub commit history](https://github.com/imakashram/pacific-sea-level-anomalies/commits/master/), which shows the ongoing work and updates made to the project.
+
+All AI-assisted suggestions and outputs were reviewed, modified, and refined by the author to match the original vision of the project.
