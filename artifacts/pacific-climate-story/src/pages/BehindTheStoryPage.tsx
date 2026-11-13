@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   BookOpen,
   ArrowLeft,
+  ArrowUp,
   Lightbulb,
   LineChart,
   Calculator,
@@ -25,10 +26,22 @@ const CHAPTERS = [
 ];
 
 export default function BehindTheStoryPage() {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   useEffect(() => {
     document.documentElement.classList.add("dark");
     window.scrollTo(0, 0);
+
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useSEO({
     title: "Behind the Story: My Approach | Pacific Sea Level Anomalies",
@@ -687,50 +700,20 @@ export default function BehindTheStoryPage() {
             <p className="font-medium text-foreground pt-1">
               This is primarily my own analysis, exploration, experimentation, and development, with AI used as a supporting tool rather than a replacement for my work.
             </p>
-            <div className="pt-4 border-t border-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm">
-              <span className="text-cyan-400">
-                Concept, analysis, design, and development by{" "}
-                <a
-                  href="https://www.linkedin.com/in/imakashram/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-cyan-300 hover:text-cyan-200 underline underline-offset-4 decoration-cyan-400/40 hover:decoration-cyan-300/70 transition-colors"
-                >
-                  Akash Ram
-                </a>
-                .
-              </span>
-              <a
-                href="https://github.com/imakashram/pacific-sea-level-anomalies"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-400/30"
-              >
-                View on GitHub →
-              </a>
-            </div>
           </div>
         </section>
-
-        {/* Bottom Actions Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-border/40">
-          <a
-            href="/"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-xs font-semibold text-cyan-300 hover:text-cyan-200 transition-all shadow-md cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Story</span>
-          </a>
-
-          <a
-            href="/methodology"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-card hover:bg-card/80 border border-border hover:border-cyan-500/35 text-xs font-semibold text-muted-foreground hover:text-cyan-300 transition-all shadow-sm cursor-pointer"
-          >
-            <Calculator className="w-4 h-4" />
-            <span>Methodology & Formulas</span>
-          </a>
-        </div>
       </main>
+
+      {/* Floating Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          aria-label="Back to top"
+          className="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 shadow-xl backdrop-blur-md transition-all duration-300 cursor-pointer hover:scale-105 group"
+        >
+          <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
+        </button>
+      )}
     </div>
   );
 }
